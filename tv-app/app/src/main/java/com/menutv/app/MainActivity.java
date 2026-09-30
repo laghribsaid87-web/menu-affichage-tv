@@ -20,7 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
     
     // ====== METS TON LIEN ICI ======
-    private static final String TV_URL = "http://192.168.1.X:8000/viewer.html?project=default"; 
+    private static final String TV_URL = "https://laghribsaid87-web.github.io/menu-affichage-tv/viewer.html?project=default"; 
     private static final String SECRET_PIN = "0000"; // Le mot de passe pour quitter
     
     private int backPressCount = 0;
