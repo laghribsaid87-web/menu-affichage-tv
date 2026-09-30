@@ -15,6 +15,8 @@ jobs:
           distribution: 'temurin'
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.7'
       - name: Build APK
         working-directory: ./tv-app
         run: gradle assembleDebug
