@@ -1,0 +1,2258 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Signage CMS - Canvas Editor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .input-field { background: #0f172a; border: 1px solid #334155; color: white; padding: 0.5rem; border-radius: 0.375rem; width: 100%; outline: none; font-size: 0.875rem; }
+        .input-field:focus { border-color: #3b82f6; }
+        .select-field { background: #0f172a; border: 1px solid #334155; color: white; padding: 0.5rem; border-radius: 0.375rem; width: 100%; outline: none; font-size: 0.875rem; }
+        input[type=range] { accent-color: #3b82f6; width: 100%; }
+        
+        .component-card { background: rgba(15, 23, 42, 0.6); border: 1px solid #334155; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem; transition: border-color 0.2s; }
+        .component-card.active-card { border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); }
+
+        /* Live Preview CSS */
+        .tv-mockup {
+            background-color: #050505;
+            background-image: radial-gradient(circle at 50% 60%, #1a1a1a 0%, #000000 100%);
+            border: 2px solid #334155; box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            font-family: 'Oswald', sans-serif; overflow: hidden;
+        }
+        .mock-light { position: absolute; top: -50%; left: 50%; width: 800px; height: 2000px; background: linear-gradient(90deg, transparent, rgba(255,199,44,0.05), transparent); transform: rotate(35deg) translateX(-50%); z-index: 1; pointer-events: none; }
+        .mock-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -40%); width: 1200px; height: 800px; border-radius: 50%; filter: blur(120px); background: rgba(218,41,28,0.4); z-index: 2; pointer-events: none; }
+        .mock-badge { font-size: 2.5rem; padding: 8px 30px; border-radius: 8px; letter-spacing: 0.2em; text-transform: uppercase; display: inline-block; margin-bottom: 20px; font-weight: 900; }
+        .mock-title { font-size: 8rem; line-height: 0.9; text-transform: uppercase; margin: 0; background: linear-gradient(to bottom, #ffffff, #d4d4d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; }
+        .mock-desc { font-size: 3rem; font-weight: 700; color: #DA291C; margin-top: 15px; }
+        .mock-price { position: absolute; bottom: 80px; left: 150px; width: 300px; height: 300px; background: #FFC72C; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 8px solid #DA291C; z-index: 50; transform: rotate(-10deg); color: #111; pointer-events: none; }
+        .mock-price span { font-size: 10rem; font-weight: 900; line-height: 0.8; margin-top: 20px; }
+
+        .preview-item {
+            cursor: grab;
+            transition: outline 0.1s;
+        }
+        .preview-item:active { cursor: grabbing; }
+        .preview-item.active-item { outline: 6px dashed #3b82f6; outline-offset: 10px; border-radius: 20px;}
+
+        /* Continuous Animations */
+        @keyframes anim-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        @keyframes anim-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        @keyframes anim-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes anim-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+        @keyframes anim-swing { 20% { transform: rotate(15deg); } 40% { transform: rotate(-10deg); } 60% { transform: rotate(5deg); } 80% { transform: rotate(-5deg); } 100% { transform: rotate(0deg); } }
+        @keyframes anim-heartbeat { 0%, 28%, 70% { transform: scale(1); } 14%, 42% { transform: scale(1.15); } }
+        @keyframes anim-glow { 0%, 100% { filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)) brightness(1); } 50% { filter: drop-shadow(0 0 20px rgba(255,255,255,0.8)) brightness(1.2); } }
+        @keyframes anim-wobble { 0%, 100% { transform: translateX(0%); } 15% { transform: translateX(-10%) rotate(-5deg); } 30% { transform: translateX(8%) rotate(3deg); } 45% { transform: translateX(-6%) rotate(-3deg); } 60% { transform: translateX(4%) rotate(2deg); } 75% { transform: translateX(-2%) rotate(-1deg); } }
+        @keyframes anim-bounce-slow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
+        @keyframes anim-float-x { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(20px); } }
+        @keyframes anim-flip { 0% { transform: perspective(400px) rotateY(0); } 100% { transform: perspective(400px) rotateY(360deg); } }
+        @keyframes anim-shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); } 20%, 40%, 60%, 80% { transform: translateX(5px); } }
+        
+        .anim-float { animation: anim-float 4s ease-in-out infinite !important; }
+        .anim-pulse { animation: anim-pulse 2s ease-in-out infinite !important; }
+        .anim-spin { animation: anim-spin 10s linear infinite !important; }
+        .anim-breathe { animation: anim-breathe 6s ease-in-out infinite !important; }
+        .anim-swing { animation: anim-swing 4s ease-in-out infinite !important; transform-origin: top center; }
+        .anim-heartbeat { animation: anim-heartbeat 2.5s ease-in-out infinite !important; }
+        .anim-glow { animation: anim-glow 3s ease-in-out infinite !important; }
+        .anim-wobble { animation: anim-wobble 4s ease-in-out infinite !important; }
+        .anim-bounce-slow { animation: anim-bounce-slow 3s ease-in-out infinite !important; }
+        .anim-float-x { animation: anim-float-x 4s ease-in-out infinite !important; }
+        .anim-flip { animation: anim-flip 5s linear infinite !important; }
+        .anim-shake { animation: anim-shake 6s ease-in-out infinite !important; }
+        .anim-spin-fast { animation: anim-spin 2s linear infinite !important; }
+        .anim-spin-reverse { animation: anim-spin 10s linear infinite reverse !important; }
+        
+        .tv-mockup { transform: scale(0.45); }
+        .mockup-wrapper { width: 864px; height: 486px; }
+
+        .mockup-wrapper:fullscreen, .mockup-wrapper:-webkit-full-screen, .fake-fullscreen {
+            width: 100vw !important;
+            height: 100vh !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: black;
+            border: none;
+            border-radius: 0;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            z-index: 99999 !important;
+        }
+        .mockup-wrapper:fullscreen .tv-mockup, .mockup-wrapper:-webkit-full-screen .tv-mockup, .fake-fullscreen .tv-mockup {
+            transform: scale(min(calc(100vw / 1920), calc(100vh / 1080))) !important;
+            transform-origin: center center !important;
+            left: 50% !important;
+            top: 50% !important;
+            margin-left: -960px !important; /* half of 1920 */
+            margin-top: -540px !important; /* half of 1080 */
+        }
+        .exit-fs-btn { display: none; }
+        .mockup-wrapper:fullscreen .exit-fs-btn, .mockup-wrapper:-webkit-full-screen .exit-fs-btn, .fake-fullscreen .exit-fs-btn {
+            display: block !important;
+        }
+
+        @media (max-width: 768px) {
+            .mockup-wrapper { width: 345px !important; height: 194px !important; margin: 0 auto; }
+            .tv-mockup { transform: scale(0.18) !important; }
+            
+            .main-layout { flex-direction: column !important; overflow: auto !important; }
+            .dashboard-sidebar { width: 100% !important; border-right: none !important; border-bottom: 1px solid #334155; }
+            .dashboard-sidebar .tab-container { display: flex; overflow-x: auto; }
+            .dashboard-sidebar button { white-space: nowrap; flex-shrink: 0; padding: 10px 15px !important; border-left: none !important; border-bottom: 4px solid transparent; }
+            .dashboard-sidebar button.active-tab { border-bottom-color: #3b82f6 !important; background: rgba(30,41,59,0.5); }
+            .dashboard-sidebar .cat-header { display: none; }
+            
+            .content-area { padding: 1rem !important; overflow-y: visible !important; }
+            .controls-panel { flex-direction: column-reverse !important; }
+            .mockup-wrapper-container { margin: 0 auto 1.5rem auto; width: 100%; display: flex; justify-content: center; }
+            
+            .formule-header-inputs { flex-direction: column; gap: 10px !important; }
+            .formule-header-inputs > div { width: 100% !important; }
+            .navbar-text { display: none; }
+        }
+        
+        @keyframes highlight-wiggle {
+            0% { filter: brightness(1); transform: scale(1); }
+            50% { filter: brightness(1.5); transform: scale(1.15); box-shadow: 0 0 40px rgba(255, 255, 255, 0.8); }
+            100% { filter: brightness(1); transform: scale(1); }
+        }
+        .highlight-wiggle {
+            animation: highlight-wiggle 0.5s ease-in-out !important;
+            z-index: 9999 !important;
+        }
+        
+        /* Pause for infinite animations */
+        .editor-paused .anim-float,
+        .editor-paused .anim-pulse,
+        .editor-paused .anim-spin,
+        .editor-paused .anim-bounce,
+        .editor-paused .anim-wiggle {
+            animation-play-state: paused !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="min-h-screen flex flex-col relative">
+        
+        <!-- Floating Scroll to Preview Button (Only visible on mobile) -->
+        <button @click="scrollToPreview()" v-if="currentTab === 'tv2'" class="fixed bottom-6 right-6 z-[100] bg-blue-600 hover:bg-blue-500 text-white rounded-full px-6 py-4 shadow-[0_0_20px_rgba(59,130,246,0.6)] flex items-center gap-3 font-bold transition-transform hover:scale-105 xl:hidden">
+            <i class="fa-solid fa-desktop text-xl"></i> Voir L'Écran
+        </button>
+        <!-- Navbar -->
+        <nav class="glass-panel sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-paintbrush text-blue-500 text-2xl"></i>
+                <h1 class="text-xl font-bold">Menu CMS - WYSIWYG Editor</h1>
+                
+                <div class="ml-4 flex items-center gap-2 border-l border-gray-200 pl-4">
+                    <label class="text-sm text-slate-700">Écran:</label>
+                    <select v-model="currentTvId" @change="fetchData" class="bg-gray-100 text-slate-800 border border-slate-600 text-white rounded px-2 py-1 outline-none focus:border-blue-500">
+                        <option value="1">Télévision 1</option>
+                        <option value="2">Télévision 2</option>
+                        <option value="3">Télévision 3</option>
+                        <option value="4">Télévision 4</option>
+                    </select>
+                    
+                    <button @click="toggleOrientation" class="ml-2 bg-gray-100 text-slate-800 hover:bg-slate-700 border border-slate-600 px-3 py-1 rounded text-sm transition flex items-center gap-2" :class="{'border-blue-500 text-blue-400': menuData?.orientation === 'vertical'}">
+                        <i class="fa-solid" :class="menuData?.orientation === 'vertical' ? 'fa-mobile-screen' : 'fa-tv'"></i>
+                        {{ menuData?.orientation === 'vertical' ? 'Vertical' : 'Horizontal' }}
+                    </button>
+                    
+                    <button @click="isEditorPaused = !isEditorPaused" class="ml-2 px-3 py-1 rounded text-sm transition flex items-center gap-2 border" :class="isEditorPaused ? 'bg-orange-600 hover:bg-orange-500 border-orange-500 text-white' : 'bg-gray-100 text-slate-800 hover:bg-slate-700 border-slate-600'">
+                        <i class="fa-solid" :class="isEditorPaused ? 'fa-play' : 'fa-pause'"></i>
+                    </button>
+                    
+                    <a :href="'viewer.html?tv=' + currentTvId" target="_blank" class="ml-2 bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded text-sm transition flex items-center gap-2">
+                        <i class="fa-solid fa-play"></i> Lancer TV
+                    </a>
+                </div>
+            </div>
+            <div class="flex gap-2 navbar-btns">
+                <button @click="processImages" class="bg-purple-600 hover:bg-purple-700 px-3 md:px-4 py-2 rounded-lg font-medium transition flex items-center gap-2">
+                    <i class="fa-solid fa-robot"></i> <span class="navbar-text">Nettoyer Images (IA)</span>
+                </button>
+                <button @click="saveData" class="bg-blue-600 hover:bg-blue-700 px-3 md:px-4 py-2 rounded-lg font-medium transition flex items-center gap-2">
+                    <i class="fa-solid fa-save"></i> <span class="navbar-text">Sauvegarder</span>
+                </button>
+            </div>
+        </nav>
+
+        <div class="flex flex-1 overflow-hidden main-layout" v-if="menuData">
+            <!-- Sidebar -->
+            <div :class="isSidebarOpen ? 'w-64' : 'w-16'" class="glass-panel border-r border-gray-200 flex flex-col z-40 dashboard-sidebar transition-all duration-300 relative shrink-0">
+                
+                <!-- Toggle Button -->
+                <button @click="isSidebarOpen = !isSidebarOpen" class="absolute -right-3 top-6 w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs z-50 hover:bg-blue-500 shadow border border-gray-200" title="Réduire/Agrandir le menu">
+                    <i class="fa-solid" :class="isSidebarOpen ? 'fa-chevron-left' : 'fa-chevron-right'"></i>
+                </button>
+                
+                <div class="tab-container overflow-hidden whitespace-nowrap">
+                    <div v-if="isSidebarOpen" class="p-4 text-sm font-semibold text-slate-500 uppercase tracking-wider cat-header">IA & Création</div>
+                    <div v-else class="h-10 border-b border-gray-200/50 mb-2"></div>
+                    
+                    <button @click="currentTab = 'ia'" :class="{'bg-gray-100 text-slate-800 border-l-4 border-purple-500 active-tab': currentTab === 'ia', 'px-6': isSidebarOpen, 'px-0 justify-center': !isSidebarOpen}" class="w-full py-4 text-left hover:bg-gray-100 text-slate-800 transition flex items-center gap-3 font-bold text-purple-400">
+                        <i class="fa-solid fa-wand-magic-sparkles" :class="{'text-xl': !isSidebarOpen}"></i> 
+                        <span v-show="isSidebarOpen">Infographiste IA</span>
+                    </button>
+                    
+                    <div v-if="isSidebarOpen" class="p-4 mt-4 text-sm font-semibold text-slate-500 uppercase tracking-wider cat-header">Écrans</div>
+                    <div v-else class="h-8 border-b border-gray-200/50 mb-2 mt-2"></div>
+                    
+                    <button @click="currentTab = 'tv2'" :class="{'bg-gray-100 text-slate-800 border-l-4 border-blue-500 active-tab': currentTab === 'tv2', 'px-6': isSidebarOpen, 'px-0 justify-center': !isSidebarOpen}" class="w-full py-4 text-left hover:bg-gray-100 text-slate-800 transition flex items-center gap-3">
+                        <i class="fa-solid fa-layer-group" :class="{'text-xl': !isSidebarOpen}"></i> 
+                        <span v-show="isSidebarOpen">Éditeur des Écrans</span>
+                    </button>
+                    <button @click="currentTab = 'promos'" :class="{'bg-gray-100 text-slate-800 border-l-4 border-blue-500 active-tab': currentTab === 'promos', 'px-6': isSidebarOpen, 'px-0 justify-center': !isSidebarOpen}" class="w-full py-4 text-left hover:bg-gray-100 text-slate-800 transition flex items-center gap-3">
+                        <i class="fa-solid fa-bullhorn" :class="{'text-xl': !isSidebarOpen}"></i> 
+                        <span v-show="isSidebarOpen">Promos (Vid/Img)</span>
+                    </button>
+                    
+                    <div v-if="isSidebarOpen" class="p-4 mt-4 text-sm font-semibold text-slate-500 uppercase tracking-wider cat-header">Configuration</div>
+                    <div v-else class="h-8 border-b border-gray-200/50 mb-2 mt-2"></div>
+                    
+                    <button @click="currentTab = 'assets'" :class="{'bg-gray-100 text-slate-800 border-l-4 border-blue-500 active-tab': currentTab === 'assets', 'px-6': isSidebarOpen, 'px-0 justify-center': !isSidebarOpen}" class="w-full py-4 text-left hover:bg-gray-100 text-slate-800 transition flex items-center gap-3">
+                        <i class="fa-solid fa-box-open" :class="{'text-xl': !isSidebarOpen}"></i> 
+                        <span v-show="isSidebarOpen">Bibliothèque (Assets)</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="flex-1 p-8 overflow-y-auto content-area">
+                <div v-if="notification" :class="[
+                    'p-4 mb-6 rounded-lg border',
+                    notification.type === 'success' ? 'bg-green-900/50 text-green-400 border-green-800' : 
+                    notification.type === 'info' ? 'bg-blue-900/50 text-blue-400 border-blue-800' : 
+                    'bg-red-900/50 text-red-400 border-red-800'
+                ]">
+                    {{ notification.message }}
+                </div>
+
+                <!-- TV 2 Formules (Canvas Editor) -->
+                <div v-if="currentTab === 'tv2'">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold">Éditeur Canvas & Animations</h2>
+                        <div class="flex items-center gap-4">
+                            <div class="text-sm text-slate-500 bg-gray-100 text-slate-800 px-4 py-2 rounded-lg border border-gray-200">
+                                <i class="fa-solid fa-keyboard text-emerald-400 mr-2"></i> Appuyez sur <b>Espace</b> pour tester l'animation.
+                            </div>
+                            <button @click="showTemplateModal = true" class="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white px-4 py-2 rounded-lg font-bold shadow-lg transition-all flex items-center gap-2">
+                                <i class="fa-solid fa-magic"></i> Nouveau Écran (9walab)
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-12">
+                        <div v-for="(formule, fKey, index) in menuData.formules" :key="fKey" class="glass-panel p-6 rounded-xl border border-gray-200 relative" @mouseenter="activeFormuleKey = fKey">
+                            <!-- Info header Compact -->
+                            <div class="flex flex-wrap items-center gap-3 mb-4 pb-3 border-b border-gray-200 bg-white shadow-sm text-slate-800/50 p-2 rounded-lg shadow-inner">
+                                <input v-model="formule.name" class="bg-gray-100 text-slate-800 border border-slate-600 text-white px-2 py-1 rounded text-sm w-40 font-bold focus:border-blue-500 outline-none" title="Nom de l'écran">
+                                
+                                <div class="flex items-center gap-2 border-l border-gray-200 pl-3">
+                                    <span class="text-[10px] text-slate-500 uppercase font-bold">TV:</span>
+                                    <input type="text" v-model="formule.tv" placeholder="Toutes" class="bg-gray-100 text-slate-800 border border-slate-600 text-white px-2 py-1 rounded text-xs w-16 text-center outline-none">
+                                </div>
+
+                                <div class="flex items-center gap-2 border-l border-gray-200 pl-3">
+                                    <span class="text-[10px] text-slate-500 uppercase font-bold">Prix:</span>
+                                    <input type="number" v-model="formule.price" class="bg-gray-100 text-slate-800 border border-slate-600 text-yellow-400 font-bold px-2 py-1 rounded text-xs w-16 outline-none">
+                                </div>
+
+                                <div class="flex items-center gap-2 border-l border-gray-200 pl-3">
+                                    <span class="text-[10px] text-slate-500 uppercase font-bold">Temps:</span>
+                                    <input type="number" v-model="formule.duration" class="bg-gray-100 text-slate-800 border border-slate-600 text-blue-400 font-bold px-2 py-1 rounded text-xs w-14 outline-none" title="Secondes">
+                                </div>
+
+                                <div class="flex items-center gap-2 border-l border-gray-200 pl-3">
+                                    <span class="text-[10px] text-slate-500 uppercase font-bold">Fond:</span>
+                                    <input type="text" v-model="formule.bgColor" class="bg-gray-100 text-slate-800 border border-slate-600 text-white px-2 py-1 rounded text-xs w-28 outline-none">
+                                    <label class="bg-slate-700 hover:bg-slate-600 cursor-pointer rounded px-2 py-1 text-[10px] text-white whitespace-nowrap border border-slate-600 transition-colors">
+                                        <i class="fa fa-image text-emerald-400"></i> <input type="file" @change="uploadBgImage($event, fKey)" class="hidden" accept="image/*">
+                                    </label>
+                                    <button v-if="formule.bgImage" @click="formule.bgImage = null" class="text-red-400 hover:text-red-300" title="Supprimer l'image de fond"><i class="fa fa-times"></i></button>
+                                </div>
+                                
+                                <div class="flex items-center gap-2 border-l border-gray-200 pl-3 flex-1 min-w-[200px]">
+                                    <input v-model="formule.badge" placeholder="Badge Promo" class="bg-gray-100 text-slate-800 border border-slate-600 text-white px-2 py-1 rounded text-xs w-24 outline-none">
+                                    <input v-model="formule.description" placeholder="Description..." class="bg-gray-100 text-slate-800 border border-slate-600 text-white px-2 py-1 rounded text-xs flex-1 outline-none">
+                                </div>
+
+                                <button @click="deleteFormule(fKey)" class="bg-red-900/80 hover:bg-red-600 text-red-200 hover:text-white px-3 py-1 rounded text-xs transition-colors border border-red-700 ml-auto flex items-center gap-2" title="Supprimer cet écran">
+                                    <i class="fa-solid fa-trash"></i> <span class="hidden xl:inline">Supprimer</span>
+                                </button>
+                            </div>
+                            
+                            <!-- FORCE ROW ALWAYS, PREVIEW FIRST, CONTROLS SECOND -->
+                            <div class="flex flex-row gap-6 controls-panel w-full overflow-hidden">
+                                <!-- Controles (Droite - Fixe) -->
+                                <div class="w-[450px] flex-shrink-0 order-2 h-fit pb-12">
+                                    <!-- Assistant IA Contextuel -->
+                                    <div class="mb-6 bg-gradient-to-br from-purple-900/50 to-pink-900/30 p-3 rounded-lg border border-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.1)] relative overflow-hidden">
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <i class="fa-solid fa-wand-magic-sparkles text-purple-400"></i>
+                                            <h4 class="font-bold text-purple-300 text-xs uppercase tracking-wider">Assistant IA (Édition)</h4>
+                                        </div>
+                                        <div class="flex gap-2">
+                                            <input type="text" v-model="formule.aiPrompt" @keyup.enter="askAIAssistant(fKey, formule)" placeholder="Demandez à l'IA (ex: anime le burger, fond bleu...)" class="bg-white shadow-sm text-slate-800/80 border border-slate-600 text-white px-3 py-2 rounded text-xs flex-1 focus:border-purple-500 outline-none placeholder-slate-500">
+                                            <button @click="askAIAssistant(fKey, formule)" class="bg-purple-600 hover:bg-purple-500 text-white px-3 py-2 rounded transition-colors shadow-lg" :disabled="formule.isGeneratingIA">
+                                                <i class="fa-solid fa-paper-plane" v-if="!formule.isGeneratingIA"></i>
+                                                <i class="fa-solid fa-spinner fa-spin" v-else></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex justify-between items-center mb-4">
+                                        <h4 class="font-bold text-emerald-400 uppercase text-sm tracking-wider">Composants</h3>
+                                        <div class="flex space-x-2">
+                                            <button @click="addComponent(formule, fKey)" class="bg-emerald-600 hover:bg-emerald-700 px-3 py-1 rounded text-sm"><i class="fa fa-plus"></i> Image</button>
+                                            <button @click="addTextComponent(formule, fKey)" class="bg-indigo-600 hover:bg-indigo-700 px-3 py-1 rounded text-sm"><i class="fa fa-font"></i> Texte</button>
+                                            <button @click="addShapeComponent(formule, fKey)" class="bg-pink-600 hover:bg-pink-700 px-3 py-1 rounded text-sm"><i class="fa fa-shapes"></i> Forme</button>
+                                            
+                                            <div class="relative">
+                                                <button class="bg-sky-600 hover:bg-sky-700 px-3 py-1 rounded text-sm font-bold shadow-lg flex items-center gap-2">
+                                                    <i class="fa fa-image"></i> Image de Fond (Libre)
+                                                </button>
+                                                <input type="file" @change="uploadRawImage($event, formule)" class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*">
+                                            </div>
+
+                                            <div class="relative">
+                                                <button class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 px-3 py-1 rounded text-sm font-bold shadow-lg flex items-center gap-2">
+                                                    <i class="fa-solid fa-wand-magic-sparkles"></i> Upload & Détourer
+                                                </button>
+                                                <input type="file" @change="handleUploadAndProcess($event, formule)" class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*" title="Uploader une image pour retirer le fond par IA">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="space-y-4 pr-2 pb-12">
+                                        <!-- Text Layout Editor Block -->
+                                        <div v-if="typeof activeCompIndex === 'string' && formule[activeCompIndex]" :id="'comp-card-' + activeCompIndex" class="component-card active-card mb-4 border-blue-500 border-2">
+                                            <div class="flex justify-between items-start mb-3">
+                                                <h5 class="font-bold text-blue-400 capitalize">{{ activeCompIndex.replace('Layout', '') }} (Texte)</h5>
+                                            </div>
+                                            <div class="grid grid-cols-2 gap-x-6 gap-y-2">
+                                                <!-- X, Y, Zoom, Rotation hidden as per user request -->
+                                                <div>
+                                                    <label class="text-[10px] text-slate-500 uppercase">Anim Entrée</label>
+                                                    <select v-model="formule[activeCompIndex].animIn" class="select-field text-xs py-1">
+                                                        <option value="fadeUp">Monte</option>
+                                                        <option value="fadeDown">Tombe</option>
+                                                        <option value="fadeLeft">Venant de Droite</option>
+                                                        <option value="fadeRight">Venant de Gauche</option>
+                                                        <option value="zoomIn">Zoom In</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label class="text-[10px] text-slate-500 uppercase">Délai: {{formule[activeCompIndex].delay}}s</label>
+                                                    <input type="range" v-model.number="formule[activeCompIndex].delay" min="0" max="2" step="0.1">
+                                                </div>
+                                                <div v-if="activeCompIndex === 'priceLayout' || activeCompIndex === 'badgeLayout'">
+                                                    <label class="text-[10px] text-slate-500 uppercase">Forme (Shape)</label>
+                                                    <select v-model="formule[activeCompIndex].shapeType" class="select-field text-xs py-1">
+                                                        <option value="">Par défaut</option>
+                                                        <option value="circle">Ronde</option>
+                                                        <option value="rect">Carré/Rectangle</option>
+                                                        <option value="badge">Badge Étoile</option>
+                                                    </select>
+                                                </div>
+                                                <div v-if="activeCompIndex === 'priceLayout' || activeCompIndex === 'badgeLayout'">
+                                                    <label class="text-[10px] text-slate-500 uppercase">Couleur de Fond</label>
+                                                    <input type="color" v-model="formule[activeCompIndex].bgColor" class="w-full h-8 bg-gray-100 text-slate-800 rounded border border-slate-600 cursor-pointer">
+                                                </div>
+                                                <div>
+                                                    <label class="text-[10px] text-slate-500 uppercase">Couleur du Texte</label>
+                                                    <input type="color" v-model="formule[activeCompIndex].color" class="w-full h-8 bg-gray-100 text-slate-800 rounded border border-slate-600 cursor-pointer">
+                                                </div>
+                                                <div class="col-span-2">
+                                                    <label class="text-[10px] text-slate-500 uppercase">Animation Continue (Boucle Infinie)</label>
+                                                    <select v-model="formule[activeCompIndex].continuousAnim" class="select-field text-xs py-1 w-full bg-gray-100 text-slate-800">
+                                                        <option value="none" :selected="!formule[activeCompIndex].continuousAnim">Aucune</option>
+                                                        <option value="float">Flottement (Haut/Bas)</option>
+                                                        <option value="float-x">Flottement (Gauche/Droite)</option>
+                                                        <option value="pulse">Battement (Pulse)</option>
+                                                        <option value="heartbeat">Battement de Coeur</option>
+                                                        <option value="breathe">Respiration (Zoom lent)</option>
+                                                        <option value="glow">Brillance (Glow)</option>
+                                                        <option value="bounce-slow">Rebondissement Lent</option>
+                                                        <option value="swing">Balancement (Swing)</option>
+                                                        <option value="wobble">Tremblotement (Wobble)</option>
+                                                        <option value="shake">Secousse (Shake)</option>
+                                                        <option value="spin">Rotation Lente</option>
+                                                        <option value="spin-reverse">Rotation Lente Inversée</option>
+                                                        <option value="spin-fast">Rotation Rapide</option>
+                                                        <option value="flip">Rotation 3D (Flip)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div v-for="(comp, cIdx) in formule.components" :key="cIdx" 
+                                             class="component-card"
+                                             :id="'comp-card-' + cIdx"
+                                             :class="{'active-card': isActive(fKey, cIdx)}"
+                                             v-show="isActive(fKey, cIdx)"
+                                             @click="setActive(fKey, cIdx)">
+                                            <div class="flex items-center gap-3 mb-3">
+                                                <div v-if="comp.type === 'main'" class="w-10 h-10 shrink-0 bg-white shadow-sm text-slate-800 rounded-lg flex items-center justify-center p-1 border border-gray-200">
+                                                    <img :src="getAssetUrl(comp.assetId)" class="max-h-full max-w-full object-contain drop-shadow-md">
+                                                </div>
+                                                <div v-else-if="comp.type === 'rawImage'" class="w-10 h-10 shrink-0 bg-white shadow-sm text-slate-800 rounded-lg flex items-center justify-center p-1 border border-gray-200">
+                                                    <img :src="'/' + comp.url" class="max-h-full max-w-full object-cover rounded">
+                                                </div>
+                                                <div v-else-if="comp.type === 'customText'" class="w-10 h-10 shrink-0 bg-indigo-900/50 rounded-lg flex items-center justify-center border border-indigo-700/50 text-indigo-400">
+                                                    <i class="fa fa-font text-xl"></i>
+                                                </div>
+                                                <div v-else-if="comp.type === 'shape'" class="w-10 h-10 shrink-0 bg-pink-900/50 rounded-lg flex items-center justify-center border border-pink-700/50 text-pink-400">
+                                                    <i class="fa fa-shapes text-xl"></i>
+                                                </div>
+
+                                                <div class="flex-1 min-w-0">
+                                                    <select v-if="comp.type === 'main'" v-model="comp.assetId" class="select-field w-full font-bold text-white bg-gray-100 text-slate-800">
+                                                        <optgroup label="Sandwichs"><option v-for="a in menuData.assets.sandwiches" :value="a.id">{{ a.name }}</option></optgroup>
+                                                        <optgroup label="Boissons"><option v-for="a in menuData.assets.drinks" :value="a.id">{{ a.name }}</option></optgroup>
+                                                        <optgroup label="Accompagnements"><option v-for="a in menuData.assets.sides" :value="a.id">{{ a.name }}</option></optgroup>
+                                                    </select>
+                                                    <div v-else-if="comp.type === 'rawImage'" class="w-full font-bold text-blue-400 truncate">Image de Fond</div>
+                                                    <div v-else-if="comp.type === 'customText'" class="w-full font-bold text-indigo-400 truncate">{{ comp.content || 'Texte Libre' }}</div>
+                                                    <div v-else-if="comp.type === 'shape'" class="w-full font-bold text-pink-400 truncate">Forme</div>
+                                                </div>
+                                                
+                                                <button @click.stop="comp.flipX = !comp.flipX; comp.flip = false" class="text-slate-500 hover:text-white p-2 shrink-0" title="Retourner horizontalement" :class="{'text-blue-400': comp.flipX || comp.flip}"><i class="fa-solid fa-arrows-left-right"></i></button>
+                                                <button @click.stop="comp.flipY = !comp.flipY" class="text-slate-500 hover:text-white p-2 shrink-0" title="Retourner verticalement" :class="{'text-blue-400': comp.flipY}"><i class="fa-solid fa-arrows-up-down"></i></button>
+                                                <button @click.stop="copyComponent(fKey, cIdx)" class="text-blue-400 hover:text-blue-300 p-2 shrink-0" title="Copier ce composant"><i class="fa fa-copy"></i></button>
+                                                <button @click.stop="duplicateComponent(fKey, cIdx)" class="text-emerald-400 hover:text-emerald-300 p-2 shrink-0" title="Dupliquer"><i class="fa fa-clone"></i></button>
+                                                <button @click.stop="formule.components.splice(cIdx, 1)" class="text-red-400 hover:text-red-300 p-2 shrink-0" title="Supprimer"><i class="fa fa-trash"></i></button>
+                                            </div>
+                                            
+                                            <!-- Custom Text Content Editor -->
+                                            <div v-if="comp.type === 'customText'" class="mb-4 bg-white shadow-sm text-slate-800 p-3 rounded border border-gray-200">
+                                                <div class="mb-2">
+                                                    <label class="text-[10px] text-slate-500 uppercase block mb-1">Contenu du Texte</label>
+                                                    <input v-model="comp.content" class="w-full bg-gray-100 text-slate-800 border border-slate-600 rounded px-2 py-1 text-sm text-white outline-none focus:border-indigo-500">
+                                                </div>
+                                                <div class="grid grid-cols-2 gap-4">
+                                                    <div>
+                                                        <label class="text-[10px] text-slate-500 uppercase block mb-1">Couleur</label>
+                                                        <input type="color" v-model="comp.color" class="w-full h-8 rounded cursor-pointer bg-transparent border-0">
+                                                    </div>
+                                                    <div>
+                                                        <label class="text-[10px] text-slate-500 uppercase block mb-1">Taille: {{comp.fontSize}}px</label>
+                                                        <input type="range" v-model.number="comp.fontSize" min="10" max="250" step="2" class="w-full">
+                                                    </div>
+                                                    <div class="col-span-2 grid grid-cols-2 gap-4 mt-1 border-t border-gray-200 pt-2">
+                                                        <div>
+                                                            <label class="text-[10px] text-slate-500 uppercase block mb-1">Effet (Style Canva)</label>
+                                                            <select v-model="comp.textEffect" class="select-field text-xs py-1 w-full bg-gray-100 text-slate-800">
+                                                                <option value="">Aucun</option>
+                                                                <option value="shadow">Ombre portée</option>
+                                                                <option value="glow">Brillance</option>
+                                                                <option value="echo">Écho</option>
+                                                                <option value="outline">Bordure</option>
+                                                                <option value="bg">Arrière-plan</option>
+                                                                <option value="bevel">Biseautage</option>
+                                                                <option value="hollow">Contour</option>
+                                                                <option value="neon">Néon</option>
+                                                                <option value="glitch">Glitch</option>
+                                                            </select>
+                                                        </div>
+                                                        <div v-if="comp.textEffect && comp.textEffect !== 'none'">
+                                                            <label class="text-[10px] text-slate-500 uppercase block mb-1">Intensité</label>
+                                                            <input type="range" v-model.number="comp.effectIntensity" min="0" max="100" step="1" class="w-full" :title="comp.effectIntensity || 50">
+                                                        </div>
+                                                        <div v-if="['outline', 'hollow', 'glitch'].includes(comp.textEffect)">
+                                                            <label class="text-[10px] text-slate-500 uppercase block mb-1">Couleur 2 (Stroke)</label>
+                                                            <input type="color" v-model="comp.strokeColor" class="w-full h-8 rounded cursor-pointer bg-transparent border-0">
+                                                        </div>
+                                                    </div>
+                                                <div class="mt-2">
+                                                    <label class="text-[10px] text-slate-500 uppercase block mb-1">Style</label>
+                                                    <select v-model="comp.fontFamily" class="select-field text-xs py-1 w-full">
+                                                        <option value="'Oswald', sans-serif">Titre (Oswald)</option>
+                                                        <option value="'Open Sans', sans-serif">Normal (Open Sans)</option>
+                                                        <option value="'Bebas Neue', sans-serif">Prix (Bebas Neue)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <!-- Raw Image Crop Editor -->
+                                            <div v-if="comp.type === 'rawImage'" class="mb-4 bg-white shadow-sm text-slate-800 p-3 rounded border border-gray-200">
+                                                <div class="grid grid-cols-2 gap-4">
+                                                    <div>
+                                                        <label class="text-[10px] text-slate-500 uppercase block mb-1">Couper le Haut: {{comp.clipTop || 0}}%</label>
+                                                        <input type="range" v-model.number="comp.clipTop" min="0" max="100" step="1" class="w-full">
+                                                    </div>
+                                                    <div>
+                                                        <label class="text-[10px] text-slate-500 uppercase block mb-1">Couper le Bas: {{comp.clipBottom || 0}}%</label>
+                                                        <input type="range" v-model.number="comp.clipBottom" min="0" max="100" step="1" class="w-full">
+                                                    </div>
+                                                    <div>
+                                                        <label class="text-[10px] text-slate-500 uppercase block mb-1">Couper Gauche: {{comp.clipLeft || 0}}%</label>
+                                                        <input type="range" v-model.number="comp.clipLeft" min="0" max="100" step="1" class="w-full">
+                                                    </div>
+                                                    <div>
+                                                        <label class="text-[10px] text-slate-500 uppercase block mb-1">Couper Droite: {{comp.clipRight || 0}}%</label>
+                                                        <input type="range" v-model.number="comp.clipRight" min="0" max="100" step="1" class="w-full">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Shape Editor -->
+                                            <div v-if="comp.type === 'shape'" class="mb-4 bg-white shadow-sm text-slate-800 p-3 rounded border border-gray-200">
+                                                <div class="mb-4">
+                                                    <label class="text-[10px] text-slate-500 uppercase block mb-1">Type de Forme</label>
+                                                    <select v-model="comp.shapeType" class="select-field text-xs py-1 w-full bg-gray-100 text-slate-800">
+                                                        <option value="rect">Rectangle / Carré</option>
+                                                        <option value="circle">Rond / Ovale</option>
+                                                        <option value="badge">Promo Badge (Macaron)</option>
+                                                        <option value="star">Étoile Promo</option>
+                                                        <option value="burst">Éclat Promo (Burst)</option>
+                                                    </select>
+                                                </div>
+                                                <div class="grid grid-cols-2 gap-4">
+                                                    <div>
+                                                        <label class="text-[10px] text-slate-500 uppercase block mb-1">Largeur: {{comp.width}}px</label>
+                                                        <input type="range" v-model.number="comp.width" min="10" max="1000" step="10" class="w-full">
+                                                    </div>
+                                                    <div>
+                                                        <label class="text-[10px] text-slate-500 uppercase block mb-1">Hauteur: {{comp.height}}px</label>
+                                                        <input type="range" v-model.number="comp.height" min="10" max="1000" step="10" class="w-full">
+                                                    </div>
+                                                    <div>
+                                                        <label class="text-[10px] text-slate-500 uppercase block mb-1">Couleur</label>
+                                                        <input type="color" v-model="comp.color" class="w-full h-8 rounded cursor-pointer bg-transparent border-0">
+                                                    </div>
+                                                    <div>
+                                                        <label class="text-[10px] text-slate-500 uppercase block mb-1">Opacité: {{comp.opacity}}</label>
+                                                        <input type="range" v-model.number="comp.opacity" min="0.1" max="1" step="0.05" class="w-full">
+                                                    </div>
+                                                    <div class="col-span-2" v-if="!comp.shapeType || comp.shapeType === 'rect'">
+                                                        <label class="text-[10px] text-slate-500 uppercase block mb-1">Bords Arrondis: {{comp.borderRadius}}px</label>
+                                                        <input type="range" v-model.number="comp.borderRadius" min="0" max="500" step="5" class="w-full">
+                                                    </div>
+                                                    
+                                                    <div class="col-span-2">
+                                                        <label class="text-[10px] text-slate-500 uppercase block mb-1">Texte (Double Clic sur la forme pour modifier)</label>
+                                                        <input type="text" v-model="comp.content" placeholder="Texte à l'intérieur" class="w-full bg-gray-100 text-slate-800 border border-gray-200 rounded px-2 py-1 text-white text-xs">
+                                                    </div>
+                                                    <div>
+                                                        <label class="text-[10px] text-slate-500 uppercase block mb-1">Couleur Texte</label>
+                                                        <input type="color" v-model="comp.textColor" class="w-full h-8 rounded cursor-pointer bg-transparent border-0">
+                                                    </div>
+                                                    <div>
+                                                        <label class="text-[10px] text-slate-500 uppercase block mb-1">Taille: {{comp.fontSize || 40}}px</label>
+                                                        <input type="range" v-model.number="comp.fontSize" min="10" max="250" step="2" class="w-full">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="grid grid-cols-2 gap-x-6 gap-y-2">
+                                                <!-- X, Y, Zoom, Rotation hidden as per user request -->
+                                                <div>
+                                                    <label class="text-[10px] text-slate-500 uppercase block mb-1" title="Z-Index">Position (Calque)</label>
+                                                    <div class="flex gap-2">
+                                                        <button @click.prevent="moveLayer(fKey, cIdx, -1)" class="flex-1 bg-gray-100 text-slate-800 hover:bg-slate-700 text-slate-700 rounded py-1 text-xs border border-slate-600 transition-colors" title="Reculer (Mettre en arrière)">
+                                                            <i class="fa-solid fa-arrow-down mr-1"></i> Reculer
+                                                        </button>
+                                                        <button @click.prevent="moveLayer(fKey, cIdx, 1)" class="flex-1 bg-gray-100 text-slate-800 hover:bg-slate-700 text-slate-700 rounded py-1 text-xs border border-slate-600 transition-colors" title="Avancer (Mettre en avant)">
+                                                            <i class="fa-solid fa-arrow-up mr-1"></i> Avancer
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div>
+                                                    <label class="text-[10px] text-slate-500 uppercase">Anim Entrée</label>
+                                                    <select v-model="comp.animIn" class="select-field text-xs py-1">
+                                                        <option value="fadeUp">Monte</option>
+                                                        <option value="fadeDown">Tombe</option>
+                                                        <option value="fadeLeft">Venant de Droite</option>
+                                                        <option value="fadeRight">Venant de Gauche</option>
+                                                        <option value="zoomIn">Zoom In</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-span-2 mt-2 border-t border-gray-200 pt-2">
+                                                    <label class="text-[10px] text-slate-500 uppercase block mb-1">Animation Continue (Boucle Infinie)</label>
+                                                    <select v-model="comp.continuousAnim" class="select-field text-xs py-1 w-full bg-gray-100 text-slate-800">
+                                                        <option value="none">Aucune</option>
+                                                        <option value="float">Flottement (Haut/Bas)</option>
+                                                        <option value="float-x">Flottement (Gauche/Droite)</option>
+                                                        <option value="pulse">Battement (Pulse)</option>
+                                                        <option value="heartbeat">Battement de Coeur</option>
+                                                        <option value="breathe">Respiration (Zoom lent)</option>
+                                                        <option value="glow">Brillance (Glow)</option>
+                                                        <option value="bounce-slow">Rebondissement Lent</option>
+                                                        <option value="swing">Balancement (Swing)</option>
+                                                        <option value="wobble">Tremblotement (Wobble)</option>
+                                                        <option value="shake">Secousse (Shake)</option>
+                                                        <option value="spin">Rotation Lente</option>
+                                                        <option value="spin-reverse">Rotation Lente Inversée</option>
+                                                        <option value="spin-fast">Rotation Rapide</option>
+                                                        <option value="flip">Rotation 3D (Flip)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Live Preview Panel (Gauche - Main) -->
+                                <div class="flex-1 min-w-0 order-1 flex flex-col sticky top-0 h-fit z-40 bg-white shadow-sm text-slate-800/80 backdrop-blur-md p-4 rounded-xl shadow-xl border border-gray-200/50">
+                                    <div class="flex justify-between items-center mb-4">
+                                        <h4 class="font-bold text-blue-400 uppercase text-sm tracking-wider"><i class="fa fa-tv"></i> Aperçu Interactif (Timeline)</h4>
+                                        <div class="flex gap-2">
+                                            <button @click="togglePlayPreview(fKey)" class="bg-blue-600 hover:bg-blue-500 text-xs px-3 py-1 rounded">
+                                                <i class="fa" :class="isPlaying ? 'fa-pause' : 'fa-play'"></i> {{ isPlaying ? 'Pause' : 'Play' }}
+                                            </button>
+                                            <a :href="'/' + (currentTab === 'ia' ? 'tv1' : currentTab) + '.html'" target="_blank" class="bg-slate-700 hover:bg-slate-600 text-xs px-3 py-1 rounded inline-flex items-center gap-2 text-white no-underline font-bold" title="Ouvrir dans une nouvelle page localhost">
+                                                <i class="fa-solid fa-external-link-alt"></i> Ouvrir Player
+                                            </a>
+                                        </div>
+                                    </div>
+                                    
+                                     <!-- Scrubber replaced by CapCut timeline below -->
+                                    <div :id="'mockup-wrapper-'+fKey" class="bg-black rounded-lg overflow-hidden relative shadow-2xl border border-gray-200 mockup-wrapper" :style="menuData.orientation === 'vertical' ? 'width: 273px; height: 486px;' : 'width: 864px; height: 486px;'">
+                                        <!-- Exit Fullscreen button (only visible in fullscreen) -->
+                                        <button @click.stop="toggleFullscreen(fKey)" class="exit-fs-btn absolute top-6 right-6 z-[999999] bg-gray-100 text-slate-800/80 hover:bg-red-600 text-white w-12 h-12 rounded-full shadow-2xl border border-slate-600 backdrop-blur">
+                                            <i class="fa-solid fa-times text-xl"></i>
+                                        </button>
+                                        
+                                        <!-- The Mockup scaled -->
+                                        <div class="tv-mockup absolute top-0 left-0 origin-top-left overflow-hidden" :class="{'editor-paused': isEditorPaused}" :style="menuData.orientation === 'vertical' ? 'width: 1080px; height: 1920px; transform: scale(0.2531);' : 'width: 1920px; height: 1080px; transform: scale(0.45);'" :id="'mockup-'+fKey" @contextmenu.prevent="handleContextMenu($event, fKey, null)">
+                                            <div class="absolute inset-0 z-0 opacity-80" :style="{ background: formule.bgImage ? `url(/${formule.bgImage}) center/cover no-repeat` : (formule.bgColor || 'radial-gradient(circle at 50% 60%, #1a1a1a 0%, #000000 100%)') }"></div>
+                                            <div class="mock-light"></div>
+                                            <div class="mock-glow" :class="index % 2 === 0 ? 'bg-red-600/40' : 'bg-yellow-500/40'"></div>
+                                            
+                                            <!-- Static Header Mock removed in favor of draggable layouts below -->
+
+                                            <!-- Components Scene -->
+                                            <div class="absolute top-[350px] left-1/2 w-0 h-0 overflow-visible z-10" v-if="formule.components && Array.isArray(formule.components)">
+                                                <div v-for="(comp, cIdx) in formule.components" :key="'wrap'+cIdx"
+                                                     class="dyn-element absolute top-0 left-0 w-0 h-0 overflow-visible z-10"
+                                                     v-show="isCompVisibleInTimeline(fKey, comp)"
+                                                     :style="{ transform: `translate(${comp.x}px, ${comp.y}px) scale(${comp.scale})`, zIndex: comp.z }">
+                                                    
+                                                    <!-- Floating Toolbar removed as per user request -->
+
+                                                    <div class="absolute w-max h-max" :style="{ transform: `translate(-50%, -50%) rotate(${comp.rotation || 0}deg)` }">
+                                                        <div :style="{ transform: `scaleX(${comp.flipX || comp.flip ? -1 : 1}) scaleY(${comp.flipY ? -1 : 1})` }">
+                                                            <div :id="'mockup-anim-' + fKey + '-' + cIdx">
+                                                                <img v-if="comp.type === 'main'" :src="getAssetUrl(comp.assetId)"
+                                                                 @mousedown.prevent="startDrag($event, fKey, cIdx)"
+                                                                 @contextmenu.stop.prevent="handleContextMenu($event, fKey, cIdx)"
+                                                                 @wheel.prevent="handleScrollZoom($event, fKey, cIdx)"
+                                                                 @dblclick="promptImageReplacement($event, fKey, cIdx)"
+                                                                 :class="[{'active-item': isActive(fKey, cIdx)}, comp.continuousAnim && comp.continuousAnim !== 'none' ? 'anim-' + comp.continuousAnim : '']"
+                                                                 class="preview-item filter drop-shadow-[0_20px_30px_rgba(0,0,0,0.6)]"
+                                                                 :style="{ maxWidth: isSmallItem(comp.assetId) ? '400px' : '900px' }">
+                                                                 
+                                                            <div v-if="comp.type === 'customText'"
+                                                                 @mousedown.prevent="startDrag($event, fKey, cIdx)"
+                                                                 @contextmenu.stop.prevent="handleContextMenu($event, fKey, cIdx)"
+                                                                 @wheel.prevent="handleScrollZoom($event, fKey, cIdx)"
+                                                                 @dblclick="promptTextEdit($event, fKey, cIdx)"
+                                                                 :class="[{'ring-4 ring-indigo-500 rounded-lg p-2': isActive(fKey, cIdx)}, comp.continuousAnim && comp.continuousAnim !== 'none' ? 'anim-' + comp.continuousAnim : '']"
+                                                                 class="cursor-pointer whitespace-nowrap"
+                                                                 :style="getTextStyle(comp)">
+                                                                {{ comp.content }}
+                                                            </div>
+
+                                                            <div v-if="comp.type === 'shape'"
+                                                                 @mousedown.prevent="startDrag($event, fKey, cIdx)"
+                                                                 @contextmenu.stop.prevent="handleContextMenu($event, fKey, cIdx)"
+                                                                 @wheel.prevent="handleScrollZoom($event, fKey, cIdx)"
+                                                                 @dblclick="promptTextEdit($event, fKey, cIdx)"
+                                                                 :class="[{'ring-4 ring-pink-500': isActive(fKey, cIdx)}, comp.continuousAnim && comp.continuousAnim !== 'none' ? 'anim-' + comp.continuousAnim : '']"
+                                                                 class="cursor-pointer flex items-center justify-center font-bold"
+                                                                 :style="[getShapeStyle(comp), { color: comp.textColor || '#ffffff', fontSize: (comp.fontSize || 40) + 'px' }]">
+                                                                {{ comp.content }}
+                                                            </div>
+                                                            
+                                                            <img v-if="comp.type === 'rawImage'" :src="'/' + comp.url"
+                                                                 @mousedown.prevent="startDrag($event, fKey, cIdx)"
+                                                                 @contextmenu.stop.prevent="handleContextMenu($event, fKey, cIdx)"
+                                                                 @wheel.prevent="handleScrollZoom($event, fKey, cIdx)"
+                                                                 @dblclick="promptImageReplacement($event, fKey, cIdx)"
+                                                                 :class="[{'ring-4 ring-blue-500': isActive(fKey, cIdx)}, comp.continuousAnim && comp.continuousAnim !== 'none' ? 'anim-' + comp.continuousAnim : '']"
+                                                                 class="preview-item cursor-pointer"
+                                                                 :style="{ maxWidth: '2500px', clipPath: `inset(${comp.clipTop || 0}% ${comp.clipRight || 0}% ${comp.clipBottom || 0}% ${comp.clipLeft || 0}%)` }">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Draggable Texts Scene -->
+                                            <div class="absolute top-[540px] left-1/2 w-0 h-0 overflow-visible z-20" v-if="formule.nameLayout">
+                                                <template v-for="tKey in ['nameLayout', 'descLayout', 'badgeLayout', 'priceLayout']" :key="tKey">
+                                                    <div v-if="formule[tKey]" v-show="isLayoutVisibleInTimeline(fKey, tKey)" class="absolute top-0 left-0 w-0 h-0 overflow-visible" :style="{ transform: `translate(${formule[tKey].x}px, ${formule[tKey].y}px) scale(${formule[tKey].scale})`, zIndex: formule[tKey].z }">
+                                                        
+                                                        <!-- Floating Toolbar removed as per user request -->
+
+                                                        <div class="absolute w-max h-max" :style="{ transform: `translate(-50%, -50%) rotate(${formule[tKey].rotation || 0}deg)` }">
+                                                            <div :id="'mockup-anim-' + fKey + '-' + tKey">
+                                                                <div @mousedown.prevent="startDrag($event, fKey, tKey)" @contextmenu.stop.prevent="handleContextMenu($event, fKey, tKey)" @wheel.prevent="handleScrollZoom($event, fKey, tKey)" :class="[{'ring-4 ring-blue-500 rounded-lg p-2': isActive(fKey, tKey)}, formule[tKey].continuousAnim && formule[tKey].continuousAnim !== 'none' ? 'anim-' + formule[tKey].continuousAnim : '']" class="cursor-pointer">
+                                                                
+                                                                <div v-if="tKey === 'nameLayout'" @dblclick="promptTextEdit($event, fKey, tKey)" class="mock-title m-0 text-center" :style="{ color: formule.nameLayout.color || 'white' }" style="position:static; transform:none; letter-spacing: -2px;">{{ formule.name }}</div>
+                                                                <div v-if="tKey === 'descLayout'" @dblclick="promptTextEdit($event, fKey, tKey)" class="mock-desc m-0 text-center" :style="{ color: formule.descLayout.color || (index % 2 === 0 ? '#DA291C' : '#FFC72C') }" style="position:static; transform:none; font-size:20px;">{{ formule.description }}</div>
+                                                                <div v-if="tKey === 'badgeLayout'" @dblclick="promptTextEdit($event, fKey, tKey)" class="mock-badge m-0 text-center" :style="{ background: formule.badgeLayout.bgColor || (index % 2 === 0 ? '#DA291C' : '#FFC72C'), color: formule.badgeLayout.color || (index % 2 === 0 ? 'white' : '#111'), borderRadius: formule.badgeLayout.shapeType === 'circle' ? '50%' : (formule.badgeLayout.shapeType === 'rect' ? '10px' : (formule.badgeLayout.shapeType === 'badge' ? '0' : '')), clipPath: formule.badgeLayout.shapeType === 'badge' ? 'polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%)' : 'none' }" style="position:static; transform:none; display:block;">{{ formule.badge }}</div>
+                                                                
+                                                                <div v-if="tKey === 'priceLayout'" @dblclick="promptTextEdit($event, fKey, tKey)" class="mock-price price-mock m-0 flex flex-col justify-center items-center" :style="{ background: formule.priceLayout.bgColor || (index % 2 === 0 ? '#DA291C' : '#FFC72C'), borderColor: index % 2 === 0 ? '#FFC72C' : '#DA291C', borderRadius: formule.priceLayout.shapeType === 'rect' ? '20px' : (formule.priceLayout.shapeType === 'circle' ? '50%' : (formule.priceLayout.shapeType === 'badge' ? '0' : '50%')), clipPath: formule.priceLayout.shapeType === 'badge' ? 'polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%)' : 'none', borderWidth: formule.priceLayout.shapeType === 'badge' ? '0' : '8px' }" style="position:static; transform:none; width: 220px; height: 220px;">
+                                                                    <span :style="{ color: formule.priceLayout.color || (index % 2 === 0 ? 'white' : '#111') }" style="font-size: 85px; position:static;">{{ formule.price }}</span>
+                                                                </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <!-- Canvas Style Resize Box -->
+                                                        <div v-if="isActive(fKey, cIdx)" class="absolute inset-0 pointer-events-none" style="border: 2px solid #8b5cf6; z-index: 999; margin: -4px;">
+                                                            <!-- Corners for Scaling -->
+                                                            <div class="absolute w-4 h-4 bg-white border-2 border-purple-500 rounded-full -top-2 -left-2 cursor-nwse-resize pointer-events-auto" @mousedown.prevent.stop="startResize($event, 'nw')"></div>
+                                                            <div class="absolute w-4 h-4 bg-white border-2 border-purple-500 rounded-full -top-2 -right-2 cursor-nesw-resize pointer-events-auto" @mousedown.prevent.stop="startResize($event, 'ne')"></div>
+                                                            <div class="absolute w-4 h-4 bg-white border-2 border-purple-500 rounded-full -bottom-2 -left-2 cursor-nesw-resize pointer-events-auto" @mousedown.prevent.stop="startResize($event, 'sw')"></div>
+                                                            <div class="absolute w-4 h-4 bg-white border-2 border-purple-500 rounded-full -bottom-2 -right-2 cursor-nwse-resize pointer-events-auto" @mousedown.prevent.stop="startResize($event, 'se')"></div>
+                                                            
+                                                            <!-- Edges for Width/Height (Shapes only) -->
+                                                            <template v-if="comp.type === 'shape'">
+                                                                <div class="absolute w-6 h-2 bg-white border-2 border-purple-500 rounded-full top-1/2 -left-2 -translate-y-1/2 cursor-ew-resize pointer-events-auto" @mousedown.prevent.stop="startResize($event, 'w')"></div>
+                                                                <div class="absolute w-6 h-2 bg-white border-2 border-purple-500 rounded-full top-1/2 -right-2 -translate-y-1/2 cursor-ew-resize pointer-events-auto" @mousedown.prevent.stop="startResize($event, 'e')"></div>
+                                                                <div class="absolute w-2 h-6 bg-white border-2 border-purple-500 rounded-full -top-2 left-1/2 -translate-x-1/2 cursor-ns-resize pointer-events-auto" @mousedown.prevent.stop="startResize($event, 'n')"></div>
+                                                                <div class="absolute w-2 h-6 bg-white border-2 border-purple-500 rounded-full -bottom-2 left-1/2 -translate-x-1/2 cursor-ns-resize pointer-events-auto" @mousedown.prevent.stop="startResize($event, 's')"></div>
+                                                            </template>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="text-[10px] text-slate-500 mt-2 mb-4 text-center">Glissez et déposez les images pour les déplacer.</p>
+                                    
+                                    <!-- CapCut Style Timeline -->
+                                    <div class="bg-white shadow-sm text-slate-800 border border-gray-200 rounded-lg p-2 overflow-hidden flex flex-col relative select-none shadow-inner" v-if="formule">
+                                        <div class="text-xs font-bold text-slate-500 mb-2 px-2 flex justify-between items-center">
+                                            <span><i class="fa-solid fa-layer-group text-blue-500"></i> Timeline (Montage)</span>
+                                            <span class="font-mono bg-gray-100 text-slate-800 px-2 py-1 rounded text-blue-400">{{ displayTime(previewProgress * (formule.duration || 6) / 100) }} / {{ displayTime(formule.duration || 6) }}</span>
+                                        </div>
+                                        
+                                        <!-- Timeline Head (Ruler) -->
+                                        <div class="h-6 relative border-b border-gray-200 ml-24 mr-4 mb-2 cursor-pointer" @mousedown="setPlayhead($event, fKey)" @mousemove="dragPlayhead($event, fKey)">
+                                            <!-- Ticks -->
+                                            <div class="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg width=\'20\' height=\'10\' xmlns=\'http://www.w3.org/2000/svg\'><line x1=\'0\' y1=\'5\' x2=\'0\' y2=\'10\' stroke=\'%23475569\' stroke-width=\'1\'/></svg>')]"></div>
+                                            <!-- Playhead indicator -->
+                                            <div class="absolute top-0 bottom-[-300px] w-px bg-red-500 z-50 pointer-events-none" :style="{ left: previewProgress + '%' }">
+                                                <div class="w-3 h-3 bg-red-500 rounded-full absolute -top-1.5 -left-1.5 shadow-[0_0_10px_rgba(239,68,68,0.8)]"></div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Tracks Container -->
+                                        <div class="flex-1 overflow-y-auto max-h-[250px] space-y-1 relative pr-4 pb-4 timeline-tracks">
+                                            
+                                            <!-- Track for each layout -->
+                                            <template v-for="tKey in ['nameLayout', 'descLayout', 'badgeLayout', 'priceLayout']" :key="tKey">
+                                                <div v-if="formule[tKey]" class="flex items-center group">
+                                                    <div class="w-32 shrink-0 text-[10px] text-slate-500 truncate pr-2 flex items-center gap-1" :class="{'text-blue-400 font-bold': isActive(fKey, tKey)}">
+                                                        <span v-if="tKey === 'nameLayout'" class="truncate"><i class="fa-solid fa-heading mr-1"></i> {{ formule.name }}</span>
+                                                        <span v-if="tKey === 'descLayout'" class="truncate"><i class="fa-solid fa-align-left mr-1"></i> {{ formule.description }}</span>
+                                                        <span v-if="tKey === 'badgeLayout'" class="truncate"><i class="fa-solid fa-certificate mr-1"></i> {{ formule.badge }}</span>
+                                                        <span v-if="tKey === 'priceLayout'" class="truncate"><i class="fa-solid fa-tag mr-1"></i> {{ formule.price }}</span>
+                                                    </div>
+                                                    <div class="flex-1 h-8 bg-gray-100 text-slate-800 rounded relative overflow-hidden group-hover:bg-slate-700 transition-colors" @mousedown="setPlayhead($event, fKey)" @mousemove="dragPlayhead($event, fKey)">
+                                                        <!-- Clip -->
+                                                        <div class="absolute h-full bg-blue-600 border border-blue-400 rounded cursor-move opacity-80 hover:opacity-100 flex items-center px-3 text-[10px] text-white overflow-hidden shadow-[0_0_10px_rgba(37,99,235,0.5)]"
+                                                             :class="{'ring-2 ring-white opacity-100 z-10': isActive(fKey, tKey)}"
+                                                             :style="{ 
+                                                                 left: ((formule[tKey].delay || 0) / (formule.duration || 6) * 100) + '%', 
+                                                                 width: (((formule[tKey].exitTime || formule.duration || 6) - (formule[tKey].delay || 0)) / (formule.duration || 6) * 100) + '%' 
+                                                             }"
+                                                             @mousedown.stop="startDragTimelineClip($event, fKey, tKey)"
+                                                             @dblclick.stop="wiggleElement(fKey, tKey)">
+                                                            <span v-if="tKey === 'nameLayout'" class="truncate pointer-events-none">{{ formule.name }}</span>
+                                                            <span v-if="tKey === 'descLayout'" class="truncate pointer-events-none">{{ formule.description }}</span>
+                                                            <span v-if="tKey === 'badgeLayout'" class="truncate pointer-events-none">{{ formule.badge }}</span>
+                                                            <span v-if="tKey === 'priceLayout'" class="truncate pointer-events-none">{{ formule.price }}</span>
+                                                            
+                                                            <!-- Handles -->
+                                                            <div class="absolute left-0 top-0 bottom-0 w-3 cursor-col-resize bg-white/20 hover:bg-white/70 flex justify-center items-center" @mousedown.stop="startResizeTimelineClip($event, fKey, tKey, 'left')"><div class="w-px h-3 bg-white"></div></div>
+                                                            <div class="absolute right-0 top-0 bottom-0 w-3 cursor-col-resize bg-white/20 hover:bg-white/70 flex justify-center items-center" @mousedown.stop="startResizeTimelineClip($event, fKey, tKey, 'right')"><div class="w-px h-3 bg-white"></div></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                            
+                                            <!-- Track for each component -->
+                                            <div v-for="(comp, cIdx) in formule.components" :key="comp.id || cIdx" 
+                                                 class="flex items-center group mt-1 transition-all duration-200"
+                                                 :class="{'opacity-50': dragLayerIndex === cIdx, 'border-t-2 border-blue-500 pt-1 -mt-1': dragLayerHoverIndex === cIdx}"
+                                                 @dragover.prevent="dragLayerHoverIndex = cIdx"
+                                                 @dragleave.prevent="dragLayerHoverIndex = null"
+                                                 @drop="onTrackDrop($event, fKey, cIdx)">
+                                                
+                                                <div class="w-32 shrink-0 text-[10px] text-slate-500 truncate pr-2 flex items-center gap-1 cursor-ns-resize" 
+                                                     :class="{'text-emerald-400 font-bold': isActive(fKey, cIdx)}"
+                                                     draggable="true"
+                                                     @dragstart="onTrackDragStart($event, fKey, cIdx)"
+                                                     @dragend="onTrackDragEnd"
+                                                     title="Glisser pour réorganiser (Z-Index)">
+                                                    
+                                                    <i class="fa-solid fa-grip-vertical text-slate-600 mr-1 hover:text-white cursor-grab"></i>
+                                                    
+                                                    <template v-if="comp.type === 'main'">
+                                                        <img :src="getAssetUrl(comp.assetId)" class="w-6 h-6 object-contain bg-white shadow-sm text-slate-800 rounded border border-gray-200 pointer-events-none">
+                                                        <span class="truncate pointer-events-none">Image</span>
+                                                    </template>
+                                                    <span v-else-if="comp.type === 'customText'" class="truncate pointer-events-none"><i class="fa-solid fa-font mr-1"></i> {{ comp.content }}</span>
+                                                    <span v-else-if="comp.type === 'shape'" class="truncate pointer-events-none"><i class="fa-solid fa-shapes mr-1"></i> Forme</span>
+                                                </div>
+                                                <div class="flex-1 h-8 bg-gray-100 text-slate-800 rounded relative overflow-hidden group-hover:bg-slate-700 transition-colors" @mousedown="setPlayhead($event, fKey)" @mousemove="dragPlayhead($event, fKey)">
+                                                    <div class="absolute h-full bg-emerald-600 border border-emerald-400 rounded cursor-move opacity-80 hover:opacity-100 flex items-center px-1 text-[10px] text-white overflow-hidden shadow-[0_0_10px_rgba(5,150,105,0.5)]"
+                                                         :class="{'ring-2 ring-white opacity-100 z-10': isActive(fKey, cIdx)}"
+                                                         :style="{ 
+                                                             left: ((comp.delay || 0) / (formule.duration || 6) * 100) + '%', 
+                                                             width: (((comp.exitTime || formule.duration || 6) - (comp.delay || 0)) / (formule.duration || 6) * 100) + '%' 
+                                                         }"
+                                                         @mousedown.stop="startDragTimelineClip($event, fKey, cIdx)"
+                                                         @dblclick.stop="wiggleElement(fKey, cIdx)">
+                                                        
+                                                        <template v-if="comp.type === 'main'">
+                                                            <img :src="getAssetUrl(comp.assetId)" class="h-7 w-7 object-contain mr-1 pointer-events-none drop-shadow">
+                                                        </template>
+                                                        <span v-else-if="comp.type === 'customText'" class="truncate pointer-events-none px-2">{{ comp.content }}</span>
+                                                        <span v-else-if="comp.type === 'shape'" class="truncate pointer-events-none px-2">Forme</span>
+                                                        
+                                                        <div class="absolute left-0 top-0 bottom-0 w-3 cursor-col-resize bg-white/20 hover:bg-white/70 flex justify-center items-center" @mousedown.stop="startResizeTimelineClip($event, fKey, cIdx, 'left')"><div class="w-px h-3 bg-white"></div></div>
+                                                        <div class="absolute right-0 top-0 bottom-0 w-3 cursor-col-resize bg-white/20 hover:bg-white/70 flex justify-center items-center" @mousedown.stop="startResizeTimelineClip($event, fKey, cIdx, 'right')"><div class="w-px h-3 bg-white"></div></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Assets Library -->
+                <div v-if="currentTab === 'assets'">
+                    <div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-bold">Bibliothèque des Produits</h2></div>
+                    <div v-for="(categoryList, catName) in menuData.assets" :key="catName" class="mb-10">
+                        <div class="flex justify-between items-center border-b border-gray-200 pb-2 mb-4">
+                            <h3 class="text-xl font-bold uppercase tracking-wider text-slate-500">{{ catName }}</h3>
+                            <button @click="addAsset(catName)" class="bg-blue-600 hover:bg-blue-700 text-xs px-3 py-1 rounded"><i class="fa fa-plus"></i> Nouveau Produit</button>
+                        </div>
+                        <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                            <div v-for="(asset, idx) in categoryList" :key="idx" class="glass-panel p-4 rounded-lg flex flex-col gap-2 relative">
+                                <button @click="categoryList.splice(idx, 1)" class="absolute top-2 right-2 text-red-500 hover:text-red-400"><i class="fa fa-times"></i></button>
+                                <img :src="'/' + asset.url" class="h-24 object-contain mx-auto mb-2 bg-white shadow-sm text-slate-800/50 rounded p-1" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzMzMyIvPjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM5OTkiPkluY29ubnU8L3RleHQ+PC9zdmc+'">
+                                <div><label class="text-[10px] text-slate-500 uppercase">ID Unique</label><input v-model="asset.id" class="input-field text-xs py-1"></div>
+                                <div><label class="text-[10px] text-slate-500 uppercase">Nom</label><input v-model="asset.name" class="input-field text-xs py-1"></div>
+                                <div><label class="bg-slate-700 hover:bg-slate-600 text-center block rounded py-1 text-xs cursor-pointer mt-2">Upload Image<input type="file" @change="uploadAssetFile($event, asset)" class="hidden" accept="image/*"></label></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Others (Minimal) -->
+                <div v-if="currentTab === 'tv1' || currentTab === 'tv3'"><h2 class="text-2xl font-bold mb-6">Géré via menu_data.json pour l'instant</h2></div>
+                <!-- Promos -->
+                <div v-if="currentTab === 'promos'">
+                    <h2 class="text-2xl font-bold mb-6">Médias Promotionnels</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" v-if="menuData.promos">
+                        <div class="glass-panel p-6 rounded-xl">
+                            <h3 class="text-lg font-bold mb-4">Vidéo Promo</h3>
+                            <p class="text-sm mb-2">{{ menuData.promos.video }} ({{ menuData.promos.videoDuration }}s)</p>
+                            <label class="block w-full text-center border-2 border-dashed p-8 cursor-pointer"><div class="font-medium">Changer</div><input type="file" @change="uploadPromoFile($event, 'video')" class="hidden" accept="video/*"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+        <!-- Template Modal (9walab) -->
+        <div v-if="showTemplateModal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm">
+            <div class="glass-panel p-8 rounded-2xl border border-slate-600 w-full max-w-4xl shadow-2xl relative">
+                <button @click="showTemplateModal = false" class="absolute top-4 right-4 text-slate-500 hover:text-white text-2xl"><i class="fa fa-times"></i></button>
+                <h2 class="text-3xl font-bold text-white mb-2 text-center">Choisir un Modèle (9aleb)</h2>
+                <p class="text-slate-500 text-center mb-8">Sélectionnez une disposition de départ pour votre nouvel écran.</p>
+                
+                <div class="grid grid-cols-3 gap-6">
+                    <!-- Hero Classique -->
+                    <div @click="applyTemplate('hero')" class="bg-gray-100 text-slate-800/80 hover:bg-slate-700 border border-slate-600 hover:border-emerald-500 p-4 rounded-xl cursor-pointer transition-all hover:scale-105 group text-center flex flex-col items-center">
+                        <div class="w-24 h-16 bg-white shadow-sm text-slate-800 border border-gray-200 rounded mb-4 relative overflow-hidden flex flex-col items-center justify-center">
+                            <div class="w-12 h-2 bg-slate-700 rounded mb-1"></div>
+                            <div class="w-8 h-8 rounded-full bg-emerald-500/50 mb-1"></div>
+                            <div class="w-6 h-6 rounded-full border-2 border-yellow-500 absolute bottom-1 right-2"></div>
+                        </div>
+                        <h3 class="font-bold text-white group-hover:text-emerald-400">Hero Classique</h3>
+                        <p class="text-[10px] text-slate-500 mt-1">1 Produit géant, Titre, Prix.</p>
+                    </div>
+
+                    <!-- Duo Combo -->
+                    <div @click="applyTemplate('duo')" class="bg-gray-100 text-slate-800/80 hover:bg-slate-700 border border-slate-600 hover:border-blue-500 p-4 rounded-xl cursor-pointer transition-all hover:scale-105 group text-center flex flex-col items-center">
+                        <div class="w-24 h-16 bg-white shadow-sm text-slate-800 border border-gray-200 rounded mb-4 relative overflow-hidden flex flex-col items-center justify-center">
+                            <div class="w-16 h-2 bg-slate-700 rounded mb-2"></div>
+                            <div class="flex gap-2">
+                                <div class="w-6 h-6 rounded-full bg-blue-500/50"></div>
+                                <div class="w-6 h-6 rounded-full bg-blue-500/50"></div>
+                            </div>
+                        </div>
+                        <h3 class="font-bold text-white group-hover:text-blue-400">Duo Combo</h3>
+                        <p class="text-[10px] text-slate-500 mt-1">2 Produits côte à côte.</p>
+                    </div>
+
+                    <!-- Grille Multi -->
+                    <div @click="applyTemplate('grid')" class="bg-gray-100 text-slate-800/80 hover:bg-slate-700 border border-slate-600 hover:border-purple-500 p-4 rounded-xl cursor-pointer transition-all hover:scale-105 group text-center flex flex-col items-center">
+                        <div class="w-24 h-16 bg-white shadow-sm text-slate-800 border border-gray-200 rounded mb-4 relative overflow-hidden flex flex-col justify-center gap-1 p-2">
+                            <div class="flex justify-between px-2"><div class="w-5 h-5 rounded-full bg-purple-500/50"></div><div class="w-5 h-5 rounded-full bg-purple-500/50"></div></div>
+                            <div class="flex justify-between px-2"><div class="w-5 h-5 rounded-full bg-purple-500/50"></div><div class="w-5 h-5 rounded-full bg-purple-500/50"></div></div>
+                        </div>
+                        <h3 class="font-bold text-white group-hover:text-purple-400">Grille (KFC Style)</h3>
+                        <p class="text-[10px] text-slate-500 mt-1">4 Produits en grille avec prix.</p>
+                    </div>
+                    
+                    <!-- Menu Liste -->
+                    <div @click="applyTemplate('list')" class="bg-gray-100 text-slate-800/80 hover:bg-slate-700 border border-slate-600 hover:border-orange-500 p-4 rounded-xl cursor-pointer transition-all hover:scale-105 group text-center flex flex-col items-center">
+                        <div class="w-24 h-16 bg-white shadow-sm text-slate-800 border border-gray-200 rounded mb-4 relative overflow-hidden flex items-center justify-between p-2">
+                            <div class="w-8 h-8 rounded-full bg-orange-500/50"></div>
+                            <div class="flex flex-col gap-1 w-1/2">
+                                <div class="w-full h-1 bg-slate-600 rounded"></div>
+                                <div class="w-full h-1 bg-slate-600 rounded"></div>
+                                <div class="w-full h-1 bg-slate-600 rounded"></div>
+                            </div>
+                        </div>
+                        <h3 class="font-bold text-white group-hover:text-orange-400">Menu Liste</h3>
+                        <p class="text-[10px] text-slate-500 mt-1">Image gauche, liste textes droite.</p>
+                    </div>
+
+                    <!-- Promo Soleil (PosterMyWall) -->
+                    <div @click="applyTemplate('pmw_soleil')" class="bg-gray-100 text-slate-800/80 hover:bg-slate-700 border border-slate-600 hover:border-yellow-400 p-4 rounded-xl cursor-pointer transition-all hover:scale-105 group text-center flex flex-col items-center">
+                        <div class="w-24 h-16 bg-yellow-500/20 border border-yellow-500/50 rounded mb-4 relative flex items-center justify-center overflow-hidden">
+                            <div class="w-12 h-12 bg-yellow-500 rounded-full opacity-50 blur-sm absolute"></div>
+                            <div class="w-8 h-8 rounded-full bg-orange-500 z-10"></div>
+                        </div>
+                        <h3 class="font-bold text-white group-hover:text-yellow-400">Promo Soleil</h3>
+                        <p class="text-[10px] text-slate-500 mt-1">Design Affiche avec macaron.</p>
+                    </div>
+                    
+                    <!-- Offre Badge (PosterMyWall) -->
+                    <div @click="applyTemplate('pmw_offre')" class="bg-gray-100 text-slate-800/80 hover:bg-slate-700 border border-slate-600 hover:border-green-400 p-4 rounded-xl cursor-pointer transition-all hover:scale-105 group text-center flex flex-col items-center">
+                        <div class="w-24 h-16 bg-green-900/20 border border-green-500/50 rounded mb-4 relative flex items-center justify-around overflow-hidden">
+                            <div class="w-6 h-10 bg-red-500/50 rounded-sm"></div>
+                            <div class="w-8 h-8 rounded-full bg-orange-500/50"></div>
+                            <div class="absolute top-1 right-1 w-4 h-4 bg-yellow-400 rounded-full"></div>
+                        </div>
+                        <h3 class="font-bold text-white group-hover:text-green-400">Offre Duo Badge</h3>
+                        <p class="text-[10px] text-slate-500 mt-1">Menu + Boisson + Promo Badge.</p>
+                    </div>
+
+                    <!-- Écran Vide -->
+                    <div @click="applyTemplate('blank')" class="bg-gray-100 text-slate-800/80 hover:bg-slate-700 border border-slate-600 hover:border-white p-4 rounded-xl cursor-pointer transition-all hover:scale-105 group text-center flex flex-col items-center">
+                        <div class="w-24 h-16 bg-white shadow-sm text-slate-800 border border-gray-200 rounded mb-4"></div>
+                        <h3 class="font-bold text-white">Écran Vide</h3>
+                        <p class="text-[10px] text-slate-500 mt-1">Commencer de zéro.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- IA Generation Tab -->
+        <div v-if="currentTab === 'ia'" class="max-w-4xl mx-auto py-12 px-6 text-center">
+            <h2 class="text-4xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 flex justify-center items-center gap-4">
+                <i class="fa-solid fa-wand-magic-sparkles text-purple-400"></i> Infographiste IA
+            </h2>
+            <div class="glass-panel p-10 rounded-2xl border border-purple-500/30 shadow-[0_0_50px_rgba(168,85,247,0.15)] relative overflow-hidden">
+                <div class="absolute -top-24 -right-24 w-48 h-48 bg-purple-500/20 blur-[50px] rounded-full"></div>
+                <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-blue-500/20 blur-[50px] rounded-full"></div>
+                
+                <p class="text-slate-700 mb-8 text-xl">Décrivez ce que vous voulez créer. L'IA va générer un écran TV complet, positionner les images et configurer les animations !</p>
+                
+                <div class="flex flex-col gap-6">
+                    <textarea v-model="aiPrompt" @keyup.enter="generateDesign" :disabled="isGenerating" placeholder="Ex: Sawab lia formule jdida dyal tacos m3a frites w boisson f fond rouge..." rows="4" class="w-full bg-white shadow-sm text-slate-800/80 border-2 border-gray-200 text-white px-6 py-4 rounded-xl focus:outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-500/30 shadow-inner text-lg resize-none"></textarea>
+                    
+                    <button @click="generateDesign" :disabled="isGenerating || !aiPrompt.trim()" class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white px-10 py-5 rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(147,51,234,0.4)] hover:shadow-[0_0_30px_rgba(147,51,234,0.7)] flex justify-center items-center gap-3 text-xl disabled:opacity-50">
+                        <i class="fa-solid fa-wand-magic-sparkles" :class="{'fa-spin': isGenerating}"></i>
+                        {{ isGenerating ? 'Génération du design en cours...' : 'Générer l\'Écran avec l\'IA' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Context Menu -->
+        <div v-if="contextMenu.visible" :style="{ top: contextMenu.y + 'px', left: contextMenu.x + 'px' }" class="fixed z-[9999999] w-48 bg-gray-100 text-slate-800 border border-slate-600 rounded-lg shadow-2xl py-2 flex flex-col text-sm text-slate-700">
+            <template v-if="contextMenu.cIdx !== null">
+                <button @click="contextCopy()" class="px-4 py-2 text-left hover:bg-slate-700 hover:text-white flex items-center gap-3"><i class="fa fa-copy w-4 text-blue-400"></i> Copier</button>
+                <button @click="contextDuplicate()" class="px-4 py-2 text-left hover:bg-slate-700 hover:text-white flex items-center gap-3"><i class="fa fa-clone w-4 text-emerald-400"></i> Dupliquer</button>
+                <div class="h-px bg-slate-700 my-1"></div>
+                <button @click="contextDelete()" class="px-4 py-2 text-left hover:bg-slate-700 hover:text-red-400 flex items-center gap-3"><i class="fa fa-trash w-4 text-red-500"></i> Supprimer</button>
+            </template>
+            <template v-else>
+                <button @click="contextPaste()" :disabled="!clipboardData" :class="{'opacity-50 cursor-not-allowed': !clipboardData}" class="px-4 py-2 text-left hover:bg-slate-700 hover:text-white flex items-center gap-3"><i class="fa fa-paste w-4 text-blue-400"></i> Coller</button>
+            </template>
+        </div>
+        
+        <!-- Hidden file input for image replacement -->
+        <input type="file" ref="replaceImageInput" @change="handleReplaceImage" class="hidden" accept="image/*">
+        
+    </div>
+    </div>
+    
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    currentTvId: '1', 
+                    menuData: null, currentTab: 'tv2', notification: null,
+                    activeFormuleKey: null, activeCompIndex: null,
+                    isDragging: false, startX: 0, startY: 0, initialCompX: 0, initialCompY: 0,
+                    playingTimeline: null, isPlaying: false, previewProgress: 0, isEditorPaused: false,
+                    aiPrompt: '', isGenerating: false,
+                    history: [], showTemplateModal: false, isSidebarOpen: true,                    dragLayerFKey: null,
+                    dragLayerIndex: null,
+                    dragLayerHoverIndex: null,
+                    replaceTarget: null, clipboardData: null,
+                    contextMenu: { visible: false, x: 0, y: 0, fKey: null, cIdx: null },
+                    timelineDrag: { active: false, fKey: null, cKey: null, mode: null, startX: 0, startVal: 0, startEndVal: 0, timelineWidth: 0, duration: 6, isDraggingPlayhead: false }
+                }
+            },
+            mounted() { 
+                this.fetchData(); 
+                window.addEventListener('keydown', this.handleKeydown);
+                window.addEventListener('click', this.hideContextMenu);
+            },
+            beforeUnmount() {
+                window.removeEventListener('keydown', this.handleKeydown);
+                window.removeEventListener('click', this.hideContextMenu);
+            },
+            methods: {
+                toggleOrientation() {
+                    if(!this.menuData) return;
+                    this.menuData.orientation = this.menuData.orientation === 'vertical' ? 'horizontal' : 'vertical';
+                },
+                isCompVisibleInTimeline(fKey, comp) {
+                    if (!this.menuData || !this.menuData.formules[fKey]) return true;
+                    const duration = this.menuData.formules[fKey].duration || 6;
+                    const currentTime = (this.previewProgress / 100) * duration;
+                    const delay = comp.delay || 0;
+                    if (currentTime < delay) return false;
+                    const exitTime = comp.exitTime || duration;
+                    if (exitTime < duration && currentTime > exitTime + 1) return false;
+                    return true;
+                },
+                isLayoutVisibleInTimeline(fKey, tKey) {
+                    if (!this.menuData || !this.menuData.formules[fKey]) return true;
+                    const formule = this.menuData.formules[fKey];
+                    if (!formule[tKey]) return false;
+                    const duration = formule.duration || 6;
+                    const currentTime = (this.previewProgress / 100) * duration;
+                    const delay = formule[tKey].delay || 0;
+                    if (currentTime < delay) return false;
+                    const exitTime = formule[tKey].exitTime || duration;
+                    if (exitTime < duration && currentTime > exitTime + 1) return false;
+                    return true;
+                },
+                // --- CapCut Timeline Methods ---
+                setPlayhead(event, fKey) {
+                    if(!this.menuData.formules[fKey]) return;
+                    const rect = event.currentTarget.getBoundingClientRect();
+                    const pos = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+                    this.previewProgress = pos * 100;
+                    if(this.playingTimeline) this.playingTimeline.progress(pos);
+                    this.timelineDrag.isDraggingPlayhead = true;
+                    window.addEventListener('mouseup', this.stopTimelineDrag);
+                },
+                dragPlayhead(event, fKey) {
+                    if(!this.timelineDrag.isDraggingPlayhead || !this.menuData.formules[fKey]) return;
+                    const rect = event.currentTarget.getBoundingClientRect();
+                    const pos = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+                    this.previewProgress = pos * 100;
+                    if(this.playingTimeline) this.playingTimeline.progress(pos);
+                },
+                startDragTimelineClip(event, fKey, cKey) {
+                    this.setActive(fKey, cKey, false);
+                    this.wiggleElement(fKey, cKey);
+                    const comp = this.getComp(fKey, cKey);
+                    const duration = this.menuData.formules[fKey].duration || 6;
+                    if (comp.exitTime === undefined) comp.exitTime = duration;
+                    
+                    this.timelineDrag = {
+                        active: true, isDraggingPlayhead: false,
+                        fKey, cKey, mode: 'move',
+                        startX: event.clientX,
+                        startVal: comp.delay || 0,
+                        startEndVal: comp.exitTime || duration,
+                        timelineWidth: event.currentTarget.parentElement.getBoundingClientRect().width,
+                        duration: duration
+                    };
+                    window.addEventListener('mousemove', this.onTimelineDrag);
+                    window.addEventListener('mouseup', this.stopTimelineDrag);
+                },
+                startResizeTimelineClip(event, fKey, cKey, side) {
+                    this.setActive(fKey, cKey, false);
+                    const comp = this.getComp(fKey, cKey);
+                    const duration = this.menuData.formules[fKey].duration || 6;
+                    if (comp.exitTime === undefined) comp.exitTime = duration;
+                    
+                    this.timelineDrag = {
+                        active: true, isDraggingPlayhead: false,
+                        fKey, cKey, mode: side,
+                        startX: event.clientX,
+                        startVal: comp.delay || 0,
+                        startEndVal: comp.exitTime || duration,
+                        timelineWidth: event.currentTarget.parentElement.parentElement.getBoundingClientRect().width,
+                        duration: duration
+                    };
+                    window.addEventListener('mousemove', this.onTimelineDrag);
+                    window.addEventListener('mouseup', this.stopTimelineDrag);
+                },
+                onTimelineDrag(event) {
+                    if (!this.timelineDrag.active) return;
+                    
+                    const dx = event.clientX - this.timelineDrag.startX;
+                    const timeDelta = (dx / this.timelineDrag.timelineWidth) * this.timelineDrag.duration;
+                    const comp = this.getComp(this.timelineDrag.fKey, this.timelineDrag.cKey);
+                    
+                    if (this.timelineDrag.mode === 'move') {
+                        const dur = this.timelineDrag.startEndVal - this.timelineDrag.startVal;
+                        let newDelay = this.timelineDrag.startVal + timeDelta;
+                        
+                        if (newDelay < 0) newDelay = 0;
+                        if (newDelay + dur > this.timelineDrag.duration) newDelay = this.timelineDrag.duration - dur;
+                        
+                        comp.delay = Math.round(newDelay * 10) / 10;
+                        comp.exitTime = Math.round((newDelay + dur) * 10) / 10;
+                    } 
+                    else if (this.timelineDrag.mode === 'left') {
+                        let newDelay = this.timelineDrag.startVal + timeDelta;
+                        if (newDelay < 0) newDelay = 0;
+                        if (newDelay > comp.exitTime - 0.5) newDelay = comp.exitTime - 0.5;
+                        comp.delay = Math.round(newDelay * 10) / 10;
+                    } 
+                    else if (this.timelineDrag.mode === 'right') {
+                        let newExitTime = this.timelineDrag.startEndVal + timeDelta;
+                        if (newExitTime > this.timelineDrag.duration) newExitTime = this.timelineDrag.duration;
+                        if (newExitTime < (comp.delay || 0) + 0.5) newExitTime = (comp.delay || 0) + 0.5;
+                        comp.exitTime = Math.round(newExitTime * 10) / 10;
+                    }
+                },
+                stopTimelineDrag() {
+                    this.timelineDrag.active = false;
+                    this.timelineDrag.isDraggingPlayhead = false;
+                    window.removeEventListener('mousemove', this.onTimelineDrag);
+                    window.removeEventListener('mouseup', this.stopTimelineDrag);
+                    
+                    if(this.playingTimeline && !this.isPlaying) {
+                        this.playPreview(this.activeFormuleKey);
+                        this.playingTimeline.progress(this.previewProgress / 100);
+                        this.playingTimeline.pause();
+                    }
+                },
+                wiggleElement(fKey, cKey) {
+                    // Les composants ont l'ID mockup-anim-fKey-cIdx
+                    let el = document.getElementById('mockup-anim-' + fKey + '-' + cKey);
+                    // Si c'est un layout, on cherche l'id correspondant
+                    if (!el && typeof cKey === 'string') {
+                         el = document.getElementById('mockup-' + cKey + '-' + fKey);
+                    }
+                    if (el) {
+                        el.classList.remove('highlight-wiggle');
+                        // Force reflow to restart animation
+                        void el.offsetWidth;
+                        el.classList.add('highlight-wiggle');
+                        setTimeout(() => {
+                            if(el) el.classList.remove('highlight-wiggle');
+                        }, 500);
+                    }
+                },
+                // ------------------------------
+                
+                applyTemplate(type) {
+                    const newKey = 'formule_' + Date.now().toString().slice(-6);
+                    let newFormule = {
+                        name: "Nouvelle Formule", price: "0", duration: 6, bgColor: "radial-gradient(circle at 50% 60%, #1a1a1a 0%, #000000 100%)", badge: "NOUVEAU", description: "Description", tv: "",
+                        components: [], nameLayout: null, descLayout: null, badgeLayout: null, priceLayout: null
+                    };
+
+                    const firstSandwich = this.menuData.assets.sandwiches[0]?.id || '';
+
+                    if (type === 'hero') {
+                        // Nashville Hot Chicken Style: Red background, Burger Left, Big Text Right
+                        newFormule.bgColor = "#ea0000";
+                        
+                        // Burger on left
+                        newFormule.components.push({ assetId: firstSandwich, type: 'main', x: -400, y: 0, scale: 1.3, z: 5, animIn: 'fadeRight', animOut: 'fadeLeft', delay: 0.1, rotation: 0 });
+                        
+                        // Big Text on Right (Quote Style)
+                        newFormule.components.push({ type: 'customText', content: 'THE BEST', x: 250, y: -150, scale: 1, z: 15, animIn: 'fadeDown', animOut: 'fadeUp', delay: 0.3, rotation: 0, color: '#ffffff', fontSize: 130, fontFamily: "'Oswald', sans-serif", hasShadow: false });
+                        newFormule.components.push({ type: 'customText', content: 'BURGERS', x: 250, y: -20, scale: 1, z: 15, animIn: 'zoomIn', animOut: 'zoomOut', delay: 0.5, rotation: 0, color: '#ffb300', fontSize: 140, fontFamily: "'Oswald', sans-serif", hasShadow: true, strokeColor: '#000' });
+                        newFormule.components.push({ type: 'customText', content: 'IN TOWN', x: 250, y: 100, scale: 1, z: 15, animIn: 'fadeUp', animOut: 'fadeDown', delay: 0.7, rotation: 0, color: '#ffffff', fontSize: 130, fontFamily: "'Oswald', sans-serif", hasShadow: false });
+                        
+                        // Small quote marks shape or subtext
+                        newFormule.components.push({ type: 'customText', content: '- TASTE THE DIFFERENCE -', x: 250, y: 220, scale: 1, z: 15, animIn: 'fadeUp', animOut: 'fadeDown', delay: 0.9, rotation: 0, color: '#ffffff', fontSize: 40, fontFamily: "'Inter', sans-serif", hasShadow: false });
+                        
+                        newFormule.nameLayout = null; newFormule.badgeLayout = null; newFormule.descLayout = null; newFormule.priceLayout = null;
+                    } 
+                    else if (type === 'duo') {
+                        // Split screen Duo: Red/Dark
+                        newFormule.bgColor = "#111111";
+                        
+                        // Red diagonal shape on right
+                        newFormule.components.push({ type: 'shape', width: 2000, height: 2000, color: '#ea0000', opacity: 1, borderRadius: 0, x: 800, y: 0, scale: 1, z: 1, animIn: 'fadeRight', animOut: 'fadeRight', delay: 0, rotation: -15 });
+                        
+                        // Burgers (Left dark, Right red)
+                        newFormule.components.push({ assetId: firstSandwich, type: 'main', x: -350, y: 0, scale: 1.1, z: 5, animIn: 'zoomIn', animOut: 'zoomOut', delay: 0.3, rotation: -5 });
+                        newFormule.components.push({ assetId: firstSandwich, type: 'main', x: 350, y: 0, scale: 1.1, z: 5, animIn: 'zoomIn', animOut: 'zoomOut', delay: 0.5, rotation: 5 });
+                        
+                        // Prices & Names
+                        newFormule.components.push({ type: 'customText', content: 'CLASSIC MENU', x: -350, y: -300, scale: 1, z: 15, animIn: 'fadeDown', animOut: 'fadeUp', delay: 0.4, rotation: 0, color: '#ffffff', fontSize: 70, fontFamily: "'Oswald', sans-serif", hasShadow: false });
+                        newFormule.components.push({ type: 'customText', content: '35 DH', x: -350, y: 280, scale: 1, z: 15, animIn: 'fadeUp', animOut: 'fadeDown', delay: 0.5, rotation: 0, color: '#ffb300', fontSize: 100, fontFamily: "'Oswald', sans-serif", hasShadow: true });
+                        
+                        newFormule.components.push({ type: 'customText', content: 'SPICY MENU', x: 350, y: -300, scale: 1, z: 15, animIn: 'fadeDown', animOut: 'fadeUp', delay: 0.6, rotation: 0, color: '#ffffff', fontSize: 70, fontFamily: "'Oswald', sans-serif", hasShadow: false });
+                        newFormule.components.push({ type: 'customText', content: '45 DH', x: 350, y: 280, scale: 1, z: 15, animIn: 'fadeUp', animOut: 'fadeDown', delay: 0.7, rotation: 0, color: '#ffffff', fontSize: 100, fontFamily: "'Oswald', sans-serif", hasShadow: true });
+                        
+                        newFormule.nameLayout = null; newFormule.badgeLayout = null; newFormule.descLayout = null; newFormule.priceLayout = null;
+                    }
+                    else if (type === 'grid') {
+                        // KFC Style Grid: White textured BG, Red striped banner top, scattered items
+                        newFormule.bgColor = "#f8f9fa"; // Light clean bg
+                        
+                        // Top Red Banner
+                        newFormule.components.push({ type: 'shape', width: 2500, height: 180, color: '#ea0000', opacity: 1, borderRadius: 0, x: 0, y: -450, scale: 1, z: 1, animIn: 'fadeDown', animOut: 'fadeUp', delay: 0, rotation: 0 });
+                        // Banner title
+                        newFormule.components.push({ type: 'customText', content: 'NOS MEILLEURES OFFRES', x: 0, y: -450, scale: 1, z: 15, animIn: 'zoomIn', animOut: 'zoomOut', delay: 0.2, rotation: 0, color: '#ffffff', fontSize: 90, fontFamily: "'Oswald', sans-serif", hasShadow: false });
+                        
+                        // Item 1 (Top Left)
+                        newFormule.components.push({ assetId: firstSandwich, type: 'main', x: -400, y: -150, scale: 0.6, z: 5, animIn: 'zoomIn', animOut: 'zoomOut', delay: 0.3, rotation: 0 });
+                        newFormule.components.push({ type: 'customText', content: 'MENU 1', x: -400, y: 20, scale: 1, z: 15, animIn: 'fadeUp', animOut: 'fadeDown', delay: 0.4, rotation: 0, color: '#111111', fontSize: 50, fontFamily: "'Oswald', sans-serif", hasShadow: false });
+                        newFormule.components.push({ type: 'customText', content: '45 DH', x: -400, y: 80, scale: 1, z: 15, animIn: 'fadeUp', animOut: 'fadeDown', delay: 0.5, rotation: 0, color: '#ea0000', fontSize: 70, fontFamily: "'Oswald', sans-serif", hasShadow: false });
+
+                        // Item 2 (Top Right)
+                        newFormule.components.push({ assetId: firstSandwich, type: 'main', x: 400, y: -150, scale: 0.6, z: 5, animIn: 'zoomIn', animOut: 'zoomOut', delay: 0.4, rotation: 0 });
+                        newFormule.components.push({ type: 'customText', content: 'MENU 2', x: 400, y: 20, scale: 1, z: 15, animIn: 'fadeUp', animOut: 'fadeDown', delay: 0.5, rotation: 0, color: '#111111', fontSize: 50, fontFamily: "'Oswald', sans-serif", hasShadow: false });
+                        newFormule.components.push({ type: 'customText', content: '55 DH', x: 400, y: 80, scale: 1, z: 15, animIn: 'fadeUp', animOut: 'fadeDown', delay: 0.6, rotation: 0, color: '#ea0000', fontSize: 70, fontFamily: "'Oswald', sans-serif", hasShadow: false });
+
+                        // Item 3 (Bottom Left)
+                        newFormule.components.push({ assetId: firstSandwich, type: 'main', x: -400, y: 280, scale: 0.6, z: 5, animIn: 'zoomIn', animOut: 'zoomOut', delay: 0.5, rotation: 0 });
+                        newFormule.components.push({ type: 'customText', content: 'MENU 3', x: -200, y: 250, scale: 1, z: 15, animIn: 'fadeRight', animOut: 'fadeLeft', delay: 0.6, rotation: 0, color: '#111111', fontSize: 40, fontFamily: "'Oswald', sans-serif", hasShadow: false });
+                        newFormule.components.push({ type: 'customText', content: '60 DH', x: -200, y: 300, scale: 1, z: 15, animIn: 'fadeRight', animOut: 'fadeLeft', delay: 0.7, rotation: 0, color: '#ea0000', fontSize: 60, fontFamily: "'Oswald', sans-serif", hasShadow: false });
+
+                        // Item 4 (Bottom Right)
+                        newFormule.components.push({ assetId: firstSandwich, type: 'main', x: 200, y: 280, scale: 0.6, z: 5, animIn: 'zoomIn', animOut: 'zoomOut', delay: 0.6, rotation: 0 });
+                        newFormule.components.push({ type: 'customText', content: 'MENU 4', x: 450, y: 250, scale: 1, z: 15, animIn: 'fadeRight', animOut: 'fadeLeft', delay: 0.7, rotation: 0, color: '#111111', fontSize: 40, fontFamily: "'Oswald', sans-serif", hasShadow: false });
+                        newFormule.components.push({ type: 'customText', content: '70 DH', x: 450, y: 300, scale: 1, z: 15, animIn: 'fadeRight', animOut: 'fadeLeft', delay: 0.8, rotation: 0, color: '#ea0000', fontSize: 60, fontFamily: "'Oswald', sans-serif", hasShadow: false });
+                        
+                        newFormule.nameLayout = null; newFormule.badgeLayout = null; newFormule.descLayout = null; newFormule.priceLayout = null;
+                    }
+                    else if (type === 'pmw_soleil') {
+                        // PosterMyWall Style: Crispy Fried Chicken (Burger Center, Burst price, script title)
+                        newFormule.bgColor = "#ff9800"; // Light Orange
+                        
+                        // Main Burger
+                        newFormule.components.push({ assetId: firstSandwich, type: 'main', x: 0, y: 50, scale: 1.8, z: 5, animIn: 'zoomIn', animOut: 'zoomOut', delay: 0.2, rotation: 0 });
+                        
+                        // Titles
+                        newFormule.components.push({ type: 'customText', content: 'Crispy &', x: -150, y: -350, scale: 1, z: 15, animIn: 'fadeDown', animOut: 'fadeUp', delay: 0.1, rotation: -10, color: '#ffffff', fontSize: 120, fontFamily: "'Oswald', sans-serif", hasShadow: true, strokeColor: '#000' });
+                        newFormule.components.push({ type: 'customText', content: 'DELICIOUS', x: 100, y: -250, scale: 1, z: 14, animIn: 'fadeDown', animOut: 'fadeUp', delay: 0.3, rotation: 0, color: '#ffea00', fontSize: 160, fontFamily: "'Oswald', sans-serif", hasShadow: true, strokeColor: '#d50000' });
+                        
+                        // Price Badge
+                        newFormule.components.push({ type: 'shape', shapeType: 'burst', width: 250, height: 250, color: '#d50000', opacity: 1, borderRadius: 0, x: -350, y: -50, scale: 1, z: 10, animIn: 'zoomIn', animOut: 'zoomOut', delay: 0.5, rotation: 15 });
+                        newFormule.components.push({ type: 'customText', content: 'ONLY', x: -350, y: -100, scale: 1, z: 15, animIn: 'zoomIn', animOut: 'zoomOut', delay: 0.6, rotation: 15, color: '#ffffff', fontSize: 40, fontFamily: "'Oswald', sans-serif", hasShadow: false });
+                        newFormule.components.push({ type: 'customText', content: '5.99', x: -350, y: -40, scale: 1, z: 15, animIn: 'zoomIn', animOut: 'zoomOut', delay: 0.7, rotation: 15, color: '#ffea00', fontSize: 90, fontFamily: "'Oswald', sans-serif", hasShadow: true });
+                        
+                        // Order Now button
+                        newFormule.components.push({ type: 'shape', shapeType: 'rect', width: 300, height: 80, color: '#ffffff', opacity: 1, borderRadius: 40, x: 0, y: 400, scale: 1, z: 10, animIn: 'fadeUp', animOut: 'fadeDown', delay: 0.8, rotation: 0 });
+                        newFormule.components.push({ type: 'customText', content: 'ORDER NOW', x: 0, y: 400, scale: 1, z: 15, animIn: 'fadeUp', animOut: 'fadeDown', delay: 0.9, rotation: 0, color: '#ff0000', fontSize: 40, fontFamily: "'Inter', sans-serif", hasShadow: false });
+                    }
+                    else if (type === 'pmw_offre') {
+                        // PosterMyWall Style: Today's Burger Deal
+                        newFormule.bgColor = "#ffc107"; // Yellow
+                        
+                        const firstDrink = this.menuData.assets.drinks[0]?.id || '';
+                        
+                        // Drinks & Burger
+                        if(firstDrink) newFormule.components.push({ assetId: firstDrink, type: 'main', x: -200, y: 50, scale: 1.4, z: 4, animIn: 'fadeRight', animOut: 'fadeLeft', delay: 0.3, rotation: -5 });
+                        newFormule.components.push({ assetId: firstSandwich, type: 'main', x: 200, y: 100, scale: 1.6, z: 5, animIn: 'fadeLeft', animOut: 'fadeRight', delay: 0.4, rotation: 5 });
+                        
+                        // Titles
+                        newFormule.components.push({ type: 'customText', content: "TODAY's", x: 0, y: -350, scale: 1, z: 15, animIn: 'fadeDown', animOut: 'fadeUp', delay: 0.1, rotation: 0, color: '#000000', fontSize: 100, fontFamily: "'Oswald', sans-serif", hasShadow: false });
+                        newFormule.components.push({ type: 'customText', content: 'COMBO DEAL', x: 0, y: -230, scale: 1, z: 15, animIn: 'zoomIn', animOut: 'zoomOut', delay: 0.2, rotation: -5, color: '#d50000', fontSize: 150, fontFamily: "'Oswald', sans-serif", hasShadow: true, strokeColor: '#ffffff' });
+                        
+                        // Promo Badge (50% Off)
+                        newFormule.components.push({ type: 'shape', shapeType: 'badge', width: 220, height: 220, color: '#ffffff', opacity: 1, borderRadius: 0, x: 350, y: -80, scale: 1, z: 10, animIn: 'zoomIn', animOut: 'zoomOut', delay: 0.5, rotation: -10 });
+                        newFormule.components.push({ type: 'customText', content: '50%', x: 350, y: -100, scale: 1, z: 15, animIn: 'zoomIn', animOut: 'zoomOut', delay: 0.6, rotation: -10, color: '#d50000', fontSize: 70, fontFamily: "'Oswald', sans-serif", hasShadow: false });
+                        newFormule.components.push({ type: 'customText', content: 'OFF', x: 350, y: -40, scale: 1, z: 15, animIn: 'zoomIn', animOut: 'zoomOut', delay: 0.7, rotation: -10, color: '#000000', fontSize: 50, fontFamily: "'Oswald', sans-serif", hasShadow: false });
+                    }
+                    else if (type === 'list') {
+                        // Digital Board List Style: Image top, elegant list below
+                        newFormule.bgColor = "#050505";
+                        
+                        newFormule.components.push({ assetId: firstSandwich, type: 'main', x: 0, y: -250, scale: 1.2, z: 5, animIn: 'zoomIn', animOut: 'zoomOut', delay: 0.1, rotation: 0 });
+                        
+                        newFormule.components.push({ type: 'customText', content: 'NOS SPÉCIALITÉS', x: 0, y: 50, scale: 1, z: 15, animIn: 'fadeUp', animOut: 'fadeDown', delay: 0.3, rotation: 0, color: '#ffb300', fontSize: 70, fontFamily: "'Oswald', sans-serif", hasShadow: false });
+                        
+                        newFormule.components.push({ type: 'customText', content: 'Classic Burger .................................... 35 DH', x: 0, y: 150, scale: 1, z: 15, animIn: 'fadeUp', animOut: 'fadeDown', delay: 0.4, rotation: 0, color: '#ffffff', fontSize: 45, fontFamily: "'Inter', sans-serif", hasShadow: false });
+                        newFormule.components.push({ type: 'customText', content: 'Cheese Burger .................................... 45 DH', x: 0, y: 220, scale: 1, z: 15, animIn: 'fadeUp', animOut: 'fadeDown', delay: 0.5, rotation: 0, color: '#ffffff', fontSize: 45, fontFamily: "'Inter', sans-serif", hasShadow: false });
+                        newFormule.components.push({ type: 'customText', content: 'Double Burger .................................... 60 DH', x: 0, y: 290, scale: 1, z: 15, animIn: 'fadeUp', animOut: 'fadeDown', delay: 0.6, rotation: 0, color: '#ffffff', fontSize: 45, fontFamily: "'Inter', sans-serif", hasShadow: false });
+                        newFormule.components.push({ type: 'customText', content: 'Chicken Burger ................................... 50 DH', x: 0, y: 360, scale: 1, z: 15, animIn: 'fadeUp', animOut: 'fadeDown', delay: 0.7, rotation: 0, color: '#ffffff', fontSize: 45, fontFamily: "'Inter', sans-serif", hasShadow: false });
+                        
+                        newFormule.nameLayout = null; newFormule.badgeLayout = null; newFormule.descLayout = null; newFormule.priceLayout = null;
+                    }
+                    // 'blank' does nothing extra
+
+                    this.menuData.formules[newKey] = newFormule;
+                    this.showTemplateModal = false;
+                    this.activeFormuleKey = newKey;
+                    this.saveData();
+                },
+                showNotif(msg, type='success') {
+                    this.notification = { message: msg, type };
+                    setTimeout(() => this.notification = null, 4000);
+                },
+                getAssetUrl(id) {
+                    if(!this.menuData || !this.menuData.assets) return '';
+                    for(let cat in this.menuData.assets) {
+                        const a = this.menuData.assets[cat].find(x => x.id === id);
+                        if(a) return '/' + a.url;
+                    }
+                    return '';
+                },
+                isSmallItem(id) {
+                    const url = this.getAssetUrl(id);
+                    return url.includes('coca') || url.includes('SODA') || url.includes('jus');
+                },
+                async fetchData() {
+                    try {
+                        const res = await fetch('/api/menu/' + this.currentTvId);
+                        this.menuData = await res.json();
+                        if(!this.menuData.assets) this.menuData.assets = { sandwiches: [], drinks: [], sides: [] };
+                        if(this.menuData.formules) {
+                            Object.values(this.menuData.formules).forEach(f => {
+                                if (!f.nameLayout) f.nameLayout = { x: 0, y: -430, scale: 1, rotation: 0, animIn: "fadeDown", delay: 0, z: 20 };
+                                if (!f.descLayout) f.descLayout = { x: 0, y: -360, scale: 1, rotation: 0, animIn: "fadeUp", delay: 0.2, z: 20 };
+                                if (!f.badgeLayout) f.badgeLayout = { x: -350, y: -430, scale: 1.5, rotation: -15, animIn: "fadeLeft", delay: 0.4, z: 20 };
+                                if (!f.priceLayout) f.priceLayout = { x: 350, y: 300, scale: 1.5, rotation: -10, animIn: "zoomIn", delay: 1, z: 20 };
+                            });
+                        }
+                        if(Object.keys(this.menuData.formules).length > 0) this.activeFormuleKey = Object.keys(this.menuData.formules)[0];
+                    } catch (e) { this.showNotif("Erreur de connexion", "error"); }
+                },
+                async saveData() {
+                    try {
+                        const res = await fetch('/api/menu/' + this.currentTvId, {
+                            method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(this.menuData)
+                        });
+                        if (res.ok) this.showNotif("Modifications sauvegardées avec succès !");
+                        else this.showNotif("Erreur", "error");
+                    } catch (e) {}
+                },
+                addAsset(category) { this.menuData.assets[category].push({ id: 'nouveau_' + Date.now().toString().slice(-4), name: 'Nouveau', url: '' }); },
+                getCurrentTimelineTime(formule) {
+                    if (this.playingTimeline && this.previewProgress !== undefined) {
+                        return Number(this.formatTime(this.previewProgress * (formule.duration || 6) / 100));
+                    }
+                    return 0;
+                },
+                addComponent(formule, fKey) {
+                    let firstAsset = this.menuData.assets.sandwiches[0]?.id || '';
+                    formule.components.unshift({ assetId: firstAsset, type: 'main', x: 0, y: 0, scale: 1, z: 5, animIn: 'fadeUp', animOut: 'fadeDown', delay: this.getCurrentTimelineTime(formule), rotation: 0 });
+                    if(fKey) this.setActive(fKey, 0);
+                },
+                addTextComponent(formule, fKey) {
+                    formule.components.unshift({ type: 'customText', content: 'NOUVEAU TEXTE', x: 0, y: 0, scale: 1, z: 15, animIn: 'zoomIn', animOut: 'zoomOut', delay: this.getCurrentTimelineTime(formule), rotation: 0, color: '#ffffff', fontSize: 60, fontFamily: "'Oswald', sans-serif", hasShadow: false, strokeColor: '' });
+                    if(fKey) this.setActive(fKey, 0);
+                },
+                deleteFormule(fKey) {
+                    if (confirm("Voulez-vous vraiment supprimer cet écran entier ?")) {
+                        delete this.menuData.formules[fKey];
+                        this.saveData();
+                        this.showNotif("Écran supprimé", "success");
+                    }
+                },
+                addShapeComponent(formule, fKey) {
+                    formule.components.unshift({ type: 'shape', shapeType: 'rect', width: 400, height: 100, color: '#000000', opacity: 0.5, borderRadius: 20, x: 0, y: 0, scale: 1, z: 2, animIn: 'zoomIn', animOut: 'zoomOut', delay: this.getCurrentTimelineTime(formule), rotation: 0, content: '', textColor: '#ffffff', fontSize: 40 });
+                    if(fKey) this.setActive(fKey, 0);
+                },
+                getTextStyle(comp) {
+                    if (!comp) return {};
+                    let style = {
+                        color: comp.color || '#ffffff',
+                        fontSize: (comp.fontSize || 40) + 'px',
+                        fontFamily: comp.fontFamily || "'Oswald', sans-serif",
+                        fontWeight: 'bold',
+                        lineHeight: 1,
+                        whiteSpace: 'nowrap'
+                    };
+                    
+                    const effect = comp.textEffect || (comp.hasShadow ? 'shadow' : 'none');
+                    const intensity = comp.effectIntensity !== undefined ? comp.effectIntensity : 50;
+                    const val = intensity / 100;
+                    
+                    let strokeColor = comp.strokeColor || '#000000';
+                    let cColor = comp.color || '#ffffff';
+                    
+                    if (effect === 'shadow') {
+                        style.textShadow = `0 ${10 * val}px ${25 * val}px rgba(0,0,0,${0.4 + (val * 0.6)})`;
+                    } else if (effect === 'glow') {
+                        style.textShadow = `0 0 ${10 * val}px ${cColor}, 0 0 ${20 * val}px ${cColor}, 0 0 ${40 * val}px ${cColor}`;
+                    } else if (effect === 'echo') {
+                        style.textShadow = `${6 * val}px ${6 * val}px 0px rgba(255,255,255,0.4), ${12 * val}px ${12 * val}px 0px rgba(255,255,255,0.2)`;
+                    } else if (effect === 'outline') {
+                        style.WebkitTextStroke = `${6 * val}px ${strokeColor}`;
+                    } else if (effect === 'bg') {
+                        style.backgroundColor = strokeColor;
+                        style.padding = `${10 * val}px ${20 * val}px`;
+                        style.borderRadius = `${15 * val}px`;
+                    } else if (effect === 'bevel') {
+                        style.textShadow = `${5 * val}px ${5 * val}px 0px rgba(0,0,0,0.6), -${3 * val}px -${3 * val}px 0px rgba(255,255,255,0.7)`;
+                    } else if (effect === 'hollow') {
+                        style.WebkitTextStroke = `${4 * val}px ${cColor}`;
+                        style.color = 'transparent';
+                    } else if (effect === 'neon') {
+                        style.textShadow = `0 0 ${5 * val}px #fff, 0 0 ${10 * val}px #fff, 0 0 ${20 * val}px ${cColor}, 0 0 ${40 * val}px ${cColor}, 0 0 ${80 * val}px ${cColor}`;
+                        style.color = '#ffffff';
+                    } else if (effect === 'glitch') {
+                        style.textShadow = `${8 * val}px 0 0 cyan, -${8 * val}px 0 0 red`;
+                    } else {
+                        style.textShadow = 'none';
+                        style.WebkitTextStroke = 'none';
+                    }
+                    
+                    return style;
+                },
+                getShapeStyle(comp) {
+                    let style = {
+                        backgroundColor: comp.color,
+                        opacity: comp.opacity,
+                        width: comp.width + 'px',
+                        height: comp.height + 'px'
+                    };
+                    
+                    if (comp.shapeType === 'circle') {
+                        style.borderRadius = '50%';
+                    } else if (comp.shapeType === 'badge') {
+                        style.clipPath = 'polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%)';
+                    } else if (comp.shapeType === 'star') {
+                        style.clipPath = 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)';
+                    } else if (comp.shapeType === 'burst') {
+                        style.clipPath = 'polygon(50% 0%, 65% 15%, 85% 15%, 85% 35%, 100% 50%, 85% 65%, 85% 85%, 65% 85%, 50% 100%, 35% 85%, 15% 85%, 15% 65%, 0% 50%, 15% 35%, 15% 15%, 35% 15%)';
+                    } else {
+                        style.borderRadius = (comp.borderRadius || 0) + 'px'; // rect par defaut
+                    }
+                    
+                    return style;
+                },
+                async uploadBgImage(event, fKey) {
+                    const file = event.target.files[0];
+                    if(!file) return;
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    formData.append('target', 'root');
+                    try {
+                        const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                        const data = await res.json();
+                        if (data.success) {
+                            this.menuData.formules[fKey].bgImage = data.path;
+                        }
+                    } catch (e) { this.showNotif("Erreur upload bg", "error"); }
+                },
+                async uploadRawImage(event, formule) {
+                    const file = event.target.files[0];
+                    if(!file) return;
+                    this.showNotif("Upload de l'image en cours...", "info");
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    formData.append('target', 'root');
+                    try {
+                        const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                        const data = await res.json();
+                        if (data.success) {
+                            formule.components.push({ type: 'rawImage', url: data.path, x: 0, y: 0, scale: 1, z: 1, animIn: 'zoomIn', animOut: 'zoomOut', delay: 0.1, rotation: 0 });
+                            this.saveData();
+                            this.showNotif("Image ajoutée avec succès !", "success");
+                        }
+                    } catch (e) { this.showNotif("Erreur upload", "error"); }
+                },
+                async handleUploadAndProcess(event, formule) {
+                    const file = event.target.files[0];
+                    if(!file) return;
+                    
+                    this.showNotif("1/3 Upload de l'image...", "info");
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    formData.append('target', 'raw');
+                    
+                    try {
+                        // 1. Upload
+                        const uploadRes = await fetch('/api/upload', { method: 'POST', body: formData });
+                        const uploadData = await uploadRes.json();
+                        
+                        if (uploadData.success) {
+                            this.showNotif("2/3 Détourage par IA en cours (Veuillez patienter...)", "info");
+                            
+                            // 2. Process
+                            const processRes = await fetch('/api/process_images', { method: 'POST' });
+                            const processData = await processRes.json();
+                            
+                            if (processData.success) {
+                                // 3. Ajouter l'asset et le composant
+                                const rawFilename = uploadData.filename; // ex: burger.jpg
+                                const baseName = rawFilename.substring(0, rawFilename.lastIndexOf('.')) || rawFilename;
+                                const newId = 'ai_' + Date.now().toString().slice(-4);
+                                
+                                const newAsset = {
+                                    id: newId,
+                                    name: baseName,
+                                    url: 'processed_images/' + baseName + '.png'
+                                };
+                                
+                                this.menuData.assets.sandwiches.push(newAsset);
+                                this.saveData();
+                                
+                                // Ajouter direct à la formule
+                                formule.components.push({ assetId: newId, type: 'main', x: 0, y: 0, scale: 1, z: 5, animIn: 'zoomIn', animOut: 'zoomOut', delay: 0.2, rotation: 0 });
+                                this.showNotif("3/3 Succès ! L'image est ajoutée à votre écran.", "success");
+                            } else {
+                                this.showNotif("Erreur lors du détourage IA.", "error");
+                            }
+                        }
+                    } catch(e) {
+                        this.showNotif("Erreur serveur.", "error");
+                    }
+                    event.target.value = ''; // reset input
+                },
+                
+                // --- Interaction Drag & Drop ---
+                getComp(fKey, cKey) {
+                    if (typeof cKey === 'number') return this.menuData.formules[fKey].components[cKey];
+                    return this.menuData.formules[fKey][cKey];
+                },
+                isActive(fKey, cKey) {
+                    return this.activeFormuleKey === fKey && this.activeCompIndex === cKey;
+                },
+                moveLayer(fKey, cIdx, dir) {
+                    let formule = this.menuData.formules[fKey];
+                    let comp = null;
+                    if (typeof cIdx === 'string') {
+                        comp = formule[cIdx];
+                        if (!comp) return;
+                        comp.z = Math.max(0, Math.min(100, (comp.z || 15) + dir));
+                        this.saveData();
+                        return;
+                    }
+                    comp = formule.components[cIdx];
+                    if (!comp) return;
+                    
+                    comp.z = Math.max(0, Math.min(100, (comp.z || 15) + dir));
+                    
+                    let newIdx = cIdx - dir; 
+                    if (newIdx >= 0 && newIdx < formule.components.length) {
+                        formule.components.splice(cIdx, 1);
+                        formule.components.splice(newIdx, 0, comp);
+                        if (this.activeFormuleKey === fKey && this.activeCompIndex === cIdx) {
+                            this.activeCompIndex = newIdx;
+                        }
+                    }
+                    this.saveData();
+                },
+                onTrackDragStart(event, fKey, cIdx) {
+                    this.dragLayerFKey = fKey;
+                    this.dragLayerIndex = cIdx;
+                    event.dataTransfer.effectAllowed = 'move';
+                },
+                onTrackDrop(event, fKey, cIdx) {
+                    this.dragLayerHoverIndex = null;
+                    if (this.dragLayerFKey !== fKey || this.dragLayerIndex === null) return;
+                    if (this.dragLayerIndex === cIdx) return;
+                    
+                    let formule = this.menuData.formules[fKey];
+                    let comp = formule.components.splice(this.dragLayerIndex, 1)[0];
+                    formule.components.splice(cIdx, 0, comp);
+                    
+                    formule.components.forEach((c, idx) => {
+                        c.z = 50 - idx;
+                    });
+                    
+                    if (this.activeFormuleKey === fKey && this.activeCompIndex === this.dragLayerIndex) {
+                        this.activeCompIndex = cIdx;
+                    }
+                    
+                    this.dragLayerIndex = null;
+                    this.saveData();
+                },
+                onTrackDragEnd() {
+                    this.dragLayerIndex = null;
+                    this.dragLayerHoverIndex = null;
+                },
+                setActive(fKey, cKey, shouldScroll = true) {
+                    this.activeFormuleKey = fKey;
+                    this.activeCompIndex = cKey;
+                    
+                    if (shouldScroll) {
+                        // Auto-scroll to component card
+                        setTimeout(() => {
+                            let el = document.getElementById('comp-card-' + cKey);
+                            if (!el && typeof cKey === 'string') {
+                                // Fallback: it's a layout element, the single editor card might not have this ID yet if we just clicked it, wait for Vue to render
+                                el = document.getElementById('comp-card-' + cKey);
+                            }
+                            if (el) {
+                                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                        }, 100);
+                    }
+                },
+                startDrag(event, fKey, cKey) {
+                    if (event.target.isContentEditable) return; // Prevent drag if editing text
+                    
+                    // Remonter le composant en haut de la liste à CHAQUE clic (pour éviter de scroller)
+                    if (typeof cKey === 'number' && cKey !== 0) {
+                        const compArray = this.menuData.formules[fKey].components;
+                        const compToMove = compArray.splice(cKey, 1)[0];
+                        compArray.unshift(compToMove);
+                        cKey = 0; // Le nouvel index est 0
+                    }
+                    
+                    // Toujours l'activer
+                    this.setActive(fKey, cKey, false);
+
+                    this.isDragging = true;
+                    this.dragFKey = fKey; // Sauvegarder pour le drag
+                    this.dragCKey = cKey;
+                    this.startX = event.clientX;
+                    this.startY = event.clientY;
+                    const comp = this.getComp(fKey, cKey);
+                    this.initialCompX = comp.x;
+                    this.initialCompY = comp.y;
+                    this.saveState();
+                    window.addEventListener('mousemove', this.onDrag);
+                    window.addEventListener('mouseup', this.stopDrag);
+                },
+                startResize(event, direction) {
+                    this.isResizing = true;
+                    this.resizeDirection = direction;
+                    this.startX = event.clientX;
+                    this.startY = event.clientY;
+                    const comp = this.getComp(this.activeFormuleKey, this.activeCompIndex);
+                    this.initialScale = comp.scale || 1;
+                    this.initialWidth = comp.width || 0;
+                    this.initialHeight = comp.height || 0;
+                    this.saveState();
+                    window.addEventListener('mousemove', this.onResize);
+                    window.addEventListener('mouseup', this.stopResize);
+                },
+                onResize(event) {
+                    if (!this.isResizing) return;
+                    const dx = event.clientX - this.startX;
+                    const dy = event.clientY - this.startY;
+                    const comp = this.getComp(this.activeFormuleKey, this.activeCompIndex);
+                    
+                    let factor = (this.menuData.orientation === 'vertical' ? 1/0.2531 : 1/0.45);
+                    
+                    if (comp.type === 'shape' && (this.resizeDirection.length === 1)) {
+                        // resize width/height of shape
+                        let newW = this.initialWidth;
+                        let newH = this.initialHeight;
+                        if (this.resizeDirection === 'e') newW += dx * factor;
+                        if (this.resizeDirection === 'w') newW -= dx * factor; // dragging left means increasing width
+                        if (this.resizeDirection === 's') newH += dy * factor;
+                        if (this.resizeDirection === 'n') newH -= dy * factor; // dragging up means increasing height
+                        
+                        comp.width = Math.max(10, Math.round(newW));
+                        comp.height = Math.max(10, Math.round(newH));
+                    } else {
+                        // resize scale of other elements using corner handles
+                        let delta = 0;
+                        if (this.resizeDirection === 'se') delta = Math.max(dx, dy);
+                        if (this.resizeDirection === 'nw') delta = Math.max(-dx, -dy);
+                        if (this.resizeDirection === 'sw') delta = Math.max(-dx, dy);
+                        if (this.resizeDirection === 'ne') delta = Math.max(dx, -dy);
+                        
+                        let newScale = this.initialScale + (delta * factor * 0.002);
+                        comp.scale = Math.max(0.1, Math.round(newScale * 100) / 100);
+                    }
+                },
+                stopResize() {
+                    this.isResizing = false;
+                    window.removeEventListener('mousemove', this.onResize);
+                    window.removeEventListener('mouseup', this.stopResize);
+                    this.saveData();
+                },
+                onDrag(event) {
+                    if (!this.isDragging) return;
+                    const dx = event.clientX - this.startX;
+                    const dy = event.clientY - this.startY;
+                    const comp = this.getComp(this.dragFKey, this.dragCKey);
+                    comp.x = Math.round(this.initialCompX + (dx / 0.45));
+                    comp.y = Math.round(this.initialCompY + (dy / 0.45));
+                },
+                stopDrag() {
+                    this.isDragging = false;
+                    this.dragFKey = null;
+                    this.dragCKey = null;
+                    window.removeEventListener('mousemove', this.onDrag);
+                    window.removeEventListener('mouseup', this.stopDrag);
+                },
+
+                handleScrollZoom(e, fKey, cKey) {
+                    if(this.activeFormuleKey !== fKey || this.activeCompIndex !== cKey) return;
+                    
+                    const comp = this.getComp(fKey, cKey);
+                    
+                    if (e.shiftKey) {
+                        const delta = e.deltaY > 0 ? -5 : 5;
+                        let newRot = (comp.rotation || 0) + delta;
+                        if (newRot > 180) newRot = -180 + (newRot - 180);
+                        if (newRot < -180) newRot = 180 - (-180 - newRot);
+                        comp.rotation = newRot;
+                    } else {
+                        const delta = e.deltaY > 0 ? -0.1 : 0.1;
+                        let newScale = (comp.scale || 1) + delta;
+                        newScale = Math.max(0.1, Math.min(3, newScale));
+                        comp.scale = Math.round(newScale * 10) / 10;
+                    }
+                },
+                promptImageReplacement(event, fKey, cKey) {
+                    this.replaceTarget = { fKey, cKey };
+                    this.$refs.replaceImageInput.click();
+                },
+                async handleReplaceImage(event) {
+                    const file = event.target.files[0];
+                    if (!file) return;
+                    
+                    if (!this.replaceTarget) return;
+                    
+                    const removeBg = confirm("Voulez-vous détourez l'image ? (Supprimer l'arrière-plan avec l'IA)\n\nOK = Oui, détourez l'image\nAnnuler = Non, garder l'image telle quelle");
+                    
+                    const formule = this.menuData.formules[this.replaceTarget.fKey];
+                    const comp = formule.components[this.replaceTarget.cKey];
+                    
+                    if (removeBg) {
+                        this.showNotif("1/3 Upload de l'image pour détourage...", "info");
+                        const formData = new FormData();
+                        formData.append('file', file);
+                        formData.append('target', 'raw');
+                        try {
+                            const uploadRes = await fetch('/api/upload', { method: 'POST', body: formData });
+                            const uploadData = await uploadRes.json();
+                            if (uploadData.success) {
+                                this.showNotif("2/3 Détourage par IA en cours (Veuillez patienter...)", "info");
+                                const processRes = await fetch('/api/process_images', { method: 'POST' });
+                                const processData = await processRes.json();
+                                
+                                if (processData.success) {
+                                    this.showNotif("3/3 Mise à jour de l'image...", "success");
+                                    await this.fetchData();
+                                    const newAssets = this.menuData.assets.sandwiches;
+                                    const latestAsset = newAssets[newAssets.length - 1];
+                                    if (latestAsset) {
+                                        comp.assetId = latestAsset.id;
+                                        comp.type = 'main'; 
+                                        this.saveData();
+                                    }
+                                }
+                            }
+                        } catch (e) {
+                            this.showNotif("Erreur lors du remplacement", "error");
+                        }
+                    } else {
+                        this.showNotif("Upload de l'image...", "info");
+                        const formData = new FormData();
+                        formData.append('file', file);
+                        formData.append('target', 'root');
+                        try {
+                            const uploadRes = await fetch('/api/upload', { method: 'POST', body: formData });
+                            const uploadData = await uploadRes.json();
+                            
+                            if (uploadData.success) {
+                                comp.type = 'rawImage';
+                                comp.url = uploadData.path;
+                                delete comp.assetId;
+                                this.saveData();
+                                this.showNotif("Image remplacée avec succès !", "success");
+                            }
+                        } catch(e) {
+                            this.showNotif("Erreur upload", "error");
+                        }
+                    }
+                    
+                    event.target.value = '';
+                    this.replaceTarget = null;
+                },
+                promptTextEdit(event, fKey, cKey) {
+                    const el = event.target;
+                    const comp = this.getComp(fKey, cKey);
+                    
+                    const isLayoutKey = ['nameLayout', 'descLayout', 'badgeLayout', 'priceLayout'].includes(cKey);
+                    if (comp.type !== 'customText' && comp.type !== 'shape' && !isLayoutKey) return;
+                    
+                    el.contentEditable = "true";
+                    el.focus();
+                    
+                    const selection = window.getSelection();
+                    const range = document.createRange();
+                    range.selectNodeContents(el);
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                    
+                    el.onblur = () => {
+                        el.contentEditable = "false";
+                        if (cKey === 'nameLayout') this.menuData.formules[fKey].name = el.innerText;
+                        else if (cKey === 'descLayout') this.menuData.formules[fKey].description = el.innerText;
+                        else if (cKey === 'badgeLayout') this.menuData.formules[fKey].badge = el.innerText;
+                        else if (cKey === 'priceLayout') this.menuData.formules[fKey].price = el.innerText;
+                        else comp.content = el.innerText;
+                        window.getSelection().removeAllRanges();
+                    };
+                    
+                    el.onkeydown = (e) => {
+                        if(e.key === 'Enter') {
+                            e.preventDefault();
+                            el.blur();
+                        }
+                    };
+                },
+                toggleFullscreen(fKey) {
+                    const el = document.getElementById('mockup-wrapper-' + fKey);
+                    if (!el) return;
+                    
+                    const isFullscreenAPI = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+                    
+                    // Check if already in fake fullscreen
+                    if (el.classList.contains('fake-fullscreen')) {
+                        el.classList.remove('fake-fullscreen');
+                        return;
+                    }
+                    
+                    if (!isFullscreenAPI) {
+                        if (el.requestFullscreen) {
+                            el.requestFullscreen().catch(err => {
+                                console.log("Native fullscreen failed, using CSS fallback", err);
+                                el.classList.add('fake-fullscreen');
+                            });
+                        } else if (el.webkitRequestFullscreen) {
+                            // Some older webkit requires this, but if it fails, fallback is needed
+                            try {
+                                el.webkitRequestFullscreen();
+                            } catch(e) {
+                                el.classList.add('fake-fullscreen');
+                            }
+                        } else {
+                            // iOS Safari doesn't support requestFullscreen on div, use CSS fallback
+                            el.classList.add('fake-fullscreen');
+                        }
+                    } else {
+                        if (document.exitFullscreen) {
+                            document.exitFullscreen();
+                        } else if (document.webkitExitFullscreen) {
+                            document.webkitExitFullscreen();
+                        } else if (document.mozCancelFullScreen) {
+                            document.mozCancelFullScreen();
+                        } else if (document.msExitFullscreen) {
+                            document.msExitFullscreen();
+                        }
+                    }
+                },
+                scrollToPreview() {
+                    let fKeyToScroll = this.activeFormuleKey;
+                    if (!fKeyToScroll && this.menuData && this.menuData.formules) {
+                        fKeyToScroll = Object.keys(this.menuData.formules)[0];
+                    }
+                    if (fKeyToScroll) {
+                        const el = document.getElementById('mockup-wrapper-' + fKeyToScroll);
+                        if (el) {
+                            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }
+                },
+                deleteActiveComponent(fKey) {
+                    if (this.activeCompIndex !== null) {
+                        if (typeof this.activeCompIndex === 'string') {
+                            this.showNotif("Les éléments de texte ne peuvent pas être supprimés. Videz le champ de texte à gauche pour les cacher.", "error");
+                            return;
+                        }
+                        if (this.menuData.formules[fKey].components[this.activeCompIndex]) {
+                            this.saveState();
+                            this.menuData.formules[fKey].components.splice(this.activeCompIndex, 1);
+                            this.activeCompIndex = null;
+                        }
+                    }
+                },
+                duplicateComponent(fKey, cIdx) {
+                    this.saveState();
+                    const comp = this.menuData.formules[fKey].components[cIdx];
+                    const newComp = JSON.parse(JSON.stringify(comp)); // Deep clone
+                    newComp.x += 30; // Offset slightly
+                    newComp.y += 30;
+                    this.menuData.formules[fKey].components.push(newComp);
+                    this.activeCompIndex = this.menuData.formules[fKey].components.length - 1;
+                },
+                async askAIAssistant(fKey, formule) {
+                    if (!formule.aiPrompt || formule.aiPrompt.trim() === '') return;
+                    
+                    this.showNotif("L'IA analyse votre demande et modifie l'écran...", "info");
+                    formule.isGeneratingIA = true;
+                    
+                    try {
+                        const res = await fetch('/api/designer_edit', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                prompt: formule.aiPrompt,
+                                formula: formule,
+                                assets: this.menuData.assets
+                            })
+                        });
+                        
+                        const data = await res.json();
+                        if (data.success) {
+                            this.saveState();
+                            this.menuData.formules[fKey] = data.formula;
+                            this.menuData.formules[fKey].aiPrompt = ''; 
+                            this.saveData();
+                            this.showNotif("L'écran a été modifié avec succès !", "success");
+                        } else {
+                            this.showNotif("Erreur IA: " + data.error, "error");
+                        }
+                    } catch (e) {
+                        this.showNotif("Erreur de connexion avec l'IA.", "error");
+                    } finally {
+                        formule.isGeneratingIA = false;
+                    }
+                },
+                saveState() {
+                    const snapshot = JSON.stringify(this.menuData.formules);
+                    this.history.push(snapshot);
+                    if (this.history.length > 20) this.history.shift();
+                },
+                undo() {
+                    if (this.history.length > 0) {
+                        const previousState = this.history.pop();
+                        this.menuData.formules = JSON.parse(previousState);
+                        this.activeCompIndex = null;
+                        this.showNotif("Action annulée (Ctrl+Z)", "info");
+                    }
+                },
+                handleKeydown(e) {
+                    if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
+
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
+                        e.preventDefault();
+                        this.undo();
+                        return;
+                    }
+                    
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
+                        if (this.activeFormuleKey && this.activeCompIndex !== null) {
+                            e.preventDefault();
+                            this.copyComponent(this.activeFormuleKey, this.activeCompIndex);
+                        }
+                        return;
+                    }
+                    
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'v') {
+                        if (this.activeFormuleKey && this.clipboardData) {
+                            e.preventDefault();
+                            this.pasteComponent(this.activeFormuleKey);
+                        }
+                        return;
+                    }
+
+                    if (e.code === 'Space' && this.currentTab === 'tv2' && this.activeFormuleKey) {
+                        e.preventDefault();
+                        this.playPreview(this.activeFormuleKey);
+                    }
+
+                    if ((e.code === 'Delete' || e.code === 'Backspace') && this.activeFormuleKey && this.activeCompIndex !== null) {
+                        e.preventDefault();
+                        this.deleteActiveComponent(this.activeFormuleKey);
+                    }
+                },
+                copyComponent(fKey, cIdx) {
+                    if (typeof cIdx === 'string') {
+                        const layout = this.menuData.formules[fKey][cIdx];
+                        if (layout) {
+                            let contentStr = '';
+                            if (cIdx === 'nameLayout') contentStr = this.menuData.formules[fKey].name;
+                            else if (cIdx === 'descLayout') contentStr = this.menuData.formules[fKey].description;
+                            else if (cIdx === 'badgeLayout') contentStr = this.menuData.formules[fKey].badge;
+                            else if (cIdx === 'priceLayout') contentStr = this.menuData.formules[fKey].price + ' DH';
+                            
+                            this.clipboardData = {
+                                type: 'customText',
+                                content: contentStr,
+                                x: layout.x || 0,
+                                y: layout.y || 0,
+                                scale: layout.scale || 1,
+                                z: layout.z || 50,
+                                rotation: layout.rotation || 0,
+                                color: layout.color || '#ffffff',
+                                fontSize: cIdx === 'nameLayout' ? 90 : (cIdx === 'priceLayout' ? 85 : 40),
+                                fontFamily: 'Impact',
+                                hasShadow: true,
+                                animIn: layout.animIn || 'fadeUp',
+                                animOut: layout.animOut || 'fadeDown',
+                                delay: layout.delay || 0.1,
+                                continuousAnim: layout.continuousAnim || 'none'
+                            };
+                            this.showNotif("Texte (" + cIdx.replace('Layout', '') + ") copié !", "success");
+                        }
+                    } else {
+                        const comp = this.menuData.formules[fKey].components[cIdx];
+                        if (comp) {
+                            this.clipboardData = JSON.parse(JSON.stringify(comp)); // deep clone
+                            this.showNotif("Composant copié ! (Ctrl+V pour coller)", "success");
+                        }
+                    }
+                },
+                pasteComponent(fKey) {
+                    if (this.clipboardData) {
+                        this.saveState();
+                        const newComp = JSON.parse(JSON.stringify(this.clipboardData));
+                        newComp.x += 30; // offset
+                        newComp.y += 30;
+                        this.menuData.formules[fKey].components.push(newComp);
+                        this.activeCompIndex = this.menuData.formules[fKey].components.length - 1;
+                        this.showNotif("Composant collé !", "success");
+                    }
+                },
+                handleContextMenu(e, fKey, cIdx) {
+                    this.contextMenu = {
+                        visible: true,
+                        x: e.clientX,
+                        y: e.clientY,
+                        fKey: fKey,
+                        cIdx: cIdx
+                    };
+                    if (cIdx !== null) {
+                        this.setActive(fKey, cIdx);
+                    }
+                },
+                hideContextMenu() {
+                    this.contextMenu.visible = false;
+                },
+                contextCopy() {
+                    this.copyComponent(this.contextMenu.fKey, this.contextMenu.cIdx);
+                    this.hideContextMenu();
+                },
+                contextPaste() {
+                    this.pasteComponent(this.contextMenu.fKey);
+                    this.hideContextMenu();
+                },
+                contextDuplicate() {
+                    this.duplicateComponent(this.contextMenu.fKey, this.contextMenu.cIdx);
+                    this.hideContextMenu();
+                },
+                contextDelete() {
+                    this.deleteActiveComponent(this.contextMenu.fKey);
+                    this.hideContextMenu();
+                },
+                getAnimOffset(type) {
+                    const config = { x: 0, y: 0, scale: 1 };
+                    const dist = 300;
+                    switch(type) {
+                        case 'fadeUp': config.y = dist; break;
+                        case 'fadeDown': config.y = -dist; break;
+                        case 'fadeLeft': config.x = dist; break;
+                        case 'fadeRight': config.x = -dist; break;
+                        case 'zoomIn': config.scale = 0; break;
+                        case 'zoomOut': config.scale = 2; break;
+                        default: config.y = 50; break;
+                    }
+                    return config;
+                },
+                formatTime(val) {
+                    return Number(val).toFixed(1);
+                },
+                displayTime(val) {
+                    const num = Number(val);
+                    if (num >= 60) {
+                        const m = Math.floor(num / 60);
+                        const s = (num % 60).toFixed(1);
+                        return m + 'm ' + (s < 10 ? '0' : '') + s + 's';
+                    }
+                    return num.toFixed(1) + 's';
+                },
+                scrubTimeline() {
+                    if (this.playingTimeline) {
+                        this.playingTimeline.pause();
+                        this.isPlaying = false;
+                        this.playingTimeline.progress(this.previewProgress / 100);
+                    }
+                },
+                togglePlayPreview(fKey) {
+                    if (this.playingTimeline) {
+                        if (this.isPlaying) {
+                            this.playingTimeline.pause();
+                            this.isPlaying = false;
+                        } else {
+                            if (this.previewProgress >= 100) {
+                                this.playingTimeline.restart();
+                            } else {
+                                this.playingTimeline.play();
+                            }
+                            this.isPlaying = true;
+                        }
+                    } else {
+                        this.playPreview(fKey);
+                    }
+                },
+                playPreview(fKey) {
+                    if (this.playingTimeline) {
+                        this.playingTimeline.kill();
+                    }
+                    const view = document.getElementById('mockup-' + fKey);
+                    if (!view) return;
+
+                    const tl = gsap.timeline({
+                        onUpdate: () => {
+                            if (this.playingTimeline) {
+                                this.previewProgress = this.playingTimeline.progress() * 100;
+                            }
+                        },
+                        onComplete: () => {
+                            this.isPlaying = false;
+                            this.previewProgress = 100;
+                            
+                            // Reset components
+                            const formule = this.menuData.formules[fKey];
+                            if(formule.components) {
+                                formule.components.forEach((c, i) => gsap.set(document.getElementById('mockup-anim-' + fKey + '-' + i), { clearProps: 'all' }));
+                            }
+                            ['nameLayout', 'descLayout', 'badgeLayout', 'priceLayout'].forEach(t => {
+                                if(formule[t]) gsap.set(document.getElementById('mockup-anim-' + fKey + '-' + t), { clearProps: 'all' });
+                            });
+                        }
+                    });
+                    
+                    this.playingTimeline = tl;
+                    this.isPlaying = true;
+                    this.previewProgress = 0;
+                    
+                    const formule = this.menuData.formules[fKey];
+                    const duration = formule.duration || 6;
+                    
+                    tl.to({}, { duration: duration });
+                    
+                    if(formule.components) {
+                        formule.components.forEach((comp, cIdx) => {
+                            const item = document.getElementById('mockup-anim-' + fKey + '-' + cIdx);
+                            if(!item) return;
+                            
+                            const fromOffset = this.getAnimOffset(comp.animIn);
+                            const rotation = comp.rotation || 0;
+                            const delay = comp.delay || 0;
+                            const exitTime = comp.exitTime || duration;
+                            
+                            tl.fromTo(item, 
+                                { x: fromOffset.x, y: fromOffset.y, scale: fromOffset.scale, opacity: 0, rotation: rotation },
+                                { x: 0, y: 0, scale: 1, opacity: 1, rotation: rotation, duration: 1.5, ease: "back.out(1.2)" },
+                                delay
+                            );
+                            
+                            if(exitTime < duration) {
+                                const outOffset = this.getAnimOffset(comp.animOut || 'zoomOut');
+                                tl.to(item, {
+                                    x: outOffset.x, y: outOffset.y, scale: outOffset.scale, opacity: 0, duration: 1, ease: "power2.in"
+                                }, exitTime);
+                            }
+                        });
+                    }
+                    
+                    ['nameLayout', 'descLayout', 'badgeLayout', 'priceLayout'].forEach(tKey => {
+                        if(formule[tKey]) {
+                            const layout = formule[tKey];
+                            const item = document.getElementById('mockup-anim-' + fKey + '-' + tKey);
+                            if(!item) return;
+                            
+                            const fromOffset = this.getAnimOffset(layout.animIn);
+                            const rotation = layout.rotation || 0;
+                            const delay = layout.delay || 0;
+                            const exitTime = layout.exitTime || duration;
+                            
+                            tl.fromTo(item, 
+                                { x: fromOffset.x, y: fromOffset.y, scale: fromOffset.scale, opacity: 0, rotation: rotation },
+                                { x: 0, y: 0, scale: 1, opacity: 1, rotation: rotation, duration: 1.5, ease: "back.out(1.2)" },
+                                delay
+                            );
+                            
+                            if(exitTime < duration) {
+                                const outOffset = this.getAnimOffset(layout.animOut || 'zoomOut');
+                                tl.to(item, {
+                                    x: outOffset.x, y: outOffset.y, scale: outOffset.scale, opacity: 0, duration: 1, ease: "power2.in"
+                                }, exitTime);
+                            }
+                        }
+                    });
+                },
+
+                async uploadAssetFile(event, asset) {
+                    const file = event.target.files[0];
+                    if (!file) return;
+                    const formData = new FormData(); formData.append('file', file); formData.append('target', 'raw'); 
+                    try {
+                        const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                        const data = await res.json();
+                        if (data.success) { asset.url = `processed_images/${data.filename}`; }
+                    } catch (e) {}
+                },
+                async generateDesign() {
+                    if(!this.aiPrompt.trim()) return;
+                    
+                    this.isGenerating = true;
+                    this.showNotif("L'IA réfléchit au design...", "info");
+                    
+                    try {
+                        const res = await fetch('/api/designer', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                prompt: this.aiPrompt,
+                                assets: this.menuData.assets
+                            })
+                        });
+                        
+                        const data = await res.json();
+                        
+                        if (data.success && data.formula) {
+                            const newKey = 'gen_' + Date.now().toString().slice(-6);
+                            this.menuData.formules[newKey] = data.formula;
+                            this.activeFormuleKey = newKey;
+                            this.aiPrompt = '';
+                            this.showNotif("✨ Design généré avec succès !");
+                            
+                            // Play animation shortly after Vue renders the new DOM
+                            setTimeout(() => {
+                                this.playPreview(newKey);
+                            }, 500);
+                        } else {
+                            this.showNotif(data.error || "Erreur lors de la génération", "error");
+                        }
+                    } catch (e) {
+                        this.showNotif("Erreur de connexion à l'IA", "error");
+                    } finally {
+                        this.isGenerating = false;
+                    }
+                },
+                async processImages() {
+                    this.showNotif("L'IA nettoie les images...", "success");
+                    try {
+                        const res = await fetch('/api/process_images', { method: 'POST' });
+                        const data = await res.json();
+                        if (data.success) this.showNotif("Traitement terminé !");
+                    } catch (e) {}
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>

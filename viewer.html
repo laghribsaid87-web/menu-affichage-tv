@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV2 - Dynamic Animation Engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700;900&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #050505; color: #FFFFFF; overflow: hidden; font-family: 'Inter', sans-serif; width: 1920px; height: 1080px; margin: 0; padding: 0; }
+        .bg-layer { position: absolute; top:0; left:0; width:100%; height:100%; z-index: -5; background: radial-gradient(circle at 50% 60%, #1a1a1a 0%, #000000 100%); }
+        .light-beam { position: absolute; top: -50%; left: 50%; width: 800px; height: 2000px; background: linear-gradient(90deg, transparent, rgba(255,199,44,0.05), transparent); transform: rotate(35deg) translateX(-50%); z-index: -4; pointer-events: none; }
+        .light-beam:nth-child(2) { transform: rotate(-35deg) translateX(-50%); background: linear-gradient(90deg, transparent, rgba(218,41,28,0.05), transparent); }
+        .glow-orb { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -40%); width: 1200px; height: 800px; border-radius: 50%; filter: blur(120px); z-index: -3; opacity: 0.8; transition: background 1s ease; }
+        .glow-red { background: rgba(218,41,28,0.6); }
+        .glow-yellow { background: rgba(255,199,44,0.4); }
+        .glow-blue { background: rgba(0, 168, 255, 0.4); }
+        .glow-off { opacity: 0; }
+        .floor-shadow { position: absolute; bottom: 100px; left: 50%; transform: translateX(-50%); width: 1200px; height: 100px; background: radial-gradient(ellipse at center, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 70%); z-index: 0; }
+
+        h1, h2, .price, .badge { font-family: 'Oswald', sans-serif; }
+        
+        .offer-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; visibility: hidden; padding-top: 60px; }
+        .badge { font-size: 2.5rem; padding: 8px 30px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); letter-spacing: 0.2em; text-transform: uppercase; display: inline-block; margin-bottom: 20px; font-weight: 900; }
+        .title-text { font-size: 8rem; line-height: 0.9; text-transform: uppercase; text-shadow: 0 20px 40px rgba(0,0,0,0.8); margin: 0; background: linear-gradient(to bottom, #ffffff, #d4d4d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; letter-spacing: 0.02em; }
+        .desc-text { font-size: 3rem; font-weight: 700; text-shadow: 0 5px 15px rgba(0,0,0,0.8); letter-spacing: 0.05em; margin-top: 15px; }
+
+        .price-sticker { position: absolute; bottom: 80px; left: 150px; width: 300px; height: 300px; background: #FFC72C; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 30px 60px rgba(255,199,44,0.4), inset 0 0 20px rgba(0,0,0,0.2); border: 8px solid #DA291C; z-index: 50; transform: rotate(-10deg); }
+        .price-num { font-size: 10rem; line-height: 0.8; font-weight: 900; color: #111; margin-top: 20px;}
+        .price-currency { font-size: 4rem; color: #DA291C; font-weight: 900; margin-top: -10px;}
+        .price-currency { font-size: 4rem; color: #DA291C; font-weight: 900; margin-top: -10px;}
+        
+        .fullscreen-media { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 20; }
+
+        /* Continuous Animations */
+        @keyframes anim-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        @keyframes anim-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        @keyframes anim-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes anim-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+        @keyframes anim-swing { 20% { transform: rotate(15deg); } 40% { transform: rotate(-10deg); } 60% { transform: rotate(5deg); } 80% { transform: rotate(-5deg); } 100% { transform: rotate(0deg); } }
+        @keyframes anim-heartbeat { 0%, 28%, 70% { transform: scale(1); } 14%, 42% { transform: scale(1.15); } }
+        @keyframes anim-glow { 0%, 100% { filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)) brightness(1); } 50% { filter: drop-shadow(0 0 20px rgba(255,255,255,0.8)) brightness(1.2); } }
+        @keyframes anim-wobble { 0%, 100% { transform: translateX(0%); } 15% { transform: translateX(-10%) rotate(-5deg); } 30% { transform: translateX(8%) rotate(3deg); } 45% { transform: translateX(-6%) rotate(-3deg); } 60% { transform: translateX(4%) rotate(2deg); } 75% { transform: translateX(-2%) rotate(-1deg); } }
+        @keyframes anim-bounce-slow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
+        @keyframes anim-float-x { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(20px); } }
+        @keyframes anim-flip { 0% { transform: perspective(400px) rotateY(0); } 100% { transform: perspective(400px) rotateY(360deg); } }
+        @keyframes anim-shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); } 20%, 40%, 60%, 80% { transform: translateX(5px); } }
+        
+        .anim-float { animation: anim-float 4s ease-in-out infinite !important; }
+        .anim-pulse { animation: anim-pulse 2s ease-in-out infinite !important; }
+        .anim-spin { animation: anim-spin 10s linear infinite !important; }
+        .anim-breathe { animation: anim-breathe 6s ease-in-out infinite !important; }
+        .anim-swing { animation: anim-swing 4s ease-in-out infinite !important; transform-origin: top center; }
+        .anim-heartbeat { animation: anim-heartbeat 2.5s ease-in-out infinite !important; }
+        .anim-glow { animation: anim-glow 3s ease-in-out infinite !important; }
+        .anim-wobble { animation: anim-wobble 4s ease-in-out infinite !important; }
+        .anim-bounce-slow { animation: anim-bounce-slow 3s ease-in-out infinite !important; }
+        .anim-float-x { animation: anim-float-x 4s ease-in-out infinite !important; }
+        .anim-flip { animation: anim-flip 5s linear infinite !important; }
+        .anim-shake { animation: anim-shake 6s ease-in-out infinite !important; }
+        .anim-spin-fast { animation: anim-spin 2s linear infinite !important; }
+        .anim-spin-reverse { animation: anim-spin 10s linear infinite reverse !important; }
+    </style>
+
+    <script>
+        function resizeCanvas() {
+            // Check orientation from global menuData if available, else default horizontal
+            const isVertical = (window.menuData && window.menuData.orientation === 'vertical');
+            const baseWidth = isVertical ? 1080 : 1920;
+            const baseHeight = isVertical ? 1920 : 1080;
+            
+            document.body.style.width = baseWidth + 'px';
+            document.body.style.height = baseHeight + 'px';
+            
+            const scaleX = window.innerWidth / baseWidth;
+            const scaleY = window.innerHeight / baseHeight;
+            const scale = Math.min(scaleX, scaleY);
+            
+            document.body.style.transform = `scale(${scale})`;
+            document.body.style.transformOrigin = 'top left';
+            
+            const scaledWidth = baseWidth * scale;
+            const scaledHeight = baseHeight * scale;
+            document.body.style.marginLeft = `${(window.innerWidth - scaledWidth) / 2}px`;
+            document.body.style.marginTop = `${(window.innerHeight - scaledHeight) / 2}px`;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        // Call it after data loads too
+    </script>
+
+    <script src="/effects.js?v=3"></script>
+</head>
+<body>
+    <div id="bg-container" style="position: absolute; top:0; left:0; width:100%; height:100%; z-index: -5; overflow: hidden;"></div>
+    <div id="glow" class="glow-orb"></div>
+
+    <div id="dynamic-container"></div>
+    
+    <div id="video-view" class="offer-container" style="padding-top: 0;">
+        <video id="promo-video" class="fullscreen-media" muted playsinline></video>
+    </div>
+    <div id="glovo-view" class="offer-container" style="padding-top: 0;">
+        <img id="promo-image" class="fullscreen-media" style="object-fit: contain; background: #000;">
+    </div>
+
+    <script>
+        let menuData = null;
+        let masterTimeline = null;
+        
+        async function loadData() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetProject = urlParams.get('project') || 'default';
+            const targetTv = urlParams.get('tv') || '1';
+            const res = await fetch(`/api/menu/${targetProject}/${targetTv}`);
+            menuData = await res.json();
+            
+            resizeCanvas();
+            buildDynamicViews();
+            
+            if (menuData.promos) {
+                document.getElementById('promo-video').src = menuData.promos.video;
+                document.getElementById('promo-image').src = menuData.promos.image;
+            }
+
+            startProAnimationLoop();
+        }
+
+        function getAssetUrl(id) {
+            for(let cat in menuData.assets) {
+                const asset = menuData.assets[cat].find(a => a.id === id);
+                if (asset) return asset.url;
+            }
+            return "";
+        }
+
+        function isSmallItem(url) {
+            return url.includes('coca') || url.includes('SODA') || url.includes('jus');
+        }
+
+        function getTextStyleString(comp) {
+            if (!comp) return "";
+            let style = `color: ${comp.color || '#ffffff'}; font-size: ${(comp.fontSize || 40)}px; font-family: ${comp.fontFamily || "'Oswald', sans-serif"}; font-weight: bold; line-height: 1; white-space: nowrap; `;
+            
+            const effect = comp.textEffect || (comp.hasShadow ? 'shadow' : 'none');
+            const intensity = comp.effectIntensity !== undefined ? comp.effectIntensity : 50;
+            const val = intensity / 100;
+            
+            let strokeColor = comp.strokeColor || '#000000';
+            let cColor = comp.color || '#ffffff';
+            
+            if (effect === 'shadow') {
+                style += `text-shadow: 0 ${10 * val}px ${25 * val}px rgba(0,0,0,${0.4 + (val * 0.6)}); `;
+            } else if (effect === 'glow') {
+                style += `text-shadow: 0 0 ${10 * val}px ${cColor}, 0 0 ${20 * val}px ${cColor}, 0 0 ${40 * val}px ${cColor}; `;
+            } else if (effect === 'echo') {
+                style += `text-shadow: ${6 * val}px ${6 * val}px 0px rgba(255,255,255,0.4), ${12 * val}px ${12 * val}px 0px rgba(255,255,255,0.2); `;
+            } else if (effect === 'outline') {
+                style += `-webkit-text-stroke: ${6 * val}px ${strokeColor}; `;
+            } else if (effect === 'bg') {
+                style += `background-color: ${strokeColor}; padding: ${10 * val}px ${20 * val}px; border-radius: ${15 * val}px; `;
+            } else if (effect === 'bevel') {
+                style += `text-shadow: ${5 * val}px ${5 * val}px 0px rgba(0,0,0,0.6), -${3 * val}px -${3 * val}px 0px rgba(255,255,255,0.7); `;
+            } else if (effect === 'hollow') {
+                style += `-webkit-text-stroke: ${4 * val}px ${cColor}; color: transparent; `;
+            } else if (effect === 'neon') {
+                style += `text-shadow: 0 0 ${5 * val}px #fff, 0 0 ${10 * val}px #fff, 0 0 ${20 * val}px ${cColor}, 0 0 ${40 * val}px ${cColor}, 0 0 ${80 * val}px ${cColor}; color: #ffffff; `;
+            } else if (effect === 'glitch') {
+                style += `text-shadow: ${8 * val}px 0 0 cyan, -${8 * val}px 0 0 red; `;
+            }
+            
+            return style;
+        }
+
+        function getMaskStyle(comp) {
+            if (!comp.maskType) return 'none';
+            const strength = comp.maskStrength !== undefined ? comp.maskStrength : 50;
+            const solidPoint = Math.max(0, 100 - strength);
+            switch (comp.maskType) {
+                case 'bottom': return `linear-gradient(to bottom, black ${solidPoint}%, transparent 100%)`;
+                case 'top': return `linear-gradient(to top, black ${solidPoint}%, transparent 100%)`;
+                case 'left': return `linear-gradient(to left, black ${solidPoint}%, transparent 100%)`;
+                case 'right': return `linear-gradient(to right, black ${solidPoint}%, transparent 100%)`;
+                case 'radial': return `radial-gradient(circle, black ${solidPoint}%, transparent 100%)`;
+                default: return 'none';
+            }
+        }
+
+
+        function getBgColorStyle(f) {
+            if (f.isBgGradient && f.bgColor2) {
+                return `linear-gradient(${f.bgGradientAngle || 90}deg, ${f.bgColor || '#000000'}, ${f.bgColor2})`;
+            }
+            return f.bgColor || 'radial-gradient(circle at 50% 60%, #1a1a1a 0%, #000000 100%)';
+        }
+
+        function getDataAnimAttrs(comp) {
+            let attrs = `data-anim-in="${comp.animIn || 'zoomIn'}" data-anim-out="${comp.animOut || 'zoomOut'}" data-delay="${comp.delay || 0}" data-rotation="${comp.rotation || 0}"`;
+            if (comp.animIn === 'custom' || comp.animOut === 'custom') {
+                attrs += ` data-anim-start-x="${comp.animStartX || 0}" data-anim-start-y="${comp.animStartY || 0}" data-anim-start-scale="${comp.animStartScale !== undefined ? comp.animStartScale : 1}" data-anim-start-rotation="${comp.animStartRotation || 0}" data-anim-end-x="${comp.animEndX || 0}" data-anim-end-y="${comp.animEndY || 0}" data-anim-end-scale="${comp.animEndScale !== undefined ? comp.animEndScale : 1}" data-anim-end-rotation="${comp.animEndRotation || 0}"`;
+            }
+            return attrs;
+        }
+
+        function buildDynamicViews() {
+            if (!menuData || !menuData.formules) return;
+            const container = document.getElementById('dynamic-container');
+            let html = "";
+            let idx = 0;
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetTv = urlParams.get('tv');
+            
+            for (let key in menuData.formules) {
+                const f = menuData.formules[key];
+                
+                // Si la TV est spécifiée dans l'URL et que la formule a une TV cible, on filtre
+                if (targetTv && f.tv && f.tv !== '' && f.tv.toString().toLowerCase() !== "toutes" && f.tv.toString() !== targetTv.toString()) {
+                    continue;
+                }
+                const colorTheme = idx % 2 === 0 ? { bg: '#DA291C', text: 'white', priceBg: '#DA291C', priceBorder: '#FFC72C' } 
+                                                 : { bg: '#FFC72C', text: '#111', priceBg: '#FFC72C', priceBorder: '#DA291C' };
+                
+                let sceneHtml = ``;
+                
+                if (f.components && Array.isArray(f.components)) {
+                    f.components.forEach((comp, cIdx) => {
+                        let animClass = (comp.continuousAnim && comp.continuousAnim !== 'none') ? 'anim-' + comp.continuousAnim : '';
+                        
+                        if (comp.type === 'customText') {
+                            compHtml = `
+                                <div class="dyn-element comp-item"
+                                     ${getDataAnimAttrs(comp)}>
+                                     <div class="${animClass} drop-shadow-xl" style="${getTextStyleString(comp)}">
+                                        ${comp.content}
+                                     </div>
+                                </div>
+                            `;
+                        } else if (comp.type === 'shape') {
+                            let shapeStyle = `background-color: ${comp.color}; opacity: ${comp.opacity}; width: ${comp.width}px; height: ${comp.height}px;`;
+                            if (comp.shapeType === 'circle') shapeStyle += ` border-radius: 50%;`;
+                            else if (comp.shapeType === 'badge') shapeStyle += ` clip-path: polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%);`;
+                            else if (comp.shapeType === 'star') shapeStyle += ` clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);`;
+                            else if (comp.shapeType === 'burst') shapeStyle += ` clip-path: polygon(50% 0%, 65% 15%, 85% 15%, 85% 35%, 100% 50%, 85% 65%, 85% 85%, 65% 85%, 50% 100%, 35% 85%, 15% 85%, 15% 65%, 0% 50%, 15% 35%, 15% 15%, 35% 15%);`;
+                            else shapeStyle += ` border-radius: ${comp.borderRadius || 0}px;`;
+                            
+                            if (comp.isNeon) {
+                                shapeStyle += ` filter: drop-shadow(0 0 15px ${comp.color}) drop-shadow(0 0 30px ${comp.color});`;
+                                if (!comp.isGradient) shapeStyle += ` background-color: #ffffff;`;
+                            }
+                            
+                            let maskStyle = getMaskStyle(comp);
+                            if (maskStyle !== 'none') {
+                                shapeStyle += ` -webkit-mask-image: ${maskStyle}; mask-image: ${maskStyle};`;
+                            }
+                            
+                            const animClass = (comp.continuousAnim && comp.continuousAnim !== 'none') ? `anim-${comp.continuousAnim}` : '';
+                            
+                            compHtml = `
+                                <div class="dyn-element comp-item"
+                                     ${getDataAnimAttrs(comp)}>
+                                     <div class="${animClass}" style="${shapeStyle}"></div>
+                                </div>
+                            `;
+                        } else if (comp.type === 'main') {
+                            const url = getAssetUrl(comp.assetId);
+                            if(!url) return;
+                            compHtml = `
+                                <div style="transform: scaleX(${(comp.flipX || comp.flip ? -1 : 1) * (comp.scaleX || 1)}) scaleY(${(comp.flipY ? -1 : 1) * (comp.scaleY || 1)});">
+                                    <div class="dyn-element comp-item" 
+                                         ${getDataAnimAttrs(comp)}>
+                                         <img src="${url}" class="${animClass}" style="filter: drop-shadow(0 20px 30px rgba(0,0,0,0.6)); ${comp.fillScreen ? 'max-width: none; width: ' + (menuData.orientation === 'vertical' ? '1080px' : '1920px') + '; height: ' + (menuData.orientation === 'vertical' ? '1920px' : '1080px') + '; object-fit: cover;' : (isSmallItem(url) ? 'max-width: 400px;' : 'max-width: 900px;')} -webkit-mask-image: ${getMaskStyle(comp)}; mask-image: ${getMaskStyle(comp)};">
+                                    </div>
+                                </div>
+                            `;
+                        } else if (comp.type === 'rawImage') {
+                            if(!comp.url) return;
+                            compHtml = `
+                                <div style="transform: scaleX(${(comp.flipX || comp.flip ? -1 : 1) * (comp.scaleX || 1)}) scaleY(${(comp.flipY ? -1 : 1) * (comp.scaleY || 1)});">
+                                    <div class="dyn-element comp-item" 
+                                         ${getDataAnimAttrs(comp)}>
+                                         <img src="${comp.url.startsWith('http') ? comp.url : '/' + comp.url}" class="${animClass}" style="${comp.fillScreen ? 'max-width: none; width: ' + (menuData.orientation === 'vertical' ? '1080px' : '1920px') + '; height: ' + (menuData.orientation === 'vertical' ? '1920px' : '1080px') + '; object-fit: cover;' : 'max-width: 2500px;'} clip-path: inset(${comp.clipTop || 0}% ${comp.clipRight || 0}% ${comp.clipBottom || 0}% ${comp.clipLeft || 0}%); -webkit-mask-image: ${getMaskStyle(comp)}; mask-image: ${getMaskStyle(comp)};">
+                                    </div>
+                                </div>
+                            `;
+                        } else if (comp.type === 'rawVideo') {
+                            if(!comp.url) return;
+                            compHtml = `
+                                <div style="transform: scaleX(${(comp.flipX || comp.flip ? -1 : 1) * (comp.scaleX || 1)}) scaleY(${(comp.flipY ? -1 : 1) * (comp.scaleY || 1)});">
+                                    <div class="dyn-element comp-item" 
+                                         ${getDataAnimAttrs(comp)}>
+                                         <video src="/${comp.url}" class="${animClass}" autoplay loop muted playsinline style="max-width: 2500px; clip-path: inset(${comp.clipTop || 0}% ${comp.clipRight || 0}% ${comp.clipBottom || 0}% ${comp.clipLeft || 0}%);"></video>
+                                    </div>
+                                </div>
+                            `;
+                        }
+
+                        sceneHtml += `
+                        <div class="absolute top-[350px] left-1/2 w-0 h-0 overflow-visible z-10"
+                             style="transform: translate(${comp.x}px, ${comp.y}px) scale(${comp.scale}); z-index: ${comp.z};">
+                            <div class="absolute w-max h-max" style="transform: translate(-50%, -50%) rotate(${comp.rotation || 0}deg);">
+                                ${compHtml}
+                            </div>
+                        </div>`;
+                    });
+                }
+                
+                let textsHtml = ``;
+                if (f.nameLayout) {
+                    ['nameLayout', 'descLayout', 'badgeLayout', 'priceLayout'].forEach(tKey => {
+                        if (!f[tKey]) return;
+                        
+                        let contentHtml = '';
+                        if (tKey === 'nameLayout') contentHtml = `<div class="title-text" style="margin:0; text-align:center; position:static; transform:none; letter-spacing: -2px;">${f.name}</div>`;
+                        if (tKey === 'descLayout') contentHtml = `<div class="desc-text" style="color: ${colorTheme.bg}; margin:0; text-align:center; position:static; transform:none; font-size:45px;">${f.description}</div>`;
+                        if (tKey === 'badgeLayout') contentHtml = `<div class="badge" style="background: ${colorTheme.bg}; color: ${colorTheme.text}; margin:0; text-align:center; position:static; transform:none; display:block;">${f.badge}</div>`;
+                        if (tKey === 'priceLayout') contentHtml = `
+                            <div class="price-sticker m-0 flex flex-col justify-center items-center" style="background: ${colorTheme.priceBg}; border-color: ${colorTheme.priceBorder}; position:static; transform:none; width:220px; height:220px;">
+                                <span class="price-num" style="color: ${idx % 2 === 0 ? 'white' : '#111'}; font-size:85px; position:static;">${f.price}</span>
+                                <span class="price-currency" style="color: ${idx % 2 === 0 ? '#FFC72C' : '#DA291C'};">DH</span>
+                            </div>`;
+                            
+                        textsHtml += `
+                        <div class="absolute top-[540px] left-1/2 w-0 h-0 overflow-visible z-20"
+                             style="transform: translate(${f[tKey].x}px, ${f[tKey].y}px) scale(${f[tKey].scale}); z-index: ${f[tKey].z};">
+                            <div class="absolute w-max h-max" style="transform: translate(-50%, -50%) rotate(${f[tKey].rotation || 0}deg);">
+                                <div class="dyn-element text-item" 
+                                     data-anim-in="${f[tKey].animIn || 'zoomIn'}" 
+                                     data-anim-out="${f[tKey].animOut || 'zoomOut'}" 
+                                     data-delay="${f[tKey].delay || 0}"
+                                     data-rotation="${f[tKey].rotation || 0}">
+                                    ${contentHtml}
+                                </div>
+                            </div>
+                        </div>`;
+                    });
+                }
+
+                html += `
+                <div id="view-${key}" class="offer-container dyn-view" data-duration="${f.duration || 6}">
+                    <div class="absolute inset-0 z-0" style="background: ${getBgColorStyle(f)}; opacity: 0.8; box-shadow: ${f.isBgNeon ? 'inset 0 0 150px #ffffff, inset 0 0 300px ' + (f.bgColor || '#000000') : 'none'}; filter: ${f.isBgNeon ? 'brightness(1.5) saturate(1.5)' : 'none'};"></div>
+                    ${f.bgImage ? \`<div class="absolute inset-0 z-0 opacity-80 pointer-events-none" style="background: url(/\${f.bgImage}) center/cover no-repeat; -webkit-mask-image: \${getMaskStyle(f)}; mask-image: \${getMaskStyle(f)};"></div>\` : ''}
+                    <div id="effect-${key}" class="absolute inset-0 z-0 pointer-events-none overflow-hidden"></div>
+                    ${sceneHtml}
+                    ${textsHtml}
+                </div>`;
+                idx++;
+            }
+            container.innerHTML = html;
+            
+            // Appliquer les effets de fond après l'insertion dans le DOM
+            for (let key in menuData.formules) {
+                const f = menuData.formules[key];
+                const effectContainer = document.getElementById(`effect-${key}`);
+                if (effectContainer) {
+                    applyBgEffect(effectContainer, f.bgEffect, 'transparent');
+                }
+            }
+        }
+
+        function getAnimOffset(type, el = null, isOut = false) {
+            const config = { x: 0, y: 0, scale: 1 };
+            const dist = 300;
+            if (type === 'custom' && el) {
+                if (isOut) {
+                    config.x = parseFloat(el.dataset.animEndX) || 0;
+                    config.y = parseFloat(el.dataset.animEndY) || 0;
+                    config.scale = parseFloat(el.dataset.animEndScale);
+                    if (isNaN(config.scale)) config.scale = 1;
+                    config.rotationOffset = parseFloat(el.dataset.animEndRotation) || 0;
+                } else {
+                    config.x = parseFloat(el.dataset.animStartX) || 0;
+                    config.y = parseFloat(el.dataset.animStartY) || 0;
+                    config.scale = parseFloat(el.dataset.animStartScale);
+                    if (isNaN(config.scale)) config.scale = 1;
+                    config.rotationOffset = parseFloat(el.dataset.animStartRotation) || 0;
+                }
+                return config;
+            }
+            switch(type) {
+                case 'fadeUp': config.y = dist; break;
+                case 'fadeDown': config.y = -dist; break;
+                case 'fadeLeft': config.x = dist; break; 
+                case 'fadeRight': config.x = -dist; break; 
+                case 'zoomIn': config.scale = 0; break;
+                case 'zoomOut': config.scale = 2; break;
+                case 'fade': break; // opacity only
+                case 'pop': config.scale = 0.5; break;
+                case 'drop': config.y = -700; break;
+                case 'rollIn': config.rotationOffset = -180; config.scale = 0; break;
+                case 'driftLeft': config.x = 100; break;
+                case 'driftRight': config.x = -100; break;
+                default: config.y = 50; break;
+            }
+            return config;
+        }
+
+        function startProAnimationLoop() {
+            const views = Array.from(document.querySelectorAll('.dyn-view'));
+            const v3 = document.getElementById('video-view');
+            const v4 = document.getElementById('glovo-view');
+            const glow = document.getElementById('glow');
+            const video = document.getElementById('promo-video');
+            const glovoImg = document.getElementById('promo-image');
+            
+            gsap.set([...views, v3, v4], { autoAlpha: 0 });
+            masterTimeline = gsap.timeline({ repeat: -1 });
+
+            views.forEach((view, index) => {
+                const color = index % 2 === 0 ? "glow-orb glow-red" : "glow-orb glow-yellow";
+                const duration = parseFloat(view.dataset.duration) || 6;
+                
+                masterTimeline
+                  .set(view, { autoAlpha: 1 })
+                  .to(glow, { className: color, duration: 1 }, "<")
+                  .add(animInDynamic(view), "<")
+                  .to({}, { duration: duration })
+                  .add(animOutDynamic(view));
+            });
+
+            // Promos
+            if(menuData.promos.video) {
+                const dur = menuData.promos.videoDuration || 10;
+                masterTimeline
+                  .set(v3, { autoAlpha: 1 })
+                  .to(glow, { className: "glow-orb glow-off", duration: 0.5 }, "<")
+                  .call(() => { video.currentTime = 0; video.play().catch(e => console.log("Video play error")); })
+                  .fromTo(v3, { opacity: 0 }, { opacity: 1, duration: 1 })
+                  .to({}, { duration: dur })
+                  .to(v3, { opacity: 0, duration: 1 })
+                  .set(v3, { autoAlpha: 0 })
+                  .call(() => { video.pause(); });
+            }
+              
+            if(menuData.promos.image) {
+                const dur = menuData.promos.imageDuration || 7;
+                masterTimeline
+                  .set(v4, { autoAlpha: 1 })
+                  .to(glow, { className: "glow-orb glow-blue", duration: 0.5 }, "<")
+                  .fromTo(v4, { opacity: 0 }, { opacity: 1, duration: 1 })
+                  .fromTo(glovoImg, { scale: 1 }, { scale: 1.05, duration: dur, ease: "sine.inOut" }, "<")
+                  .to(v4, { opacity: 0, duration: 1 }, "-=1")
+                  .set(v4, { autoAlpha: 0 });
+            }
+            // Removed global GSAP breathing to allow specific CSS continuous animations.
+        }
+
+        function animInDynamic(view) {
+            const tl = gsap.timeline();
+            const items = view.querySelectorAll('.dyn-element');
+            
+            items.forEach(item => {
+                const animType = item.dataset.animIn || 'zoomIn';
+                const delay = parseFloat(item.dataset.delay) || 0;
+                const fromOffset = getAnimOffset(animType);
+                const rotation = parseFloat(item.dataset.rotation) || 0;
+                
+                tl.fromTo(item, 
+                    { x: fromOffset.x, y: fromOffset.y, scale: fromOffset.scale, opacity: 0, rotation: rotation },
+                    { x: 0, y: 0, scale: 1, opacity: 1, rotation: rotation, duration: 1.5, ease: "back.out(1.2)" },
+                    delay
+                );
+            });
+            return tl;
+        }
+
+        function animOutDynamic(view) {
+            const tl = gsap.timeline();
+            const items = view.querySelectorAll('.dyn-element');
+            
+            items.forEach(item => {
+                const animType = item.dataset.animOut || 'zoomOut';
+                const toOffset = getAnimOffset(animType);
+                const rotation = parseFloat(item.dataset.rotation) || 0;
+                tl.to(item, { x: toOffset.x, y: toOffset.y, scale: toOffset.scale, opacity: 0, rotation: rotation, duration: 0.8, ease: "power2.in" }, 0);
+            });
+            
+            tl.set(view, { autoAlpha: 0 });
+            return tl;
+        }
+
+        loadData();
+    </script>
+    
+    <button id="record-btn" onclick="startRecording()" style="position: absolute; top: 20px; right: 20px; z-index: 99999; padding: 10px 20px; background: #e11d48; color: white; border: none; border-radius: 8px; font-weight: bold; font-family: sans-serif; cursor: pointer; opacity: 0.15; transition: opacity 0.3s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.15">
+        🔴 REC VIDEO
+    </button>
+    <script>
+        async function startRecording() {
+            const btn = document.getElementById('record-btn');
+            btn.innerText = "Sélectionnez l'onglet actuel...";
+            
+            try {
+                const stream = await navigator.mediaDevices.getDisplayMedia({ 
+                    video: { 
+                        displaySurface: "browser",
+                        width: { ideal: 1920, max: 3840 },
+                        height: { ideal: 1080, max: 2160 },
+                        frameRate: { ideal: 60, max: 60 }
+                    },
+                    audio: false 
+                });
+                
+                let options = { 
+                    mimeType: 'video/webm; codecs=vp9',
+                    videoBitsPerSecond: 15000000 // 15 Mbps pour une qualité maximale (pas de flou)
+                };
+                
+                if (MediaRecorder.isTypeSupported('video/mp4; codecs=avc1')) {
+                    options.mimeType = 'video/mp4; codecs=avc1';
+                } else if (MediaRecorder.isTypeSupported('video/webm; codecs=h264')) {
+                    options.mimeType = 'video/webm; codecs=h264';
+                }
+                
+                const mediaRecorder = new MediaRecorder(stream, options);
+                const chunks = [];
+                
+                mediaRecorder.ondataavailable = e => {
+                    if (e.data.size > 0) chunks.push(e.data);
+                };
+                
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(chunks, { type: options.mimeType });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    const ext = options.mimeType.includes('mp4') ? 'mp4' : 'webm';
+                    a.download = `Menu_Video_${new Date().getTime()}.${ext}`;
+                    a.click();
+                    btn.innerText = "🔴 REC VIDEO";
+                    btn.style.background = "#e11d48";
+                };
+                
+                mediaRecorder.start();
+                btn.innerText = "⏹ Enregistrement... (Cliquez pour stopper)";
+                btn.style.background = "#ea580c";
+                
+                const stopFn = () => {
+                    if (mediaRecorder.state === "recording") {
+                        mediaRecorder.stop();
+                        stream.getTracks().forEach(t => t.stop());
+                    }
+                    btn.onclick = startRecording;
+                };
+                btn.onclick = stopFn;
+                
+                // Auto stop after 20 seconds if not stopped manually
+                setTimeout(stopFn, 20000);
+                
+            } catch (err) {
+                console.error("Error: " + err);
+                btn.innerText = "🔴 REC VIDEO";
+            }
+        }
+
+        // Service Worker Registration for Offline Mode
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>

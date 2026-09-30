@@ -1,0 +1,122 @@
+{
+  "assets": {
+    "drinks": [
+      {
+        "id": "coca.png",
+        "name": "coca",
+        "url": "processed_images/coca.png"
+      },
+      {
+        "id": "jus d orange.png",
+        "name": "jus d orange",
+        "url": "processed_images/jus d orange.png"
+      },
+      {
+        "id": "SODA MENU.png",
+        "name": "SODA MENU",
+        "url": "processed_images/SODA MENU.png"
+      }
+    ],
+    "sandwiches": [
+      {
+        "id": "bocadillo cheese.png",
+        "name": "bocadillo cheese",
+        "url": "processed_images/bocadillo cheese.png"
+      },
+      {
+        "id": "bocadillo complet.png",
+        "name": "bocadillo complet",
+        "url": "processed_images/bocadillo complet.png"
+      },
+      {
+        "id": "bocadillo tangerois.png",
+        "name": "bocadillo tangerois",
+        "url": "processed_images/bocadillo tangerois.png"
+      },
+      {
+        "id": "bocadillo thon.png",
+        "name": "bocadillo thon",
+        "url": "processed_images/bocadillo thon.png"
+      },
+      {
+        "id": "bocadillo tortillia cheese.png",
+        "name": "bocadillo tortillia cheese",
+        "url": "processed_images/bocadillo tortillia cheese.png"
+      },
+      {
+        "id": "bocadillo tortillia royal.png",
+        "name": "bocadillo tortillia royal",
+        "url": "processed_images/bocadillo tortillia royal.png"
+      },
+      {
+        "id": "Gemini_Generated_Image_ri6nfvri6nfvri6n.png",
+        "name": "Gemini_Generated_Image_ri6nfvri6nfvri6n",
+        "url": "processed_images/Gemini_Generated_Image_ri6nfvri6nfvri6n.png"
+      },
+      {
+        "id": "sandwiche americain.png",
+        "name": "sandwiche americain",
+        "url": "processed_images/sandwiche americain.png"
+      },
+      {
+        "id": "sandwiche Mixte Large.png",
+        "name": "sandwiche Mixte Large",
+        "url": "processed_images/sandwiche Mixte Large.png"
+      },
+      {
+        "id": "sandwiche mixte.png",
+        "name": "sandwiche mixte",
+        "url": "processed_images/sandwiche mixte.png"
+      },
+      {
+        "id": "sandwiche poulet 3.png",
+        "name": "sandwiche poulet 3",
+        "url": "processed_images/sandwiche poulet 3.png"
+      },
+      {
+        "id": "sandwiche saussice.png",
+        "name": "sandwiche saussice",
+        "url": "processed_images/sandwiche saussice.png"
+      },
+      {
+        "id": "sandwiche viande hachee.png",
+        "name": "sandwiche viande hachee",
+        "url": "processed_images/sandwiche viande hachee.png"
+      },
+      {
+        "id": "ai_3309",
+        "name": "271d497d_f787ee6c_pngtree-fast-food-doodle-pattern-in-orange-line-art-image_16816552",
+        "url": "processed_images/271d497d_f787ee6c_pngtree-fast-food-doodle-pattern-in-orange-line-art-image_16816552.png"
+      },
+      {
+        "id": "ai_2374",
+        "name": "ed24a51c_f787ee6c_pngtree-fast-food-doodle-pattern-in-orange-line-art-image_16816552",
+        "url": "processed_images/ed24a51c_f787ee6c_pngtree-fast-food-doodle-pattern-in-orange-line-art-image_16816552.png"
+      },
+      {
+        "id": "ai_1444",
+        "name": "5c5c54a8_f787ee6c_pngtree-fast-food-doodle-pattern-in-orange-line-art-image_16816552",
+        "url": "processed_images/5c5c54a8_f787ee6c_pngtree-fast-food-doodle-pattern-in-orange-line-art-image_16816552.png"
+      },
+      {
+        "id": "ai_9719",
+        "name": "d4fc09e8_f787ee6c_pngtree-fast-food-doodle-pattern-in-orange-line-art-image_16816552",
+        "url": "processed_images/d4fc09e8_f787ee6c_pngtree-fast-food-doodle-pattern-in-orange-line-art-image_16816552.png"
+      },
+      {
+        "id": "ai_1340",
+        "name": "c46dcaab_37c13e7b_glovo",
+        "url": "processed_images/c46dcaab_37c13e7b_glovo.png"
+      }
+    ],
+    "sides": [
+      {
+        "id": "frite.png",
+        "name": "frite",
+        "url": "processed_images/frite.png"
+      }
+    ]
+  },
+  "formules": {},
+  "orientation": "horizontal"
+}

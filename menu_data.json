@@ -1,0 +1,122 @@
+{
+    "orientation": "horizontal",
+    "assets": {
+        "sandwiches": [
+            {
+                "id": "bocadillo cheese.png",
+                "name": "bocadillo cheese",
+                "url": "processed_images/bocadillo cheese.png"
+            },
+            {
+                "id": "bocadillo complet.png",
+                "name": "bocadillo complet",
+                "url": "processed_images/bocadillo complet.png"
+            },
+            {
+                "id": "bocadillo tangerois.png",
+                "name": "bocadillo tangerois",
+                "url": "processed_images/bocadillo tangerois.png"
+            },
+            {
+                "id": "bocadillo thon.png",
+                "name": "bocadillo thon",
+                "url": "processed_images/bocadillo thon.png"
+            },
+            {
+                "id": "bocadillo tortillia cheese.png",
+                "name": "bocadillo tortillia cheese",
+                "url": "processed_images/bocadillo tortillia cheese.png"
+            },
+            {
+                "id": "bocadillo tortillia royal.png",
+                "name": "bocadillo tortillia royal",
+                "url": "processed_images/bocadillo tortillia royal.png"
+            },
+            {
+                "id": "bocadillo.png",
+                "name": "bocadillo",
+                "url": "processed_images/bocadillo.png"
+            },
+            {
+                "id": "Gemini_Generated_Image_ri6nfvri6nfvri6n.png",
+                "name": "Gemini_Generated_Image_ri6nfvri6nfvri6n",
+                "url": "processed_images/Gemini_Generated_Image_ri6nfvri6nfvri6n.png"
+            },
+            {
+                "id": "sandwiche americain.png",
+                "name": "sandwiche americain",
+                "url": "processed_images/sandwiche americain.png"
+            },
+            {
+                "id": "sandwiche Mixte Large.png",
+                "name": "sandwiche Mixte Large",
+                "url": "processed_images/sandwiche Mixte Large.png"
+            },
+            {
+                "id": "sandwiche mixte.png",
+                "name": "sandwiche mixte",
+                "url": "processed_images/sandwiche mixte.png"
+            },
+            {
+                "id": "sandwiche poulet 3.png",
+                "name": "sandwiche poulet 3",
+                "url": "processed_images/sandwiche poulet 3.png"
+            },
+            {
+                "id": "sandwiche saussice.png",
+                "name": "sandwiche saussice",
+                "url": "processed_images/sandwiche saussice.png"
+            },
+            {
+                "id": "sandwiche viande hachee.png",
+                "name": "sandwiche viande hachee",
+                "url": "processed_images/sandwiche viande hachee.png"
+            }
+        ],
+        "drinks": [
+            {
+                "id": "coca 2.png",
+                "name": "coca 2",
+                "url": "processed_images/coca 2.png"
+            },
+            {
+                "id": "coca.png",
+                "name": "coca",
+                "url": "processed_images/coca.png"
+            },
+            {
+                "id": "drink.png",
+                "name": "drink",
+                "url": "processed_images/drink.png"
+            },
+            {
+                "id": "jus d orange.png",
+                "name": "jus d orange",
+                "url": "processed_images/jus d orange.png"
+            },
+            {
+                "id": "SODA MENU.png",
+                "name": "SODA MENU",
+                "url": "processed_images/SODA MENU.png"
+            }
+        ],
+        "sides": [
+            {
+                "id": "fries.png",
+                "name": "fries",
+                "url": "processed_images/fries.png"
+            },
+            {
+                "id": "frite.png",
+                "name": "frite",
+                "url": "processed_images/frite.png"
+            },
+            {
+                "id": "inpainted_1790443088.png",
+                "name": "inpainted_1790443088",
+                "url": "processed_images/inpainted_1790443088.png"
+            }
+        ]
+    },
+    "formules": {}
+}

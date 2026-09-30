@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3-Screen Menu Board Preview</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            color: white;
+            font-family: sans-serif;
+        }
+        .monitor-container {
+            display: flex;
+            gap: 10px;
+            /* Container will scale to fit the viewport */
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            justify-content: center;
+        }
+        .screen-wrapper {
+            position: relative;
+            /* Aspect ratio 16:9 for each screen */
+            width: 32%; /* slightly less than a third to account for gaps */
+            aspect-ratio: 16/9;
+            background: #111;
+            border: 2px solid #333;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+        }
+        .screen-wrapper::after {
+            content: attr(data-label);
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.7);
+            color: #FFC72C;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 10;
+        }
+        iframe {
+            width: 1920px;
+            height: 1080px;
+            border: none;
+            transform-origin: top left;
+        }
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(30,30,30,0.8);
+            padding: 10px 20px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="monitor-container" id="monitorContainer">
+        <div class="screen-wrapper" data-label="TV 1 - Gauche (Bocadillos)">
+            <iframe src="tv1.html" id="tv1"></iframe>
+        </div>
+        <div class="screen-wrapper" data-label="TV 2 - Centre (Hero Combos)">
+            <iframe src="tv2.html" id="tv2"></iframe>
+        </div>
+        <div class="screen-wrapper" data-label="TV 3 - Droite (Sandwiches Chauds)">
+            <iframe src="tv3.html" id="tv3"></iframe>
+        </div>
+    </div>
+
+    <div class="controls">
+        🚀 Preview Mode: 5760x1080 (3x 1920x1080)
+    </div>
+
+    <script>
+        // Automatically scale iframes to fit their wrappers
+        function resizeIframes() {
+            const wrappers = document.querySelectorAll('.screen-wrapper');
+            wrappers.forEach(wrapper => {
+                const iframe = wrapper.querySelector('iframe');
+                const wrapperWidth = wrapper.clientWidth;
+                // Target width is 1920
+                const scale = wrapperWidth / 1920;
+                iframe.style.transform = `scale(${scale})`;
+            });
+        }
+
+        window.addEventListener('resize', resizeIframes);
+        // Initial resize after a short delay to ensure DOM is fully rendered
+        setTimeout(resizeIframes, 100);
+    </script>
+</body>
+</html>

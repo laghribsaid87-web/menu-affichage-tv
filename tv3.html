@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV3 - Sandwiches Chauds PRO</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #FFFFFF;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            width: 1920px;
+            height: 1080px;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+        /* Dynamic Animated Background */
+        .bg-gradient-anim {
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(255,199,44,0.1) 0%, rgba(10,10,10,1) 40%);
+            z-index: -2;
+            animation: rotateBg 25s linear infinite reverse;
+        }
+        @keyframes rotateBg {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .noise {
+            position: absolute; top:0; left:0; width:100%; height:100%;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png');
+            opacity: 0.3; z-index: -1; pointer-events: none;
+        }
+        
+        h1, h2, h3, .price { font-family: 'Oswald', sans-serif; text-transform: uppercase; }
+        .yellow-accent { color: #FFC72C; }
+        
+        .header-title {
+            font-size: 5rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            margin-bottom: 0;
+        }
+        
+        /* Glassmorphism Card with Image Breakout */
+        .pro-card {
+            background: rgba(25, 25, 25, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(218,41,28,0.15);
+            border-left: 6px solid #DA291C;
+            border-radius: 20px;
+            position: relative;
+            margin-left: 60px;
+            display: flex;
+            align-items: center;
+            height: 160px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+        
+        .pro-card .food-img-container {
+            position: absolute;
+            left: -80px;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            filter: drop-shadow(15px 15px 15px rgba(0,0,0,0.6));
+        }
+        
+        .pro-card .food-img-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        
+        .pro-card .content {
+            margin-left: 130px;
+            flex: 1;
+            padding-right: 20px;
+        }
+        
+        .pro-card .price-tag {
+            background: #DA291C;
+            color: #fff;
+            padding: 10px 30px;
+            border-radius: 30px 0 0 30px;
+            font-size: 3.5rem;
+            font-weight: 700;
+            box-shadow: -5px 0 15px rgba(218,41,28,0.3);
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+        }
+
+        /* Sides Cards Layout */
+        .side-card {
+            background: rgba(25, 25, 25, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,199,44,0.15);
+            border-top: 6px solid #FFC72C;
+            border-radius: 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px 20px;
+            margin-top: 40px; /* Space for image */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+
+        .side-card .food-img-container {
+            position: absolute;
+            top: -60px;
+            width: 120px;
+            height: 120px;
+            filter: drop-shadow(10px 10px 10px rgba(0,0,0,0.5));
+        }
+
+        .side-card .price-tag-small {
+            background: #FFC72C;
+            color: #111;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-top: 10px;
+            box-shadow: 0 5px 15px rgba(255,199,44,0.3);
+        }
+        
+        .section-title {
+            background: linear-gradient(90deg, #FFC72C, transparent);
+            color: #111;
+            padding: 10px 30px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-bottom: 30px;
+            margin-left: 60px;
+            font-size: 3rem;
+            box-shadow: 0 10px 20px rgba(255,199,44,0.3);
+        }
+    </style>
+</head>
+<body class="flex flex-col p-10">
+    <div class="bg-gradient-anim"></div>
+    <div class="noise"></div>
+    
+    <header class="text-center mb-10">
+        <h1 class="header-title">LA <span class="text-[#DA291C]">CARTE</span></h1>
+        <div class="w-64 h-2 bg-[#DA291C] mx-auto mt-4 rounded-full shadow-[0_0_15px_#DA291C]"></div>
+    </header>
+
+    <div class="flex-1 grid grid-cols-[1.2fr_0.8fr] gap-x-16" id="menu-container">
+        <!-- Sandwiches Chauds Section -->
+        <div class="flex flex-col gap-10 pt-4" id="chauds-section">
+            <h2 class="section-title !text-white" style="background: linear-gradient(90deg, #DA291C, transparent);">SANDWICHES CHAUDS</h2>
+            <div id="chauds-items" class="flex flex-col gap-10"></div>
+        </div>
+        
+        <!-- Accompagnements & Boissons Section -->
+        <div class="flex flex-col pt-4 h-full" id="sides-section">
+            <h2 class="section-title !ml-0 text-center">À CÔTÉ</h2>
+            <div id="sides-items" class="grid grid-cols-2 gap-x-8 gap-y-12"></div>
+            
+            <div class="mt-auto pro-card !border-l-[#FFC72C] !border-l-8 !ml-0" style="height: 140px; background: linear-gradient(90deg, rgba(218,41,28,0.8), rgba(25,25,25,0.8));">
+                <div class="content !ml-8">
+                    <h3 class="text-4xl font-bold text-white mb-1 tracking-wide">MENU KIDS</h3>
+                    <p class="text-yellow-200 text-xl font-medium">Nuggets + Frites + Jus + Surprise</p>
+                </div>
+                <div class="price-tag !bg-[#FFC72C] !text-[#111] !shadow-[-5px_0_15px_rgba(255,199,44,0.5)]">
+                    35 <span class="text-3xl">DH</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function loadData() {
+            const res = await fetch('menu_data.json');
+            const data = await res.json();
+            
+            const createChaudItem = (item) => `
+                <div class="pro-card item-card-left">
+                    <div class="food-img-container">
+                        <img src="${item.image}" alt="${item.name}" class="food-img">
+                    </div>
+                    <div class="content">
+                        <h3 class="text-4xl font-bold mb-1 tracking-wide">${item.name}</h3>
+                        <p class="text-gray-300 text-xl font-medium">${item.description}</p>
+                    </div>
+                    <div class="price-tag">
+                        ${item.price} <span class="text-3xl">DH</span>
+                    </div>
+                </div>
+            `;
+
+            const createSideItem = (item) => `
+                <div class="side-card item-card-right">
+                    <div class="food-img-container">
+                        <img src="${item.image}" alt="${item.name}" class="food-img-side">
+                    </div>
+                    <h3 class="text-2xl font-bold text-center mt-2">${item.name}</h3>
+                    <div class="price-tag-small">
+                        ${item.price} <span class="text-xl">DH</span>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('chauds-items').innerHTML = data.sandwichesChauds.map(createChaudItem).join('');
+            document.getElementById('sides-items').innerHTML = data.accompagnementsEtBoissons.map(createSideItem).join('');
+
+            // Advanced Entrance Animations
+            gsap.from(".header-title", { y: -50, opacity: 0, duration: 1, ease: "expo.out" });
+            gsap.from(".section-title", { x: -50, opacity: 0, duration: 1, stagger: 0.2, ease: "expo.out", delay: 0.3 });
+            
+            gsap.from(".item-card-left", { x: -100, opacity: 0, duration: 1.2, stagger: 0.1, ease: "expo.out", delay: 0.5 });
+            gsap.from(".item-card-right", { y: 50, opacity: 0, duration: 1.2, stagger: 0.1, ease: "expo.out", delay: 0.8 });
+
+            gsap.from(".food-img", { scale: 0, rotation: 15, duration: 1.2, stagger: 0.1, ease: "back.out(1.5)", delay: 0.7 });
+            gsap.from(".food-img-side", { scale: 0, y: -20, duration: 1.2, stagger: 0.1, ease: "back.out(1.5)", delay: 1 });
+
+            // Continuous floating animation
+            gsap.to(".food-img, .food-img-side", {
+                y: -10,
+                duration: 2.5,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut",
+                stagger: { each: 0.2, from: "random" }
+            });
+        }
+        loadData();
+    </script>
+</body>
+</html>

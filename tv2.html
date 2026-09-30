@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV2 - Dynamic Animation Engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700;900&family=Inter:wght@400;700;900&family=Open+Sans:wght@400;700&family=Bebas+Neue&family=Bangers&family=Luckiest+Guy&family=Titan+One&family=Carter+One&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #050505; color: #FFFFFF; overflow: hidden; font-family: 'Inter', sans-serif; width: 1920px; height: 1080px; margin: 0; padding: 0; }
+        .bg-layer { position: absolute; top:0; left:0; width:100%; height:100%; z-index: -5; background: radial-gradient(circle at 50% 60%, #1a1a1a 0%, #000000 100%); }
+        .light-beam { position: absolute; top: -50%; left: 50%; width: 800px; height: 2000px; background: linear-gradient(90deg, transparent, rgba(255,199,44,0.05), transparent); transform: rotate(35deg) translateX(-50%); z-index: -4; pointer-events: none; }
+        .light-beam:nth-child(2) { transform: rotate(-35deg) translateX(-50%); background: linear-gradient(90deg, transparent, rgba(218,41,28,0.05), transparent); }
+        .glow-orb { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -40%); width: 1200px; height: 800px; border-radius: 50%; filter: blur(120px); z-index: -3; opacity: 0.8; transition: background 1s ease; }
+        .glow-red { background: rgba(218,41,28,0.6); }
+        .glow-yellow { background: rgba(255,199,44,0.4); }
+        .glow-blue { background: rgba(0, 168, 255, 0.4); }
+        .glow-off { opacity: 0; }
+        .floor-shadow { position: absolute; bottom: 100px; left: 50%; transform: translateX(-50%); width: 1200px; height: 100px; background: radial-gradient(ellipse at center, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 70%); z-index: 0; }
+
+        h1, h2, .price, .badge { font-family: 'Oswald', sans-serif; }
+        
+        .offer-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; visibility: hidden; padding-top: 60px; }
+        .badge { font-size: 2.5rem; padding: 8px 30px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); letter-spacing: 0.2em; text-transform: uppercase; display: inline-block; margin-bottom: 20px; font-weight: 900; }
+        .title-text { font-size: 8rem; line-height: 0.9; text-transform: uppercase; text-shadow: 0 20px 40px rgba(0,0,0,0.8); margin: 0; background: linear-gradient(to bottom, #ffffff, #d4d4d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; letter-spacing: 0.02em; }
+        .desc-text { font-size: 3rem; font-weight: 700; text-shadow: 0 5px 15px rgba(0,0,0,0.8); letter-spacing: 0.05em; margin-top: 15px; }
+
+        .price-sticker { position: absolute; bottom: 80px; left: 150px; width: 300px; height: 300px; background: #FFC72C; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 30px 60px rgba(255,199,44,0.4), inset 0 0 20px rgba(0,0,0,0.2); border: 8px solid #DA291C; z-index: 50; transform: rotate(-10deg); }
+        .price-num { font-size: 10rem; line-height: 0.8; font-weight: 900; color: #111; margin-top: 20px;}
+        .price-currency { font-size: 4rem; color: #DA291C; font-weight: 900; margin-top: -10px;}
+        .price-currency { font-size: 4rem; color: #DA291C; font-weight: 900; margin-top: -10px;}
+        
+        .fullscreen-media { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 20; }
+
+        /* Continuous Animations */
+        @keyframes anim-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        @keyframes anim-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        @keyframes anim-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes anim-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+        @keyframes anim-swing { 20% { transform: rotate(15deg); } 40% { transform: rotate(-10deg); } 60% { transform: rotate(5deg); } 80% { transform: rotate(-5deg); } 100% { transform: rotate(0deg); } }
+        @keyframes anim-heartbeat { 0%, 28%, 70% { transform: scale(1); } 14%, 42% { transform: scale(1.15); } }
+        @keyframes anim-glow { 0%, 100% { filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)) brightness(1); } 50% { filter: drop-shadow(0 0 20px rgba(255,255,255,0.8)) brightness(1.2); } }
+        @keyframes anim-wobble { 0%, 100% { transform: translateX(0%); } 15% { transform: translateX(-10%) rotate(-5deg); } 30% { transform: translateX(8%) rotate(3deg); } 45% { transform: translateX(-6%) rotate(-3deg); } 60% { transform: translateX(4%) rotate(2deg); } 75% { transform: translateX(-2%) rotate(-1deg); } }
+        @keyframes anim-bounce-slow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
+        @keyframes anim-float-x { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(20px); } }
+        @keyframes anim-flip { 0% { transform: perspective(400px) rotateY(0); } 100% { transform: perspective(400px) rotateY(360deg); } }
+        @keyframes anim-shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); } 20%, 40%, 60%, 80% { transform: translateX(5px); } }
+        
+        .anim-float { animation: anim-float 4s ease-in-out infinite !important; }
+        .anim-pulse { animation: anim-pulse 2s ease-in-out infinite !important; }
+        .anim-spin { animation: anim-spin 10s linear infinite !important; }
+        .anim-breathe { animation: anim-breathe 6s ease-in-out infinite !important; }
+        .anim-swing { animation: anim-swing 4s ease-in-out infinite !important; transform-origin: top center; }
+        .anim-heartbeat { animation: anim-heartbeat 2.5s ease-in-out infinite !important; }
+        .anim-glow { animation: anim-glow 3s ease-in-out infinite !important; }
+        .anim-wobble { animation: anim-wobble 4s ease-in-out infinite !important; }
+        .anim-bounce-slow { animation: anim-bounce-slow 3s ease-in-out infinite !important; }
+        .anim-float-x { animation: anim-float-x 4s ease-in-out infinite !important; }
+        .anim-flip { animation: anim-flip 5s linear infinite !important; }
+        .anim-shake { animation: anim-shake 6s ease-in-out infinite !important; }
+        .anim-spin-fast { animation: anim-spin 2s linear infinite !important; }
+        .anim-spin-reverse { animation: anim-spin 10s linear infinite reverse !important; }
+    </style>
+</head>
+<body>
+    <div class="bg-layer"></div>
+    <div class="light-beam"></div>
+    <div class="light-beam"></div>
+    <div class="glow-orb glow-red" id="glow"></div>
+    <div class="floor-shadow"></div>
+
+    <div id="dynamic-container"></div>
+    
+    <div id="video-view" class="offer-container" style="padding-top: 0;">
+        <video id="promo-video" class="fullscreen-media" muted playsinline></video>
+    </div>
+    <div id="glovo-view" class="offer-container" style="padding-top: 0;">
+        <img id="promo-image" class="fullscreen-media" style="object-fit: contain; background: #000;">
+    </div>
+
+    <script>
+        let menuData = null;
+        let masterTimeline = null;
+        
+        async function loadData() {
+            const res = await fetch('menu_data.json');
+            menuData = await res.json();
+            
+            buildDynamicViews();
+            
+            if (menuData.promos) {
+                document.getElementById('promo-video').src = menuData.promos.video;
+                document.getElementById('promo-image').src = menuData.promos.image;
+            }
+
+            startProAnimationLoop();
+        }
+
+        function getAssetUrl(id) {
+            for(let cat in menuData.assets) {
+                const asset = menuData.assets[cat].find(a => a.id === id);
+                if (asset) return asset.url;
+            }
+            return "";
+        }
+
+        function isSmallItem(url) {
+            return url.includes('coca') || url.includes('SODA') || url.includes('jus');
+        }
+
+        function buildDynamicViews() {
+            const container = document.getElementById('dynamic-container');
+            let html = "";
+            let idx = 0;
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetTv = urlParams.get('tv');
+            
+            for (let key in menuData.formules) {
+                const f = menuData.formules[key];
+                
+                // Si la TV est spécifiée dans l'URL et que la formule a une TV cible, on filtre
+                if (targetTv && f.tv && f.tv !== '' && f.tv.toString() !== targetTv.toString()) {
+                    continue;
+                }
+                const colorTheme = idx % 2 === 0 ? { bg: '#DA291C', text: 'white', priceBg: '#DA291C', priceBorder: '#FFC72C' } 
+                                                 : { bg: '#FFC72C', text: '#111', priceBg: '#FFC72C', priceBorder: '#DA291C' };
+                
+                let sceneHtml = ``;
+                
+                if (f.components && Array.isArray(f.components)) {
+                    f.components.forEach((comp, cIdx) => {
+                        let animClass = (comp.continuousAnim && comp.continuousAnim !== 'none') ? 'anim-' + comp.continuousAnim : '';
+                        
+                        if (comp.type === 'customText') {
+                            compHtml = `
+                                <div class="dyn-element comp-item"
+                                     data-anim-in="${comp.animIn || 'zoomIn'}" 
+                                     data-anim-out="${comp.animOut || 'zoomOut'}" 
+                                     data-delay="${comp.delay || 0}"
+                                     data-rotation="${comp.rotation || 0}">
+                                     <div class="${animClass} drop-shadow-xl" style="white-space: pre-wrap; color: ${comp.color}; font-size: ${comp.fontSize}px; font-family: ${comp.fontFamily}; font-weight: bold; line-height: ${comp.lineHeight !== undefined ? comp.lineHeight : 1}; letter-spacing: ${comp.letterSpacing || 0}px; text-shadow: ${comp.hasShadow ? '0 15px 25px rgba(0,0,0,0.8)' : 'none'}; -webkit-text-stroke: ${comp.strokeColor ? '2px ' + comp.strokeColor : 'none'};">
+                                        ${comp.content}
+                                     </div>
+                                </div>
+                            `;
+                        } else if (comp.type === 'shape') {
+                            let shapeStyle = `background-color: ${comp.color}; opacity: ${comp.opacity}; width: ${comp.width}px; height: ${comp.height}px;`;
+                            if (comp.shapeType === 'circle') shapeStyle += ` border-radius: 50%;`;
+                            else if (comp.shapeType === 'pill') shapeStyle += ` border-radius: 9999px;`;
+                            else if (comp.shapeType === 'badge') shapeStyle += ` clip-path: polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%);`;
+                            else if (comp.shapeType === 'star') shapeStyle += ` clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);`;
+                            else if (comp.shapeType === 'burst') shapeStyle += ` clip-path: polygon(50% 0%, 65% 15%, 85% 15%, 85% 35%, 100% 50%, 85% 65%, 85% 85%, 65% 85%, 50% 100%, 35% 85%, 15% 85%, 15% 65%, 0% 50%, 15% 35%, 15% 15%, 35% 15%);`;
+                            else shapeStyle += ` border-radius: ${comp.borderRadius || 0}px;`;
+                            
+                            const animClass = (comp.continuousAnim && comp.continuousAnim !== 'none') ? `anim-${comp.continuousAnim}` : '';
+                            
+                            compHtml = `
+                                <div class="dyn-element comp-item"
+                                     data-anim-in="${comp.animIn || 'zoomIn'}" 
+                                     data-anim-out="${comp.animOut || 'zoomOut'}" 
+                                     data-delay="${comp.delay || 0}"
+                                     data-exit="${comp.exitTime || f.duration || 6}"
+                                     data-rotation="${comp.rotation || 0}">
+                                     <div class="${animClass}" style="${shapeStyle}"></div>
+                                </div>
+                            `;
+                        } else if (comp.type === 'main') {
+                            const url = getAssetUrl(comp.assetId);
+                            if(!url) return;
+                            compHtml = `
+                                <div style="transform: ${comp.flip ? 'scaleX(-1)' : 'scaleX(1)'};">
+                                    <div class="dyn-element comp-item" 
+                                         data-anim-in="${comp.animIn}" 
+                                         data-anim-out="${comp.animOut}" 
+                                         data-delay="${comp.delay || 0}"
+                                         data-exit="${comp.exitTime || f.duration || 6}"
+                                         data-rotation="${comp.rotation || 0}">
+                                         <img src="${url}" class="${animClass}" style="filter: ${comp.hasShadow !== false ? 'drop-shadow(0 20px 30px rgba(0,0,0,0.6))' : 'none'}; ${isSmallItem(url) ? 'max-width: 400px;' : 'max-width: 900px;'}; clip-path: ${comp.clipPolygon ? 'polygon(' + comp.clipPolygon + ')' : 'inset(' + (comp.clipTop || 0) + '% ' + (comp.clipRight || 0) + '% ' + (comp.clipBottom || 0) + '% ' + (comp.clipLeft || 0) + '%)'};">
+                                    </div>
+                                </div>
+                            `;
+                        } else if (comp.type === 'rawImage') {
+                            if(!comp.url) return;
+                            const isVideo = comp.url.toLowerCase().endsWith('.mp4') || comp.url.toLowerCase().endsWith('.webm');
+                            compHtml = `
+                                <div style="transform: ${comp.flip ? 'scaleX(-1)' : 'scaleX(1)'};">
+                                    <div class="dyn-element comp-item" 
+                                         data-anim-in="${comp.animIn || 'zoomIn'}" 
+                                         data-anim-out="${comp.animOut || 'zoomOut'}" 
+                                         data-delay="${comp.delay || 0}"
+                                         data-exit="${comp.exitTime || f.duration || 6}"
+                                         data-rotation="${comp.rotation || 0}">
+                                         ${isVideo ? 
+                                         `<video src="/${comp.url}" class="${animClass}" autoplay loop muted playsinline style="max-width: 2500px; filter: ${comp.hasShadow !== false ? 'drop-shadow(0 20px 30px rgba(0,0,0,0.6))' : 'none'}; clip-path: ${comp.clipPolygon ? 'polygon(' + comp.clipPolygon + ')' : 'inset(' + (comp.clipTop || 0) + '% ' + (comp.clipRight || 0) + '% ' + (comp.clipBottom || 0) + '% ' + (comp.clipLeft || 0) + '%)'};"></video>` 
+                                         : 
+                                         `<img src="/${comp.url}" class="${animClass}" style="filter: ${comp.hasShadow !== false ? 'drop-shadow(0 20px 30px rgba(0,0,0,0.6))' : 'none'}; max-width: 2500px; clip-path: ${comp.clipPolygon ? 'polygon(' + comp.clipPolygon + ')' : 'inset(' + (comp.clipTop || 0) + '% ' + (comp.clipRight || 0) + '% ' + (comp.clipBottom || 0) + '% ' + (comp.clipLeft || 0) + '%)'};">`
+                                         }
+                                    </div>
+                                </div>
+                            `;
+                        } else if (comp.type === 'rawVideo') {
+                            if(!comp.url) return;
+                            compHtml = `
+                                <div style="transform: ${comp.flip ? 'scaleX(-1)' : 'scaleX(1)'};">
+                                    <div class="dyn-element comp-item" 
+                                         data-anim-in="${comp.animIn || 'zoomIn'}" 
+                                         data-anim-out="${comp.animOut || 'zoomOut'}" 
+                                         data-delay="${comp.delay || 0}"
+                                         data-exit="${comp.exitTime || f.duration || 6}"
+                                         data-rotation="${comp.rotation || 0}">
+                                         <video src="/${comp.url}" class="${animClass}" autoplay loop muted playsinline style="max-width: 2500px; clip-path: ${comp.clipPolygon ? 'polygon(' + comp.clipPolygon + ')' : 'inset(' + (comp.clipTop || 0) + '% ' + (comp.clipRight || 0) + '% ' + (comp.clipBottom || 0) + '% ' + (comp.clipLeft || 0) + '%)'};"></video>
+                                    </div>
+                                </div>
+                            `;
+                        }
+
+                        sceneHtml += `
+                        <div class="absolute top-[350px] left-1/2 w-0 h-0 overflow-visible z-10"
+                             style="transform: translate(${comp.x}px, ${comp.y}px) scale(${comp.scale !== undefined ? comp.scale : 1}); z-index: ${comp.z};">
+                            <div class="absolute w-max h-max" style="transform: translate(-50%, -50%) rotate(${comp.rotation || 0}deg);">
+                                ${compHtml}
+                            </div>
+                        </div>`;
+                    });
+                }
+                
+                let textsHtml = ``;
+                ['nameLayout', 'descLayout', 'badgeLayout', 'priceLayout'].forEach(tKey => {
+                    if (!f[tKey]) return;
+                    
+                    let contentHtml = '';
+                    if (tKey === 'nameLayout') contentHtml = `<div class="title-text" style="margin:0; text-align:center; position:static; transform:none; letter-spacing: -2px;">${f.name}</div>`;
+                    if (tKey === 'descLayout') contentHtml = `<div class="desc-text" style="color: ${colorTheme.bg}; margin:0; text-align:center; position:static; transform:none; font-size:45px;">${f.description}</div>`;
+                    if (tKey === 'badgeLayout') contentHtml = `<div class="badge" style="background: ${colorTheme.bg}; color: ${colorTheme.text}; margin:0; text-align:center; position:static; transform:none; display:block;">${f.badge}</div>`;
+                    if (tKey === 'priceLayout') contentHtml = `
+                        <div class="price-sticker m-0 flex flex-col justify-center items-center" style="background: ${colorTheme.priceBg}; border-color: ${colorTheme.priceBorder}; position:static; transform:none; width:220px; height:220px;">
+                            <span class="price-num" style="color: ${idx % 2 === 0 ? 'white' : '#111'}; font-size:85px; position:static;">${f.price}</span>
+                            <span class="price-currency" style="color: ${idx % 2 === 0 ? '#FFC72C' : '#DA291C'};">DH</span>
+                        </div>`;
+                        
+                    textsHtml += `
+                    <div class="absolute top-[540px] left-1/2 w-0 h-0 overflow-visible z-20"
+                         style="transform: translate(${f[tKey].x}px, ${f[tKey].y}px) scale(${f[tKey].scale}); z-index: ${f[tKey].z};">
+                        <div class="absolute w-max h-max" style="transform: translate(-50%, -50%) rotate(${f[tKey].rotation || 0}deg);">
+                            <div class="dyn-element text-item" 
+                                 data-anim-in="${f[tKey].animIn || 'zoomIn'}" 
+                                 data-anim-out="${f[tKey].animOut || 'zoomOut'}" 
+                                 data-delay="${f[tKey].delay || 0}"
+                                 data-exit="${f[tKey].exitTime || f.duration || 6}"
+                                 data-rotation="${f[tKey].rotation || 0}">
+                                ${contentHtml}
+                            </div>
+                        </div>
+                    </div>`;
+                });
+
+                html += `
+                <div id="view-${key}" class="offer-container dyn-view" data-duration="${f.duration || 6}">
+                    <div class="absolute inset-0 z-0" style="opacity: ${f.bgOpacity !== undefined ? f.bgOpacity : 0.8}; background: ${f.bgImage ? 'url(/' + f.bgImage + ') center/cover no-repeat' : (f.bgColor && !f.bgColor.toLowerCase().endsWith('.mp4') && !f.bgColor.toLowerCase().endsWith('.webm') ? f.bgColor : 'radial-gradient(circle at 50% 60%, #1a1a1a 0%, #000000 100%)')};"></div>
+                    ${f.bgColor && (f.bgColor.toLowerCase().endsWith('.mp4') || f.bgColor.toLowerCase().endsWith('.webm')) ? `<video autoplay loop muted playsinline style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: ${f.bgOpacity !== undefined ? f.bgOpacity : 0.8};"><source src="/${f.bgColor}" type="video/mp4"></video>` : ''}
+                    ${sceneHtml}
+                    ${textsHtml}
+                </div>`;
+                idx++;
+            }
+            container.innerHTML = html;
+        }
+
+        function getAnimOffset(type) {
+            const config = { x: 0, y: 0, scale: 1 };
+            const dist = 300;
+            switch(type) {
+                case 'fadeUp': config.y = dist; break;
+                case 'fadeDown': config.y = -dist; break;
+                case 'fadeLeft': config.x = dist; break; 
+                case 'fadeRight': config.x = -dist; break; 
+                case 'zoomIn': config.scale = 0; break;
+                case 'zoomOut': config.scale = 2; break;
+                default: config.y = 50; break;
+            }
+            return config;
+        }
+
+        function startProAnimationLoop() {
+            const views = Array.from(document.querySelectorAll('.dyn-view'));
+            const v3 = document.getElementById('video-view');
+            const v4 = document.getElementById('glovo-view');
+            const glow = document.getElementById('glow');
+            const video = document.getElementById('promo-video');
+            const glovoImg = document.getElementById('promo-image');
+            
+            gsap.set([...views, v3, v4], { autoAlpha: 0 });
+            masterTimeline = gsap.timeline({ repeat: -1 });
+
+            views.forEach((view, index) => {
+                const color = index % 2 === 0 ? "glow-orb glow-red" : "glow-orb glow-yellow";
+                const duration = parseFloat(view.dataset.duration) || 6;
+                
+                masterTimeline
+                  .set(view, { autoAlpha: 1 })
+                  .to(glow, { className: color, duration: 1 }, "<")
+                  .add(animInDynamic(view), "<")
+                  .add(animOutDynamic(view, duration), "<")
+                  .to({}, { duration: duration }, "<");
+            });
+
+            // Promos
+            if(menuData.promos.video) {
+                const dur = menuData.promos.videoDuration || 10;
+                masterTimeline
+                  .set(v3, { autoAlpha: 1 })
+                  .to(glow, { className: "glow-orb glow-off", duration: 0.5 }, "<")
+                  .call(() => { video.currentTime = 0; video.play().catch(e => console.log("Video play error")); })
+                  .fromTo(v3, { opacity: 0 }, { opacity: 1, duration: 1 })
+                  .to({}, { duration: dur })
+                  .to(v3, { opacity: 0, duration: 1 })
+                  .set(v3, { autoAlpha: 0 })
+                  .call(() => { video.pause(); });
+            }
+              
+            if(menuData.promos.image) {
+                const dur = menuData.promos.imageDuration || 7;
+                masterTimeline
+                  .set(v4, { autoAlpha: 1 })
+                  .to(glow, { className: "glow-orb glow-blue", duration: 0.5 }, "<")
+                  .fromTo(v4, { opacity: 0 }, { opacity: 1, duration: 1 })
+                  .fromTo(glovoImg, { scale: 1 }, { scale: 1.05, duration: dur, ease: "sine.inOut" }, "<")
+                  .to(v4, { opacity: 0, duration: 1 }, "-=1")
+                  .set(v4, { autoAlpha: 0 });
+            }
+            // Removed global GSAP breathing to allow specific CSS continuous animations.
+        }
+
+        function animInDynamic(view) {
+            const tl = gsap.timeline();
+            const items = view.querySelectorAll('.dyn-element');
+            
+            items.forEach(item => {
+                const animType = item.dataset.animIn || 'zoomIn';
+                const delay = parseFloat(item.dataset.delay) || 0;
+                const fromOffset = getAnimOffset(animType);
+                const rotation = parseFloat(item.dataset.rotation) || 0;
+                
+                tl.fromTo(item, 
+                    { x: fromOffset.x, y: fromOffset.y, scale: fromOffset.scale, opacity: 0, rotation: rotation },
+                    { x: 0, y: 0, scale: 1, opacity: 1, rotation: rotation, duration: 1.5, ease: "back.out(1.2)" },
+                    delay
+                );
+            });
+            return tl;
+        }
+
+        function animOutDynamic(view, viewDuration) {
+            const tl = gsap.timeline();
+            const items = view.querySelectorAll('.dyn-element');
+            
+            items.forEach(item => {
+                const animType = item.dataset.animOut || 'zoomOut';
+                const toOffset = getAnimOffset(animType);
+                const rotation = parseFloat(item.dataset.rotation) || 0;
+                let exitTime = parseFloat(item.dataset.exit) || viewDuration;
+                
+                // Start animating out 0.8s before the exitTime, so it finishes exactly at exitTime
+                let startTime = exitTime - 0.8;
+                if (startTime < 0) startTime = 0;
+                
+                tl.to(item, { x: toOffset.x, y: toOffset.y, scale: toOffset.scale, opacity: 0, rotation: rotation, duration: 0.8, ease: "power2.in" }, startTime);
+            });
+            
+            tl.set(view, { autoAlpha: 0 }, viewDuration);
+            return tl;
+        }
+
+        loadData();
+    </script>
+</body>
+</html>
