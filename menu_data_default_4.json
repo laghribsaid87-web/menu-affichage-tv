@@ -1,0 +1,641 @@
+{
+  "orientation": "horizontal",
+  "assets": {
+    "sandwiches": [
+      {
+        "id": "cutouts_cropped/bocadillo complet 29 dh.png",
+        "name": "COMPLET",
+        "url": "cutouts_cropped/bocadillo complet 29 dh.png"
+      },
+      {
+        "id": "cutouts_cropped/bocadillo tortillia royale 30 dh.png",
+        "name": "ROYALE",
+        "url": "cutouts_cropped/bocadillo tortillia royale 30 dh.png"
+      },
+      {
+        "id": "cutouts_cropped/bocadillo thon 22 dh.png",
+        "name": "THON",
+        "url": "cutouts_cropped/bocadillo thon 22 dh.png"
+      },
+      {
+        "id": "cutouts_cropped/bocadillo_tortillia 22 dh.png",
+        "name": "TORTILLA",
+        "url": "cutouts_cropped/bocadillo_tortillia 22 dh.png"
+      },
+      {
+        "id": "cutouts_cropped/bocadillo cheese 24 dh.png",
+        "name": "CHEESE",
+        "url": "cutouts_cropped/bocadillo cheese 24 dh.png"
+      },
+      {
+        "id": "cutouts_cropped/bocadillo tangerois 24 dh.png",
+        "name": "TANGÉROIS",
+        "url": "cutouts_cropped/bocadillo tangerois 24 dh.png"
+      },
+      {
+        "id": "cutouts_cropped/sandwich americain 35 dh.png",
+        "name": "AMÉRICAIN",
+        "url": "cutouts_cropped/sandwich americain 35 dh.png"
+      },
+      {
+        "id": "cutouts_cropped/sandwiche poulet 30 dh.png",
+        "name": "POULET",
+        "url": "cutouts_cropped/sandwiche poulet 30 dh.png"
+      },
+      {
+        "id": "cutouts_cropped/sandwich viande hache 30 dh.png",
+        "name": "HACHÉE",
+        "url": "cutouts_cropped/sandwich viande hache 30 dh.png"
+      },
+      {
+        "id": "cutouts_cropped/sandwiche mixte 35 dh.png",
+        "name": "MIXTE",
+        "url": "cutouts_cropped/sandwiche mixte 35 dh.png"
+      },
+      {
+        "id": "cutouts_cropped/sandwiche saussice 30.png",
+        "name": "SAUCISSE",
+        "url": "cutouts_cropped/sandwiche saussice 30.png"
+      },
+      {
+        "id": "cutouts_cropped/bocadillo complet 29 dh.png",
+        "name": "COMBO",
+        "url": "cutouts_cropped/bocadillo complet 29 dh.png"
+      }
+    ],
+    "drinks": [],
+    "sides": []
+  },
+  "formules": {
+    "emirates_screen_1": {
+      "id": "emirates_screen_1",
+      "name": "1. BOCADILLOS CHAMALI",
+      "description": "EMIRATES BURGER STYLE",
+      "duration": 15,
+      "tv": "Toutes",
+      "bgImage": "emirates_bg_1080p.jpg",
+      "bgEffect": "sparks",
+      "components": [
+        {
+          "type": "customText",
+          "content": "<div style=\"width:660px; height:48px; background:linear-gradient(to bottom, #d49a5b 0%, #b3793e 30%, #825324 70%, #46280b 100%); border-top:2px solid #f6cf9c; border-bottom:2px solid #291504; box-shadow:0 10px 20px rgba(0,0,0,0.55), inset 0 2px 4px rgba(255,255,255,0.25);\"></div>",
+          "x": -630,
+          "y": 159,
+          "scale": 1.0,
+          "z": 4,
+          "animIn": "fadeIn",
+          "delay": 0,
+          "locked": true
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"display:flex; align-items:center; gap:14px; pointer-events:none;\">\n            <span style=\"background:#d91c1c; color:#fff; font-family:'Titan One',cursive; font-size:18px; padding:5px 14px; border-radius:4px; box-shadow:0 4px 10px rgba(217,28,28,0.45); letter-spacing:1px;\">MON BOCADILLO TANGER</span>\n            <span style=\"font-family:'Bebas Neue',sans-serif; font-size:22px; color:#1e293b; letter-spacing:2px; background:rgba(255,255,255,0.88); padding:3px 12px; border-radius:4px; border-left:4px solid #d91c1c;\">✦ LES BOCADILLOS CHAMALI TRADITION ✦</span>\n        </div>",
+          "x": -530,
+          "y": -320,
+          "scale": 1.0,
+          "z": 25,
+          "animIn": "fadeIn",
+          "delay": 0,
+          "locked": true
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"display:flex; align-items:baseline; gap:8px;\">\n            <span style=\"font-family:'Bebas Neue',sans-serif; font-size:30px; color:#1e293b; letter-spacing:2px; font-style:italic;\">LE</span>\n            <span style=\"font-family:'Titan One',cursive; font-size:42px; color:#d91c1c; text-shadow:0 1px 0 #fff, 0 2px 0 #8b0000, 0 3px 0 #8b0000, 0 4px 0 #8b0000, 0 8px 15px rgba(0,0,0,0.5); letter-spacing:1px; line-height:1;\">COMPLET</span>\n        </div>",
+          "x": -745,
+          "y": -280,
+          "scale": 1.0,
+          "z": 22,
+          "animIn": "fadeDown",
+          "delay": 0.2
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"background:#111827; border:3px double #fcd535; border-radius:8px; padding:6px 14px; display:flex; align-items:center; gap:12px; box-shadow:0 8px 20px rgba(0,0,0,0.7), inset 0 0 10px rgba(0,0,0,0.8); font-family:'Oswald',sans-serif;\">\n                <div style=\"display:flex; flex-direction:column; align-items:center;\">\n                    <span style=\"font-size:11px; color:#94a3b8; font-weight:700; letter-spacing:1px;\">SEUL</span>\n                    <span style=\"font-size:24px; color:#fff; font-weight:900; line-height:1;\">29<span style=\"font-size:13px; color:#fcd535; font-weight:900; margin-left:2px;\">DH</span></span>\n                </div>\n                <div style=\"width:1px; height:28px; background:rgba(255,255,255,0.2);\"></div>\n                <div style=\"display:flex; flex-direction:column; align-items:center;\">\n                    <span style=\"font-size:11px; color:#94a3b8; font-weight:700; letter-spacing:1px;\">MENU</span>\n                    <span style=\"font-size:24px; color:#fff; font-weight:900; line-height:1;\">39<span style=\"font-size:13px; color:#fcd535; font-weight:900; margin-left:2px;\">DH</span></span>\n                </div>\n            </div>",
+          "x": -455,
+          "y": -280,
+          "scale": 1.0,
+          "z": 22,
+          "animIn": "pop",
+          "delay": 0.25
+        },
+        {
+          "type": "rawImage",
+          "url": "cutouts_cropped/bocadillo complet 29 dh.png",
+          "x": -635,
+          "y": 60,
+          "scale": 0.65,
+          "z": 15,
+          "animIn": "fadeUp",
+          "animOut": "fadeOut",
+          "delay": 0.1,
+          "continuousAnim": "breathe"
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"background:linear-gradient(to right, rgba(0,0,0,0.82), rgba(20,20,20,0.88)); color:#ffffff; font-family:'Montserrat',sans-serif; font-size:11px; font-weight:800; letter-spacing:1px; padding:4px 14px; border-radius:4px; box-shadow:0 4px 10px rgba(0,0,0,0.6); border-left:3px solid #ffaa00; white-space:nowrap;\">\n            THON • TORTILLA • FROMAGE • CHARCUTERIE • SAUCES\n        </div>",
+          "x": -635,
+          "y": 155,
+          "scale": 1.0,
+          "z": 20,
+          "animIn": "fadeIn",
+          "delay": 0.4
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"display:flex; align-items:baseline; gap:8px;\">\n            <span style=\"font-family:'Bebas Neue',sans-serif; font-size:30px; color:#1e293b; letter-spacing:2px; font-style:italic;\">TORTILLA</span>\n            <span style=\"font-family:'Titan One',cursive; font-size:42px; color:#e05307; text-shadow:0 1px 0 #fff, 0 2px 0 #8b0000, 0 3px 0 #8b0000, 0 4px 0 #8b0000, 0 8px 15px rgba(0,0,0,0.5); letter-spacing:1px; line-height:1;\">ROYALE</span>\n        </div>",
+          "x": -95,
+          "y": -280,
+          "scale": 1.0,
+          "z": 22,
+          "animIn": "fadeDown",
+          "delay": 0.30000000000000004
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"background:#111827; border:3px double #fcd535; border-radius:8px; padding:6px 14px; display:flex; align-items:center; gap:12px; box-shadow:0 8px 20px rgba(0,0,0,0.7), inset 0 0 10px rgba(0,0,0,0.8); font-family:'Oswald',sans-serif;\">\n                <div style=\"display:flex; flex-direction:column; align-items:center;\">\n                    <span style=\"font-size:11px; color:#94a3b8; font-weight:700; letter-spacing:1px;\">SEUL</span>\n                    <span style=\"font-size:24px; color:#fff; font-weight:900; line-height:1;\">30<span style=\"font-size:13px; color:#fcd535; font-weight:900; margin-left:2px;\">DH</span></span>\n                </div>\n                <div style=\"width:1px; height:28px; background:rgba(255,255,255,0.2);\"></div>\n                <div style=\"display:flex; flex-direction:column; align-items:center;\">\n                    <span style=\"font-size:11px; color:#94a3b8; font-weight:700; letter-spacing:1px;\">MENU</span>\n                    <span style=\"font-size:24px; color:#fff; font-weight:900; line-height:1;\">40<span style=\"font-size:13px; color:#fcd535; font-weight:900; margin-left:2px;\">DH</span></span>\n                </div>\n            </div>",
+          "x": 195,
+          "y": -280,
+          "scale": 1.0,
+          "z": 22,
+          "animIn": "pop",
+          "delay": 0.35
+        },
+        {
+          "type": "rawImage",
+          "url": "cutouts_cropped/bocadillo tortillia royale 30 dh.png",
+          "x": 15,
+          "y": 60,
+          "scale": 0.65,
+          "z": 15,
+          "animIn": "fadeUp",
+          "animOut": "fadeOut",
+          "delay": 0.2,
+          "continuousAnim": "breathe"
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"background:linear-gradient(to right, rgba(0,0,0,0.82), rgba(20,20,20,0.88)); color:#ffffff; font-family:'Montserrat',sans-serif; font-size:11px; font-weight:800; letter-spacing:1px; padding:4px 14px; border-radius:4px; box-shadow:0 4px 10px rgba(0,0,0,0.6); border-left:3px solid #ffaa00; white-space:nowrap;\">\n            TORTILLA ESPAGNOLE GARNIE • FROMAGE FONDU • SAUCE ROYALE\n        </div>",
+          "x": 15,
+          "y": 155,
+          "scale": 1.0,
+          "z": 20,
+          "animIn": "fadeIn",
+          "delay": 0.5
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"display:flex; align-items:baseline; gap:8px;\">\n            <span style=\"font-family:'Bebas Neue',sans-serif; font-size:30px; color:#1e293b; letter-spacing:2px; font-style:italic;\">LE</span>\n            <span style=\"font-family:'Titan One',cursive; font-size:42px; color:#16a34a; text-shadow:0 1px 0 #fff, 0 2px 0 #8b0000, 0 3px 0 #8b0000, 0 4px 0 #8b0000, 0 8px 15px rgba(0,0,0,0.5); letter-spacing:1px; line-height:1;\">THON</span>\n        </div>",
+          "x": 525,
+          "y": -280,
+          "scale": 1.0,
+          "z": 22,
+          "animIn": "fadeDown",
+          "delay": 0.4
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"background:#111827; border:3px double #fcd535; border-radius:8px; padding:6px 14px; display:flex; align-items:center; gap:12px; box-shadow:0 8px 20px rgba(0,0,0,0.7), inset 0 0 10px rgba(0,0,0,0.8); font-family:'Oswald',sans-serif;\">\n                <div style=\"display:flex; flex-direction:column; align-items:center;\">\n                    <span style=\"font-size:11px; color:#94a3b8; font-weight:700; letter-spacing:1px;\">SEUL</span>\n                    <span style=\"font-size:24px; color:#fff; font-weight:900; line-height:1;\">22<span style=\"font-size:13px; color:#fcd535; font-weight:900; margin-left:2px;\">DH</span></span>\n                </div>\n                <div style=\"width:1px; height:28px; background:rgba(255,255,255,0.2);\"></div>\n                <div style=\"display:flex; flex-direction:column; align-items:center;\">\n                    <span style=\"font-size:11px; color:#94a3b8; font-weight:700; letter-spacing:1px;\">MENU</span>\n                    <span style=\"font-size:24px; color:#fff; font-weight:900; line-height:1;\">32<span style=\"font-size:13px; color:#fcd535; font-weight:900; margin-left:2px;\">DH</span></span>\n                </div>\n            </div>",
+          "x": 815,
+          "y": -280,
+          "scale": 1.0,
+          "z": 22,
+          "animIn": "pop",
+          "delay": 0.44999999999999996
+        },
+        {
+          "type": "rawImage",
+          "url": "cutouts_cropped/bocadillo thon 22 dh.png",
+          "x": 635,
+          "y": 60,
+          "scale": 0.65,
+          "z": 15,
+          "animIn": "fadeUp",
+          "animOut": "fadeOut",
+          "delay": 0.3,
+          "continuousAnim": "breathe"
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"background:linear-gradient(to right, rgba(0,0,0,0.82), rgba(20,20,20,0.88)); color:#ffffff; font-family:'Montserrat',sans-serif; font-size:11px; font-weight:800; letter-spacing:1px; padding:4px 14px; border-radius:4px; box-shadow:0 4px 10px rgba(0,0,0,0.6); border-left:3px solid #ffaa00; white-space:nowrap;\">\n            THON 1ER CHOIX • CRUDITÉS FRAÎCHES • OEUF DUR • OLIVES\n        </div>",
+          "x": 635,
+          "y": 155,
+          "scale": 1.0,
+          "z": 20,
+          "animIn": "fadeIn",
+          "delay": 0.6
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"display:flex; align-items:baseline; gap:8px;\">\n            <span style=\"font-family:'Bebas Neue',sans-serif; font-size:30px; color:#1e293b; letter-spacing:2px; font-style:italic;\">LA</span>\n            <span style=\"font-family:'Titan One',cursive; font-size:42px; color:#ea580c; text-shadow:0 1px 0 #fff, 0 2px 0 #8b0000, 0 3px 0 #8b0000, 0 4px 0 #8b0000, 0 8px 15px rgba(0,0,0,0.5); letter-spacing:1px; line-height:1;\">TORTILLA</span>\n        </div>",
+          "x": -745,
+          "y": 225,
+          "scale": 1.0,
+          "z": 22,
+          "animIn": "fadeDown",
+          "delay": 0.5
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"background:#111827; border:3px double #fcd535; border-radius:8px; padding:6px 14px; display:flex; align-items:center; gap:12px; box-shadow:0 8px 20px rgba(0,0,0,0.7), inset 0 0 10px rgba(0,0,0,0.8); font-family:'Oswald',sans-serif;\">\n                <div style=\"display:flex; flex-direction:column; align-items:center;\">\n                    <span style=\"font-size:11px; color:#94a3b8; font-weight:700; letter-spacing:1px;\">SEUL</span>\n                    <span style=\"font-size:24px; color:#fff; font-weight:900; line-height:1;\">22<span style=\"font-size:13px; color:#fcd535; font-weight:900; margin-left:2px;\">DH</span></span>\n                </div>\n                <div style=\"width:1px; height:28px; background:rgba(255,255,255,0.2);\"></div>\n                <div style=\"display:flex; flex-direction:column; align-items:center;\">\n                    <span style=\"font-size:11px; color:#94a3b8; font-weight:700; letter-spacing:1px;\">MENU</span>\n                    <span style=\"font-size:24px; color:#fff; font-weight:900; line-height:1;\">32<span style=\"font-size:13px; color:#fcd535; font-weight:900; margin-left:2px;\">DH</span></span>\n                </div>\n            </div>",
+          "x": -455,
+          "y": 225,
+          "scale": 1.0,
+          "z": 22,
+          "animIn": "pop",
+          "delay": 0.55
+        },
+        {
+          "type": "rawImage",
+          "url": "cutouts_cropped/bocadillo_tortillia 22 dh.png",
+          "x": -635,
+          "y": 590,
+          "scale": 0.65,
+          "z": 15,
+          "animIn": "fadeUp",
+          "animOut": "fadeOut",
+          "delay": 0.4,
+          "continuousAnim": "breathe"
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"background:linear-gradient(to right, rgba(0,0,0,0.82), rgba(20,20,20,0.88)); color:#ffffff; font-family:'Montserrat',sans-serif; font-size:11px; font-weight:800; letter-spacing:1px; padding:4px 14px; border-radius:4px; box-shadow:0 4px 10px rgba(0,0,0,0.6); border-left:3px solid #ffaa00; white-space:nowrap;\">\n            TORTILLA MAISON • PDT • CHEDDAR COULANT • SAUCE\n        </div>",
+          "x": -635,
+          "y": 685,
+          "scale": 1.0,
+          "z": 20,
+          "animIn": "fadeIn",
+          "delay": 0.7
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"display:flex; align-items:baseline; gap:8px;\">\n            <span style=\"font-family:'Bebas Neue',sans-serif; font-size:30px; color:#1e293b; letter-spacing:2px; font-style:italic;\">DOUBLE</span>\n            <span style=\"font-family:'Titan One',cursive; font-size:42px; color:#ca8a04; text-shadow:0 1px 0 #fff, 0 2px 0 #8b0000, 0 3px 0 #8b0000, 0 4px 0 #8b0000, 0 8px 15px rgba(0,0,0,0.5); letter-spacing:1px; line-height:1;\">CHEESE</span>\n        </div>",
+          "x": -95,
+          "y": 225,
+          "scale": 1.0,
+          "z": 22,
+          "animIn": "fadeDown",
+          "delay": 0.6
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"background:#111827; border:3px double #fcd535; border-radius:8px; padding:6px 14px; display:flex; align-items:center; gap:12px; box-shadow:0 8px 20px rgba(0,0,0,0.7), inset 0 0 10px rgba(0,0,0,0.8); font-family:'Oswald',sans-serif;\">\n                <div style=\"display:flex; flex-direction:column; align-items:center;\">\n                    <span style=\"font-size:11px; color:#94a3b8; font-weight:700; letter-spacing:1px;\">SEUL</span>\n                    <span style=\"font-size:24px; color:#fff; font-weight:900; line-height:1;\">24<span style=\"font-size:13px; color:#fcd535; font-weight:900; margin-left:2px;\">DH</span></span>\n                </div>\n                <div style=\"width:1px; height:28px; background:rgba(255,255,255,0.2);\"></div>\n                <div style=\"display:flex; flex-direction:column; align-items:center;\">\n                    <span style=\"font-size:11px; color:#94a3b8; font-weight:700; letter-spacing:1px;\">MENU</span>\n                    <span style=\"font-size:24px; color:#fff; font-weight:900; line-height:1;\">34<span style=\"font-size:13px; color:#fcd535; font-weight:900; margin-left:2px;\">DH</span></span>\n                </div>\n            </div>",
+          "x": 195,
+          "y": 225,
+          "scale": 1.0,
+          "z": 22,
+          "animIn": "pop",
+          "delay": 0.65
+        },
+        {
+          "type": "rawImage",
+          "url": "cutouts_cropped/bocadillo cheese 24 dh.png",
+          "x": 15,
+          "y": 590,
+          "scale": 0.65,
+          "z": 15,
+          "animIn": "fadeUp",
+          "animOut": "fadeOut",
+          "delay": 0.5,
+          "continuousAnim": "breathe"
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"background:linear-gradient(to right, rgba(0,0,0,0.82), rgba(20,20,20,0.88)); color:#ffffff; font-family:'Montserrat',sans-serif; font-size:11px; font-weight:800; letter-spacing:1px; padding:4px 14px; border-radius:4px; box-shadow:0 4px 10px rgba(0,0,0,0.6); border-left:3px solid #ffaa00; white-space:nowrap;\">\n            THON GOURMAND • DOUBLE CHEDDAR FONDU • SAUCE CHEESE\n        </div>",
+          "x": 15,
+          "y": 685,
+          "scale": 1.0,
+          "z": 20,
+          "animIn": "fadeIn",
+          "delay": 0.8
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"display:flex; align-items:baseline; gap:8px;\">\n            <span style=\"font-family:'Bebas Neue',sans-serif; font-size:30px; color:#1e293b; letter-spacing:2px; font-style:italic;\">LE</span>\n            <span style=\"font-family:'Titan One',cursive; font-size:42px; color:#dc2626; text-shadow:0 1px 0 #fff, 0 2px 0 #8b0000, 0 3px 0 #8b0000, 0 4px 0 #8b0000, 0 8px 15px rgba(0,0,0,0.5); letter-spacing:1px; line-height:1;\">TANGÉROIS</span>\n        </div>",
+          "x": 525,
+          "y": 225,
+          "scale": 1.0,
+          "z": 22,
+          "animIn": "fadeDown",
+          "delay": 0.7
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"background:#111827; border:3px double #fcd535; border-radius:8px; padding:6px 14px; display:flex; align-items:center; gap:12px; box-shadow:0 8px 20px rgba(0,0,0,0.7), inset 0 0 10px rgba(0,0,0,0.8); font-family:'Oswald',sans-serif;\">\n                <div style=\"display:flex; flex-direction:column; align-items:center;\">\n                    <span style=\"font-size:11px; color:#94a3b8; font-weight:700; letter-spacing:1px;\">SEUL</span>\n                    <span style=\"font-size:24px; color:#fff; font-weight:900; line-height:1;\">24<span style=\"font-size:13px; color:#fcd535; font-weight:900; margin-left:2px;\">DH</span></span>\n                </div>\n                <div style=\"width:1px; height:28px; background:rgba(255,255,255,0.2);\"></div>\n                <div style=\"display:flex; flex-direction:column; align-items:center;\">\n                    <span style=\"font-size:11px; color:#94a3b8; font-weight:700; letter-spacing:1px;\">MENU</span>\n                    <span style=\"font-size:24px; color:#fff; font-weight:900; line-height:1;\">34<span style=\"font-size:13px; color:#fcd535; font-weight:900; margin-left:2px;\">DH</span></span>\n                </div>\n            </div>",
+          "x": 815,
+          "y": 225,
+          "scale": 1.0,
+          "z": 22,
+          "animIn": "pop",
+          "delay": 0.75
+        },
+        {
+          "type": "rawImage",
+          "url": "cutouts_cropped/bocadillo tangerois 24 dh.png",
+          "x": 635,
+          "y": 590,
+          "scale": 0.65,
+          "z": 15,
+          "animIn": "fadeUp",
+          "animOut": "fadeOut",
+          "delay": 0.6,
+          "continuousAnim": "breathe"
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"background:linear-gradient(to right, rgba(0,0,0,0.82), rgba(20,20,20,0.88)); color:#ffffff; font-family:'Montserrat',sans-serif; font-size:11px; font-weight:800; letter-spacing:1px; padding:4px 14px; border-radius:4px; box-shadow:0 4px 10px rgba(0,0,0,0.6); border-left:3px solid #ffaa00; white-space:nowrap;\">\n            RECETTE SPÉCIALE TANGER 1980 • ÉPICES SECRÈTES • LÉGUMES FRAIS\n        </div>",
+          "x": 635,
+          "y": 685,
+          "scale": 1.0,
+          "z": 20,
+          "animIn": "fadeIn",
+          "delay": 0.8999999999999999
+        }
+      ]
+    },
+    "emirates_screen_2": {
+      "id": "emirates_screen_2",
+      "name": "2. SANDWICHES CHAUDS",
+      "description": "EMIRATES BURGER STYLE",
+      "duration": 15,
+      "tv": "Toutes",
+      "bgImage": "emirates_bg_1080p.jpg",
+      "bgEffect": "sparks",
+      "components": [
+        {
+          "type": "customText",
+          "content": "<div style=\"width:660px; height:48px; background:linear-gradient(to bottom, #d49a5b 0%, #b3793e 30%, #825324 70%, #46280b 100%); border-top:2px solid #f6cf9c; border-bottom:2px solid #291504; box-shadow:0 10px 20px rgba(0,0,0,0.55), inset 0 2px 4px rgba(255,255,255,0.25);\"></div>",
+          "x": -630,
+          "y": 159,
+          "scale": 1.0,
+          "z": 4,
+          "animIn": "fadeIn",
+          "delay": 0,
+          "locked": true
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"display:flex; align-items:center; gap:14px; pointer-events:none;\">\n            <span style=\"background:#d91c1c; color:#fff; font-family:'Titan One',cursive; font-size:18px; padding:5px 14px; border-radius:4px; box-shadow:0 4px 10px rgba(217,28,28,0.45); letter-spacing:1px;\">MON BOCADILLO TANGER</span>\n            <span style=\"font-family:'Bebas Neue',sans-serif; font-size:22px; color:#1e293b; letter-spacing:2px; background:rgba(255,255,255,0.88); padding:3px 12px; border-radius:4px; border-left:4px solid #d91c1c;\">✦ LES SANDWICHES CHAUDS & SPÉCIAUX ✦</span>\n        </div>",
+          "x": -530,
+          "y": -320,
+          "scale": 1.0,
+          "z": 25,
+          "animIn": "fadeIn",
+          "delay": 0,
+          "locked": true
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"display:flex; align-items:baseline; gap:8px;\">\n            <span style=\"font-family:'Bebas Neue',sans-serif; font-size:30px; color:#1e293b; letter-spacing:2px; font-style:italic;\">LE</span>\n            <span style=\"font-family:'Titan One',cursive; font-size:42px; color:#d91c1c; text-shadow:0 1px 0 #fff, 0 2px 0 #8b0000, 0 3px 0 #8b0000, 0 4px 0 #8b0000, 0 8px 15px rgba(0,0,0,0.5); letter-spacing:1px; line-height:1;\">AMÉRICAIN</span>\n        </div>",
+          "x": -745,
+          "y": -280,
+          "scale": 1.0,
+          "z": 22,
+          "animIn": "fadeDown",
+          "delay": 0.2
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"background:#111827; border:3px double #fcd535; border-radius:8px; padding:6px 14px; display:flex; align-items:center; gap:12px; box-shadow:0 8px 20px rgba(0,0,0,0.7), inset 0 0 10px rgba(0,0,0,0.8); font-family:'Oswald',sans-serif;\">\n                <div style=\"display:flex; flex-direction:column; align-items:center;\">\n                    <span style=\"font-size:11px; color:#94a3b8; font-weight:700; letter-spacing:1px;\">SEUL</span>\n                    <span style=\"font-size:24px; color:#fff; font-weight:900; line-height:1;\">35<span style=\"font-size:13px; color:#fcd535; font-weight:900; margin-left:2px;\">DH</span></span>\n                </div>\n                <div style=\"width:1px; height:28px; background:rgba(255,255,255,0.2);\"></div>\n                <div style=\"display:flex; flex-direction:column; align-items:center;\">\n                    <span style=\"font-size:11px; color:#94a3b8; font-weight:700; letter-spacing:1px;\">MENU</span>\n                    <span style=\"font-size:24px; color:#fff; font-weight:900; line-height:1;\">45<span style=\"font-size:13px; color:#fcd535; font-weight:900; margin-left:2px;\">DH</span></span>\n                </div>\n            </div>",
+          "x": -455,
+          "y": -280,
+          "scale": 1.0,
+          "z": 22,
+          "animIn": "pop",
+          "delay": 0.25
+        },
+        {
+          "type": "rawImage",
+          "url": "cutouts_cropped/sandwich americain 35 dh.png",
+          "x": -635,
+          "y": 60,
+          "scale": 0.65,
+          "z": 15,
+          "animIn": "fadeUp",
+          "animOut": "fadeOut",
+          "delay": 0.1,
+          "continuousAnim": "breathe"
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"background:linear-gradient(to right, rgba(0,0,0,0.82), rgba(20,20,20,0.88)); color:#ffffff; font-family:'Montserrat',sans-serif; font-size:11px; font-weight:800; letter-spacing:1px; padding:4px 14px; border-radius:4px; box-shadow:0 4px 10px rgba(0,0,0,0.6); border-left:3px solid #ffaa00; white-space:nowrap;\">\n            STEAK HACHÉ • OEUF À CHEVAL • DOUBLE CHEDDAR • FRITES\n        </div>",
+          "x": -635,
+          "y": 155,
+          "scale": 1.0,
+          "z": 20,
+          "animIn": "fadeIn",
+          "delay": 0.4
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"display:flex; align-items:baseline; gap:8px;\">\n            <span style=\"font-family:'Bebas Neue',sans-serif; font-size:30px; color:#1e293b; letter-spacing:2px; font-style:italic;\">LE</span>\n            <span style=\"font-family:'Titan One',cursive; font-size:42px; color:#ea580c; text-shadow:0 1px 0 #fff, 0 2px 0 #8b0000, 0 3px 0 #8b0000, 0 4px 0 #8b0000, 0 8px 15px rgba(0,0,0,0.5); letter-spacing:1px; line-height:1;\">POULET</span>\n        </div>",
+          "x": -95,
+          "y": -280,
+          "scale": 1.0,
+          "z": 22,
+          "animIn": "fadeDown",
+          "delay": 0.30000000000000004
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"background:#111827; border:3px double #fcd535; border-radius:8px; padding:6px 14px; display:flex; align-items:center; gap:12px; box-shadow:0 8px 20px rgba(0,0,0,0.7), inset 0 0 10px rgba(0,0,0,0.8); font-family:'Oswald',sans-serif;\">\n                <div style=\"display:flex; flex-direction:column; align-items:center;\">\n                    <span style=\"font-size:11px; color:#94a3b8; font-weight:700; letter-spacing:1px;\">SEUL</span>\n                    <span style=\"font-size:24px; color:#fff; font-weight:900; line-height:1;\">30<span style=\"font-size:13px; color:#fcd535; font-weight:900; margin-left:2px;\">DH</span></span>\n                </div>\n                <div style=\"width:1px; height:28px; background:rgba(255,255,255,0.2);\"></div>\n                <div style=\"display:flex; flex-direction:column; align-items:center;\">\n                    <span style=\"font-size:11px; color:#94a3b8; font-weight:700; letter-spacing:1px;\">MENU</span>\n                    <span style=\"font-size:24px; color:#fff; font-weight:900; line-height:1;\">40<span style=\"font-size:13px; color:#fcd535; font-weight:900; margin-left:2px;\">DH</span></span>\n                </div>\n            </div>",
+          "x": 195,
+          "y": -280,
+          "scale": 1.0,
+          "z": 22,
+          "animIn": "pop",
+          "delay": 0.35
+        },
+        {
+          "type": "rawImage",
+          "url": "cutouts_cropped/sandwiche poulet 30 dh.png",
+          "x": 15,
+          "y": 60,
+          "scale": 0.65,
+          "z": 15,
+          "animIn": "fadeUp",
+          "animOut": "fadeOut",
+          "delay": 0.2,
+          "continuousAnim": "breathe"
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"background:linear-gradient(to right, rgba(0,0,0,0.82), rgba(20,20,20,0.88)); color:#ffffff; font-family:'Montserrat',sans-serif; font-size:11px; font-weight:800; letter-spacing:1px; padding:4px 14px; border-radius:4px; box-shadow:0 4px 10px rgba(0,0,0,0.6); border-left:3px solid #ffaa00; white-space:nowrap;\">\n            BLANC DE POULET GRILLÉ MARINÉ • SALADE • SAUCE BLANCHE\n        </div>",
+          "x": 15,
+          "y": 155,
+          "scale": 1.0,
+          "z": 20,
+          "animIn": "fadeIn",
+          "delay": 0.5
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"display:flex; align-items:baseline; gap:8px;\">\n            <span style=\"font-family:'Bebas Neue',sans-serif; font-size:30px; color:#1e293b; letter-spacing:2px; font-style:italic;\">VIANDE</span>\n            <span style=\"font-family:'Titan One',cursive; font-size:42px; color:#dc2626; text-shadow:0 1px 0 #fff, 0 2px 0 #8b0000, 0 3px 0 #8b0000, 0 4px 0 #8b0000, 0 8px 15px rgba(0,0,0,0.5); letter-spacing:1px; line-height:1;\">HACHÉE</span>\n        </div>",
+          "x": 525,
+          "y": -280,
+          "scale": 1.0,
+          "z": 22,
+          "animIn": "fadeDown",
+          "delay": 0.4
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"background:#111827; border:3px double #fcd535; border-radius:8px; padding:6px 14px; display:flex; align-items:center; gap:12px; box-shadow:0 8px 20px rgba(0,0,0,0.7), inset 0 0 10px rgba(0,0,0,0.8); font-family:'Oswald',sans-serif;\">\n                <div style=\"display:flex; flex-direction:column; align-items:center;\">\n                    <span style=\"font-size:11px; color:#94a3b8; font-weight:700; letter-spacing:1px;\">SEUL</span>\n                    <span style=\"font-size:24px; color:#fff; font-weight:900; line-height:1;\">30<span style=\"font-size:13px; color:#fcd535; font-weight:900; margin-left:2px;\">DH</span></span>\n                </div>\n                <div style=\"width:1px; height:28px; background:rgba(255,255,255,0.2);\"></div>\n                <div style=\"display:flex; flex-direction:column; align-items:center;\">\n                    <span style=\"font-size:11px; color:#94a3b8; font-weight:700; letter-spacing:1px;\">MENU</span>\n                    <span style=\"font-size:24px; color:#fff; font-weight:900; line-height:1;\">40<span style=\"font-size:13px; color:#fcd535; font-weight:900; margin-left:2px;\">DH</span></span>\n                </div>\n            </div>",
+          "x": 815,
+          "y": -280,
+          "scale": 1.0,
+          "z": 22,
+          "animIn": "pop",
+          "delay": 0.44999999999999996
+        },
+        {
+          "type": "rawImage",
+          "url": "cutouts_cropped/sandwich viande hache 30 dh.png",
+          "x": 635,
+          "y": 60,
+          "scale": 0.65,
+          "z": 15,
+          "animIn": "fadeUp",
+          "animOut": "fadeOut",
+          "delay": 0.3,
+          "continuousAnim": "breathe"
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"background:linear-gradient(to right, rgba(0,0,0,0.82), rgba(20,20,20,0.88)); color:#ffffff; font-family:'Montserrat',sans-serif; font-size:11px; font-weight:800; letter-spacing:1px; padding:4px 14px; border-radius:4px; box-shadow:0 4px 10px rgba(0,0,0,0.6); border-left:3px solid #ffaa00; white-space:nowrap;\">\n            PUR BOEUF HACHÉ ASSAISONNÉ • OIGNONS GRILLÉS • SAUCE BBQ\n        </div>",
+          "x": 635,
+          "y": 155,
+          "scale": 1.0,
+          "z": 20,
+          "animIn": "fadeIn",
+          "delay": 0.6
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"display:flex; align-items:baseline; gap:8px;\">\n            <span style=\"font-family:'Bebas Neue',sans-serif; font-size:30px; color:#1e293b; letter-spacing:2px; font-style:italic;\">LE</span>\n            <span style=\"font-family:'Titan One',cursive; font-size:42px; color:#ea580c; text-shadow:0 1px 0 #fff, 0 2px 0 #8b0000, 0 3px 0 #8b0000, 0 4px 0 #8b0000, 0 8px 15px rgba(0,0,0,0.5); letter-spacing:1px; line-height:1;\">MIXTE</span>\n        </div>",
+          "x": -745,
+          "y": 225,
+          "scale": 1.0,
+          "z": 22,
+          "animIn": "fadeDown",
+          "delay": 0.5
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"background:#111827; border:3px double #fcd535; border-radius:8px; padding:6px 14px; display:flex; align-items:center; gap:12px; box-shadow:0 8px 20px rgba(0,0,0,0.7), inset 0 0 10px rgba(0,0,0,0.8); font-family:'Oswald',sans-serif;\">\n                <div style=\"display:flex; flex-direction:column; align-items:center;\">\n                    <span style=\"font-size:11px; color:#94a3b8; font-weight:700; letter-spacing:1px;\">SEUL</span>\n                    <span style=\"font-size:24px; color:#fff; font-weight:900; line-height:1;\">35<span style=\"font-size:13px; color:#fcd535; font-weight:900; margin-left:2px;\">DH</span></span>\n                </div>\n                <div style=\"width:1px; height:28px; background:rgba(255,255,255,0.2);\"></div>\n                <div style=\"display:flex; flex-direction:column; align-items:center;\">\n                    <span style=\"font-size:11px; color:#94a3b8; font-weight:700; letter-spacing:1px;\">MENU</span>\n                    <span style=\"font-size:24px; color:#fff; font-weight:900; line-height:1;\">45<span style=\"font-size:13px; color:#fcd535; font-weight:900; margin-left:2px;\">DH</span></span>\n                </div>\n            </div>",
+          "x": -455,
+          "y": 225,
+          "scale": 1.0,
+          "z": 22,
+          "animIn": "pop",
+          "delay": 0.55
+        },
+        {
+          "type": "rawImage",
+          "url": "cutouts_cropped/sandwiche mixte 35 dh.png",
+          "x": -635,
+          "y": 590,
+          "scale": 0.65,
+          "z": 15,
+          "animIn": "fadeUp",
+          "animOut": "fadeOut",
+          "delay": 0.4,
+          "continuousAnim": "breathe"
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"background:linear-gradient(to right, rgba(0,0,0,0.82), rgba(20,20,20,0.88)); color:#ffffff; font-family:'Montserrat',sans-serif; font-size:11px; font-weight:800; letter-spacing:1px; padding:4px 14px; border-radius:4px; box-shadow:0 4px 10px rgba(0,0,0,0.6); border-left:3px solid #ffaa00; white-space:nowrap;\">\n            DUO POULET MARINÉ & VIANDE HACHÉE • FROMAGE • SAUCES\n        </div>",
+          "x": -635,
+          "y": 685,
+          "scale": 1.0,
+          "z": 20,
+          "animIn": "fadeIn",
+          "delay": 0.7
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"display:flex; align-items:baseline; gap:8px;\">\n            <span style=\"font-family:'Bebas Neue',sans-serif; font-size:30px; color:#1e293b; letter-spacing:2px; font-style:italic;\">LA</span>\n            <span style=\"font-family:'Titan One',cursive; font-size:42px; color:#ea580c; text-shadow:0 1px 0 #fff, 0 2px 0 #8b0000, 0 3px 0 #8b0000, 0 4px 0 #8b0000, 0 8px 15px rgba(0,0,0,0.5); letter-spacing:1px; line-height:1;\">SAUCISSE</span>\n        </div>",
+          "x": -95,
+          "y": 225,
+          "scale": 1.0,
+          "z": 22,
+          "animIn": "fadeDown",
+          "delay": 0.6
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"background:#111827; border:3px double #fcd535; border-radius:8px; padding:6px 14px; display:flex; align-items:center; gap:12px; box-shadow:0 8px 20px rgba(0,0,0,0.7), inset 0 0 10px rgba(0,0,0,0.8); font-family:'Oswald',sans-serif;\">\n                <div style=\"display:flex; flex-direction:column; align-items:center;\">\n                    <span style=\"font-size:11px; color:#94a3b8; font-weight:700; letter-spacing:1px;\">SEUL</span>\n                    <span style=\"font-size:24px; color:#fff; font-weight:900; line-height:1;\">30<span style=\"font-size:13px; color:#fcd535; font-weight:900; margin-left:2px;\">DH</span></span>\n                </div>\n                <div style=\"width:1px; height:28px; background:rgba(255,255,255,0.2);\"></div>\n                <div style=\"display:flex; flex-direction:column; align-items:center;\">\n                    <span style=\"font-size:11px; color:#94a3b8; font-weight:700; letter-spacing:1px;\">MENU</span>\n                    <span style=\"font-size:24px; color:#fff; font-weight:900; line-height:1;\">40<span style=\"font-size:13px; color:#fcd535; font-weight:900; margin-left:2px;\">DH</span></span>\n                </div>\n            </div>",
+          "x": 195,
+          "y": 225,
+          "scale": 1.0,
+          "z": 22,
+          "animIn": "pop",
+          "delay": 0.65
+        },
+        {
+          "type": "rawImage",
+          "url": "cutouts_cropped/sandwiche saussice 30.png",
+          "x": 15,
+          "y": 590,
+          "scale": 0.65,
+          "z": 15,
+          "animIn": "fadeUp",
+          "animOut": "fadeOut",
+          "delay": 0.5,
+          "continuousAnim": "breathe"
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"background:linear-gradient(to right, rgba(0,0,0,0.82), rgba(20,20,20,0.88)); color:#ffffff; font-family:'Montserrat',sans-serif; font-size:11px; font-weight:800; letter-spacing:1px; padding:4px 14px; border-radius:4px; box-shadow:0 4px 10px rgba(0,0,0,0.6); border-left:3px solid #ffaa00; white-space:nowrap;\">\n            SAUCISSES FUMÉES DORÉES • OIGNONS CARAMÉLISÉS • CHEDDAR\n        </div>",
+          "x": 15,
+          "y": 685,
+          "scale": 1.0,
+          "z": 20,
+          "animIn": "fadeIn",
+          "delay": 0.8
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"display:flex; align-items:baseline; gap:8px;\">\n            <span style=\"font-family:'Bebas Neue',sans-serif; font-size:30px; color:#1e293b; letter-spacing:2px; font-style:italic;\">FORMULE</span>\n            <span style=\"font-family:'Titan One',cursive; font-size:42px; color:#16a34a; text-shadow:0 1px 0 #fff, 0 2px 0 #8b0000, 0 3px 0 #8b0000, 0 4px 0 #8b0000, 0 8px 15px rgba(0,0,0,0.5); letter-spacing:1px; line-height:1;\">COMBO</span>\n        </div>",
+          "x": 525,
+          "y": 225,
+          "scale": 1.0,
+          "z": 22,
+          "animIn": "fadeDown",
+          "delay": 0.7
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"background:#111827; border:3px double #fcd535; border-radius:8px; padding:6px 14px; display:flex; align-items:center; gap:10px; box-shadow:0 8px 20px rgba(0,0,0,0.7), inset 0 0 10px rgba(0,0,0,0.8); font-family:'Oswald',sans-serif;\">\n                <div style=\"display:flex; flex-direction:column; align-items:center;\">\n                    <span style=\"font-size:11px; color:#94a3b8; font-weight:700; letter-spacing:1px;\">MENU</span>\n                    <span style=\"font-size:24px; color:#fff; font-weight:900; line-height:1;\">+10<span style=\"font-size:13px; color:#fcd535; font-weight:900; margin-left:2px;\">DH</span></span>\n                </div>\n                <div style=\"width:1px; height:26px; background:rgba(255,255,255,0.2);\"></div>\n                <span style=\"font-size:11px; color:#fff; font-weight:800;\">FRITES + BOISSON</span>\n            </div>",
+          "x": 815,
+          "y": 225,
+          "scale": 1.0,
+          "z": 22,
+          "animIn": "pop",
+          "delay": 0.75
+        },
+        {
+          "type": "rawImage",
+          "url": "cutouts_cropped/bocadillo complet 29 dh.png",
+          "x": 635,
+          "y": 590,
+          "scale": 0.65,
+          "z": 15,
+          "animIn": "fadeUp",
+          "animOut": "fadeOut",
+          "delay": 0.6,
+          "continuousAnim": "breathe"
+        },
+        {
+          "type": "customText",
+          "content": "<div style=\"background:linear-gradient(to right, rgba(0,0,0,0.82), rgba(20,20,20,0.88)); color:#ffffff; font-family:'Montserrat',sans-serif; font-size:11px; font-weight:800; letter-spacing:1px; padding:4px 14px; border-radius:4px; box-shadow:0 4px 10px rgba(0,0,0,0.6); border-left:3px solid #ffaa00; white-space:nowrap;\">\n            TOUT SANDWICH EN FORMULE AVEC FRITES CROUSTILLANTES & BOISSON\n        </div>",
+          "x": 635,
+          "y": 685,
+          "scale": 1.0,
+          "z": 20,
+          "animIn": "fadeIn",
+          "delay": 0.8999999999999999
+        }
+      ]
+    }
+  }
+}
