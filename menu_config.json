@@ -1,0 +1,122 @@
+{
+  "brand": "MON BOCADILLO TANGER",
+  "cycle_seconds": 15,
+  "screen_1": {
+    "category": "✦ LES BOCADILLOS CHAMALI TRADITION ✦",
+    "items": [
+      {
+        "id": "complet",
+        "prefix": "LE",
+        "name": "COMPLET",
+        "price_seul": "29",
+        "price_menu": "39",
+        "ingredients": "THON • TORTILLA • FROMAGE • CHARCUTERIE • SAUCES",
+        "color": "#d91c1c"
+      },
+      {
+        "id": "tortilla_royale",
+        "prefix": "TORTILLA",
+        "name": "ROYALE",
+        "price_seul": "30",
+        "price_menu": "40",
+        "ingredients": "TORTILLA ESPAGNOLE GARNIE • FROMAGE FONDU • SAUCE ROYALE",
+        "color": "#ea580c"
+      },
+      {
+        "id": "thon",
+        "prefix": "LE",
+        "name": "THON",
+        "price_seul": "22",
+        "price_menu": "32",
+        "ingredients": "THON 1ER CHOIX • CRUDITÉS FRAÎCHES • OEUF DUR • OLIVES",
+        "color": "#2563eb"
+      },
+      {
+        "id": "tortilla",
+        "prefix": "LA",
+        "name": "TORTILLA",
+        "price_seul": "22",
+        "price_menu": "32",
+        "ingredients": "TORTILLA MAISON • PDT • CHEDDAR COULANT • SAUCE",
+        "color": "#f59e0b"
+      },
+      {
+        "id": "cheese",
+        "prefix": "DOUBLE",
+        "name": "CHEESE",
+        "price_seul": "24",
+        "price_menu": "34",
+        "ingredients": "THON GOURMAND • DOUBLE CHEDDAR FONDU • SAUCE CHEESE",
+        "color": "#f59e0b"
+      },
+      {
+        "id": "tangerois",
+        "prefix": "LE",
+        "name": "TANGÉROIS",
+        "price_seul": "24",
+        "price_menu": "34",
+        "ingredients": "RECETTE SPÉCIALE TANGER 1980 • ÉPICES SECRÈTES • LÉGUMES",
+        "color": "#d91c1c"
+      }
+    ]
+  },
+  "screen_2": {
+    "category": "✦ LES SANDWICHES CHAUDS & SPÉCIAUX ✦",
+    "items": [
+      {
+        "id": "americain",
+        "prefix": "LE",
+        "name": "AMÉRICAIN",
+        "price_seul": "35",
+        "price_menu": "45",
+        "ingredients": "STEAK HACHÉ • OEUF À CHEVAL • DOUBLE CHEDDAR • FRITES",
+        "color": "#d91c1c"
+      },
+      {
+        "id": "mixte",
+        "prefix": "LE",
+        "name": "MIXTE",
+        "price_seul": "35",
+        "price_menu": "45",
+        "ingredients": "DUO POULET MARINÉ & VIANDE HACHÉE • FROMAGE • SAUCES",
+        "color": "#ea580c"
+      },
+      {
+        "id": "poulet",
+        "prefix": "LE",
+        "name": "POULET",
+        "price_seul": "30",
+        "price_menu": "40",
+        "ingredients": "BLANC DE POULET GRILLÉ MARINÉ • SALADE • SAUCE BLANCHE",
+        "color": "#f59e0b"
+      },
+      {
+        "id": "viande_hache",
+        "prefix": "VIANDE",
+        "name": "HACHÉE",
+        "price_seul": "30",
+        "price_menu": "40",
+        "ingredients": "PUR BOEUF HACHÉ ASSAISONNÉ • OIGNONS GRILLÉS • SAUCE BBQ",
+        "color": "#d91c1c"
+      },
+      {
+        "id": "saucisse",
+        "prefix": "LA",
+        "name": "SAUCISSE",
+        "price_seul": "30",
+        "price_menu": "40",
+        "ingredients": "SAUCISSES FUMÉES DORÉES • OIGNONS CARAMÉLISÉS • CHEDDAR",
+        "color": "#ea580c"
+      },
+      {
+        "id": "combo",
+        "prefix": "FORMULE",
+        "name": "COMBO",
+        "price_seul": "+10",
+        "price_menu": "FRITES",
+        "ingredients": "TOUT SANDWICH EN FORMULE AVEC FRITES CROUSTILLANTES & BOISSON",
+        "color": "#16a34a"
+      }
+    ]
+  }
+}

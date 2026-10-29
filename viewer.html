@@ -3,567 +3,1295 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TV2 - Dynamic Animation Engine</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700;900&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>Digital Menu Board — Style Emirates Burger | Mon Bocadillo Tanger</title>
+    <!-- Google Fonts: Bebas Neue, Montserrat, Titan One -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,400;0,700;0,800;0,900;1,800&family=Titan+One&display=swap" rel="stylesheet">
+    
     <style>
-        body { background-color: #050505; color: #FFFFFF; overflow: hidden; font-family: 'Inter', sans-serif; width: 1920px; height: 1080px; margin: 0; padding: 0; }
-        .bg-layer { position: absolute; top:0; left:0; width:100%; height:100%; z-index: -5; background: radial-gradient(circle at 50% 60%, #1a1a1a 0%, #000000 100%); }
-        .light-beam { position: absolute; top: -50%; left: 50%; width: 800px; height: 2000px; background: linear-gradient(90deg, transparent, rgba(255,199,44,0.05), transparent); transform: rotate(35deg) translateX(-50%); z-index: -4; pointer-events: none; }
-        .light-beam:nth-child(2) { transform: rotate(-35deg) translateX(-50%); background: linear-gradient(90deg, transparent, rgba(218,41,28,0.05), transparent); }
-        .glow-orb { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -40%); width: 1200px; height: 800px; border-radius: 50%; filter: blur(120px); z-index: -3; opacity: 0.8; transition: background 1s ease; }
-        .glow-red { background: rgba(218,41,28,0.6); }
-        .glow-yellow { background: rgba(255,199,44,0.4); }
-        .glow-blue { background: rgba(0, 168, 255, 0.4); }
-        .glow-off { opacity: 0; }
-        .floor-shadow { position: absolute; bottom: 100px; left: 50%; transform: translateX(-50%); width: 1200px; height: 100px; background: radial-gradient(ellipse at center, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 70%); z-index: 0; }
-
-        h1, h2, .price, .badge { font-family: 'Oswald', sans-serif; }
-        
-        .offer-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; visibility: hidden; padding-top: 60px; }
-        .badge { font-size: 2.5rem; padding: 8px 30px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); letter-spacing: 0.2em; text-transform: uppercase; display: inline-block; margin-bottom: 20px; font-weight: 900; }
-        .title-text { font-size: 8rem; line-height: 0.9; text-transform: uppercase; text-shadow: 0 20px 40px rgba(0,0,0,0.8); margin: 0; background: linear-gradient(to bottom, #ffffff, #d4d4d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; letter-spacing: 0.02em; }
-        .desc-text { font-size: 3rem; font-weight: 700; text-shadow: 0 5px 15px rgba(0,0,0,0.8); letter-spacing: 0.05em; margin-top: 15px; }
-
-        .price-sticker { position: absolute; bottom: 80px; left: 150px; width: 300px; height: 300px; background: #FFC72C; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 30px 60px rgba(255,199,44,0.4), inset 0 0 20px rgba(0,0,0,0.2); border: 8px solid #DA291C; z-index: 50; transform: rotate(-10deg); }
-        .price-num { font-size: 10rem; line-height: 0.8; font-weight: 900; color: #111; margin-top: 20px;}
-        .price-currency { font-size: 4rem; color: #DA291C; font-weight: 900; margin-top: -10px;}
-        .price-currency { font-size: 4rem; color: #DA291C; font-weight: 900; margin-top: -10px;}
-        
-        .fullscreen-media { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 20; }
-
-        /* Continuous Animations */
-        @keyframes anim-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-        @keyframes anim-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-        @keyframes anim-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes anim-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
-        @keyframes anim-swing { 20% { transform: rotate(15deg); } 40% { transform: rotate(-10deg); } 60% { transform: rotate(5deg); } 80% { transform: rotate(-5deg); } 100% { transform: rotate(0deg); } }
-        @keyframes anim-heartbeat { 0%, 28%, 70% { transform: scale(1); } 14%, 42% { transform: scale(1.15); } }
-        @keyframes anim-glow { 0%, 100% { filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)) brightness(1); } 50% { filter: drop-shadow(0 0 20px rgba(255,255,255,0.8)) brightness(1.2); } }
-        @keyframes anim-wobble { 0%, 100% { transform: translateX(0%); } 15% { transform: translateX(-10%) rotate(-5deg); } 30% { transform: translateX(8%) rotate(3deg); } 45% { transform: translateX(-6%) rotate(-3deg); } 60% { transform: translateX(4%) rotate(2deg); } 75% { transform: translateX(-2%) rotate(-1deg); } }
-        @keyframes anim-bounce-slow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
-        @keyframes anim-float-x { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(20px); } }
-        @keyframes anim-flip { 0% { transform: perspective(400px) rotateY(0); } 100% { transform: perspective(400px) rotateY(360deg); } }
-        @keyframes anim-shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); } 20%, 40%, 60%, 80% { transform: translateX(5px); } }
-        
-        .anim-float { animation: anim-float 4s ease-in-out infinite !important; }
-        .anim-pulse { animation: anim-pulse 2s ease-in-out infinite !important; }
-        .anim-spin { animation: anim-spin 10s linear infinite !important; }
-        .anim-breathe { animation: anim-breathe 6s ease-in-out infinite !important; }
-        .anim-swing { animation: anim-swing 4s ease-in-out infinite !important; transform-origin: top center; }
-        .anim-heartbeat { animation: anim-heartbeat 2.5s ease-in-out infinite !important; }
-        .anim-glow { animation: anim-glow 3s ease-in-out infinite !important; }
-        .anim-wobble { animation: anim-wobble 4s ease-in-out infinite !important; }
-        .anim-bounce-slow { animation: anim-bounce-slow 3s ease-in-out infinite !important; }
-        .anim-float-x { animation: anim-float-x 4s ease-in-out infinite !important; }
-        .anim-flip { animation: anim-flip 5s linear infinite !important; }
-        .anim-shake { animation: anim-shake 6s ease-in-out infinite !important; }
-        .anim-spin-fast { animation: anim-spin 2s linear infinite !important; }
-        .anim-spin-reverse { animation: anim-spin 10s linear infinite reverse !important; }
-    </style>
-
-    <script>
-        function resizeCanvas() {
-            // Check orientation from global menuData if available, else default horizontal
-            const isVertical = (window.menuData && window.menuData.orientation === 'vertical');
-            const baseWidth = isVertical ? 1080 : 1920;
-            const baseHeight = isVertical ? 1920 : 1080;
-            
-            document.body.style.width = baseWidth + 'px';
-            document.body.style.height = baseHeight + 'px';
-            
-            const scaleX = window.innerWidth / baseWidth;
-            const scaleY = window.innerHeight / baseHeight;
-            const scale = Math.min(scaleX, scaleY);
-            
-            document.body.style.transform = `scale(${scale})`;
-            document.body.style.transformOrigin = 'top left';
-            
-            const scaledWidth = baseWidth * scale;
-            const scaledHeight = baseHeight * scale;
-            document.body.style.marginLeft = `${(window.innerWidth - scaledWidth) / 2}px`;
-            document.body.style.marginTop = `${(window.innerHeight - scaledHeight) / 2}px`;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
         }
-        window.addEventListener('resize', resizeCanvas);
-        // Call it after data loads too
-    </script>
 
-    <script src="/effects.js?v=3"></script>
+        html, body {
+            background-color: #0b0d10;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* 16:9 Stage Canvas locked at 1920x1080 */
+        #menu-stage {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 1920px;
+            height: 1080px;
+            transform: translate(-50%, -50%);
+            transform-origin: center center;
+            background: url('emirates_bg_1080p.jpg') no-repeat center center;
+            background-size: cover;
+            overflow: hidden;
+            box-shadow: 0 0 70px rgba(0, 0, 0, 0.95);
+        }
+
+        /* Ambient Studio Lighting Overlay */
+        .ambient-light {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 25%, rgba(255, 245, 220, 0.1) 0%, rgba(0, 0, 0, 0.2) 100%);
+            z-index: 5;
+        }
+
+        /* Middle shelf for top-left cell so it has the exact same wooden shelf as top-mid and top-right */
+        .left-shelf-wood {
+            position: absolute;
+            top: 485px;
+            left: 0;
+            width: 660px;
+            height: 48px;
+            background: linear-gradient(to bottom, #d49a5b 0%, #b3793e 30%, #825324 70%, #46280b 100%);
+            border-top: 2px solid #f6cf9c;
+            border-bottom: 2px solid #291504;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.55), inset 0 2px 4px rgba(255, 255, 255, 0.25);
+            z-index: 8;
+        }
+
+        /* Screen Sections Containers */
+        .menu-screen {
+            position: absolute;
+            inset: 0;
+            width: 1920px;
+            height: 1080px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.7s;
+            z-index: 10;
+        }
+
+        .menu-screen.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* ================= 6-CELL GRID COORDINATES ================= */
+        /* Left Column (0 to 660px) */
+        .cell-left-top {
+            position: absolute;
+            top: 45px;
+            left: 30px;
+            width: 590px;
+            height: 460px;
+        }
+
+        .cell-left-bot {
+            position: absolute;
+            top: 550px;
+            left: 30px;
+            width: 590px;
+            height: 490px;
+        }
+
+        /* Middle Column (660px to 1290px) */
+        .cell-mid-top {
+            position: absolute;
+            top: 45px;
+            left: 680px;
+            width: 590px;
+            height: 460px;
+        }
+
+        .cell-mid-bot {
+            position: absolute;
+            top: 550px;
+            left: 680px;
+            width: 590px;
+            height: 490px;
+        }
+
+        /* Right Column (1290px to 1920px) */
+        .cell-right-top {
+            position: absolute;
+            top: 45px;
+            left: 1300px;
+            width: 590px;
+            height: 460px;
+        }
+
+        .cell-right-bot {
+            position: absolute;
+            top: 550px;
+            left: 1300px;
+            width: 590px;
+            height: 490px;
+        }
+
+        /* ================= 3D TYPOGRAPHY (EMIRATES STYLE) ================= */
+        .title-box {
+            position: absolute;
+            z-index: 20;
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .title-prefix {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 32px;
+            color: #1e293b;
+            letter-spacing: 2px;
+            font-style: italic;
+        }
+
+        .title-3d {
+            font-family: 'Titan One', cursive;
+            font-size: 42px;
+            line-height: 1;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.4));
+            white-space: nowrap;
+        }
+
+        .title-red {
+            color: #d91c1c;
+            text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 0 4px 0 #7f1010;
+        }
+
+        .title-yellow {
+            color: #f59e0b;
+            text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 0 4px 0 #b45309;
+        }
+
+        .title-amber {
+            color: #ea580c;
+            text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 0 4px 0 #9a3412;
+        }
+
+        .title-blue {
+            color: #2563eb;
+            text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 0 4px 0 #1e3a8a;
+        }
+
+        .title-green {
+            color: #16a34a;
+            text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 0 4px 0 #14532d;
+        }
+
+        /* ================= AUTHENTIC CHALKBOARD PRICE BOX ================= */
+        .price-box {
+            position: absolute;
+            background: linear-gradient(145deg, #18191c 0%, #0d0e11 100%);
+            border: 2px solid #ffffff;
+            border-radius: 4px;
+            padding: 6px 12px;
+            color: #ffffff;
+            text-align: center;
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.5);
+            z-index: 25;
+            min-width: 110px;
+        }
+
+        .price-row {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .price-label {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            color: #f1f5f9;
+            text-transform: uppercase;
+        }
+
+        .price-val {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 34px;
+            line-height: 0.95;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+
+        .price-val .curr {
+            font-size: 18px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            margin-left: 2px;
+            color: #fbbf24;
+        }
+
+        .price-divider {
+            width: 100%;
+            height: 1px;
+            border-top: 1.5px dashed rgba(255, 255, 255, 0.65);
+            margin: 4px 0;
+        }
+
+        /* ================= INGREDIENTS RIBBON ================= */
+        .ingredients-ribbon {
+            position: absolute;
+            background: rgba(18, 22, 30, 0.88);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+            padding: 4px 14px;
+            color: #f8fafc;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 11.5px;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+            z-index: 22;
+            white-space: nowrap;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+        }
+
+        /* ================= BADGES (PIQUANT / NATURE) ================= */
+        .badge-choice {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            z-index: 25;
+        }
+
+        .badge-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 2.5px solid #111;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .badge-circle svg {
+            width: 30px;
+            height: 30px;
+        }
+
+        .badge-label {
+            background: #111;
+            color: #fff;
+            font-size: 9.5px;
+            font-weight: 800;
+            padding: 2px 5px;
+            border-radius: 3px;
+            text-transform: uppercase;
+        }
+
+        .badge-choice .or-text {
+            font-family: 'Montserrat', sans-serif;
+            font-style: italic;
+            font-weight: 900;
+            font-size: 10px;
+            color: #d91c1c;
+            text-shadow: 1px 1px 0 #fff;
+        }
+
+        /* ================= SPARKLER FIREWORK FX ================= */
+        .sparkler-anchor {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            z-index: 30;
+            pointer-events: none;
+        }
+
+        .sparkler-burst {
+            position: absolute;
+            width: 55px;
+            height: 55px;
+            top: -22px;
+            left: -22px;
+            background: radial-gradient(circle, rgba(255, 245, 160, 1) 0%, rgba(255, 170, 0, 0.8) 40%, rgba(255, 60, 0, 0) 70%);
+            border-radius: 50%;
+            filter: blur(2px);
+            animation: sparkPulse 0.4s infinite alternate;
+        }
+
+        .spark {
+            position: absolute;
+            width: 3.5px;
+            height: 18px;
+            background: linear-gradient(to top, #fff, #ffd700, transparent);
+            border-radius: 2px;
+            transform-origin: bottom center;
+            animation: sparkShoot 0.6s infinite ease-out;
+        }
+
+        @keyframes sparkPulse {
+            0% { transform: scale(0.8); opacity: 0.8; }
+            100% { transform: scale(1.25); opacity: 1; }
+        }
+
+        @keyframes sparkShoot {
+            0% { transform: rotate(var(--rot)) translateY(0) scaleY(0.4); opacity: 1; }
+            100% { transform: rotate(var(--rot)) translateY(-32px) scaleY(1.3); opacity: 0; }
+        }
+
+        /* ================= PRODUCT CUTOUTS & DYNAMICS ================= */
+        .product-cutout-wrap {
+            position: absolute;
+            z-index: 15;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.25), opacity 0.6s ease;
+            transform-origin: bottom center;
+        }
+
+        .product-cutout {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: drop-shadow(0 14px 10px rgba(0, 0, 0, 0.6)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35));
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Realistic Contact Shadow on Wood */
+        .contact-shadow {
+            position: absolute;
+            bottom: 3px;
+            left: 4%;
+            width: 92%;
+            height: 20px;
+            background: radial-gradient(ellipse at center, rgba(12, 6, 2, 0.85) 0%, rgba(18, 9, 3, 0.5) 50%, transparent 75%);
+            border-radius: 50%;
+            filter: blur(4.5px);
+            z-index: 1;
+            transform: scaleY(0.7);
+        }
+
+        /* Entrance State: Hidden below shelf */
+        .menu-screen:not(.active) .product-cutout-wrap {
+            transform: translateY(85px) scale(0.94);
+            opacity: 0;
+        }
+
+        /* Active State: Raised up on the shelf */
+        .menu-screen.active .product-cutout-wrap {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        /* Breathing Living Idle Animation */
+        .menu-screen.active .living-breathe {
+            animation: gentleBreathe 4.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes gentleBreathe {
+            0% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-4px) scale(1.02); }
+            100% { transform: translateY(0) scale(1); }
+        }
+
+        /* Staggered entrance delays */
+        .delay-1 { transition-delay: 0.10s !important; }
+        .delay-2 { transition-delay: 0.20s !important; }
+        .delay-3 { transition-delay: 0.30s !important; }
+        .delay-4 { transition-delay: 0.40s !important; }
+        .delay-5 { transition-delay: 0.50s !important; }
+        .delay-6 { transition-delay: 0.60s !important; }
+
+        /* ================= RISING STEAM CANVAS ================= */
+        .steam-canvas {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 18;
+        }
+
+        /* ================= BRAND HEADER BAR ================= */
+        .header-brand-bar {
+            position: absolute;
+            top: 14px;
+            left: 30px;
+            z-index: 30;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-badge {
+            background: #d91c1c;
+            color: #ffffff;
+            font-family: 'Titan One', cursive;
+            font-size: 19px;
+            padding: 5px 14px;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(217, 28, 28, 0.45);
+            letter-spacing: 1px;
+        }
+
+        .screen-cat-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 24px;
+            color: #1e293b;
+            letter-spacing: 2px;
+            background: rgba(255, 255, 255, 0.88);
+            padding: 3px 12px;
+            border-radius: 4px;
+            border-left: 4px solid #d91c1c;
+        }
+
+        /* UI Control Floating Bar - Auto-hiding on TV */
+        .ui-controls {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            z-index: 100;
+            display: flex;
+            gap: 8px;
+            background: rgba(15, 23, 42, 0.94);
+            padding: 8px 14px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .ui-controls.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .btn-ctl {
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-ctl:hover {
+            background: #1d4ed8;
+            transform: scale(1.05);
+        }
+
+        .btn-ctl.active {
+            background: #d91c1c;
+        }
+
+        audio { display: none; }
+    </style>
 </head>
 <body>
-    <div id="bg-container" style="position: absolute; top:0; left:0; width:100%; height:100%; z-index: -5; overflow: hidden;"></div>
-    <div id="glow" class="glow-orb"></div>
 
-    <div id="dynamic-container"></div>
-    
-    <div id="video-view" class="offer-container" style="padding-top: 0;">
-        <video id="promo-video" class="fullscreen-media" muted playsinline></video>
+    <!-- Main 1920x1080 Stage -->
+    <div id="menu-stage">
+        <div class="ambient-light"></div>
+        <!-- Middle Wood Shelf for Left Column -->
+        <div class="left-shelf-wood"></div>
+
+        <!-- ================= SCREEN 1: BOCADILLOS DE TANGER ================= -->
+        <div id="screen-1" class="menu-screen active">
+            <!-- Brand Bar -->
+            <div class="header-brand-bar">
+                <div class="brand-badge">MON BOCADILLO TANGER</div>
+                <div class="screen-cat-title">✦ LES BOCADILLOS CHAMALI TRADITION ✦</div>
+            </div>
+
+            <!-- CELL 1: LEFT TOP (BOCADILLO COMPLET) -->
+            <div class="cell-left-top">
+                <div class="title-box" style="top: 25px; left: 10px;">
+                    <span class="title-prefix">LE</span>
+                    <span class="title-3d title-red">COMPLET</span>
+                </div>
+                <div class="price-box" style="top: 15px; right: 10px;">
+                    <div class="price-row">
+                        <span class="price-label">SEUL</span>
+                        <span class="price-val">29<span class="curr">DH</span></span>
+                    </div>
+                    <div class="price-divider"></div>
+                    <div class="price-row">
+                        <span class="price-label">MENU</span>
+                        <span class="price-val">39<span class="curr">DH</span></span>
+                    </div>
+                </div>
+                <div class="product-cutout-wrap delay-1 living-breathe" style="bottom: 20px; left: 10px; width: 520px;">
+                    <img src="cutouts_cropped/bocadillo complet 29 dh.png" class="product-cutout" alt="Bocadillo Complet">
+                    <div class="contact-shadow"></div>
+                </div>
+                <div class="ingredients-ribbon" style="bottom: 2px; left: 35px;">
+                    THON • TORTILLA • FROMAGE • CHARCUTERIE • SAUCES
+                </div>
+            </div>
+
+            <!-- CELL 2: LEFT BOT (BOCADILLO TORTILLA ROYALE) -->
+            <div class="cell-left-bot">
+                <div class="title-box" style="top: 20px; left: 10px;">
+                    <span class="title-prefix">TORTILLA</span>
+                    <span class="title-3d title-amber">ROYALE</span>
+                </div>
+                <div class="price-box" style="top: 10px; right: 10px;">
+                    <div class="price-row">
+                        <span class="price-label">SEUL</span>
+                        <span class="price-val">30<span class="curr">DH</span></span>
+                    </div>
+                    <div class="price-divider"></div>
+                    <div class="price-row">
+                        <span class="price-label">MENU</span>
+                        <span class="price-val">40<span class="curr">DH</span></span>
+                    </div>
+                </div>
+                <div class="product-cutout-wrap delay-4 living-breathe" style="bottom: 25px; left: 10px; width: 510px;">
+                    <img src="cutouts_cropped/bocadillo tortillia royale 30 dh.png" class="product-cutout" alt="Tortilla Royale">
+                    <div class="contact-shadow"></div>
+                </div>
+                <div class="ingredients-ribbon" style="bottom: 2px; left: 45px;">
+                    TORTILLA ESPAGNOLE GARNIE • FROMAGE FONDU • SAUCE ROYALE
+                </div>
+            </div>
+
+            <!-- CELL 3: MID TOP (BOCADILLO AU THON) -->
+            <div class="cell-mid-top">
+                <div class="title-box" style="top: 25px; left: 10px;">
+                    <span class="title-prefix">LE</span>
+                    <span class="title-3d title-blue">THON</span>
+                </div>
+                <div class="price-box" style="top: 15px; right: 15px;">
+                    <div class="price-row">
+                        <span class="price-label">SEUL</span>
+                        <span class="price-val">22<span class="curr">DH</span></span>
+                    </div>
+                    <div class="price-divider"></div>
+                    <div class="price-row">
+                        <span class="price-label">MENU</span>
+                        <span class="price-val">32<span class="curr">DH</span></span>
+                    </div>
+                </div>
+                <div class="product-cutout-wrap delay-2 living-breathe" style="bottom: 20px; left: 15px; width: 530px;">
+                    <img src="cutouts_cropped/bocadillo thon 22 dh.png" class="product-cutout" alt="Bocadillo Thon">
+                    <div class="contact-shadow"></div>
+                </div>
+                <div class="ingredients-ribbon" style="bottom: 2px; left: 50px;">
+                    THON 1ER CHOIX • CRUDITÉS FRAÎCHES • OEUF DUR • OLIVES
+                </div>
+            </div>
+
+            <!-- CELL 4: RIGHT TOP (BOCADILLO TORTILLA) -->
+            <div class="cell-right-top">
+                <div class="title-box" style="top: 25px; left: 10px;">
+                    <span class="title-prefix">LA</span>
+                    <span class="title-3d title-yellow">TORTILLA</span>
+                </div>
+                <div class="price-box" style="top: 15px; right: 25px;">
+                    <div class="price-row">
+                        <span class="price-label">SEUL</span>
+                        <span class="price-val">22<span class="curr">DH</span></span>
+                    </div>
+                    <div class="price-divider"></div>
+                    <div class="price-row">
+                        <span class="price-label">MENU</span>
+                        <span class="price-val">32<span class="curr">DH</span></span>
+                    </div>
+                </div>
+                <div class="product-cutout-wrap delay-3 living-breathe" style="bottom: 20px; left: 15px; width: 530px;">
+                    <img src="cutouts_cropped/bocadillo_tortillia 22 dh.png" class="product-cutout" alt="Bocadillo Tortilla">
+                    <div class="contact-shadow"></div>
+                </div>
+                <div class="ingredients-ribbon" style="bottom: 2px; left: 50px;">
+                    TORTILLA MAISON • PDT • CHEDDAR COULANT • SAUCE
+                </div>
+            </div>
+
+            <!-- CELL 5: MID BOT (BOCADILLO CHEESE - FEATURED WITH SPARKLER!) -->
+            <div class="cell-mid-bot">
+                <!-- Sparkler Firework Anchor -->
+                <div class="sparkler-anchor" style="top: 30px; left: 290px;">
+                    <div class="sparkler-burst"></div>
+                    <div class="spark" style="--rot: 0deg;"></div>
+                    <div class="spark" style="--rot: 45deg;"></div>
+                    <div class="spark" style="--rot: 90deg;"></div>
+                    <div class="spark" style="--rot: 135deg;"></div>
+                    <div class="spark" style="--rot: 180deg;"></div>
+                    <div class="spark" style="--rot: 225deg;"></div>
+                    <div class="spark" style="--rot: 270deg;"></div>
+                    <div class="spark" style="--rot: 315deg;"></div>
+                </div>
+
+                <div class="price-box" style="top: 10px; left: 15px;">
+                    <div class="price-row">
+                        <span class="price-label">SEUL</span>
+                        <span class="price-val">24<span class="curr">DH</span></span>
+                    </div>
+                    <div class="price-divider"></div>
+                    <div class="price-row">
+                        <span class="price-label">MENU</span>
+                        <span class="price-val">34<span class="curr">DH</span></span>
+                    </div>
+                </div>
+                <div class="title-box" style="top: 25px; left: 155px;">
+                    <span class="title-prefix">DOUBLE</span>
+                    <span class="title-3d title-yellow">CHEESE</span>
+                </div>
+                <div class="product-cutout-wrap delay-5 living-breathe" style="bottom: 25px; left: 15px; width: 530px;">
+                    <img src="cutouts_cropped/bocadillo cheese 24 dh.png" class="product-cutout" alt="Bocadillo Cheese">
+                    <div class="contact-shadow"></div>
+                </div>
+                <!-- Badge Piquant ou Nature -->
+                <div class="badge-choice" style="bottom: 75px; right: 15px;">
+                    <div class="badge-circle">
+                        <svg viewBox="0 0 24 24" fill="#dc2626"><path d="M19.64 6.88a10.05 10.05 0 0 0-4.52-4.52 1 1 0 0 0-1.34 1.34c.32.74.5 1.54.52 2.36-1.87.17-3.7.83-5.3 1.93-3.66 2.53-5.5 6.83-4.8 11.23.23 1.48 1.07 2.78 2.32 3.59a6.04 6.04 0 0 0 6.36.19c4.27-2.3 6.94-6.84 6.84-11.71.02-.82-.16-1.62-.48-2.36a1 1 0 0 0-1.6-.05z"/></svg>
+                    </div>
+                    <span class="badge-label" style="background:#dc2626;">PIQUANT</span>
+                    <span class="or-text">OU</span>
+                    <div class="badge-circle">
+                        <svg viewBox="0 0 24 24" fill="#16a34a"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66l.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/></svg>
+                    </div>
+                    <span class="badge-label" style="background:#16a34a;">NATURE</span>
+                </div>
+                <div class="ingredients-ribbon" style="bottom: 2px; left: 50px;">
+                    THON GOURMAND • DOUBLE CHEDDAR FONDU • SAUCE CHEESE
+                </div>
+            </div>
+
+            <!-- CELL 6: RIGHT BOT (BOCADILLO TANGÉROIS) -->
+            <div class="cell-right-bot">
+                <div class="price-box" style="top: 10px; left: 15px;">
+                    <div class="price-row">
+                        <span class="price-label">SEUL</span>
+                        <span class="price-val">24<span class="curr">DH</span></span>
+                    </div>
+                    <div class="price-divider"></div>
+                    <div class="price-row">
+                        <span class="price-label">MENU</span>
+                        <span class="price-val">34<span class="curr">DH</span></span>
+                    </div>
+                </div>
+                <div class="title-box" style="top: 25px; left: 155px;">
+                    <span class="title-prefix">LE</span>
+                    <span class="title-3d title-red">TANGÉROIS</span>
+                </div>
+                <div class="product-cutout-wrap delay-6 living-breathe" style="bottom: 25px; left: 15px; width: 530px;">
+                    <img src="cutouts_cropped/bocadillo tangerois 24 dh.png" class="product-cutout" alt="Bocadillo Tangerois">
+                    <div class="contact-shadow"></div>
+                </div>
+                <div class="ingredients-ribbon" style="bottom: 2px; left: 50px;">
+                    RECETTE SPÉCIALE TANGER 1980 • ÉPICES SECRÈTES • LÉGUMES FRAIS
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= SCREEN 2: SANDWICHES CHAUDS ================= -->
+        <div id="screen-2" class="menu-screen">
+            <!-- Brand Bar -->
+            <div class="header-brand-bar">
+                <div class="brand-badge">MON BOCADILLO TANGER</div>
+                <div class="screen-cat-title">✦ LES SANDWICHES CHAUDS & SPÉCIAUX ✦</div>
+            </div>
+
+            <!-- CELL 1: LEFT TOP (SANDWICH AMÉRICAIN) -->
+            <div class="cell-left-top">
+                <div class="title-box" style="top: 25px; left: 10px;">
+                    <span class="title-prefix">LE</span>
+                    <span class="title-3d title-red">AMÉRICAIN</span>
+                </div>
+                <div class="price-box" style="top: 15px; right: 10px;">
+                    <div class="price-row">
+                        <span class="price-label">SEUL</span>
+                        <span class="price-val">35<span class="curr">DH</span></span>
+                    </div>
+                    <div class="price-divider"></div>
+                    <div class="price-row">
+                        <span class="price-label">MENU</span>
+                        <span class="price-val">45<span class="curr">DH</span></span>
+                    </div>
+                </div>
+                <div class="product-cutout-wrap delay-1 living-breathe" style="bottom: 20px; left: 10px; width: 520px;">
+                    <img src="cutouts_cropped/sandwich americain 35 dh.png" class="product-cutout" alt="Sandwich Américain">
+                    <div class="contact-shadow"></div>
+                </div>
+                <div class="ingredients-ribbon" style="bottom: 2px; left: 35px;">
+                    STEAK HACHÉ • OEUF À CHEVAL • DOUBLE CHEDDAR • FRITES
+                </div>
+            </div>
+
+            <!-- CELL 2: LEFT BOT (SANDWICH MIXTE) -->
+            <div class="cell-left-bot">
+                <div class="title-box" style="top: 20px; left: 10px;">
+                    <span class="title-prefix">LE</span>
+                    <span class="title-3d title-amber">MIXTE</span>
+                </div>
+                <div class="price-box" style="top: 10px; right: 10px;">
+                    <div class="price-row">
+                        <span class="price-label">SEUL</span>
+                        <span class="price-val">35<span class="curr">DH</span></span>
+                    </div>
+                    <div class="price-divider"></div>
+                    <div class="price-row">
+                        <span class="price-label">MENU</span>
+                        <span class="price-val">45<span class="curr">DH</span></span>
+                    </div>
+                </div>
+                <div class="product-cutout-wrap delay-4 living-breathe" style="bottom: 25px; left: 10px; width: 510px;">
+                    <img src="cutouts_cropped/sandwiche mixte 35 dh.png" class="product-cutout" alt="Sandwich Mixte">
+                    <div class="contact-shadow"></div>
+                </div>
+                <div class="ingredients-ribbon" style="bottom: 2px; left: 45px;">
+                    DUO POULET MARINÉ & VIANDE HACHÉE • FROMAGE • SAUCES
+                </div>
+            </div>
+
+            <!-- CELL 3: MID TOP (SANDWICH POULET) -->
+            <div class="cell-mid-top">
+                <div class="title-box" style="top: 25px; left: 10px;">
+                    <span class="title-prefix">LE</span>
+                    <span class="title-3d title-yellow">POULET</span>
+                </div>
+                <div class="price-box" style="top: 15px; right: 15px;">
+                    <div class="price-row">
+                        <span class="price-label">SEUL</span>
+                        <span class="price-val">30<span class="curr">DH</span></span>
+                    </div>
+                    <div class="price-divider"></div>
+                    <div class="price-row">
+                        <span class="price-label">MENU</span>
+                        <span class="price-val">40<span class="curr">DH</span></span>
+                    </div>
+                </div>
+                <div class="product-cutout-wrap delay-2 living-breathe" style="bottom: 20px; left: 15px; width: 530px;">
+                    <img src="cutouts_cropped/sandwiche poulet 30 dh.png" class="product-cutout" alt="Sandwich Poulet">
+                    <div class="contact-shadow"></div>
+                </div>
+                <div class="ingredients-ribbon" style="bottom: 2px; left: 50px;">
+                    BLANC DE POULET GRILLÉ MARINÉ • SALADE • SAUCE BLANCHE
+                </div>
+            </div>
+
+            <!-- CELL 4: RIGHT TOP (SANDWICH VIANDE HACHÉE - FEATURED WITH SPARKLER!) -->
+            <div class="cell-right-top">
+                <!-- Sparkler Firework Anchor -->
+                <div class="sparkler-anchor" style="top: 30px; left: 240px;">
+                    <div class="sparkler-burst"></div>
+                    <div class="spark" style="--rot: 0deg;"></div>
+                    <div class="spark" style="--rot: 45deg;"></div>
+                    <div class="spark" style="--rot: 90deg;"></div>
+                    <div class="spark" style="--rot: 135deg;"></div>
+                    <div class="spark" style="--rot: 180deg;"></div>
+                    <div class="spark" style="--rot: 225deg;"></div>
+                    <div class="spark" style="--rot: 270deg;"></div>
+                    <div class="spark" style="--rot: 315deg;"></div>
+                </div>
+
+                <div class="title-box" style="top: 25px; left: 10px;">
+                    <span class="title-prefix">VIANDE</span>
+                    <span class="title-3d title-red">HACHÉE</span>
+                </div>
+                <div class="price-box" style="top: 15px; right: 25px;">
+                    <div class="price-row">
+                        <span class="price-label">SEUL</span>
+                        <span class="price-val">30<span class="curr">DH</span></span>
+                    </div>
+                    <div class="price-divider"></div>
+                    <div class="price-row">
+                        <span class="price-label">MENU</span>
+                        <span class="price-val">40<span class="curr">DH</span></span>
+                    </div>
+                </div>
+                <div class="product-cutout-wrap delay-3 living-breathe" style="bottom: 20px; left: 15px; width: 530px;">
+                    <img src="cutouts_cropped/sandwich viande hache 30 dh.png" class="product-cutout" alt="Sandwich Viande Hachée">
+                    <div class="contact-shadow"></div>
+                </div>
+                <div class="ingredients-ribbon" style="bottom: 2px; left: 50px;">
+                    PUR BOEUF HACHÉ ASSAISONNÉ • OIGNONS GRILLÉS • SAUCE BBQ
+                </div>
+            </div>
+
+            <!-- CELL 5: MID BOT (SANDWICH SAUCISSE) -->
+            <div class="cell-mid-bot">
+                <div class="price-box" style="top: 10px; left: 15px;">
+                    <div class="price-row">
+                        <span class="price-label">SEUL</span>
+                        <span class="price-val">30<span class="curr">DH</span></span>
+                    </div>
+                    <div class="price-divider"></div>
+                    <div class="price-row">
+                        <span class="price-label">MENU</span>
+                        <span class="price-val">40<span class="curr">DH</span></span>
+                    </div>
+                </div>
+                <div class="title-box" style="top: 25px; left: 155px;">
+                    <span class="title-prefix">LA</span>
+                    <span class="title-3d title-amber">SAUCISSE</span>
+                </div>
+                <div class="product-cutout-wrap delay-5 living-breathe" style="bottom: 25px; left: 15px; width: 530px;">
+                    <img src="cutouts_cropped/sandwiche saussice 30.png" class="product-cutout" alt="Sandwich Saucisse">
+                    <div class="contact-shadow"></div>
+                </div>
+                <!-- Badge Piquant ou Nature -->
+                <div class="badge-choice" style="bottom: 75px; right: 15px;">
+                    <div class="badge-circle">
+                        <svg viewBox="0 0 24 24" fill="#dc2626"><path d="M19.64 6.88a10.05 10.05 0 0 0-4.52-4.52 1 1 0 0 0-1.34 1.34c.32.74.5 1.54.52 2.36-1.87.17-3.7.83-5.3 1.93-3.66 2.53-5.5 6.83-4.8 11.23.23 1.48 1.07 2.78 2.32 3.59a6.04 6.04 0 0 0 6.36.19c4.27-2.3 6.94-6.84 6.84-11.71.02-.82-.16-1.62-.48-2.36a1 1 0 0 0-1.6-.05z"/></svg>
+                    </div>
+                    <span class="badge-label" style="background:#dc2626;">PIQUANT</span>
+                    <span class="or-text">OU</span>
+                    <div class="badge-circle">
+                        <svg viewBox="0 0 24 24" fill="#16a34a"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66l.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/></svg>
+                    </div>
+                    <span class="badge-label" style="background:#16a34a;">NATURE</span>
+                </div>
+                <div class="ingredients-ribbon" style="bottom: 2px; left: 50px;">
+                    SAUCISSES FUMÉES DORÉES • OIGNONS CARAMÉLISÉS • CHEDDAR
+                </div>
+            </div>
+
+            <!-- CELL 6: RIGHT BOT (FORMULE COMBO) -->
+            <div class="cell-right-bot">
+                <div class="price-box" style="top: 10px; left: 15px;">
+                    <div class="price-row">
+                        <span class="price-label">MENU</span>
+                        <span class="price-val">+10<span class="curr">DH</span></span>
+                    </div>
+                    <div class="price-divider"></div>
+                    <div class="price-row">
+                        <span class="price-label" style="font-size: 11px;">FRITES + BOISSON</span>
+                    </div>
+                </div>
+                <div class="title-box" style="top: 25px; left: 165px;">
+                    <span class="title-prefix">FORMULE</span>
+                    <span class="title-3d title-green">COMBO</span>
+                </div>
+                <div class="product-cutout-wrap delay-6 living-breathe" style="bottom: 25px; left: 15px; width: 530px;">
+                    <img src="cutouts_cropped/bocadillo complet 29 dh.png" class="product-cutout" alt="Formule Combo">
+                    <div class="contact-shadow"></div>
+                </div>
+                <div class="ingredients-ribbon" style="bottom: 2px; left: 35px;">
+                    TOUT SANDWICH EN FORMULE AVEC FRITES CROUSTILLANTES & BOISSON
+                </div>
+            </div>
+        </div>
+
+        <!-- Rising Steam Canvas Overlay -->
+        <canvas id="steam-canvas" class="steam-canvas" width="1920" height="1080"></canvas>
     </div>
-    <div id="glovo-view" class="offer-container" style="padding-top: 0;">
-        <img id="promo-image" class="fullscreen-media" style="object-fit: contain; background: #000;">
+
+    <!-- Floating TV Controls -->
+    <div class="ui-controls">
+        <button id="btn-auto" class="btn-ctl active" onclick="setMode('auto')">Auto-Boucle (15s)</button>
+        <button id="btn-s1" class="btn-ctl" onclick="setMode('screen-1')">TV 1: Bocadillos</button>
+        <button id="btn-s2" class="btn-ctl" onclick="setMode('screen-2')">TV 2: Sandwiches</button>
+        <button id="btn-sound" class="btn-ctl" onclick="toggleSound()">🔊 Son</button>
+        <button id="btn-fs" class="btn-ctl" onclick="toggleFullScreen()">⛶ Plein Écran</button>
+        <button id="btn-edit" class="btn-ctl" style="background: #10b981;" onclick="openEditModal()">⚙️ Modifier Prix</button>
     </div>
+
+    <!-- Edit Modal Dialog -->
+    <div id="edit-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:200; align-items:center; justify-content:center; backdrop-filter:blur(6px);">
+        <div style="background:#1e293b; color:#fff; border-radius:12px; width:90%; max-width:960px; max-height:85vh; overflow-y:auto; padding:24px; box-shadow:0 15px 40px rgba(0,0,0,0.8); border:1px solid rgba(255,255,255,0.2);">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; padding-bottom:12px; margin-bottom:18px;">
+                <h2 style="font-size:22px; font-weight:800; color:#fbbf24;">⚙️ Modifier les Prix & Produits du Menu</h2>
+                <button onclick="closeEditModal()" style="background:#ef4444; border:none; color:#fff; font-size:16px; font-weight:bold; border-radius:50%; width:32px; height:32px; cursor:pointer;">✕</button>
+            </div>
+            
+            <div id="edit-items-container" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;"></div>
+
+            <div style="margin-top:24px; padding-top:16px; border-top:1px solid #334155; display:flex; gap:12px; justify-content:flex-end;">
+                <button onclick="resetDefaultConfig()" style="background:#64748b; color:#fff; border:none; padding:10px 18px; border-radius:8px; font-weight:700; cursor:pointer;">↺ Réinitialiser</button>
+                <button onclick="downloadConfigJSON()" style="background:#0284c7; color:#fff; border:none; padding:10px 18px; border-radius:8px; font-weight:700; cursor:pointer;">💾 Télécharger menu_config.json</button>
+                <button onclick="saveAndApplyConfig()" style="background:#10b981; color:#fff; border:none; padding:10px 22px; border-radius:8px; font-weight:800; font-size:15px; cursor:pointer;">✓ Enregistrer & Appliquer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Player -->
+    <audio id="bg-audio" loop preload="auto">
+        <source src="ref_audio.m4a" type="audio/mp4">
+        <source src="music_menu.aac" type="audio/aac">
+    </audio>
 
     <script>
+        function scaleStage() {
+            const stage = document.getElementById('menu-stage');
+            const targetWidth = 1920;
+            const targetHeight = 1080;
+            const winWidth = window.innerWidth;
+            const winHeight = window.innerHeight;
+
+            const scaleX = winWidth / targetWidth;
+            const scaleY = winHeight / targetHeight;
+            const scale = Math.min(scaleX, scaleY);
+
+            stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        }
+
+        window.addEventListener('resize', scaleStage);
+        window.addEventListener('load', scaleStage);
+        setTimeout(scaleStage, 100);
+
+        let currentScreen = 1;
+        let autoCycle = true;
+        let cycleTimer = null;
+        const CYCLE_DURATION = 15000;
+
+        function showScreen(num) {
+            document.querySelectorAll('.menu-screen').forEach(s => s.classList.remove('active'));
+            const target = document.getElementById(`screen-${num}`);
+            if (target) {
+                target.classList.add('active');
+                currentScreen = num;
+            }
+        }
+
+        function cycleNext() {
+            if (!autoCycle) return;
+            const next = currentScreen === 1 ? 2 : 1;
+            showScreen(next);
+            cycleTimer = setTimeout(cycleNext, CYCLE_DURATION);
+        }
+
+        function setMode(mode) {
+            document.querySelectorAll('.ui-controls .btn-ctl').forEach(b => b.classList.remove('active'));
+            if (cycleTimer) clearTimeout(cycleTimer);
+
+            if (mode === 'auto') {
+                autoCycle = true;
+                document.getElementById('btn-auto').classList.add('active');
+                cycleTimer = setTimeout(cycleNext, CYCLE_DURATION);
+            } else if (mode === 'screen-1') {
+                autoCycle = false;
+                document.getElementById('btn-s1').classList.add('active');
+                showScreen(1);
+            } else if (mode === 'screen-2') {
+                autoCycle = false;
+                document.getElementById('btn-s2').classList.add('active');
+                showScreen(2);
+            }
+        }
+
+        cycleTimer = setTimeout(cycleNext, CYCLE_DURATION);
+
+        // Auto-hiding TV controls on inactivity
+        const controls = document.querySelector('.ui-controls');
+        let hideTimeout = null;
+        function showControls() {
+            controls.classList.add('visible');
+            if (hideTimeout) clearTimeout(hideTimeout);
+            hideTimeout = setTimeout(() => {
+                controls.classList.remove('visible');
+            }, 3000);
+        }
+        window.addEventListener('mousemove', showControls);
+        window.addEventListener('touchstart', showControls);
+        showControls();
+
+        // Config & Modal Management
         let menuData = null;
-        let masterTimeline = null;
-        
-        async function loadData() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const targetProject = urlParams.get('project') || 'default';
-            const targetTv = urlParams.get('tv') || '1';
-            const res = await fetch(`/api/menu/${targetProject}/${targetTv}`);
-            menuData = await res.json();
-            
-            resizeCanvas();
-            buildDynamicViews();
-            
-            if (menuData.promos) {
-                document.getElementById('promo-video').src = menuData.promos.video;
-                document.getElementById('promo-image').src = menuData.promos.image;
-            }
 
-            startProAnimationLoop();
-        }
+        const defaultMenuData = {
+            screen_1: [
+                { id: "complet", prefix: "LE", name: "COMPLET", price_seul: "29", price_menu: "39", ribbon: "THON • TORTILLA • FROMAGE • CHARCUTERIE • SAUCES" },
+                { id: "tortilla_royale", prefix: "TORTILLA", name: "ROYALE", price_seul: "30", price_menu: "40", ribbon: "TORTILLA ESPAGNOLE GARNIE • FROMAGE FONDU • SAUCE ROYALE" },
+                { id: "thon", prefix: "LE", name: "THON", price_seul: "22", price_menu: "32", ribbon: "THON 1ER CHOIX • CRUDITÉS FRAÎCHES • OEUF DUR • OLIVES" },
+                { id: "tortilla", prefix: "LA", name: "TORTILLA", price_seul: "22", price_menu: "32", ribbon: "TORTILLA MAISON • PDT • CHEDDAR COULANT • SAUCE" },
+                { id: "cheese", prefix: "DOUBLE", name: "CHEESE", price_seul: "24", price_menu: "34", ribbon: "THON GOURMAND • DOUBLE CHEDDAR FONDU • SAUCE CHEESE" },
+                { id: "tangerois", prefix: "LE", name: "TANGÉROIS", price_seul: "24", price_menu: "34", ribbon: "RECETTE SPÉCIALE TANGER 1980 • ÉPICES SECRÈTES • LÉGUMES FRAIS" }
+            ],
+            screen_2: [
+                { id: "americain", prefix: "LE", name: "AMÉRICAIN", price_seul: "35", price_menu: "45", ribbon: "STEAK HACHÉ • OEUF À CHEVAL • DOUBLE CHEDDAR • FRITES" },
+                { id: "mixte", prefix: "LE", name: "MIXTE", price_seul: "35", price_menu: "45", ribbon: "DUO POULET MARINÉ & VIANDE HACHÉE • FROMAGE • SAUCES" },
+                { id: "poulet", prefix: "LE", name: "POULET", price_seul: "30", price_menu: "40", ribbon: "BLANC DE POULET GRILLÉ MARINÉ • SALADE • SAUCE BLANCHE" },
+                { id: "viande_hache", prefix: "VIANDE", name: "HACHÉE", price_seul: "30", price_menu: "40", ribbon: "PUR BOEUF HACHÉ ASSAISONNÉ • OIGNONS GRILLÉS • SAUCE BBQ" },
+                { id: "saucisse", prefix: "LA", name: "SAUCISSE", price_seul: "30", price_menu: "40", ribbon: "SAUCISSES FUMÉES DORÉES • OIGNONS CARAMÉLISÉS • CHEDDAR" },
+                { id: "combo", prefix: "FORMULE", name: "COMBO", price_seul: "+10", price_menu: "FRITES", ribbon: "TOUT SANDWICH EN FORMULE AVEC FRITES CROUSTILLANTES & BOISSON" }
+            ]
+        };
 
-        function getAssetUrl(id) {
-            for(let cat in menuData.assets) {
-                const asset = menuData.assets[cat].find(a => a.id === id);
-                if (asset) return asset.url;
-            }
-            return "";
-        }
-
-        function isSmallItem(url) {
-            return url.includes('coca') || url.includes('SODA') || url.includes('jus');
-        }
-
-        function getTextStyleString(comp) {
-            if (!comp) return "";
-            let style = `color: ${comp.color || '#ffffff'}; font-size: ${(comp.fontSize || 40)}px; font-family: ${comp.fontFamily || "'Oswald', sans-serif"}; font-weight: bold; line-height: 1; white-space: nowrap; `;
-            
-            const effect = comp.textEffect || (comp.hasShadow ? 'shadow' : 'none');
-            const intensity = comp.effectIntensity !== undefined ? comp.effectIntensity : 50;
-            const val = intensity / 100;
-            
-            let strokeColor = comp.strokeColor || '#000000';
-            let cColor = comp.color || '#ffffff';
-            
-            if (effect === 'shadow') {
-                style += `text-shadow: 0 ${10 * val}px ${25 * val}px rgba(0,0,0,${0.4 + (val * 0.6)}); `;
-            } else if (effect === 'glow') {
-                style += `text-shadow: 0 0 ${10 * val}px ${cColor}, 0 0 ${20 * val}px ${cColor}, 0 0 ${40 * val}px ${cColor}; `;
-            } else if (effect === 'echo') {
-                style += `text-shadow: ${6 * val}px ${6 * val}px 0px rgba(255,255,255,0.4), ${12 * val}px ${12 * val}px 0px rgba(255,255,255,0.2); `;
-            } else if (effect === 'outline') {
-                style += `-webkit-text-stroke: ${6 * val}px ${strokeColor}; `;
-            } else if (effect === 'bg') {
-                style += `background-color: ${strokeColor}; padding: ${10 * val}px ${20 * val}px; border-radius: ${15 * val}px; `;
-            } else if (effect === 'bevel') {
-                style += `text-shadow: ${5 * val}px ${5 * val}px 0px rgba(0,0,0,0.6), -${3 * val}px -${3 * val}px 0px rgba(255,255,255,0.7); `;
-            } else if (effect === 'hollow') {
-                style += `-webkit-text-stroke: ${4 * val}px ${cColor}; color: transparent; `;
-            } else if (effect === 'neon') {
-                style += `text-shadow: 0 0 ${5 * val}px #fff, 0 0 ${10 * val}px #fff, 0 0 ${20 * val}px ${cColor}, 0 0 ${40 * val}px ${cColor}, 0 0 ${80 * val}px ${cColor}; color: #ffffff; `;
-            } else if (effect === 'glitch') {
-                style += `text-shadow: ${8 * val}px 0 0 cyan, -${8 * val}px 0 0 red; `;
-            }
-            
-            return style;
-        }
-
-        function getMaskStyle(comp) {
-            if (!comp.maskType) return 'none';
-            const strength = comp.maskStrength !== undefined ? comp.maskStrength : 50;
-            const solidPoint = Math.max(0, 100 - strength);
-            switch (comp.maskType) {
-                case 'bottom': return `linear-gradient(to bottom, black ${solidPoint}%, transparent 100%)`;
-                case 'top': return `linear-gradient(to top, black ${solidPoint}%, transparent 100%)`;
-                case 'left': return `linear-gradient(to left, black ${solidPoint}%, transparent 100%)`;
-                case 'right': return `linear-gradient(to right, black ${solidPoint}%, transparent 100%)`;
-                case 'radial': return `radial-gradient(circle, black ${solidPoint}%, transparent 100%)`;
-                default: return 'none';
-            }
-        }
-
-
-        function getBgColorStyle(f) {
-            if (f.isBgGradient && f.bgColor2) {
-                return `linear-gradient(${f.bgGradientAngle || 90}deg, ${f.bgColor || '#000000'}, ${f.bgColor2})`;
-            }
-            return f.bgColor || 'radial-gradient(circle at 50% 60%, #1a1a1a 0%, #000000 100%)';
-        }
-
-        function getDataAnimAttrs(comp) {
-            let attrs = `data-anim-in="${comp.animIn || 'zoomIn'}" data-anim-out="${comp.animOut || 'zoomOut'}" data-delay="${comp.delay || 0}" data-rotation="${comp.rotation || 0}"`;
-            if (comp.animIn === 'custom' || comp.animOut === 'custom') {
-                attrs += ` data-anim-start-x="${comp.animStartX || 0}" data-anim-start-y="${comp.animStartY || 0}" data-anim-start-scale="${comp.animStartScale !== undefined ? comp.animStartScale : 1}" data-anim-start-rotation="${comp.animStartRotation || 0}" data-anim-end-x="${comp.animEndX || 0}" data-anim-end-y="${comp.animEndY || 0}" data-anim-end-scale="${comp.animEndScale !== undefined ? comp.animEndScale : 1}" data-anim-end-rotation="${comp.animEndRotation || 0}"`;
-            }
-            return attrs;
-        }
-
-        function buildDynamicViews() {
-            if (!menuData || !menuData.formules) return;
-            const container = document.getElementById('dynamic-container');
-            let html = "";
-            let idx = 0;
-            const urlParams = new URLSearchParams(window.location.search);
-            const targetTv = urlParams.get('tv');
-            
-            for (let key in menuData.formules) {
-                const f = menuData.formules[key];
-                
-                // Si la TV est spécifiée dans l'URL et que la formule a une TV cible, on filtre
-                if (targetTv && f.tv && f.tv !== '' && f.tv.toString().toLowerCase() !== "toutes" && f.tv.toString() !== targetTv.toString()) {
-                    continue;
-                }
-                const colorTheme = idx % 2 === 0 ? { bg: '#DA291C', text: 'white', priceBg: '#DA291C', priceBorder: '#FFC72C' } 
-                                                 : { bg: '#FFC72C', text: '#111', priceBg: '#FFC72C', priceBorder: '#DA291C' };
-                
-                let sceneHtml = ``;
-                
-                if (f.components && Array.isArray(f.components)) {
-                    f.components.forEach((comp, cIdx) => {
-                        let animClass = (comp.continuousAnim && comp.continuousAnim !== 'none') ? 'anim-' + comp.continuousAnim : '';
-                        
-                        if (comp.type === 'customText') {
-                            compHtml = `
-                                <div class="dyn-element comp-item"
-                                     ${getDataAnimAttrs(comp)}>
-                                     <div class="${animClass} drop-shadow-xl" style="${getTextStyleString(comp)}">
-                                        ${comp.content}
-                                     </div>
-                                </div>
-                            `;
-                        } else if (comp.type === 'shape') {
-                            let shapeStyle = `background-color: ${comp.color}; opacity: ${comp.opacity}; width: ${comp.width}px; height: ${comp.height}px;`;
-                            if (comp.shapeType === 'circle') shapeStyle += ` border-radius: 50%;`;
-                            else if (comp.shapeType === 'badge') shapeStyle += ` clip-path: polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%);`;
-                            else if (comp.shapeType === 'star') shapeStyle += ` clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);`;
-                            else if (comp.shapeType === 'burst') shapeStyle += ` clip-path: polygon(50% 0%, 65% 15%, 85% 15%, 85% 35%, 100% 50%, 85% 65%, 85% 85%, 65% 85%, 50% 100%, 35% 85%, 15% 85%, 15% 65%, 0% 50%, 15% 35%, 15% 15%, 35% 15%);`;
-                            else shapeStyle += ` border-radius: ${comp.borderRadius || 0}px;`;
-                            
-                            if (comp.isNeon) {
-                                shapeStyle += ` filter: drop-shadow(0 0 15px ${comp.color}) drop-shadow(0 0 30px ${comp.color});`;
-                                if (!comp.isGradient) shapeStyle += ` background-color: #ffffff;`;
-                            }
-                            
-                            let maskStyle = getMaskStyle(comp);
-                            if (maskStyle !== 'none') {
-                                shapeStyle += ` -webkit-mask-image: ${maskStyle}; mask-image: ${maskStyle};`;
-                            }
-                            
-                            const animClass = (comp.continuousAnim && comp.continuousAnim !== 'none') ? `anim-${comp.continuousAnim}` : '';
-                            
-                            compHtml = `
-                                <div class="dyn-element comp-item"
-                                     ${getDataAnimAttrs(comp)}>
-                                     <div class="${animClass}" style="${shapeStyle}"></div>
-                                </div>
-                            `;
-                        } else if (comp.type === 'main') {
-                            const url = getAssetUrl(comp.assetId);
-                            if(!url) return;
-                            compHtml = `
-                                <div style="transform: scaleX(${(comp.flipX || comp.flip ? -1 : 1) * (comp.scaleX || 1)}) scaleY(${(comp.flipY ? -1 : 1) * (comp.scaleY || 1)});">
-                                    <div class="dyn-element comp-item" 
-                                         ${getDataAnimAttrs(comp)}>
-                                         <img src="${url}" class="${animClass}" style="filter: drop-shadow(0 20px 30px rgba(0,0,0,0.6)); ${comp.fillScreen ? 'max-width: none; width: ' + (menuData.orientation === 'vertical' ? '1080px' : '1920px') + '; height: ' + (menuData.orientation === 'vertical' ? '1920px' : '1080px') + '; object-fit: cover;' : (isSmallItem(url) ? 'max-width: 400px;' : 'max-width: 900px;')} -webkit-mask-image: ${getMaskStyle(comp)}; mask-image: ${getMaskStyle(comp)};">
-                                    </div>
-                                </div>
-                            `;
-                        } else if (comp.type === 'rawImage') {
-                            if(!comp.url) return;
-                            compHtml = `
-                                <div style="transform: scaleX(${(comp.flipX || comp.flip ? -1 : 1) * (comp.scaleX || 1)}) scaleY(${(comp.flipY ? -1 : 1) * (comp.scaleY || 1)});">
-                                    <div class="dyn-element comp-item" 
-                                         ${getDataAnimAttrs(comp)}>
-                                         <img src="${comp.url.startsWith('http') ? comp.url : '/' + comp.url}" class="${animClass}" style="${comp.fillScreen ? 'max-width: none; width: ' + (menuData.orientation === 'vertical' ? '1080px' : '1920px') + '; height: ' + (menuData.orientation === 'vertical' ? '1920px' : '1080px') + '; object-fit: cover;' : 'max-width: 2500px;'} clip-path: inset(${comp.clipTop || 0}% ${comp.clipRight || 0}% ${comp.clipBottom || 0}% ${comp.clipLeft || 0}%); -webkit-mask-image: ${getMaskStyle(comp)}; mask-image: ${getMaskStyle(comp)};">
-                                    </div>
-                                </div>
-                            `;
-                        } else if (comp.type === 'rawVideo') {
-                            if(!comp.url) return;
-                            compHtml = `
-                                <div style="transform: scaleX(${(comp.flipX || comp.flip ? -1 : 1) * (comp.scaleX || 1)}) scaleY(${(comp.flipY ? -1 : 1) * (comp.scaleY || 1)});">
-                                    <div class="dyn-element comp-item" 
-                                         ${getDataAnimAttrs(comp)}>
-                                         <video src="/${comp.url}" class="${animClass}" autoplay loop muted playsinline style="max-width: 2500px; clip-path: inset(${comp.clipTop || 0}% ${comp.clipRight || 0}% ${comp.clipBottom || 0}% ${comp.clipLeft || 0}%);"></video>
-                                    </div>
-                                </div>
-                            `;
-                        }
-
-                        sceneHtml += `
-                        <div class="absolute top-[350px] left-1/2 w-0 h-0 overflow-visible z-10"
-                             style="transform: translate(${comp.x}px, ${comp.y}px) scale(${comp.scale}); z-index: ${comp.z};">
-                            <div class="absolute w-max h-max" style="transform: translate(-50%, -50%) rotate(${comp.rotation || 0}deg);">
-                                ${compHtml}
-                            </div>
-                        </div>`;
-                    });
-                }
-                
-                let textsHtml = ``;
-                if (f.nameLayout) {
-                    ['nameLayout', 'descLayout', 'badgeLayout', 'priceLayout'].forEach(tKey => {
-                        if (!f[tKey]) return;
-                        
-                        let contentHtml = '';
-                        if (tKey === 'nameLayout') contentHtml = `<div class="title-text" style="margin:0; text-align:center; position:static; transform:none; letter-spacing: -2px;">${f.name}</div>`;
-                        if (tKey === 'descLayout') contentHtml = `<div class="desc-text" style="color: ${colorTheme.bg}; margin:0; text-align:center; position:static; transform:none; font-size:45px;">${f.description}</div>`;
-                        if (tKey === 'badgeLayout') contentHtml = `<div class="badge" style="background: ${colorTheme.bg}; color: ${colorTheme.text}; margin:0; text-align:center; position:static; transform:none; display:block;">${f.badge}</div>`;
-                        if (tKey === 'priceLayout') contentHtml = `
-                            <div class="price-sticker m-0 flex flex-col justify-center items-center" style="background: ${colorTheme.priceBg}; border-color: ${colorTheme.priceBorder}; position:static; transform:none; width:220px; height:220px;">
-                                <span class="price-num" style="color: ${idx % 2 === 0 ? 'white' : '#111'}; font-size:85px; position:static;">${f.price}</span>
-                                <span class="price-currency" style="color: ${idx % 2 === 0 ? '#FFC72C' : '#DA291C'};">DH</span>
-                            </div>`;
-                            
-                        textsHtml += `
-                        <div class="absolute top-[540px] left-1/2 w-0 h-0 overflow-visible z-20"
-                             style="transform: translate(${f[tKey].x}px, ${f[tKey].y}px) scale(${f[tKey].scale}); z-index: ${f[tKey].z};">
-                            <div class="absolute w-max h-max" style="transform: translate(-50%, -50%) rotate(${f[tKey].rotation || 0}deg);">
-                                <div class="dyn-element text-item" 
-                                     data-anim-in="${f[tKey].animIn || 'zoomIn'}" 
-                                     data-anim-out="${f[tKey].animOut || 'zoomOut'}" 
-                                     data-delay="${f[tKey].delay || 0}"
-                                     data-rotation="${f[tKey].rotation || 0}">
-                                    ${contentHtml}
-                                </div>
-                            </div>
-                        </div>`;
-                    });
-                }
-
-                html += `
-                <div id="view-${key}" class="offer-container dyn-view" data-duration="${f.duration || 6}">
-                    <div class="absolute inset-0 z-0" style="background: ${getBgColorStyle(f)}; opacity: 0.8; box-shadow: ${f.isBgNeon ? 'inset 0 0 150px #ffffff, inset 0 0 300px ' + (f.bgColor || '#000000') : 'none'}; filter: ${f.isBgNeon ? 'brightness(1.5) saturate(1.5)' : 'none'};"></div>
-                    ${f.bgImage ? \`<div class="absolute inset-0 z-0 opacity-80 pointer-events-none" style="background: url(/\${f.bgImage}) center/cover no-repeat; -webkit-mask-image: \${getMaskStyle(f)}; mask-image: \${getMaskStyle(f)};"></div>\` : ''}
-                    <div id="effect-${key}" class="absolute inset-0 z-0 pointer-events-none overflow-hidden"></div>
-                    ${sceneHtml}
-                    ${textsHtml}
-                </div>`;
-                idx++;
-            }
-            container.innerHTML = html;
-            
-            // Appliquer les effets de fond après l'insertion dans le DOM
-            for (let key in menuData.formules) {
-                const f = menuData.formules[key];
-                const effectContainer = document.getElementById(`effect-${key}`);
-                if (effectContainer) {
-                    applyBgEffect(effectContainer, f.bgEffect, 'transparent');
-                }
-            }
-        }
-
-        function getAnimOffset(type, el = null, isOut = false) {
-            const config = { x: 0, y: 0, scale: 1 };
-            const dist = 300;
-            if (type === 'custom' && el) {
-                if (isOut) {
-                    config.x = parseFloat(el.dataset.animEndX) || 0;
-                    config.y = parseFloat(el.dataset.animEndY) || 0;
-                    config.scale = parseFloat(el.dataset.animEndScale);
-                    if (isNaN(config.scale)) config.scale = 1;
-                    config.rotationOffset = parseFloat(el.dataset.animEndRotation) || 0;
-                } else {
-                    config.x = parseFloat(el.dataset.animStartX) || 0;
-                    config.y = parseFloat(el.dataset.animStartY) || 0;
-                    config.scale = parseFloat(el.dataset.animStartScale);
-                    if (isNaN(config.scale)) config.scale = 1;
-                    config.rotationOffset = parseFloat(el.dataset.animStartRotation) || 0;
-                }
-                return config;
-            }
-            switch(type) {
-                case 'fadeUp': config.y = dist; break;
-                case 'fadeDown': config.y = -dist; break;
-                case 'fadeLeft': config.x = dist; break; 
-                case 'fadeRight': config.x = -dist; break; 
-                case 'zoomIn': config.scale = 0; break;
-                case 'zoomOut': config.scale = 2; break;
-                case 'fade': break; // opacity only
-                case 'pop': config.scale = 0.5; break;
-                case 'drop': config.y = -700; break;
-                case 'rollIn': config.rotationOffset = -180; config.scale = 0; break;
-                case 'driftLeft': config.x = 100; break;
-                case 'driftRight': config.x = -100; break;
-                default: config.y = 50; break;
-            }
-            return config;
-        }
-
-        function startProAnimationLoop() {
-            const views = Array.from(document.querySelectorAll('.dyn-view'));
-            const v3 = document.getElementById('video-view');
-            const v4 = document.getElementById('glovo-view');
-            const glow = document.getElementById('glow');
-            const video = document.getElementById('promo-video');
-            const glovoImg = document.getElementById('promo-image');
-            
-            gsap.set([...views, v3, v4], { autoAlpha: 0 });
-            masterTimeline = gsap.timeline({ repeat: -1 });
-
-            views.forEach((view, index) => {
-                const color = index % 2 === 0 ? "glow-orb glow-red" : "glow-orb glow-yellow";
-                const duration = parseFloat(view.dataset.duration) || 6;
-                
-                masterTimeline
-                  .set(view, { autoAlpha: 1 })
-                  .to(glow, { className: color, duration: 1 }, "<")
-                  .add(animInDynamic(view), "<")
-                  .to({}, { duration: duration })
-                  .add(animOutDynamic(view));
-            });
-
-            // Promos
-            if(menuData.promos.video) {
-                const dur = menuData.promos.videoDuration || 10;
-                masterTimeline
-                  .set(v3, { autoAlpha: 1 })
-                  .to(glow, { className: "glow-orb glow-off", duration: 0.5 }, "<")
-                  .call(() => { video.currentTime = 0; video.play().catch(e => console.log("Video play error")); })
-                  .fromTo(v3, { opacity: 0 }, { opacity: 1, duration: 1 })
-                  .to({}, { duration: dur })
-                  .to(v3, { opacity: 0, duration: 1 })
-                  .set(v3, { autoAlpha: 0 })
-                  .call(() => { video.pause(); });
-            }
-              
-            if(menuData.promos.image) {
-                const dur = menuData.promos.imageDuration || 7;
-                masterTimeline
-                  .set(v4, { autoAlpha: 1 })
-                  .to(glow, { className: "glow-orb glow-blue", duration: 0.5 }, "<")
-                  .fromTo(v4, { opacity: 0 }, { opacity: 1, duration: 1 })
-                  .fromTo(glovoImg, { scale: 1 }, { scale: 1.05, duration: dur, ease: "sine.inOut" }, "<")
-                  .to(v4, { opacity: 0, duration: 1 }, "-=1")
-                  .set(v4, { autoAlpha: 0 });
-            }
-            // Removed global GSAP breathing to allow specific CSS continuous animations.
-        }
-
-        function animInDynamic(view) {
-            const tl = gsap.timeline();
-            const items = view.querySelectorAll('.dyn-element');
-            
-            items.forEach(item => {
-                const animType = item.dataset.animIn || 'zoomIn';
-                const delay = parseFloat(item.dataset.delay) || 0;
-                const fromOffset = getAnimOffset(animType);
-                const rotation = parseFloat(item.dataset.rotation) || 0;
-                
-                tl.fromTo(item, 
-                    { x: fromOffset.x, y: fromOffset.y, scale: fromOffset.scale, opacity: 0, rotation: rotation },
-                    { x: 0, y: 0, scale: 1, opacity: 1, rotation: rotation, duration: 1.5, ease: "back.out(1.2)" },
-                    delay
-                );
-            });
-            return tl;
-        }
-
-        function animOutDynamic(view) {
-            const tl = gsap.timeline();
-            const items = view.querySelectorAll('.dyn-element');
-            
-            items.forEach(item => {
-                const animType = item.dataset.animOut || 'zoomOut';
-                const toOffset = getAnimOffset(animType);
-                const rotation = parseFloat(item.dataset.rotation) || 0;
-                tl.to(item, { x: toOffset.x, y: toOffset.y, scale: toOffset.scale, opacity: 0, rotation: rotation, duration: 0.8, ease: "power2.in" }, 0);
-            });
-            
-            tl.set(view, { autoAlpha: 0 });
-            return tl;
-        }
-
-        loadData();
-    </script>
-    
-    <button id="record-btn" onclick="startRecording()" style="position: absolute; top: 20px; right: 20px; z-index: 99999; padding: 10px 20px; background: #e11d48; color: white; border: none; border-radius: 8px; font-weight: bold; font-family: sans-serif; cursor: pointer; opacity: 0.15; transition: opacity 0.3s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.15">
-        🔴 REC VIDEO
-    </button>
-    <script>
-        async function startRecording() {
-            const btn = document.getElementById('record-btn');
-            btn.innerText = "Sélectionnez l'onglet actuel...";
-            
+        async function initConfig() {
+            let loaded = false;
             try {
-                const stream = await navigator.mediaDevices.getDisplayMedia({ 
-                    video: { 
-                        displaySurface: "browser",
-                        width: { ideal: 1920, max: 3840 },
-                        height: { ideal: 1080, max: 2160 },
-                        frameRate: { ideal: 60, max: 60 }
-                    },
-                    audio: false 
-                });
-                
-                let options = { 
-                    mimeType: 'video/webm; codecs=vp9',
-                    videoBitsPerSecond: 15000000 // 15 Mbps pour une qualité maximale (pas de flou)
-                };
-                
-                if (MediaRecorder.isTypeSupported('video/mp4; codecs=avc1')) {
-                    options.mimeType = 'video/mp4; codecs=avc1';
-                } else if (MediaRecorder.isTypeSupported('video/webm; codecs=h264')) {
-                    options.mimeType = 'video/webm; codecs=h264';
+                const res = await fetch('menu_config.json?t=' + Date.now());
+                if (res.ok) {
+                    menuData = await res.json();
+                    loaded = true;
                 }
-                
-                const mediaRecorder = new MediaRecorder(stream, options);
-                const chunks = [];
-                
-                mediaRecorder.ondataavailable = e => {
-                    if (e.data.size > 0) chunks.push(e.data);
-                };
-                
-                mediaRecorder.onstop = () => {
-                    const blob = new Blob(chunks, { type: options.mimeType });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    const ext = options.mimeType.includes('mp4') ? 'mp4' : 'webm';
-                    a.download = `Menu_Video_${new Date().getTime()}.${ext}`;
-                    a.click();
-                    btn.innerText = "🔴 REC VIDEO";
-                    btn.style.background = "#e11d48";
-                };
-                
-                mediaRecorder.start();
-                btn.innerText = "⏹ Enregistrement... (Cliquez pour stopper)";
-                btn.style.background = "#ea580c";
-                
-                const stopFn = () => {
-                    if (mediaRecorder.state === "recording") {
-                        mediaRecorder.stop();
-                        stream.getTracks().forEach(t => t.stop());
+            } catch(e) {}
+
+            if (!loaded) {
+                const saved = localStorage.getItem('mon_bocadillo_menu_config');
+                if (saved) {
+                    try {
+                        menuData = JSON.parse(saved);
+                        loaded = true;
+                    } catch(e) {}
+                }
+            }
+            if (!loaded) {
+                menuData = JSON.parse(JSON.stringify(defaultMenuData));
+            }
+            applyDataToDOM();
+
+            // Poll for updates every 30 seconds for live updates from GitHub / Local
+            setInterval(async () => {
+                try {
+                    const r = await fetch('menu_config.json?t=' + Date.now());
+                    if (r.ok) {
+                        const fresh = await r.json();
+                        if (JSON.stringify(fresh) !== JSON.stringify(menuData)) {
+                            menuData = fresh;
+                            applyDataToDOM();
+                        }
                     }
-                    btn.onclick = startRecording;
-                };
-                btn.onclick = stopFn;
-                
-                // Auto stop after 20 seconds if not stopped manually
-                setTimeout(stopFn, 20000);
-                
-            } catch (err) {
-                console.error("Error: " + err);
-                btn.innerText = "🔴 REC VIDEO";
+                } catch(e) {}
+            }, 30000);
+        }
+
+        function applyDataToDOM() {
+            // Apply Screen 1 items
+            const s1Cells = document.querySelectorAll('#screen-1 .cell-left-top, #screen-1 .cell-left-bot, #screen-1 .cell-mid-top, #screen-1 .cell-right-top, #screen-1 .cell-mid-bot, #screen-1 .cell-right-bot');
+            menuData.screen_1.forEach((it, idx) => {
+                const cell = s1Cells[idx];
+                if (!cell) return;
+                const pVals = cell.querySelectorAll('.price-val');
+                if (pVals[0]) pVals[0].innerHTML = `${it.price_seul}<span class="curr">DH</span>`;
+                if (pVals[1]) pVals[1].innerHTML = `${it.price_menu}<span class="curr">DH</span>`;
+                const tPrefix = cell.querySelector('.title-prefix');
+                if (tPrefix) tPrefix.textContent = it.prefix;
+                const t3d = cell.querySelector('.title-3d');
+                if (t3d) t3d.textContent = it.name;
+                const rib = cell.querySelector('.ingredients-ribbon');
+                if (rib) rib.textContent = it.ribbon;
+            });
+
+            // Apply Screen 2 items
+            const s2Cells = document.querySelectorAll('#screen-2 .cell-left-top, #screen-2 .cell-left-bot, #screen-2 .cell-mid-top, #screen-2 .cell-right-top, #screen-2 .cell-mid-bot, #screen-2 .cell-right-bot');
+            menuData.screen_2.forEach((it, idx) => {
+                const cell = s2Cells[idx];
+                if (!cell) return;
+                const pVals = cell.querySelectorAll('.price-val');
+                if (pVals[0]) pVals[0].innerHTML = `${it.price_seul}<span class="curr">DH</span>`;
+                if (pVals[1] && it.id !== 'combo') pVals[1].innerHTML = `${it.price_menu}<span class="curr">DH</span>`;
+                const tPrefix = cell.querySelector('.title-prefix');
+                if (tPrefix) tPrefix.textContent = it.prefix;
+                const t3d = cell.querySelector('.title-3d');
+                if (t3d) t3d.textContent = it.name;
+                const rib = cell.querySelector('.ingredients-ribbon');
+                if (rib) rib.textContent = it.ribbon;
+            });
+        }
+
+        function openEditModal() {
+            const container = document.getElementById('edit-items-container');
+            container.innerHTML = '';
+
+            const createSection = (title, items, screenKey) => {
+                const sec = document.createElement('div');
+                sec.style.gridColumn = 'span 2';
+                sec.innerHTML = `<h3 style="color:#38bdf8; font-size:16px; margin:8px 0; border-bottom:1px solid #475569; padding-bottom:4px;">${title}</h3>`;
+                container.appendChild(sec);
+
+                items.forEach((it, i) => {
+                    const card = document.createElement('div');
+                    card.style.background = '#0f172a';
+                    card.style.padding = '12px';
+                    card.style.borderRadius = '8px';
+                    card.style.border = '1px solid #334155';
+                    card.innerHTML = `
+                        <div style="font-weight:bold; color:#f8fafc; margin-bottom:8px; display:flex; justify-content:space-between;">
+                            <span>${it.prefix} ${it.name}</span>
+                            <span style="color:#94a3b8; font-size:11px;">#${it.id}</span>
+                        </div>
+                        <div style="display:flex; gap:8px; margin-bottom:6px;">
+                            <div style="flex:1;">
+                                <label style="font-size:11px; color:#cbd5e1; display:block;">Prix Seul (DH)</label>
+                                <input type="text" id="${screenKey}_${i}_seul" value="${it.price_seul}" style="width:100%; background:#1e293b; border:1px solid #475569; color:#fff; padding:6px; border-radius:4px; font-weight:bold;">
+                            </div>
+                            <div style="flex:1;">
+                                <label style="font-size:11px; color:#cbd5e1; display:block;">Prix Menu (DH)</label>
+                                <input type="text" id="${screenKey}_${i}_menu" value="${it.price_menu}" style="width:100%; background:#1e293b; border:1px solid #475569; color:#fff; padding:6px; border-radius:4px; font-weight:bold;">
+                            </div>
+                        </div>
+                        <div style="margin-bottom:6px;">
+                            <label style="font-size:11px; color:#cbd5e1; display:block;">Nom du Produit</label>
+                            <input type="text" id="${screenKey}_${i}_name" value="${it.name}" style="width:100%; background:#1e293b; border:1px solid #475569; color:#fff; padding:6px; border-radius:4px;">
+                        </div>
+                        <div>
+                            <label style="font-size:11px; color:#cbd5e1; display:block;">Ingrédients</label>
+                            <input type="text" id="${screenKey}_${i}_ribbon" value="${it.ribbon}" style="width:100%; background:#1e293b; border:1px solid #475569; color:#fff; padding:6px; border-radius:4px; font-size:11px;">
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            };
+
+            createSection('📺 Écran 1 : Les Bocadillos Chamali', menuData.screen_1, 's1');
+            createSection('📺 Écran 2 : Les Sandwiches Chauds', menuData.screen_2, 's2');
+
+            document.getElementById('edit-modal').style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').style.display = 'none';
+        }
+
+        function saveAndApplyConfig() {
+            // Read values
+            menuData.screen_1.forEach((it, i) => {
+                it.price_seul = document.getElementById(`s1_${i}_seul`).value;
+                it.price_menu = document.getElementById(`s1_${i}_menu`).value;
+                it.name = document.getElementById(`s1_${i}_name`).value;
+                it.ribbon = document.getElementById(`s1_${i}_ribbon`).value;
+            });
+            menuData.screen_2.forEach((it, i) => {
+                it.price_seul = document.getElementById(`s2_${i}_seul`).value;
+                it.price_menu = document.getElementById(`s2_${i}_menu`).value;
+                it.name = document.getElementById(`s2_${i}_name`).value;
+                it.ribbon = document.getElementById(`s2_${i}_ribbon`).value;
+            });
+
+            localStorage.setItem('mon_bocadillo_menu_config', JSON.stringify(menuData));
+            applyDataToDOM();
+            closeEditModal();
+            alert('✓ Modifications enregistrées avec succès !');
+        }
+
+        function resetDefaultConfig() {
+            if (confirm('Réinitialiser tous les prix et noms par défaut ?')) {
+                localStorage.removeItem('mon_bocadillo_menu_config');
+                menuData = JSON.parse(JSON.stringify(defaultMenuData));
+                applyDataToDOM();
+                closeEditModal();
             }
         }
 
-        // Service Worker Registration for Offline Mode
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(registration => {
-                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                    })
-                    .catch(err => {
-                        console.log('ServiceWorker registration failed: ', err);
-                    });
-            });
+        function downloadConfigJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(menuData, null, 2));
+            const dlAnchor = document.createElement('a');
+            dlAnchor.setAttribute("href", dataStr);
+            dlAnchor.setAttribute("download", "menu_config.json");
+            dlAnchor.click();
         }
+
+        window.addEventListener('DOMContentLoaded', initConfig);
+
+        function toggleSound() {
+            const audio = document.getElementById('bg-audio');
+            const btn = document.getElementById('btn-sound');
+            if (audio.paused) {
+                audio.play().then(() => {
+                    btn.textContent = '🔊 Son Activé';
+                    btn.classList.add('active');
+                }).catch(e => {
+                    console.log('Audio error:', e);
+                });
+            } else {
+                audio.pause();
+                btn.textContent = '🔇 Son';
+                btn.classList.remove('active');
+            }
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.error('Fullscreen error:', err);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        // ================= REALISTIC STEAM PARTICLE SIMULATION =================
+        const canvas = document.getElementById('steam-canvas');
+        const ctx = canvas.getContext('2d');
+
+        const emitters = [
+            { x: 300, y: 380 },
+            { x: 300, y: 880 },
+            { x: 960, y: 380 },
+            { x: 1580, y: 380 },
+            { x: 960, y: 880 },
+            { x: 1580, y: 880 }
+        ];
+
+        class SteamParticle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                const em = emitters[Math.floor(Math.random() * emitters.length)];
+                this.x = em.x + (Math.random() * 260 - 130);
+                this.y = em.y + (Math.random() * 20 - 10);
+                this.vx = (Math.random() - 0.5) * 0.45;
+                this.vy = -(Math.random() * 0.85 + 0.65);
+                this.radius = Math.random() * 14 + 10;
+                this.maxRadius = this.radius * (Math.random() * 3.5 + 3.0);
+                this.alpha = 0;
+                this.maxAlpha = Math.random() * 0.16 + 0.08;
+                this.life = 0;
+                this.maxLife = Math.random() * 110 + 80;
+                this.turb = Math.random() * Math.PI * 2;
+                this.turbSpeed = (Math.random() - 0.5) * 0.05;
+            }
+
+            update() {
+                this.life++;
+                this.turb += this.turbSpeed;
+                this.x += this.vx + Math.sin(this.turb) * 0.6;
+                this.y += this.vy;
+                this.radius += (this.maxRadius - this.radius) * 0.016;
+
+                const progress = this.life / this.maxLife;
+                if (progress < 0.2) {
+                    this.alpha = (progress / 0.2) * this.maxAlpha;
+                } else {
+                    this.alpha = (1 - progress) * this.maxAlpha;
+                }
+
+                if (this.life >= this.maxLife) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                if (this.alpha <= 0.005) return;
+                ctx.save();
+                ctx.beginPath();
+                const grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
+                grad.addColorStop(0, `rgba(255, 255, 255, ${this.alpha})`);
+                grad.addColorStop(0.5, `rgba(255, 250, 240, ${this.alpha * 0.6})`);
+                grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                ctx.fillStyle = grad;
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        const particles = Array.from({ length: 70 }, () => new SteamParticle());
+
+        function animateSteam() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let p of particles) {
+                p.update();
+                p.draw();
+            }
+            requestAnimationFrame(animateSteam);
+        }
+
+        requestAnimationFrame(animateSteam);
     </script>
 </body>
 </html>
