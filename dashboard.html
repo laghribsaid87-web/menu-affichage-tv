@@ -659,6 +659,56 @@
         .fs-drag-handle {
             cursor: move;
         }
+    
+        /* Emirates Burger 3D & Chalkboard Styles in Dashboard */
+        .title-3d {
+            font-family: 'Titan One', cursive;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+        }
+        .title-red {
+            color: #d91c1c;
+            text-shadow: 0 1px 0 #fff, 0 2px 0 #8b0000, 0 3px 0 #8b0000, 0 4px 0 #8b0000, 0 6px 1px rgba(0,0,0,0.1), 0 0 5px rgba(0,0,0,0.2), 0 3px 6px rgba(0,0,0,0.3), 0 8px 15px rgba(0,0,0,0.5);
+        }
+        .title-orange {
+            color: #e05307;
+            text-shadow: 0 1px 0 #fff, 0 2px 0 #8b2500, 0 3px 0 #8b2500, 0 4px 0 #8b2500, 0 8px 15px rgba(0,0,0,0.5);
+        }
+        .title-green {
+            color: #16a34a;
+            text-shadow: 0 1px 0 #fff, 0 2px 0 #064e3b, 0 3px 0 #064e3b, 0 4px 0 #064e3b, 0 8px 15px rgba(0,0,0,0.5);
+        }
+        .price-box {
+            background: #111827;
+            border: 3px double #fcd535;
+            border-radius: 6px;
+            padding: 6px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.7), inset 0 0 10px rgba(0,0,0,0.8);
+            font-family: 'Oswald', sans-serif;
+        }
+        .price-row { display: flex; flex-direction: column; align-items: center; }
+        .price-label { font-size: 11px; color: #94a3b8; font-weight: 700; letter-spacing: 1px; }
+        .price-val { font-size: 26px; color: #ffffff; font-weight: 900; line-height: 1; }
+        .curr { font-size: 14px; color: #fcd535; font-weight: 900; margin-left: 2px; }
+        .price-divider { width: 1px; height: 28px; background: rgba(255, 255, 255, 0.2); }
+        .ingredients-ribbon {
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(20, 20, 20, 0.85));
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            padding: 4px 14px;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+            border-left: 3px solid #ffaa00;
+            white-space: nowrap;
+        }
+
     </style>
     <script src="/effects.js?v=3"></script>
     <script>
@@ -814,6 +864,13 @@
                         <span v-show="isSidebarOpen">Promos (Vid/Img)</span>
                     </button>
 
+                    <button @click="currentTab = 'dynamic'"
+                        :class="{'bg-white shadow-sm border-l-4 border-red-500 active-tab': currentTab === 'dynamic', 'px-6': isSidebarOpen, 'px-0 justify-center': !isSidebarOpen}"
+                        class="w-full py-6 text-left hover:bg-white shadow-sm transition flex items-center gap-3">
+                        <i class="fa-solid fa-burger" :class="{'text-xl': !isSidebarOpen}"></i>
+                        <span v-show="isSidebarOpen" class="font-bold text-red-600">Menu TV (Sandwiches)</span>
+                    </button>
+
                     <div v-if="isSidebarOpen"
                         class="p-6 mt-4 text-sm font-semibold text-slate-500 uppercase tracking-wider cat-header">
                         Configuration</div>
@@ -837,6 +894,11 @@
                     'bg-red-900/50 text-red-400 border-red-800'
                 ]">
                     {{ notification.message }}
+                </div>
+
+                <!-- Menu TV Animé (Sandwiches) -->
+                <div v-if="currentTab === 'dynamic'" class="h-[80vh] w-full">
+                    <iframe src="/admin_dynamic.html" class="w-full h-full border-0 rounded-xl shadow-lg"></iframe>
                 </div>
 
                 <!-- TV 2 Formules (Canvas Editor) -->
@@ -3269,6 +3331,7 @@
                 },
                 isCompVisibleInTimeline(fKey, comp) {
                     if (!this.menuData || !this.menuData.formules[fKey]) return true;
+                    if (!this.isPlaying && !this.timelineDrag.isDraggingPlayhead) return true; // Show in editor!
                     const duration = this.menuData.formules[fKey].duration || 6;
                     const currentTime = (this.previewProgress / 100) * duration;
                     const delay = comp.delay || 0;
@@ -3599,7 +3662,7 @@
                 },
                 async fetchData() {
                     try {
-                        const res = await fetch(`/api/menu/${this.currentProject}/${this.currentTvId}`);
+                        const res = await fetch(`/api/menu/${this.currentProject}/${this.currentTvId}?t=${Date.now()}`);
                         this.menuData = await res.json();
                         if (!this.menuData.assets) this.menuData.assets = {};
                         if (!this.menuData.assets.sandwiches) this.menuData.assets.sandwiches = [];
@@ -3607,10 +3670,10 @@
                         if (!this.menuData.assets.sides) this.menuData.assets.sides = [];
                         if (this.menuData.formules) {
                             Object.values(this.menuData.formules).forEach(f => {
-                                if (!f.nameLayout) f.nameLayout = { x: 0, y: -430, scale: 1, rotation: 0, animIn: "fadeDown", delay: 0, z: 20 };
-                                if (!f.descLayout) f.descLayout = { x: 0, y: -360, scale: 1, rotation: 0, animIn: "fadeUp", delay: 0.2, z: 20 };
-                                if (!f.badgeLayout) f.badgeLayout = { x: -350, y: -430, scale: 1.5, rotation: -15, animIn: "fadeLeft", delay: 0.4, z: 20 };
-                                if (!f.priceLayout) f.priceLayout = { x: 350, y: 300, scale: 1.5, rotation: -10, animIn: "zoomIn", delay: 1, z: 20 };
+                                if (f.nameLayout === undefined) f.nameLayout = null;
+                                if (f.descLayout === undefined) f.descLayout = null;
+                                if (f.badgeLayout === undefined) f.badgeLayout = null;
+                                if (f.priceLayout === undefined) f.priceLayout = null;
                             });
                         }
                         if (Object.keys(this.menuData.formules).length > 0) this.activeFormuleKey = Object.keys(this.menuData.formules)[0];

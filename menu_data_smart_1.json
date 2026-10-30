@@ -350,7 +350,9 @@
           "animIn": "fadeIn",
           "delay": 0.8999999999999999
         }
-      ]
+      ],
+      "bgColor": "transparent",
+      "bgOpacity": 1.0
     },
     "emirates_screen_2": {
       "id": "emirates_screen_2",
@@ -635,7 +637,9 @@
           "animIn": "fadeIn",
           "delay": 0.8999999999999999
         }
-      ]
+      ],
+      "bgColor": "transparent",
+      "bgOpacity": 1.0
     }
   }
 }
