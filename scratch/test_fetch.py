@@ -23,3 +23,4 @@ with open("c:/Users/pc/Desktop/menu/test_fetch.html", "w") as f:
     f.write(test_html)
 
 print("Saved test_fetch.html")
+

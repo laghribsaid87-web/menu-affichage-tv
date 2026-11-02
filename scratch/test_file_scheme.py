@@ -10,3 +10,4 @@ cmd = [
 ]
 res = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=10)
 print("DOM snippet from file:///:", len(res.stdout))
+

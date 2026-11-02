@@ -38,3 +38,4 @@ with open("c:/Users/pc/Desktop/menu/server.py", "w", encoding="utf-8") as f:
     f.write(content)
 
 print("SUCCESS: Updated server.py CORS and index route.")
+

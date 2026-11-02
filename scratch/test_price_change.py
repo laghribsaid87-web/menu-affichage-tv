@@ -36,3 +36,4 @@ print("Was 99 found in DOM?:", found_99)
 data['items'][0]['price_sandwich'] = "29"
 with open("c:/Users/pc/Desktop/menu/menu_items.json", "w", encoding="utf-8") as f:
     json.dump(data, f, indent=2, ensure_ascii=False)
+

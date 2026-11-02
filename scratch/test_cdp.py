@@ -21,3 +21,4 @@ try:
     print("Chrome targets:", [t['url'] for t in targets])
 finally:
     proc.kill()
+

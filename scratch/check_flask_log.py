@@ -8,3 +8,4 @@ with open(r"C:\Users\pc\.gemini\antigravity\brain\b2a7b082-394c-4260-942a-782b37
 print("Last 30 lines of Flask server log:")
 for l in logs[-30:]:
     print(l.strip())
+

@@ -1,11 +1,11 @@
 {
   "global_settings": {
+    "active_model": 2,
     "default_drink_add": "+7 DH",
     "drink_badge_text": "🥤 + BOISSON",
     "restaurant_name": "Mon Bocadillo Tanger",
     "sandwich_badge_text": "🍟 SANDWICH + FRITES",
-    "updated_at": "2026-11-02T20:35:49.936466",
-    "active_model": 3
+    "updated_at": "2026-11-02T21:19:12.976802"
   },
   "items": [
     {

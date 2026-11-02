@@ -18,3 +18,4 @@ cmd = [
 
 res = subprocess.run(cmd, timeout=10)
 print("Screenshot generated:", os.path.exists(out_img), "Returncode:", res.returncode)
+

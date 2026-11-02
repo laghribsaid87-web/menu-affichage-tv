@@ -22,3 +22,4 @@ for idx, card in enumerate(cards):
     title = card.select_one('.title-3d, .sandwich-name, .pop-title')
     title_text = title.get_text(strip=True) if title else "NO TITLE"
     print(f"Card {idx}: {title_text} | pSandwich={p1_child.get_text(strip=True) if p1_child else 'NONE'} | pDrink={p2_child.get_text(strip=True) if p2_child else 'NONE'}")
+

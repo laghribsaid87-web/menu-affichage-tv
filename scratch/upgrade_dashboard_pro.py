@@ -103,3 +103,4 @@ with open("c:/Users/pc/Desktop/menu/dashboard_pro.html", "w", encoding="utf-8") 
     f.write(content)
 
 print("SUCCESS: Updated dashboard_pro.html with oninput, API_BASE and BroadcastChannel.")
+
