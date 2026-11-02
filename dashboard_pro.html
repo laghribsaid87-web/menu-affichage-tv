@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Bocadillo — Dashboard Gestion TV</title>
+    <title>Mon Bocadillo — Gestionnaire Multi-TV Pro</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -18,35 +18,37 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #0f141c;
+            background: #0b0f17;
             color: #f1f5f9;
             -webkit-tap-highlight-color: transparent;
         }
 
-        .brand-font {
-            font-family: 'Titan One', cursive;
-        }
-
-        .tag-font {
-            font-family: 'Bebas Neue', sans-serif;
-            letter-spacing: 1px;
-        }
-
-        /* Glassmorphism Card */
         .glass-card {
-            background: rgba(26, 34, 48, 0.75);
-            backdrop-filter: blur(12px);
+            background: rgba(22, 30, 44, 0.75);
+            backdrop-filter: blur(14px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            transition: all 0.25s ease;
         }
 
         .glass-card:hover {
-            border-color: rgba(255, 107, 0, 0.4);
+            border-color: rgba(255, 107, 0, 0.45);
         }
 
-        /* Gradient Button */
+        .tv-station-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.85));
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.25s ease;
+        }
+
+        .tv-station-card.active {
+            border-color: #ff6b00;
+            box-shadow: 0 0 25px rgba(255, 107, 0, 0.35);
+            transform: translateY(-2px);
+        }
+
         .btn-gradient {
-            background: linear-gradient(135deg, #ff6b00 0%, #d91c1c 100%);
+            background: linear-gradient(135deg, #ff6b00 0%, #ea580c 100%);
             box-shadow: 0 6px 20px rgba(255, 107, 0, 0.4);
             transition: all 0.2s ease;
         }
@@ -55,17 +57,6 @@
             transform: scale(0.97);
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-        }
-
-        /* Pulsing Online Dot */
         .pulse-dot {
             box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
             animation: pulse-ring 1.8s infinite;
@@ -78,26 +69,26 @@
         }
     </style>
 </head>
-<body class="min-h-screen pb-28">
+<body class="min-h-screen pb-32">
 
-    <!-- TOP HEADER -->
-    <header class="sticky top-0 z-50 bg-[#0f141c]/95 backdrop-blur-md border-b border-white/10 px-4 py-3 shadow-lg">
-        <div class="max-w-6xl mx-auto flex items-center justify-between">
+    <!-- HEADER -->
+    <header class="sticky top-0 z-50 bg-[#0b0f17]/95 backdrop-blur-md border-b border-white/10 px-4 py-3 shadow-xl">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-orange-600 to-red-600 flex items-center justify-center text-white shadow-md">
-                    <i class="fa-solid fa-utensils text-lg"></i>
+                    <i class="fa-solid fa-tv text-lg"></i>
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
                         <h1 class="text-lg md:text-xl font-extrabold tracking-tight text-white flex items-center gap-1.5">
                             MON BOCADILLO <span class="text-orange-500">TANGER</span>
                         </h1>
-                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-green-500/20 text-green-400 border border-green-500/30">
+                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-500/20 text-green-400 border border-green-500/30">
                             <span class="w-2 h-2 rounded-full bg-green-400 pulse-dot"></span>
-                            Live TV
+                            3 Écrans Multi-TV
                         </span>
                     </div>
-                    <p class="text-xs text-gray-400 font-medium hidden sm:block">Contrôle des Prix & Menu Digital 1080p</p>
+                    <p class="text-xs text-gray-400 font-medium hidden sm:block">Gestion Centralisée TV 1, TV 2 et TV 3</p>
                 </div>
             </div>
 
@@ -107,10 +98,6 @@
                     <i class="fa-solid fa-qrcode text-orange-400"></i>
                     <span class="hidden sm:inline">Scanner Mobile</span>
                 </button>
-                <a href="/menu_showcase.html" target="_blank" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-xs md:text-sm font-bold text-gray-200 border border-white/10 flex items-center gap-2 transition">
-                    <i class="fa-solid fa-tv text-blue-400"></i>
-                    <span class="hidden sm:inline">Aperçu TV</span>
-                </a>
                 <button onclick="saveAllItems()" class="btn-gradient text-white px-3.5 py-2 md:px-4 md:py-2.5 rounded-xl text-xs md:text-sm font-black flex items-center gap-2 shadow-lg">
                     <i class="fa-solid fa-floppy-disk"></i>
                     <span>Sauvegarder</span>
@@ -123,8 +110,8 @@
         </div>
     </header>
 
-    <!-- MAIN CONTAINER -->
-    <main class="max-w-6xl mx-auto px-4 pt-6">
+    <!-- MAIN BODY -->
+    <main class="max-w-7xl mx-auto px-4 pt-6">
 
         <!-- STATUS TOAST -->
         <div id="toast" class="hidden mb-6 p-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-bold shadow-xl border border-emerald-400/30 flex items-center justify-between transition-all duration-300">
@@ -134,84 +121,166 @@
                 </div>
                 <div>
                     <div id="toast-title" class="font-extrabold text-sm md:text-base">Modifications Enregistrées !</div>
-                    <div id="toast-desc" class="text-xs text-emerald-100">La TV s'actualise automatiquement en direct.</div>
+                    <div id="toast-desc" class="text-xs text-emerald-100">Les télévisions reçoivent les nouveaux prix en direct.</div>
                 </div>
             </div>
             <button onclick="closeToast()" class="text-white/80 hover:text-white text-lg px-2">&times;</button>
         </div>
 
-        <!-- ACTIVE MODEL SELECTOR -->
-        <div class="glass-card rounded-2xl p-4 md:p-5 mb-6 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 border border-blue-500/30">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400">
-                    <i class="fa-solid fa-tv text-lg"></i>
-                </div>
-                <div>
-                    <div class="text-sm font-extrabold text-white">Modèle Actif sur la TV (APK)</div>
-                    <div class="text-xs text-gray-400">Sélectionnez le design visuel affiché sur la télévision</div>
-                </div>
+        <!-- 3-TV FLEET HUB -->
+        <div class="mb-8">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-base md:text-lg font-black text-white flex items-center gap-2">
+                    <i class="fa-solid fa-layer-group text-orange-500"></i>
+                    <span>Disposition des 3 Écrans au Restaurant</span>
+                </h2>
+                <span class="text-xs text-gray-400">Cliquez sur une TV pour filtrer ses produits</span>
             </div>
-            <div class="flex items-center gap-2">
-                <select id="active-model-select" onchange="updateActiveModel(this.value)" class="bg-black/50 border border-white/20 rounded-xl py-2 px-3 text-xs md:text-sm font-bold text-white focus:outline-none focus:border-blue-500 cursor-pointer">
-                    <option value="1">👑 Modèle 1 : Luxe Emirates (Bois &amp; Chalkboard)</option>
-                    <option value="2">⚡ Modèle 2 : Modern Urban (Orange Électrique)</option>
-                    <option value="3">🌊 Modèle 3 : Vibrant Tanger (Bleu Pop)</option>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                
+                <!-- TV 1 CARD -->
+                <div onclick="setFilter('screen-1')" id="station-1" class="tv-station-card rounded-2xl p-4 cursor-pointer active">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2 py-0.5 rounded text-[11px] font-black bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center gap-1">
+                            <i class="fa-solid fa-tv text-[10px]"></i> TV 1 (Gauche)
+                        </span>
+                        <span class="text-xs font-mono font-bold text-gray-400">Touche [1]</span>
+                    </div>
+                    <div class="text-base font-black text-white mb-0.5">Menu 1 : Bocadillos Chamali</div>
+                    <p class="text-xs text-gray-400 mb-3">6 Produits (Complet, Royale, Thon, Cheese...)</p>
+                    <div class="flex items-center justify-between pt-2 border-t border-white/10 text-xs">
+                        <span class="font-bold text-amber-400 flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-amber-400"></span> En Ligne
+                        </span>
+                        <a href="/viewer.html?tv=1" target="_blank" onclick="event.stopPropagation()" class="text-gray-300 hover:text-white font-bold flex items-center gap-1 underline text-[11px]">
+                            Aperçu TV 1 <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- TV 2 CARD -->
+                <div onclick="setFilter('screen-2')" id="station-2" class="tv-station-card rounded-2xl p-4 cursor-pointer">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2 py-0.5 rounded text-[11px] font-black bg-orange-500/20 text-orange-400 border border-orange-500/30 flex items-center gap-1">
+                            <i class="fa-solid fa-tv text-[10px]"></i> TV 2 (Centre)
+                        </span>
+                        <span class="text-xs font-mono font-bold text-gray-400">Touche [2]</span>
+                    </div>
+                    <div class="text-base font-black text-white mb-0.5">Menu 2 : Sandwiches Chauds</div>
+                    <p class="text-xs text-gray-400 mb-3">5 Produits (Américain, Viande Hachée, Poulet...)</p>
+                    <div class="flex items-center justify-between pt-2 border-t border-white/10 text-xs">
+                        <span class="font-bold text-orange-400 flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-orange-400"></span> En Ligne
+                        </span>
+                        <a href="/viewer.html?tv=2" target="_blank" onclick="event.stopPropagation()" class="text-gray-300 hover:text-white font-bold flex items-center gap-1 underline text-[11px]">
+                            Aperçu TV 2 <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- TV 3 CARD -->
+                <div onclick="setFilter('screen-3')" id="station-3" class="tv-station-card rounded-2xl p-4 cursor-pointer">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2 py-0.5 rounded text-[11px] font-black bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center gap-1">
+                            <i class="fa-solid fa-tv text-[10px]"></i> TV 3 (Droite)
+                        </span>
+                        <span class="text-xs font-mono font-bold text-gray-400">Touche [3]</span>
+                    </div>
+                    <div class="text-base font-black text-white mb-0.5">Menu 3 : Boissons & Extras</div>
+                    <p class="text-xs text-gray-400 mb-3">4 Produits (Jus d'orange, Sodas, Frites, Eau...)</p>
+                    <div class="flex items-center justify-between pt-2 border-t border-white/10 text-xs">
+                        <span class="font-bold text-blue-400 flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-blue-400"></span> En Ligne
+                        </span>
+                        <a href="/viewer.html?tv=3" target="_blank" onclick="event.stopPropagation()" class="text-gray-300 hover:text-white font-bold flex items-center gap-1 underline text-[11px]">
+                            Aperçu TV 3 <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SETTINGS BAR: MODEL & BOISSON -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <!-- Active Model Switcher -->
+            <div class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3 border border-blue-500/30">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400 shrink-0">
+                        <i class="fa-solid fa-palette text-lg"></i>
+                    </div>
+                    <div>
+                        <div class="text-sm font-extrabold text-white">Thème Graphique Global</div>
+                        <div class="text-xs text-gray-400">Design affiché sur les écrans</div>
+                    </div>
+                </div>
+                <select id="active-model-select" onchange="updateActiveModel(this.value)" class="bg-black/50 border border-white/20 rounded-xl py-2 px-3 text-xs font-bold text-white focus:outline-none focus:border-blue-500 cursor-pointer">
+                    <option value="1">👑 Modèle 1 : Luxe Emirates (Bois)</option>
+                    <option value="2">⚡ Modèle 2 : Modern Urban (Orange)</option>
+                    <option value="3">🌊 Modèle 3 : Vibrant Tanger (Bleu)</option>
                 </select>
             </div>
-        </div>
 
-        <!-- QUICK BOISSON BAR -->
-        <div class="glass-card rounded-2xl p-4 md:p-5 mb-6 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 border border-orange-500/20">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-orange-500/20 flex items-center justify-center text-orange-400">
-                    <i class="fa-solid fa-glass-water text-lg"></i>
+            <!-- Quick Boisson Bar -->
+            <div class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3 border border-orange-500/30">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-orange-500/20 flex items-center justify-center text-orange-400 shrink-0">
+                        <i class="fa-solid fa-glass-water text-lg"></i>
+                    </div>
+                    <div>
+                        <div class="text-sm font-extrabold text-white">Option Boisson (+7 DH)</div>
+                        <div class="text-xs text-gray-400">Ajout soda automatique</div>
+                    </div>
                 </div>
-                <div>
-                    <div class="text-sm font-extrabold text-white">Option Boisson Globale</div>
-                    <div class="text-xs text-gray-400">Ajout soda sur tous les sandwiches en 1 clic</div>
+                <div class="flex items-center gap-2">
+                    <input type="text" id="global-drink-val" value="+7" class="w-16 bg-black/40 border border-white/20 rounded-xl py-2 px-2 text-center font-black text-orange-400 text-sm focus:outline-none focus:border-orange-500">
+                    <button onclick="applyGlobalDrink()" class="px-3 py-2 bg-orange-500/20 hover:bg-orange-500/30 text-orange-300 font-bold text-xs rounded-xl border border-orange-500/40 transition">
+                        Appliquer
+                    </button>
                 </div>
             </div>
-            <div class="flex items-center gap-2">
-                <div class="relative flex items-center">
-                    <span class="absolute left-3 text-sm font-bold text-gray-400">+</span>
-                    <input type="text" id="global-drink-val" value="7" class="w-20 bg-black/40 border border-white/20 rounded-xl py-2 pl-7 pr-3 text-center font-black text-orange-400 text-base focus:outline-none focus:border-orange-500">
-                    <span class="ml-2 font-bold text-xs text-gray-300">DH</span>
-                </div>
-                <button onclick="applyGlobalDrink()" class="px-4 py-2 bg-orange-500/20 hover:bg-orange-500/30 text-orange-300 font-bold text-xs md:text-sm rounded-xl border border-orange-500/40 transition">
-                    Appliquer à tous
+        </div>
+
+        <!-- FILTER TABS & ADD PRODUCT -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mb-6">
+            <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+                <button onclick="setFilter('all')" id="tab-all" class="tab-btn px-4 py-2 rounded-xl text-xs md:text-sm font-bold whitespace-nowrap bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 transition">
+                    Tous (<span id="count-all">15</span>)
+                </button>
+                <button onclick="setFilter('screen-1')" id="tab-screen-1" class="tab-btn px-4 py-2 rounded-xl text-xs md:text-sm font-bold whitespace-nowrap bg-amber-500 text-white shadow-md transition">
+                    📺 TV 1 : Bocadillos (<span id="count-s1">6</span>)
+                </button>
+                <button onclick="setFilter('screen-2')" id="tab-screen-2" class="tab-btn px-4 py-2 rounded-xl text-xs md:text-sm font-bold whitespace-nowrap bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 transition">
+                    📺 TV 2 : Chauds (<span id="count-s2">5</span>)
+                </button>
+                <button onclick="setFilter('screen-3')" id="tab-screen-3" class="tab-btn px-4 py-2 rounded-xl text-xs md:text-sm font-bold whitespace-nowrap bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 transition">
+                    📺 TV 3 : Boissons (<span id="count-s3">4</span>)
                 </button>
             </div>
-        </div>
 
-        <!-- FILTER TABS -->
-        <div class="flex items-center gap-2 overflow-x-auto pb-3 mb-6 no-scrollbar">
-            <button onclick="setFilter('all')" id="tab-all" class="tab-btn px-4 py-2 rounded-xl text-xs md:text-sm font-bold whitespace-nowrap bg-orange-500 text-white shadow-md transition">
-                Tous les Produits (<span id="count-all">11</span>)
-            </button>
-            <button onclick="setFilter('bocadillo')" id="tab-bocadillo" class="tab-btn px-4 py-2 rounded-xl text-xs md:text-sm font-bold whitespace-nowrap bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 transition">
-                🍟 Écran 1 : Bocadillos Tradition (<span id="count-boc">6</span>)
-            </button>
-            <button onclick="setFilter('sandwich')" id="tab-sandwich" class="tab-btn px-4 py-2 rounded-xl text-xs md:text-sm font-bold whitespace-nowrap bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 transition">
-                🔥 Écran 2 : Sandwiches Chauds (<span id="count-snd">5</span>)
+            <button onclick="addNewProduct()" class="px-4 py-2 rounded-xl bg-emerald-600/30 hover:bg-emerald-600/40 text-emerald-300 border border-emerald-500/40 font-bold text-xs md:text-sm flex items-center justify-center gap-2 transition">
+                <i class="fa-solid fa-plus"></i>
+                <span>Ajouter un Produit</span>
             </button>
         </div>
 
         <!-- PRODUCTS GRID -->
         <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            <!-- Dynamic JavaScript Render -->
+            <!-- Dynamic Render -->
         </div>
 
     </main>
 
-    <!-- BOTTOM FLOATING SAVE BAR (MOBILE) -->
-    <div class="fixed bottom-0 left-0 right-0 p-4 bg-[#0f141c]/95 backdrop-blur-md border-t border-white/10 z-40 sm:hidden">
+    <!-- MOBILE BOTTOM SAVE -->
+    <div class="fixed bottom-0 left-0 right-0 p-4 bg-[#0b0f17]/95 backdrop-blur-md border-t border-white/10 z-40 sm:hidden">
         <button onclick="saveAllItems()" class="w-full btn-gradient text-white py-3.5 rounded-xl font-black text-sm flex items-center justify-center gap-2 shadow-2xl">
             <i class="fa-solid fa-floppy-disk text-base"></i>
-            <span>Enregistrer les Prix sur la TV</span>
+            <span>Enregistrer sur les Écrans TV</span>
         </button>
     </div>
 
-    <!-- QR CODE MODAL FOR MOBILE ACCESS -->
+    <!-- QR CODE MODAL -->
     <div id="qr-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="glass-card max-w-sm w-full p-6 rounded-3xl border border-white/20 text-center relative shadow-2xl">
             <button onclick="closeQrModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">&times;</button>
@@ -220,9 +289,8 @@
                 <i class="fa-solid fa-mobile-screen-button text-2xl"></i>
             </div>
             <h3 class="text-lg font-black text-white mb-1">Ouvrir sur Téléphone</h3>
-            <p class="text-xs text-gray-400 mb-4">Scannez ce QR Code avec l'appareil photo de votre smartphone connecté au Wi-Fi du restaurant.</p>
+            <p class="text-xs text-gray-400 mb-4">Scannez ce QR Code avec l'appareil photo de votre smartphone pour contrôler les 3 télés.</p>
             
-            <!-- QR Holder -->
             <div class="p-3 bg-white rounded-2xl inline-block shadow-inner mb-4">
                 <div id="qrcode"></div>
             </div>
@@ -237,12 +305,11 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- SCRIPT -->
     <script>
-        let menuData = { items: [], global_settings: {} };
-        let currentFilter = 'all';
+        let menuData = { items: [], global_settings: {}, tv_config: {} };
+        let currentFilter = 'screen-1';
 
-        // Load items from backend or fallback
         async function loadItems() {
             try {
                 const res = await fetch('/api/menu_items?t=' + Date.now());
@@ -256,14 +323,14 @@
                 const cached = localStorage.getItem('MENU_ITEMS_CACHE');
                 if (cached) menuData = JSON.parse(cached);
             }
-            renderGrid();
+
             if (menuData.global_settings && menuData.global_settings.active_model) {
                 const sel = document.getElementById('active-model-select');
                 if (sel) sel.value = menuData.global_settings.active_model.toString();
             }
+            renderGrid();
         }
 
-        // Filter Switcher
         function setFilter(filter) {
             currentFilter = filter;
             document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -273,40 +340,58 @@
             if (activeTab) {
                 activeTab.className = "tab-btn px-4 py-2 rounded-xl text-xs md:text-sm font-bold whitespace-nowrap bg-orange-500 text-white shadow-md transition";
             }
+
+            // Sync Station Cards styling
+            [1, 2, 3].forEach(id => {
+                const card = document.getElementById('station-' + id);
+                if (card) {
+                    if (filter === 'screen-' + id) card.classList.add('active');
+                    else card.classList.remove('active');
+                }
+            });
+
             renderGrid();
-            if (menuData.global_settings && menuData.global_settings.active_model) {
-                const sel = document.getElementById('active-model-select');
-                if (sel) sel.value = menuData.global_settings.active_model.toString();
-            }
         }
 
-        // Render Cards
         function renderGrid() {
             const grid = document.getElementById('products-grid');
             grid.innerHTML = '';
 
             const items = menuData.items || [];
-            
-            // Update tab badges
+
+            // Update badge counters
             document.getElementById('count-all').innerText = items.length;
-            document.getElementById('count-boc').innerText = items.filter(i => i.category === 'bocadillo').length;
-            document.getElementById('count-snd').innerText = items.filter(i => i.category === 'sandwich').length;
+            document.getElementById('count-s1').innerText = items.filter(i => i.screen === 1).length;
+            document.getElementById('count-s2').innerText = items.filter(i => i.screen === 2).length;
+            document.getElementById('count-s3').innerText = items.filter(i => i.screen === 3).length;
 
             items.forEach((item, index) => {
-                if (currentFilter !== 'all' && item.category !== currentFilter) return;
+                const itemScreen = 'screen-' + item.screen;
+                if (currentFilter !== 'all' && itemScreen !== currentFilter) return;
 
                 const card = document.createElement('div');
                 card.className = `glass-card rounded-2xl p-4 flex flex-col justify-between transition-all duration-200 ${!item.is_available ? 'opacity-50 grayscale' : ''}`;
-                
-                const screenBadge = item.screen === 1 
-                    ? `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">Écran 1 (Bocadillo)</span>`
-                    : `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-orange-500/20 text-orange-400 border border-orange-500/30">Écran 2 (Chaud)</span>`;
+
+                let tvBadgeClass = "bg-amber-500/20 text-amber-400 border-amber-500/30";
+                let tvName = "TV 1 (Bocadillos)";
+                if (item.screen === 2) {
+                    tvBadgeClass = "bg-orange-500/20 text-orange-400 border-orange-500/30";
+                    tvName = "TV 2 (Chauds)";
+                } else if (item.screen === 3) {
+                    tvBadgeClass = "bg-blue-500/20 text-blue-400 border-blue-500/30";
+                    tvName = "TV 3 (Boissons)";
+                }
 
                 card.innerHTML = `
                     <div>
-                        <!-- Top Header: Badge & Status Switch -->
+                        <!-- Header: TV Selector & Available Switch -->
                         <div class="flex items-center justify-between mb-3">
-                            ${screenBadge}
+                            <select onchange="changeItemScreen(${index}, this.value)" class="text-[11px] font-black rounded-lg py-1 px-2 border ${tvBadgeClass} bg-black/40 focus:outline-none cursor-pointer">
+                                <option value="1" ${item.screen === 1 ? 'selected' : ''}>📺 TV 1 (Bocadillos)</option>
+                                <option value="2" ${item.screen === 2 ? 'selected' : ''}>📺 TV 2 (Chauds)</option>
+                                <option value="3" ${item.screen === 3 ? 'selected' : ''}>📺 TV 3 (Boissons)</option>
+                            </select>
+
                             <button onclick="toggleAvailability(${index})" class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold transition ${item.is_available ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'bg-red-500/20 text-red-300 border border-red-500/40'}">
                                 <span class="w-1.5 h-1.5 rounded-full ${item.is_available ? 'bg-emerald-400' : 'bg-red-400'}"></span>
                                 ${item.is_available ? 'Disponible' : 'Épuisé'}
@@ -316,7 +401,7 @@
                         <!-- Image & Title -->
                         <div class="flex items-center gap-3.5 mb-4">
                             <div class="w-20 h-20 rounded-2xl bg-black/40 border border-white/10 flex items-center justify-center p-1 overflow-hidden shrink-0 shadow-inner">
-                                <img src="${item.img}" alt="${item.title}" class="max-h-full max-w-full object-contain filter drop-shadow">
+                                <img src="${item.img}" alt="${item.title}" class="max-h-full max-w-full object-contain filter drop-shadow" onerror="this.src='processed_images/bocadillo.png'">
                             </div>
                             <div class="flex-1 min-w-0">
                                 <div class="text-[11px] font-bold text-gray-400 uppercase tracking-wider">${item.title_prefix || ''}</div>
@@ -327,10 +412,10 @@
 
                         <!-- Price Inputs Grid -->
                         <div class="grid grid-cols-2 gap-2.5 pt-2 border-t border-white/10">
-                            <!-- Sandwich Price Box -->
+                            <!-- Base Price -->
                             <div class="bg-black/30 rounded-xl p-2.5 border border-white/10 flex flex-col justify-between">
                                 <span class="text-[10px] font-bold text-gray-400 flex items-center gap-1">
-                                    🍟 Sandwich + Frites
+                                    💰 Prix Produit
                                 </span>
                                 <div class="flex items-center justify-between mt-1">
                                     <button onclick="adjustPrice(${index}, -1)" class="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 text-gray-300 font-bold flex items-center justify-center text-sm active:scale-95 transition">&minus;</button>
@@ -342,7 +427,7 @@
                                 </div>
                             </div>
 
-                            <!-- Drink Price Box -->
+                            <!-- Drink Option -->
                             <div class="bg-black/30 rounded-xl p-2.5 border border-white/10 flex flex-col justify-between">
                                 <span class="text-[10px] font-bold text-gray-400 flex items-center gap-1">
                                     🥤 + Boisson
@@ -359,37 +444,17 @@
             });
         }
 
-        function updateActiveModel(val) {
-            if (!menuData.global_settings) menuData.global_settings = {};
-            menuData.global_settings.active_model = parseInt(val) || 1;
-            showToast("Modèle Modifié", `Le Modèle ${val} est maintenant actif.`);
+        function changeItemScreen(index, newScreen) {
+            menuData.items[index].screen = parseInt(newScreen);
+            renderGrid();
+            showToast("Déplacement TV", `Produit assigné à la Télévision ${newScreen}`);
         }
 
-        async function publishToTv() {
-            showToast("Envoi en cours...", "Publication des données vers la TV (Internet)...");
-            await saveAllItems();
-            try {
-                const res = await fetch('/api/publish_to_tv', { method: 'POST' });
-                if (res.ok) {
-                    showToast("🎉 TV Synchronisée !", "Les nouveaux prix et modèles sont en ligne sur la TV !");
-                } else {
-                    showToast("Erreur d'envoi", "Vérifiez la connexion Internet.");
-                }
-            } catch(e) {
-                showToast("Erreur Réseau", "Impossible de contacter GitHub.");
-            }
-        }
-
-        // Adjust sandwich price with +/-
         function adjustPrice(index, delta) {
             let p = parseInt(menuData.items[index].price_sandwich) || 0;
             p = Math.max(0, p + delta);
             menuData.items[index].price_sandwich = p.toString();
             renderGrid();
-            if (menuData.global_settings && menuData.global_settings.active_model) {
-                const sel = document.getElementById('active-model-select');
-                if (sel) sel.value = menuData.global_settings.active_model.toString();
-            }
         }
 
         function updateSandwichPrice(index, val) {
@@ -403,46 +468,74 @@
         function toggleAvailability(index) {
             menuData.items[index].is_available = !menuData.items[index].is_available;
             renderGrid();
-            if (menuData.global_settings && menuData.global_settings.active_model) {
-                const sel = document.getElementById('active-model-select');
-                if (sel) sel.value = menuData.global_settings.active_model.toString();
-            }
         }
 
-        // Global Drink apply
+        function updateActiveModel(val) {
+            if (!menuData.global_settings) menuData.global_settings = {};
+            menuData.global_settings.active_model = parseInt(val) || 1;
+            showToast("Modèle Modifié", `Le Modèle ${val} est maintenant actif.`);
+        }
+
         function applyGlobalDrink() {
             const val = document.getElementById('global-drink-val').value.trim();
             const formatted = val.startsWith('+') ? val : ('+' + val);
             menuData.items.forEach(item => {
-                item.price_drink = formatted;
+                if (item.category !== 'boisson') item.price_drink = formatted;
             });
             renderGrid();
-            if (menuData.global_settings && menuData.global_settings.active_model) {
-                const sel = document.getElementById('active-model-select');
-                if (sel) sel.value = menuData.global_settings.active_model.toString();
-            }
-            showToast("Option Boisson appliquée", `Tous les sandwiches sont passés à ${formatted} DH.`);
+            showToast("Option Boisson appliquée", `Tous les sandwichs sont passés à ${formatted} DH.`);
         }
 
-        // Save All Items to Server and localStorage
+        function addNewProduct() {
+            const targetScreen = currentFilter === 'screen-2' ? 2 : (currentFilter === 'screen-3' ? 3 : 1);
+            const newId = 'item_' + Date.now();
+            menuData.items.push({
+                category: targetScreen === 3 ? "boisson" : (targetScreen === 2 ? "sandwich" : "bocadillo"),
+                desc: "NOUVEAU PRODUIT FRAIS • RECETTE MAISON",
+                id: newId,
+                img: "processed_images/bocadillo.png",
+                is_available: true,
+                order: menuData.items.length + 1,
+                price_drink: "+7",
+                price_sandwich: "25",
+                screen: targetScreen,
+                title: "NOUVEAU",
+                title_prefix: "LE"
+            });
+            renderGrid();
+            showToast("Produit Ajouté", `Nouveau produit créé sur la TV ${targetScreen}`);
+        }
+
         async function saveAllItems() {
             try {
-                // Save locally first
                 localStorage.setItem('MENU_ITEMS_CACHE', JSON.stringify(menuData));
-                
                 const res = await fetch('/api/menu_items', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(menuData)
                 });
-
                 if (res.ok) {
-                    showToast("Prix Enregistrés !", "La TV a reçu les nouveaux prix en direct.");
+                    showToast("Prix Enregistrés !", "Les télévisions ont reçu les nouveaux prix.");
                 } else {
-                    showToast("Enregistré Localement", "La TV utilisera ces prix en cache.");
+                    showToast("Enregistré Localement", "Stocké en mémoire locale.");
                 }
             } catch(e) {
-                showToast("Enregistré Localement (Mode Hors-Ligne)", "Les prix sont stockés sur l'appareil.");
+                showToast("Enregistré Localement", "Mode hors-ligne.");
+            }
+        }
+
+        async function publishToTv() {
+            showToast("Publication TV...", "Synchronisation avec GitHub Pages...");
+            await saveAllItems();
+            try {
+                const res = await fetch('/api/publish_to_tv', { method: 'POST' });
+                if (res.ok) {
+                    showToast("🎉 3 Télés Synchronisées !", "Les nouveaux menus sont en direct sur les écrans !");
+                } else {
+                    showToast("Erreur Réseau", "Vérifiez la connexion Internet.");
+                }
+            } catch(e) {
+                showToast("Erreur Réseau", "Impossible de contacter le serveur.");
             }
         }
 
@@ -451,32 +544,27 @@
             document.getElementById('toast-title').innerText = title;
             document.getElementById('toast-desc').innerText = desc;
             t.classList.remove('hidden');
-            setTimeout(() => { t.classList.add('hidden'); }, 4000);
+            setTimeout(() => { t.classList.add('hidden'); }, 3500);
         }
 
         function closeToast() {
             document.getElementById('toast').classList.add('hidden');
         }
 
-        // QR Code Modal
         function openQrModal() {
             const modal = document.getElementById('qr-modal');
             const qrContainer = document.getElementById('qrcode');
             qrContainer.innerHTML = '';
-            
-            // Use current host or local IP
             const currentUrl = window.location.origin + '/dashboard_pro.html';
             document.getElementById('network-url').innerText = currentUrl;
-
             new QRCode(qrContainer, {
                 text: currentUrl,
                 width: 180,
                 height: 180,
-                colorDark : "#0f141c",
+                colorDark : "#0b0f17",
                 colorLight : "#ffffff",
                 correctLevel : QRCode.CorrectLevel.M
             });
-
             modal.classList.remove('hidden');
         }
 
@@ -491,9 +579,7 @@
             });
         }
 
-        // Init
         loadItems();
     </script>
 </body>
 </html>
-

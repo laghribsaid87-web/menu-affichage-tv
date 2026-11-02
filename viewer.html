@@ -25,10 +25,37 @@
             border: none;
             display: block;
         }
+
+        /* Remote Feedback Overlay */
+        #tv-toast {
+            position: fixed;
+            top: 36px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(15, 23, 42, 0.92);
+            color: #fff;
+            font-family: 'Montserrat', system-ui, sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            padding: 14px 34px;
+            border-radius: 40px;
+            border: 2px solid #ff6b00;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 107, 0, 0.35);
+            z-index: 999999;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+
+        #tv-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(5px);
+        }
     </style>
 </head>
 <body>
 
+    <div id="tv-toast">📺 Initialisation...</div>
     <iframe id="tv-frame" src="menu_model1_emirates.html?mode=tv" allow="fullscreen"></iframe>
 
     <script>
@@ -39,19 +66,66 @@
         };
 
         const frame = document.getElementById('tv-frame');
+        const toast = document.getElementById('tv-toast');
 
-        // 1. Initial Model Resolution (URL > LocalStorage > Default: 1)
-        const urlParams = new URLSearchParams(window.location.search);
-        let currentModel = urlParams.get('model') || localStorage.getItem('MENU_TV_ACTIVE_MODEL') || '1';
-        
-        if (models[currentModel]) {
-            frame.src = models[currentModel];
+        function showNotification(text) {
+            toast.innerText = text;
+            toast.classList.add('show');
+            clearTimeout(toast._t);
+            toast._t = setTimeout(() => toast.classList.remove('show'), 3500);
         }
 
-        // 2. Auto-sync Model & Dynamic Settings from Backend / GitHub
+        // 1. Resolve Active Model & TV ID
+        const urlParams = new URLSearchParams(window.location.search);
+        let currentModel = urlParams.get('model') || localStorage.getItem('MENU_TV_ACTIVE_MODEL') || '1';
+        let assignedTv = urlParams.get('tv') || localStorage.getItem('MENU_TV_ASSIGNED_ID') || 'auto';
+
+        function buildFrameUrl(model, tv) {
+            let base = models[model] || models['1'];
+            if (tv === '1') return base + '&screen=1';
+            if (tv === '2') return base + '&screen=2';
+            if (tv === '3') return base + '&screen=3';
+            return base; // auto-loop
+        }
+
+        function applyTvConfig(model, tv) {
+            currentModel = model;
+            assignedTv = tv;
+            const targetUrl = buildFrameUrl(model, tv);
+            if (frame.src !== targetUrl) {
+                frame.src = targetUrl;
+            }
+        }
+
+        // Initial launch
+        applyTvConfig(currentModel, assignedTv);
+
+        // 2. Remote Control Keydown Switcher (1, 2, 3, 0)
+        window.addEventListener('keydown', (e) => {
+            if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+
+            if (e.key === '1') {
+                localStorage.setItem('MENU_TV_ASSIGNED_ID', '1');
+                applyTvConfig(currentModel, '1');
+                showNotification('📺 TÉLÉVISION 1 : Menu Bocadillos Chamali');
+            } else if (e.key === '2') {
+                localStorage.setItem('MENU_TV_ASSIGNED_ID', '2');
+                applyTvConfig(currentModel, '2');
+                showNotification('📺 TÉLÉVISION 2 : Menu Sandwiches Chauds');
+            } else if (e.key === '3') {
+                localStorage.setItem('MENU_TV_ASSIGNED_ID', '3');
+                applyTvConfig(currentModel, '3');
+                showNotification('📺 TÉLÉVISION 3 : Menu Boissons & Extras');
+            } else if (e.key === '0' || e.key === 'a' || e.key === 'A') {
+                localStorage.removeItem('MENU_TV_ASSIGNED_ID');
+                applyTvConfig(currentModel, 'auto');
+                showNotification('🔄 Mode Boucle Automatique (Rotation 15s)');
+            }
+        });
+
+        // 3. Auto-sync Model & Dynamic Settings from Backend / GitHub
         async function checkActiveModel() {
             try {
-                // Try API first, fallback to static json
                 let res = await fetch('/api/menu_items?t=' + Date.now());
                 if (!res.ok) {
                     res = await fetch('menu_items.json?t=' + Date.now());
@@ -65,16 +139,15 @@
                             console.log("Switching TV Model to:", newModel);
                             currentModel = newModel;
                             localStorage.setItem('MENU_TV_ACTIVE_MODEL', newModel);
-                            frame.src = models[newModel];
+                            applyTvConfig(newModel, assignedTv);
                         }
                     }
                 }
             } catch(e) {
-                // Offline mode: perfectly fine, keeps playing currentModel
+                // Offline mode: perfectly fine, keeps playing
             }
         }
 
-        // Poll every 3 seconds for design or model switches
         checkActiveModel();
         setInterval(checkActiveModel, 3000);
     </script>
