@@ -1846,10 +1846,17 @@
         if (params.get('mode') === 'tv') {
             document.body.classList.add('tv-display-mode');
         }
-        if (params.get('screen') === '2') {
-            if (typeof showScreen === 'function') showScreen(2);
-        } else if (params.get('screen') === '1') {
-            if (typeof showScreen === 'function') showScreen(1);
+        const reqScreen = params.get('screen');
+        if (reqScreen) {
+            if (typeof setScreenMode === 'function') {
+                setScreenMode('screen-' + reqScreen);
+            } else if (typeof showScreen === 'function') {
+                showScreen(parseInt(reqScreen));
+            }
+            if (typeof autoLoopTimer !== 'undefined' && autoLoopTimer) {
+                clearTimeout(autoLoopTimer);
+                autoLoopTimer = null;
+            }
         }
 
         // Add action buttons to ui-controls

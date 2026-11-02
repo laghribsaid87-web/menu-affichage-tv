@@ -206,19 +206,22 @@
   ],
   "tv_config": {
     "1": {
-      "name": "TV 1 (Lissar)",
-      "screen": 1,
-      "title": "Menu Bocadillos Chamali"
+      "name": "TV 1 (Gauche)",
+      "option_id": "model1_s1",
+      "target_url": "menu_model1_emirates.html?mode=tv&screen=1",
+      "title": "Modèle 1 Émirates — Screen 1 (Bocadillos Chamali)"
     },
     "2": {
-      "name": "TV 2 (L-Wost)",
-      "screen": 2,
-      "title": "Menu Sandwiches Chauds"
+      "name": "TV 2 (Centre)",
+      "option_id": "model1_s2",
+      "target_url": "menu_model1_emirates.html?mode=tv&screen=2",
+      "title": "Modèle 1 Émirates — Screen 2 (Sandwiches Chauds)"
     },
     "3": {
-      "name": "TV 3 (Limn)",
-      "screen": 3,
-      "title": "Menu Boissons & Extras"
+      "name": "TV 3 (Droite)",
+      "option_id": "model3_all",
+      "target_url": "menu_model3_vibrant.html?mode=tv",
+      "title": "Modèle 3 Vibrant — Menu Dynamique Complet"
     }
   }
 }
