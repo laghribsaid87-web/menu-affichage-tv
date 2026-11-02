@@ -5,7 +5,7 @@
     "drink_badge_text": "🥤 + BOISSON",
     "restaurant_name": "Mon Bocadillo Tanger",
     "sandwich_badge_text": "🍟 SANDWICH + FRITES",
-    "updated_at": "2026-11-02T21:19:16.299802"
+    "updated_at": "2026-11-02T23:26:28.054798"
   },
   "items": [
     {
@@ -206,22 +206,25 @@
   ],
   "tv_config": {
     "1": {
-      "name": "TV 1 (Gauche)",
-      "option_id": "model1_s1",
-      "target_url": "menu_model1_emirates.html?mode=tv&screen=1",
-      "title": "Modèle 1 Émirates — Screen 1 (Bocadillos Chamali)"
-    },
-    "2": {
-      "name": "TV 2 (Centre)",
+      "name": "TV 1",
       "option_id": "model1_s2",
       "target_url": "menu_model1_emirates.html?mode=tv&screen=2",
-      "title": "Modèle 1 Émirates — Screen 2 (Sandwiches Chauds)"
+      "title": "Modèle 1 (Émirates) — Sandwiches Chauds",
+      "updated_at": "2026-11-02T23:25:18.850Z"
+    },
+    "2": {
+      "name": "TV 2",
+      "option_id": "model1_s1",
+      "target_url": "menu_model1_emirates.html?mode=tv&screen=1",
+      "title": "Modèle 1 (Émirates) — Bocadillos Chamali",
+      "updated_at": "2026-11-02T23:26:28.042Z"
     },
     "3": {
-      "name": "TV 3 (Droite)",
-      "option_id": "model3_all",
-      "target_url": "menu_model3_vibrant.html?mode=tv",
-      "title": "Modèle 3 Vibrant — Menu Dynamique Complet"
+      "name": "TV 3",
+      "option_id": "model1_s1",
+      "target_url": "menu_model1_emirates.html?mode=tv&screen=1",
+      "title": "Modèle 1 (Émirates) — Bocadillos Chamali",
+      "updated_at": "2026-11-02T23:26:21.451Z"
     }
   }
 }

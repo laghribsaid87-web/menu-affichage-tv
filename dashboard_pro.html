@@ -132,121 +132,253 @@
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-4">
                 <div>
                     <h2 class="text-base md:text-lg font-black text-white flex items-center gap-2">
-                        <i class="fa-solid fa-tv text-orange-500"></i>
-                        <span>Affectation & Contrôle des 3 Télévisions</span>
+                        <i class="fa-solid fa-images text-orange-500"></i>
+                        <span>Affectation Visuelle des 3 Télévisions (Par Photos)</span>
                     </h2>
-                    <p class="text-xs text-gray-400 font-medium">Choisissez exactement quel menu apparaît sur TV 1, TV 2 et TV 3 en direct.</p>
+                    <p class="text-xs text-gray-400 font-medium">Cliquez directement sur l'image du menu que vous souhaitez afficher sur chaque télévision.</p>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button onclick="publishToTv()" class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white px-3.5 py-1.5 rounded-xl text-xs font-black flex items-center gap-1.5 shadow-lg shadow-orange-500/20 transition">
+                    <button onclick="publishToTv()" class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white px-3.5 py-2 rounded-xl text-xs font-black flex items-center gap-1.5 shadow-lg shadow-orange-500/20 transition cursor-pointer">
                         <i class="fa-solid fa-satellite-dish animate-pulse"></i>
-                        <span>Diffuser vers les Boîtiers TV</span>
+                        <span>Diffuser vers les Boîtiers TV (Sync Cloud)</span>
                     </button>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                 
-                <!-- TV 1 CARD -->
-                <div onclick="setFilter('screen-1')" id="station-1" class="tv-station-card rounded-2xl p-4 cursor-pointer active">
+                <!-- TV 1 CARD (GAUCHE) -->
+                <div id="station-1" class="tv-station-card rounded-2xl p-4 transition-all border border-amber-500/40 bg-[#111827] shadow-xl">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="px-2 py-0.5 rounded text-[11px] font-black bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center gap-1">
-                            <i class="fa-solid fa-tv text-[10px]"></i> TV 1 (Gauche)
+                        <span class="px-2.5 py-1 rounded-lg text-xs font-black bg-amber-500/20 text-amber-400 border border-amber-500/40 flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-tv text-xs"></i> TV 1 (Gauche)
                         </span>
-                        <span class="text-xs font-mono font-bold text-gray-400">Touche Télécommande [1]</span>
+                        <span class="text-xs font-mono font-bold text-gray-400 bg-white/5 px-2 py-0.5 rounded">Touche [1]</span>
                     </div>
 
-                    <!-- Menu Dropdown Selector -->
-                    <div class="my-3" onclick="event.stopPropagation()">
-                        <label class="text-[10px] uppercase tracking-wider font-extrabold text-amber-400 block mb-1 flex items-center gap-1">
-                            <i class="fa-solid fa-sliders"></i> Menu Affiché sur TV 1 :
-                        </label>
-                        <select id="select-tv-1" onchange="onTvMenuSelect('1', this.value)" class="w-full bg-black/80 border border-amber-500/40 text-white rounded-xl px-2.5 py-2 text-xs font-extrabold focus:outline-none focus:border-amber-400 transition cursor-pointer">
-                            <option value="model1_s1">🥖 Modèle 1 (Émirates) — Bocadillos Chamali</option>
-                            <option value="model1_s2">🥩 Modèle 1 (Émirates) — Sandwiches Chauds</option>
-                            <option value="model2_s1">🏙️ Modèle 2 (Urban) — Bocadillos Chamali</option>
-                            <option value="model2_s2">🏙️ Modèle 2 (Urban) — Sandwiches Chauds</option>
-                            <option value="model3_all">🎨 Modèle 3 (Vibrant) — Menu Complet Dynamique</option>
-                            <option value="model1_auto">🔄 Boucle Auto (Émirates - Rotation 15s)</option>
-                            <option value="model2_auto">🔄 Boucle Auto (Urban - Rotation 15s)</option>
-                        </select>
+                    <!-- ACTIVE PREVIEW IMAGE -->
+                    <div class="relative rounded-xl overflow-hidden border-2 border-amber-500/60 my-2 group shadow-lg bg-black cursor-pointer" onclick="openFullPreview('1')">
+                        <img id="tv1-active-img" src="thumbnails/thumb_m1_s1.jpg" class="w-full h-36 object-cover object-top transition duration-300 group-hover:scale-105" alt="Menu TV 1">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-between p-2.5 pointer-events-none">
+                            <span class="self-start bg-amber-500 text-black font-black text-[10px] px-2.5 py-0.5 rounded-full uppercase tracking-wider flex items-center gap-1 shadow">
+                                <span class="w-1.5 h-1.5 rounded-full bg-black animate-ping"></span> Affiché sur TV 1
+                            </span>
+                            <div>
+                                <span id="tv1-active-title" class="text-xs md:text-sm font-black text-white drop-shadow block">Bocadillos Chamali Tradition</span>
+                                <span id="tv1-active-sub" class="text-[10px] text-amber-300 font-bold">Modèle 1 (Émirates Sombre)</span>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="flex items-center justify-between pt-2 border-t border-white/10 text-xs">
-                        <span class="font-bold text-amber-400 flex items-center gap-1">
-                            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span> En Direct
-                        </span>
-                        <a href="/viewer.html?tv=1" target="_blank" onclick="event.stopPropagation()" class="text-amber-300 hover:text-white font-bold flex items-center gap-1 underline text-[11px]">
+                    <!-- VISUAL PHOTO SELECTOR -->
+                    <div class="mt-2.5">
+                        <div class="text-[11px] font-black text-gray-300 mb-1.5 flex items-center justify-between">
+                            <span class="flex items-center gap-1 text-amber-400">
+                                <i class="fa-solid fa-hand-pointer text-xs"></i> Cliquez sur la photo à afficher :
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-4 gap-1.5">
+                            <!-- Option 1: Bocadillos -->
+                            <button type="button" onclick="selectVisualMenu('1', 'model1_s1')" id="vbtn-1-model1_s1" class="v-opt-btn active group relative rounded-lg overflow-hidden border-2 border-amber-500 bg-black/60 p-0.5 transition scale-105 shadow cursor-pointer">
+                                <img src="thumbnails/thumb_m1_s1.jpg" class="w-full h-11 object-cover rounded" alt="Bocadillos">
+                                <span class="text-[9px] font-black text-white block bg-black/80 py-0.5 px-0.5 text-center truncate">Bocadillos</span>
+                                <div class="v-badge absolute top-1 right-1 bg-amber-500 text-black rounded-full w-3.5 h-3.5 flex items-center justify-center text-[8px] font-black shadow"><i class="fa-solid fa-check"></i></div>
+                            </button>
+
+                            <!-- Option 2: Chauds -->
+                            <button type="button" onclick="selectVisualMenu('1', 'model1_s2')" id="vbtn-1-model1_s2" class="v-opt-btn group relative rounded-lg overflow-hidden border border-white/20 bg-black/40 p-0.5 transition hover:scale-105 hover:border-amber-400 cursor-pointer">
+                                <img src="thumbnails/thumb_m1_s2.jpg" class="w-full h-11 object-cover rounded" alt="Chauds">
+                                <span class="text-[9px] font-black text-white block bg-black/80 py-0.5 px-0.5 text-center truncate">Chauds</span>
+                                <div class="v-badge hidden absolute top-1 right-1 bg-amber-500 text-black rounded-full w-3.5 h-3.5 flex items-center justify-center text-[8px] font-black shadow"><i class="fa-solid fa-check"></i></div>
+                            </button>
+
+                            <!-- Option 3: Vibrant -->
+                            <button type="button" onclick="selectVisualMenu('1', 'model3_all')" id="vbtn-1-model3_all" class="v-opt-btn group relative rounded-lg overflow-hidden border border-white/20 bg-black/40 p-0.5 transition hover:scale-105 hover:border-amber-400 cursor-pointer">
+                                <img src="thumbnails/thumb_m3_all.jpg" class="w-full h-11 object-cover rounded" alt="Vibrant">
+                                <span class="text-[9px] font-black text-white block bg-black/80 py-0.5 px-0.5 text-center truncate">Vibrant</span>
+                                <div class="v-badge hidden absolute top-1 right-1 bg-amber-500 text-black rounded-full w-3.5 h-3.5 flex items-center justify-center text-[8px] font-black shadow"><i class="fa-solid fa-check"></i></div>
+                            </button>
+
+                            <!-- Option 4: Urban -->
+                            <button type="button" onclick="selectVisualMenu('1', 'model2_s1')" id="vbtn-1-model2_s1" class="v-opt-btn group relative rounded-lg overflow-hidden border border-white/20 bg-black/40 p-0.5 transition hover:scale-105 hover:border-amber-400 cursor-pointer">
+                                <img src="thumbnails/thumb_m2_s1.jpg" class="w-full h-11 object-cover rounded" alt="Urban">
+                                <span class="text-[9px] font-black text-white block bg-black/80 py-0.5 px-0.5 text-center truncate">Urban</span>
+                                <div class="v-badge hidden absolute top-1 right-1 bg-amber-500 text-black rounded-full w-3.5 h-3.5 flex items-center justify-center text-[8px] font-black shadow"><i class="fa-solid fa-check"></i></div>
+                            </button>
+                        </div>
+
+                        <!-- Auto-loop button -->
+                        <button type="button" onclick="selectVisualMenu('1', 'model1_auto')" id="vbtn-1-model1_auto" class="w-full mt-2 py-1 px-2 rounded-lg border border-white/10 hover:border-amber-500/50 bg-white/5 hover:bg-white/10 text-[10px] font-bold text-gray-300 flex items-center justify-center gap-1.5 transition cursor-pointer">
+                            <i class="fa-solid fa-rotate text-amber-400"></i>
+                            <span>Mode Défilement Automatique (Rotation 15s)</span>
+                        </button>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="flex items-center justify-between pt-2.5 mt-2.5 border-t border-white/10 text-xs">
+                        <button onclick="setFilter('screen-1')" class="font-bold text-gray-300 hover:text-white flex items-center gap-1 text-[11px] cursor-pointer">
+                            <i class="fa-solid fa-pen-to-square text-amber-400"></i> Modifier Prix
+                        </button>
+                        <a id="preview-link-1" href="/viewer.html?tv=1" target="_blank" class="text-amber-400 hover:text-white font-black flex items-center gap-1 underline text-[11px]">
                             Aperçu TV 1 <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
                         </a>
                     </div>
                 </div>
 
-                <!-- TV 2 CARD -->
-                <div onclick="setFilter('screen-2')" id="station-2" class="tv-station-card rounded-2xl p-4 cursor-pointer">
+                <!-- TV 2 CARD (CENTRE) -->
+                <div id="station-2" class="tv-station-card rounded-2xl p-4 transition-all border border-orange-500/40 bg-[#111827] shadow-xl">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="px-2 py-0.5 rounded text-[11px] font-black bg-orange-500/20 text-orange-400 border border-orange-500/30 flex items-center gap-1">
-                            <i class="fa-solid fa-tv text-[10px]"></i> TV 2 (Centre)
+                        <span class="px-2.5 py-1 rounded-lg text-xs font-black bg-orange-500/20 text-orange-400 border border-orange-500/40 flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-tv text-xs"></i> TV 2 (Centre)
                         </span>
-                        <span class="text-xs font-mono font-bold text-gray-400">Touche Télécommande [2]</span>
+                        <span class="text-xs font-mono font-bold text-gray-400 bg-white/5 px-2 py-0.5 rounded">Touche [2]</span>
                     </div>
 
-                    <!-- Menu Dropdown Selector -->
-                    <div class="my-3" onclick="event.stopPropagation()">
-                        <label class="text-[10px] uppercase tracking-wider font-extrabold text-orange-400 block mb-1 flex items-center gap-1">
-                            <i class="fa-solid fa-sliders"></i> Menu Affiché sur TV 2 :
-                        </label>
-                        <select id="select-tv-2" onchange="onTvMenuSelect('2', this.value)" class="w-full bg-black/80 border border-orange-500/40 text-white rounded-xl px-2.5 py-2 text-xs font-extrabold focus:outline-none focus:border-orange-400 transition cursor-pointer">
-                            <option value="model1_s2">🥩 Modèle 1 (Émirates) — Sandwiches Chauds</option>
-                            <option value="model1_s1">🥖 Modèle 1 (Émirates) — Bocadillos Chamali</option>
-                            <option value="model2_s2">🏙️ Modèle 2 (Urban) — Sandwiches Chauds</option>
-                            <option value="model2_s1">🏙️ Modèle 2 (Urban) — Bocadillos Chamali</option>
-                            <option value="model3_all">🎨 Modèle 3 (Vibrant) — Menu Complet Dynamique</option>
-                            <option value="model1_auto">🔄 Boucle Auto (Émirates - Rotation 15s)</option>
-                            <option value="model2_auto">🔄 Boucle Auto (Urban - Rotation 15s)</option>
-                        </select>
+                    <!-- ACTIVE PREVIEW IMAGE -->
+                    <div class="relative rounded-xl overflow-hidden border-2 border-orange-500/60 my-2 group shadow-lg bg-black cursor-pointer" onclick="openFullPreview('2')">
+                        <img id="tv2-active-img" src="thumbnails/thumb_m1_s2.jpg" class="w-full h-36 object-cover object-top transition duration-300 group-hover:scale-105" alt="Menu TV 2">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-between p-2.5 pointer-events-none">
+                            <span class="self-start bg-orange-500 text-black font-black text-[10px] px-2.5 py-0.5 rounded-full uppercase tracking-wider flex items-center gap-1 shadow">
+                                <span class="w-1.5 h-1.5 rounded-full bg-black animate-ping"></span> Affiché sur TV 2
+                            </span>
+                            <div>
+                                <span id="tv2-active-title" class="text-xs md:text-sm font-black text-white drop-shadow block">Sandwiches Chauds Spécialités</span>
+                                <span id="tv2-active-sub" class="text-[10px] text-orange-300 font-bold">Modèle 1 (Émirates Sombre)</span>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="flex items-center justify-between pt-2 border-t border-white/10 text-xs">
-                        <span class="font-bold text-orange-400 flex items-center gap-1">
-                            <span class="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span> En Direct
-                        </span>
-                        <a href="/viewer.html?tv=2" target="_blank" onclick="event.stopPropagation()" class="text-orange-300 hover:text-white font-bold flex items-center gap-1 underline text-[11px]">
+                    <!-- VISUAL PHOTO SELECTOR -->
+                    <div class="mt-2.5">
+                        <div class="text-[11px] font-black text-gray-300 mb-1.5 flex items-center justify-between">
+                            <span class="flex items-center gap-1 text-orange-400">
+                                <i class="fa-solid fa-hand-pointer text-xs"></i> Cliquez sur la photo à afficher :
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-4 gap-1.5">
+                            <!-- Option 1: Chauds -->
+                            <button type="button" onclick="selectVisualMenu('2', 'model1_s2')" id="vbtn-2-model1_s2" class="v-opt-btn active group relative rounded-lg overflow-hidden border-2 border-orange-500 bg-black/60 p-0.5 transition scale-105 shadow cursor-pointer">
+                                <img src="thumbnails/thumb_m1_s2.jpg" class="w-full h-11 object-cover rounded" alt="Chauds">
+                                <span class="text-[9px] font-black text-white block bg-black/80 py-0.5 px-0.5 text-center truncate">Chauds</span>
+                                <div class="v-badge absolute top-1 right-1 bg-orange-500 text-black rounded-full w-3.5 h-3.5 flex items-center justify-center text-[8px] font-black shadow"><i class="fa-solid fa-check"></i></div>
+                            </button>
+
+                            <!-- Option 2: Bocadillos -->
+                            <button type="button" onclick="selectVisualMenu('2', 'model1_s1')" id="vbtn-2-model1_s1" class="v-opt-btn group relative rounded-lg overflow-hidden border border-white/20 bg-black/40 p-0.5 transition hover:scale-105 hover:border-orange-400 cursor-pointer">
+                                <img src="thumbnails/thumb_m1_s1.jpg" class="w-full h-11 object-cover rounded" alt="Bocadillos">
+                                <span class="text-[9px] font-black text-white block bg-black/80 py-0.5 px-0.5 text-center truncate">Bocadillos</span>
+                                <div class="v-badge hidden absolute top-1 right-1 bg-orange-500 text-black rounded-full w-3.5 h-3.5 flex items-center justify-center text-[8px] font-black shadow"><i class="fa-solid fa-check"></i></div>
+                            </button>
+
+                            <!-- Option 3: Vibrant -->
+                            <button type="button" onclick="selectVisualMenu('2', 'model3_all')" id="vbtn-2-model3_all" class="v-opt-btn group relative rounded-lg overflow-hidden border border-white/20 bg-black/40 p-0.5 transition hover:scale-105 hover:border-orange-400 cursor-pointer">
+                                <img src="thumbnails/thumb_m3_all.jpg" class="w-full h-11 object-cover rounded" alt="Vibrant">
+                                <span class="text-[9px] font-black text-white block bg-black/80 py-0.5 px-0.5 text-center truncate">Vibrant</span>
+                                <div class="v-badge hidden absolute top-1 right-1 bg-orange-500 text-black rounded-full w-3.5 h-3.5 flex items-center justify-center text-[8px] font-black shadow"><i class="fa-solid fa-check"></i></div>
+                            </button>
+
+                            <!-- Option 4: Urban -->
+                            <button type="button" onclick="selectVisualMenu('2', 'model2_s2')" id="vbtn-2-model2_s2" class="v-opt-btn group relative rounded-lg overflow-hidden border border-white/20 bg-black/40 p-0.5 transition hover:scale-105 hover:border-orange-400 cursor-pointer">
+                                <img src="thumbnails/thumb_m2_s2.jpg" class="w-full h-11 object-cover rounded" alt="Urban">
+                                <span class="text-[9px] font-black text-white block bg-black/80 py-0.5 px-0.5 text-center truncate">Urban</span>
+                                <div class="v-badge hidden absolute top-1 right-1 bg-orange-500 text-black rounded-full w-3.5 h-3.5 flex items-center justify-center text-[8px] font-black shadow"><i class="fa-solid fa-check"></i></div>
+                            </button>
+                        </div>
+
+                        <!-- Auto-loop button -->
+                        <button type="button" onclick="selectVisualMenu('2', 'model1_auto')" id="vbtn-2-model1_auto" class="w-full mt-2 py-1 px-2 rounded-lg border border-white/10 hover:border-orange-500/50 bg-white/5 hover:bg-white/10 text-[10px] font-bold text-gray-300 flex items-center justify-center gap-1.5 transition cursor-pointer">
+                            <i class="fa-solid fa-rotate text-orange-400"></i>
+                            <span>Mode Défilement Automatique (Rotation 15s)</span>
+                        </button>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="flex items-center justify-between pt-2.5 mt-2.5 border-t border-white/10 text-xs">
+                        <button onclick="setFilter('screen-2')" class="font-bold text-gray-300 hover:text-white flex items-center gap-1 text-[11px] cursor-pointer">
+                            <i class="fa-solid fa-pen-to-square text-orange-400"></i> Modifier Prix
+                        </button>
+                        <a id="preview-link-2" href="/viewer.html?tv=2" target="_blank" class="text-orange-400 hover:text-white font-black flex items-center gap-1 underline text-[11px]">
                             Aperçu TV 2 <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
                         </a>
                     </div>
                 </div>
 
-                <!-- TV 3 CARD -->
-                <div onclick="setFilter('screen-3')" id="station-3" class="tv-station-card rounded-2xl p-4 cursor-pointer">
+                <!-- TV 3 CARD (DROITE) -->
+                <div id="station-3" class="tv-station-card rounded-2xl p-4 transition-all border border-blue-500/40 bg-[#111827] shadow-xl">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="px-2 py-0.5 rounded text-[11px] font-black bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center gap-1">
-                            <i class="fa-solid fa-tv text-[10px]"></i> TV 3 (Droite)
+                        <span class="px-2.5 py-1 rounded-lg text-xs font-black bg-blue-500/20 text-blue-400 border border-blue-500/40 flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-tv text-xs"></i> TV 3 (Droite)
                         </span>
-                        <span class="text-xs font-mono font-bold text-gray-400">Touche Télécommande [3]</span>
+                        <span class="text-xs font-mono font-bold text-gray-400 bg-white/5 px-2 py-0.5 rounded">Touche [3]</span>
                     </div>
 
-                    <!-- Menu Dropdown Selector -->
-                    <div class="my-3" onclick="event.stopPropagation()">
-                        <label class="text-[10px] uppercase tracking-wider font-extrabold text-blue-400 block mb-1 flex items-center gap-1">
-                            <i class="fa-solid fa-sliders"></i> Menu Affiché sur TV 3 :
-                        </label>
-                        <select id="select-tv-3" onchange="onTvMenuSelect('3', this.value)" class="w-full bg-black/80 border border-blue-500/40 text-white rounded-xl px-2.5 py-2 text-xs font-extrabold focus:outline-none focus:border-blue-400 transition cursor-pointer">
-                            <option value="model3_all">🎨 Modèle 3 (Vibrant) — Menu Complet Dynamique</option>
-                            <option value="model1_s1">🥖 Modèle 1 (Émirates) — Bocadillos Chamali</option>
-                            <option value="model1_s2">🥩 Modèle 1 (Émirates) — Sandwiches Chauds</option>
-                            <option value="model2_s1">🏙️ Modèle 2 (Urban) — Bocadillos Chamali</option>
-                            <option value="model2_s2">🏙️ Modèle 2 (Urban) — Sandwiches Chauds</option>
-                            <option value="model1_auto">🔄 Boucle Auto (Émirates - Rotation 15s)</option>
-                            <option value="model2_auto">🔄 Boucle Auto (Urban - Rotation 15s)</option>
-                        </select>
+                    <!-- ACTIVE PREVIEW IMAGE -->
+                    <div class="relative rounded-xl overflow-hidden border-2 border-blue-500/60 my-2 group shadow-lg bg-black cursor-pointer" onclick="openFullPreview('3')">
+                        <img id="tv3-active-img" src="thumbnails/thumb_m3_all.jpg" class="w-full h-36 object-cover object-top transition duration-300 group-hover:scale-105" alt="Menu TV 3">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-between p-2.5 pointer-events-none">
+                            <span class="self-start bg-blue-500 text-black font-black text-[10px] px-2.5 py-0.5 rounded-full uppercase tracking-wider flex items-center gap-1 shadow">
+                                <span class="w-1.5 h-1.5 rounded-full bg-black animate-ping"></span> Affiché sur TV 3
+                            </span>
+                            <div>
+                                <span id="tv3-active-title" class="text-xs md:text-sm font-black text-white drop-shadow block">Menu Vibrant Pop Dynamique</span>
+                                <span id="tv3-active-sub" class="text-[10px] text-blue-300 font-bold">Modèle 3 (Orange & Blanc)</span>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="flex items-center justify-between pt-2 border-t border-white/10 text-xs">
-                        <span class="font-bold text-blue-400 flex items-center gap-1">
-                            <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span> En Direct
-                        </span>
-                        <a href="/viewer.html?tv=3" target="_blank" onclick="event.stopPropagation()" class="text-blue-300 hover:text-white font-bold flex items-center gap-1 underline text-[11px]">
+                    <!-- VISUAL PHOTO SELECTOR -->
+                    <div class="mt-2.5">
+                        <div class="text-[11px] font-black text-gray-300 mb-1.5 flex items-center justify-between">
+                            <span class="flex items-center gap-1 text-blue-400">
+                                <i class="fa-solid fa-hand-pointer text-xs"></i> Cliquez sur la photo à afficher :
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-4 gap-1.5">
+                            <!-- Option 1: Vibrant -->
+                            <button type="button" onclick="selectVisualMenu('3', 'model3_all')" id="vbtn-3-model3_all" class="v-opt-btn active group relative rounded-lg overflow-hidden border-2 border-blue-500 bg-black/60 p-0.5 transition scale-105 shadow cursor-pointer">
+                                <img src="thumbnails/thumb_m3_all.jpg" class="w-full h-11 object-cover rounded" alt="Vibrant">
+                                <span class="text-[9px] font-black text-white block bg-black/80 py-0.5 px-0.5 text-center truncate">Vibrant</span>
+                                <div class="v-badge absolute top-1 right-1 bg-blue-500 text-black rounded-full w-3.5 h-3.5 flex items-center justify-center text-[8px] font-black shadow"><i class="fa-solid fa-check"></i></div>
+                            </button>
+
+                            <!-- Option 2: Bocadillos -->
+                            <button type="button" onclick="selectVisualMenu('3', 'model1_s1')" id="vbtn-3-model1_s1" class="v-opt-btn group relative rounded-lg overflow-hidden border border-white/20 bg-black/40 p-0.5 transition hover:scale-105 hover:border-blue-400 cursor-pointer">
+                                <img src="thumbnails/thumb_m1_s1.jpg" class="w-full h-11 object-cover rounded" alt="Bocadillos">
+                                <span class="text-[9px] font-black text-white block bg-black/80 py-0.5 px-0.5 text-center truncate">Bocadillos</span>
+                                <div class="v-badge hidden absolute top-1 right-1 bg-blue-500 text-black rounded-full w-3.5 h-3.5 flex items-center justify-center text-[8px] font-black shadow"><i class="fa-solid fa-check"></i></div>
+                            </button>
+
+                            <!-- Option 3: Chauds -->
+                            <button type="button" onclick="selectVisualMenu('3', 'model1_s2')" id="vbtn-3-model1_s2" class="v-opt-btn group relative rounded-lg overflow-hidden border border-white/20 bg-black/40 p-0.5 transition hover:scale-105 hover:border-blue-400 cursor-pointer">
+                                <img src="thumbnails/thumb_m1_s2.jpg" class="w-full h-11 object-cover rounded" alt="Chauds">
+                                <span class="text-[9px] font-black text-white block bg-black/80 py-0.5 px-0.5 text-center truncate">Chauds</span>
+                                <div class="v-badge hidden absolute top-1 right-1 bg-blue-500 text-black rounded-full w-3.5 h-3.5 flex items-center justify-center text-[8px] font-black shadow"><i class="fa-solid fa-check"></i></div>
+                            </button>
+
+                            <!-- Option 4: Urban -->
+                            <button type="button" onclick="selectVisualMenu('3', 'model2_s1')" id="vbtn-3-model2_s1" class="v-opt-btn group relative rounded-lg overflow-hidden border border-white/20 bg-black/40 p-0.5 transition hover:scale-105 hover:border-blue-400 cursor-pointer">
+                                <img src="thumbnails/thumb_m2_s1.jpg" class="w-full h-11 object-cover rounded" alt="Urban">
+                                <span class="text-[9px] font-black text-white block bg-black/80 py-0.5 px-0.5 text-center truncate">Urban</span>
+                                <div class="v-badge hidden absolute top-1 right-1 bg-blue-500 text-black rounded-full w-3.5 h-3.5 flex items-center justify-center text-[8px] font-black shadow"><i class="fa-solid fa-check"></i></div>
+                            </button>
+                        </div>
+
+                        <!-- Auto-loop button -->
+                        <button type="button" onclick="selectVisualMenu('3', 'model1_auto')" id="vbtn-3-model1_auto" class="w-full mt-2 py-1 px-2 rounded-lg border border-white/10 hover:border-blue-500/50 bg-white/5 hover:bg-white/10 text-[10px] font-bold text-gray-300 flex items-center justify-center gap-1.5 transition cursor-pointer">
+                            <i class="fa-solid fa-rotate text-blue-400"></i>
+                            <span>Mode Défilement Automatique (Rotation 15s)</span>
+                        </button>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="flex items-center justify-between pt-2.5 mt-2.5 border-t border-white/10 text-xs">
+                        <button onclick="setFilter('screen-3')" class="font-bold text-gray-300 hover:text-white flex items-center gap-1 text-[11px] cursor-pointer">
+                            <i class="fa-solid fa-pen-to-square text-blue-400"></i> Modifier Prix
+                        </button>
+                        <a id="preview-link-3" href="/viewer.html?tv=3" target="_blank" class="text-blue-400 hover:text-white font-black flex items-center gap-1 underline text-[11px]">
                             Aperçu TV 3 <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
                         </a>
                     </div>
@@ -365,35 +497,97 @@
         let currentFilter = 'screen-1';
 
         
-        const URL_PRESETS = {
-            'model1_s1': { url: 'menu_model1_emirates.html?mode=tv&screen=1', title: 'Modèle 1 (Émirates) — Bocadillos Chamali' },
-            'model1_s2': { url: 'menu_model1_emirates.html?mode=tv&screen=2', title: 'Modèle 1 (Émirates) — Sandwiches Chauds' },
-            'model2_s1': { url: 'menu_model2_urban.html?mode=tv&screen=1', title: 'Modèle 2 (Urban) — Bocadillos Chamali' },
-            'model2_s2': { url: 'menu_model2_urban.html?mode=tv&screen=2', title: 'Modèle 2 (Urban) — Sandwiches Chauds' },
-            'model3_all': { url: 'menu_model3_vibrant.html?mode=tv', title: 'Modèle 3 (Vibrant) — Menu Dynamique Complet' },
-            'model1_auto': { url: 'menu_model1_emirates.html?mode=tv', title: 'Boucle Auto (Émirates - Rotation 15s)' },
-            'model2_auto': { url: 'menu_model2_urban.html?mode=tv', title: 'Boucle Auto (Urban - Rotation 15s)' }
+        const MENU_VISUAL_PRESETS = {
+            'model1_s1': {
+                url: 'menu_model1_emirates.html?mode=tv&screen=1',
+                title: 'Bocadillos Chamali Tradition',
+                sub: 'Modèle 1 (Émirates Sombre)',
+                img: 'thumbnails/thumb_m1_s1.jpg'
+            },
+            'model1_s2': {
+                url: 'menu_model1_emirates.html?mode=tv&screen=2',
+                title: 'Sandwiches Chauds Spécialités',
+                sub: 'Modèle 1 (Émirates Sombre)',
+                img: 'thumbnails/thumb_m1_s2.jpg'
+            },
+            'model2_s1': {
+                url: 'menu_model2_urban.html?mode=tv&screen=1',
+                title: 'Bocadillos Street Food',
+                sub: 'Modèle 2 (Urban Kraft & Bois)',
+                img: 'thumbnails/thumb_m2_s1.jpg'
+            },
+            'model2_s2': {
+                url: 'menu_model2_urban.html?mode=tv&screen=2',
+                title: 'Sandwiches Chauds Urban',
+                sub: 'Modèle 2 (Urban Kraft & Bois)',
+                img: 'thumbnails/thumb_m2_s2.jpg'
+            },
+            'model3_all': {
+                url: 'menu_model3_vibrant.html?mode=tv',
+                title: 'Menu Vibrant Pop Dynamique',
+                sub: 'Modèle 3 (Orange & Blanc)',
+                img: 'thumbnails/thumb_m3_all.jpg'
+            },
+            'model1_auto': {
+                url: 'menu_model1_emirates.html?mode=tv',
+                title: 'Boucle Automatique (Rotation 15s)',
+                sub: 'Tous les menus défilent en continu',
+                img: 'thumbnails/thumb_m1_s1.jpg'
+            }
         };
 
-        function onTvMenuSelect(tvId, optionId) {
+        function selectVisualMenu(tvId, presetId) {
+            const preset = MENU_VISUAL_PRESETS[presetId] || MENU_VISUAL_PRESETS['model1_s1'];
             if (!menuData.tv_config) menuData.tv_config = {};
-            const preset = URL_PRESETS[optionId] || URL_PRESETS['model1_s1'];
             menuData.tv_config[tvId] = {
                 name: `TV ${tvId}`,
-                option_id: optionId,
+                option_id: presetId,
                 target_url: preset.url,
                 title: preset.title,
                 updated_at: new Date().toISOString()
             };
-            
-            // Broadcast immediately across all open tabs/TVs
+
+            updateTvCardVisual(tvId, presetId);
+
             if (window.BroadcastChannel) {
                 const bc = new BroadcastChannel('MENU_TV_CHANNEL');
                 bc.postMessage({ type: 'TV_CONFIG_UPDATE', tv_config: menuData.tv_config });
             }
 
             saveAllItems();
-            showToast(`📺 TV ${tvId} Configurée !`, `Menu affecté : ${preset.title}`);
+            showToast(`📸 TV ${tvId} Mise à Jour !`, `Menu activé : ${preset.title}`);
+        }
+
+        function updateTvCardVisual(tvId, presetId) {
+            const preset = MENU_VISUAL_PRESETS[presetId] || MENU_VISUAL_PRESETS['model1_s1'];
+            
+            const imgEl = document.getElementById(`tv${tvId}-active-img`);
+            const titleEl = document.getElementById(`tv${tvId}-active-title`);
+            const subEl = document.getElementById(`tv${tvId}-active-sub`);
+            if (imgEl) imgEl.src = preset.img;
+            if (titleEl) titleEl.innerText = preset.title;
+            if (subEl) subEl.innerText = preset.sub;
+
+            const btnIds = ['model1_s1', 'model1_s2', 'model3_all', 'model2_s1', 'model2_s2', 'model1_auto'];
+            const accentColors = { '1': 'amber', '2': 'orange', '3': 'blue' };
+            const color = accentColors[tvId] || 'orange';
+
+            btnIds.forEach(id => {
+                const btn = document.getElementById(`vbtn-${tvId}-${id}`);
+                if (!btn) return;
+                const badge = btn.querySelector('.v-badge');
+                if (id === presetId) {
+                    btn.className = `v-opt-btn active group relative rounded-lg overflow-hidden border-2 border-${color}-500 bg-black/60 p-0.5 transition scale-105 shadow cursor-pointer`;
+                    if (badge) badge.classList.remove('hidden');
+                } else {
+                    btn.className = `v-opt-btn group relative rounded-lg overflow-hidden border border-white/20 bg-black/40 p-0.5 transition hover:scale-105 hover:border-${color}-400 cursor-pointer`;
+                    if (badge) badge.classList.add('hidden');
+                }
+            });
+        }
+
+        function openFullPreview(tvId) {
+            window.open(`/viewer.html?tv=${tvId}`, '_blank');
         }
 
         async function loadItems() {
@@ -418,16 +612,14 @@
                 if (sel) sel.value = menuData.global_settings.active_model.toString();
             }
             
-            // Sync TV Fleet Selectors
+            // Sync TV Fleet Visual Cards
             if (menuData.tv_config) {
                 ['1', '2', '3'].forEach(id => {
                     if (menuData.tv_config[id] && menuData.tv_config[id].option_id) {
-                        const sel = document.getElementById('select-tv-' + id);
-                        if (sel) sel.value = menuData.tv_config[id].option_id;
+                        updateTvCardVisual(id, menuData.tv_config[id].option_id);
                     }
                 });
             }
-
             renderGrid();
         }
 
