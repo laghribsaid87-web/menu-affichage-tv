@@ -12,6 +12,13 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 app = Flask(__name__)
 
+@app.after_request
+def add_no_cache_headers(response):
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
+
 # Config
 MENU_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(MENU_DIR, 'menu_data.json')
@@ -22,13 +29,20 @@ PROCESSED_IMAGES_DIR = os.path.join(MENU_DIR, 'processed_images')
 os.makedirs(RAW_IMAGES_DIR, exist_ok=True)
 os.makedirs(PROCESSED_IMAGES_DIR, exist_ok=True)
 
+DYNAMIC_DATA_FILE = os.path.join(MENU_DIR, 'config_dynamic.json')
+MENU_ITEMS_FILE = os.path.join(MENU_DIR, 'menu_items.json')
+
 @app.route('/')
 def index():
     return send_from_directory(MENU_DIR, 'dashboard.html')
 
+
 @app.route('/<path:filename>')
 def serve_static(filename):
+    if filename.startswith('tv') and request.args.get('project') == 'smart':
+        return send_from_directory(MENU_DIR, 'tv_dynamic.html')
     return send_from_directory(MENU_DIR, filename)
+
 
 @app.route('/api/projects', methods=['GET'])
 def get_projects():
@@ -50,7 +64,7 @@ def get_projects():
 @app.route('/api/menu/<project>/<tv_id>', methods=['GET'])
 def get_project_menu(project, tv_id):
     file_path = os.path.join(MENU_DIR, f'menu_data_{project}_{tv_id}.json')
-    if not os.path.exists(file_path) and project == 'default' and tv_id == '1':
+    if not os.path.exists(file_path) and project == 'default':
         file_path = DATA_FILE
         
     try:
@@ -72,6 +86,161 @@ def save_project_menu(project, tv_id):
         return jsonify({"success": True})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@app.route('/api/dynamic_menu', methods=['GET'])
+def get_dynamic_menu():
+    try:
+        if not os.path.exists(DYNAMIC_DATA_FILE):
+            return jsonify({"bocadillos": [], "sandwiches": []})
+        with open(DYNAMIC_DATA_FILE, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        return jsonify(data)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/dynamic_menu', methods=['POST'])
+def save_dynamic_menu():
+    try:
+        data = request.json
+        with open(DYNAMIC_DATA_FILE, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/menu_items', methods=['GET'])
+def get_menu_items():
+    try:
+        if not os.path.exists(MENU_ITEMS_FILE):
+            return jsonify({"items": [], "global_settings": {}})
+        with open(MENU_ITEMS_FILE, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        return jsonify(data)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/menu_items', methods=['POST'])
+def save_menu_items():
+    try:
+        import datetime
+        data = request.json
+        if "global_settings" not in data:
+            data["global_settings"] = {}
+        data["global_settings"]["updated_at"] = datetime.datetime.now().isoformat()
+        with open(MENU_ITEMS_FILE, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+        return jsonify({"success": True, "updated_at": data["global_settings"]["updated_at"]})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/publish_to_tv', methods=['POST'])
+def publish_to_tv():
+    try:
+        cmd = 'git add . && git commit -m "Mise a jour automatique depuis Dashboard" && git push'
+        proc = subprocess.run(cmd, shell=True, cwd=MENU_DIR, capture_output=True, text=True, timeout=30)
+        return jsonify({
+            "success": True, 
+            "stdout": proc.stdout,
+            "stderr": proc.stderr
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/save_emirates_config', methods=['POST'])
+def save_emirates_config():
+    try:
+        data = request.json
+        cfg_path = os.path.join(MENU_DIR, 'menu_config.json')
+        with open(cfg_path, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+        return jsonify({'success': True})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+
+@app.route('/api/export_menu_video', methods=['POST'])
+def export_menu_video():
+    try:
+        req = request.json or {}
+        model = req.get('model', 'menu_model3_vibrant').replace('.html', '').replace('/', '')
+        duration_per_screen = int(req.get('duration', 15))
+        
+        chrome_path = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+        s1_img = os.path.join(MENU_DIR, f"temp_{model}_s1.png")
+        s2_img = os.path.join(MENU_DIR, f"temp_{model}_s2.png")
+        out_filename = f"Menu_TV_{model}_1080p_Cle_USB.mp4"
+        out_mp4 = os.path.join(MENU_DIR, out_filename)
+        
+        # 1. Capture Screen 1
+        cmd1 = [chrome_path, "--headless=new", "--disable-gpu", "--window-size=1920,1080", f"--screenshot={s1_img}", f"http://127.0.0.1:8000/{model}.html?mode=tv&screen=1"]
+        subprocess.run(cmd1, timeout=15)
+        
+        # 2. Capture Screen 2
+        cmd2 = [chrome_path, "--headless=new", "--disable-gpu", "--window-size=1920,1080", f"--screenshot={s2_img}", f"http://127.0.0.1:8000/{model}.html?mode=tv&screen=2"]
+        subprocess.run(cmd2, timeout=15)
+        
+        if not (os.path.exists(s1_img) and os.path.exists(s2_img)):
+            return jsonify({"error": "Erreur lors de la capture des ecrans 1080p."}), 500
+            
+        # 3. FFmpeg Crossfade Encode 1080p 60fps
+        offset = duration_per_screen - 1.5
+        ffmpeg_cmd = [
+            "ffmpeg", "-y",
+            "-loop", "1", "-t", str(duration_per_screen), "-i", s1_img,
+            "-loop", "1", "-t", str(duration_per_screen), "-i", s2_img,
+            "-filter_complex", f"[0:v][1:v]xfade=transition=fade:duration=1.5:offset={offset},format=yuv420p",
+            "-c:v", "libx264", "-crf", "18", "-preset", "veryfast", "-r", "60",
+            out_mp4
+        ]
+        res = subprocess.run(ffmpeg_cmd, capture_output=True, text=True, timeout=60)
+        if res.returncode != 0:
+            return jsonify({"error": f"Erreur FFmpeg: {res.stderr}"}), 500
+            
+        return jsonify({
+            "success": True,
+            "filename": out_filename,
+            "url": f"/{out_filename}",
+            "size_mb": round(os.path.getsize(out_mp4) / (1024 * 1024), 2)
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/open_folder', methods=['POST'])
+def open_folder():
+    try:
+        req = request.json or {}
+        filename = req.get('filename', '')
+        filepath = os.path.join(MENU_DIR, filename) if filename else MENU_DIR
+        if os.path.exists(filepath):
+            subprocess.Popen(f'explorer /select,"{filepath}"')
+        else:
+            subprocess.Popen(f'explorer "{MENU_DIR}"')
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/save_custom_layout', methods=['POST'])
+def save_custom_layout():
+    try:
+        req = request.json or {}
+        model_name = req.get('model', 'default').replace('.html', '').replace('/', '')
+        layout = req.get('layout', {})
+        layout_file = os.path.join(MENU_DIR, f'layout_{model_name}.json')
+        with open(layout_file, 'w', encoding='utf-8') as f:
+            json.dump(layout, f, indent=2, ensure_ascii=False)
+        return jsonify({'success': True, 'file': f'layout_{model_name}.json'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/get_custom_layout/<model_name>', methods=['GET'])
+def get_custom_layout(model_name):
+    model_name = model_name.replace('.html', '').replace('/', '')
+    layout_file = os.path.join(MENU_DIR, f'layout_{model_name}.json')
+    if os.path.exists(layout_file):
+        with open(layout_file, 'r', encoding='utf-8') as f:
+            return jsonify(json.load(f))
+    return jsonify({})
 
 @app.route('/api/projects/<project>', methods=['DELETE'])
 def delete_project(project):

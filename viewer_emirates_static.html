@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Menu Board — Style Emirates Burger | Mon Bocadillo Tanger</title>
+    <!-- Google Fonts: Bebas Neue, Montserrat, Titan One -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,400;0,700;0,800;0,900;1,800&family=Titan+One&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        html, body {
+            background-color: #0b0d10;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* 16:9 Stage Canvas locked at 1920x1080 */
+        #menu-stage {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 1920px;
+            height: 1080px;
+            transform: translate(-50%, -50%);
+            transform-origin: center center;
+            background: url('emirates_bg_1080p.jpg') no-repeat center center;
+            background-size: cover;
+            overflow: hidden;
+            box-shadow: 0 0 70px rgba(0, 0, 0, 0.95);
+        }
+
+        /* Ambient Studio Lighting Overlay */
+        .ambient-light {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 25%, rgba(255, 245, 220, 0.1) 0%, rgba(0, 0, 0, 0.2) 100%);
+            z-index: 5;
+        }
+
+        /* Middle shelf for top-left cell so it has the exact same wooden shelf as top-mid and top-right */
+        .left-shelf-wood {
+            position: absolute;
+            top: 485px;
+            left: 0;
+            width: 660px;
+            height: 48px;
+            background: linear-gradient(to bottom, #d49a5b 0%, #b3793e 30%, #825324 70%, #46280b 100%);
+            border-top: 2px solid #f6cf9c;
+            border-bottom: 2px solid #291504;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.55), inset 0 2px 4px rgba(255, 255, 255, 0.25);
+            z-index: 8;
+        }
+
+        /* Screen Sections Containers */
+        .menu-screen {
+            position: absolute;
+            inset: 0;
+            width: 1920px;
+            height: 1080px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.7s;
+            z-index: 10;
+        }
+
+        .menu-screen.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* ================= 6-CELL GRID COORDINATES ================= */
+        /* Left Column (0 to 660px) */
+        .cell-left-top {
+            position: absolute;
+            top: 45px;
+            left: 30px;
+            width: 590px;
+            height: 460px;
+        }
+
+        .cell-left-bot {
+            position: absolute;
+            top: 550px;
+            left: 30px;
+            width: 590px;
+            height: 490px;
+        }
+
+        /* Middle Column (660px to 1290px) */
+        .cell-mid-top {
+            position: absolute;
+            top: 45px;
+            left: 680px;
+            width: 590px;
+            height: 460px;
+        }
+
+        .cell-mid-bot {
+            position: absolute;
+            top: 550px;
+            left: 680px;
+            width: 590px;
+            height: 490px;
+        }
+
+        /* Right Column (1290px to 1920px) */
+        .cell-right-top {
+            position: absolute;
+            top: 45px;
+            left: 1300px;
+            width: 590px;
+            height: 460px;
+        }
+
+        .cell-right-bot {
+            position: absolute;
+            top: 550px;
+            left: 1300px;
+            width: 590px;
+            height: 490px;
+        }
+
+        /* ================= 3D TYPOGRAPHY (EMIRATES STYLE) ================= */
+        .title-box {
+            position: absolute;
+            z-index: 20;
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .title-prefix {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 32px;
+            color: #1e293b;
+            letter-spacing: 2px;
+            font-style: italic;
+        }
+
+        .title-3d {
+            font-family: 'Titan One', cursive;
+            font-size: 42px;
+            line-height: 1;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.4));
+            white-space: nowrap;
+        }
+
+        .title-red {
+            color: #d91c1c;
+            text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 0 4px 0 #7f1010;
+        }
+
+        .title-yellow {
+            color: #f59e0b;
+            text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 0 4px 0 #b45309;
+        }
+
+        .title-amber {
+            color: #ea580c;
+            text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 0 4px 0 #9a3412;
+        }
+
+        .title-blue {
+            color: #2563eb;
+            text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 0 4px 0 #1e3a8a;
+        }
+
+        .title-green {
+            color: #16a34a;
+            text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 0 4px 0 #14532d;
+        }
+
+        /* ================= AUTHENTIC CHALKBOARD PRICE BOX ================= */
+        .price-box {
+            position: absolute;
+            background: linear-gradient(145deg, #18191c 0%, #0d0e11 100%);
+            border: 2px solid #ffffff;
+            border-radius: 4px;
+            padding: 6px 12px;
+            color: #ffffff;
+            text-align: center;
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.5);
+            z-index: 25;
+            min-width: 110px;
+        }
+
+        .price-row {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .price-label {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            color: #f1f5f9;
+            text-transform: uppercase;
+        }
+
+        .price-val {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 34px;
+            line-height: 0.95;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+
+        .price-val .curr {
+            font-size: 18px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            margin-left: 2px;
+            color: #fbbf24;
+        }
+
+        .price-divider {
+            width: 100%;
+            height: 1px;
+            border-top: 1.5px dashed rgba(255, 255, 255, 0.65);
+            margin: 4px 0;
+        }
+
+        /* ================= INGREDIENTS RIBBON ================= */
+        .ingredients-ribbon {
+            position: absolute;
+            background: rgba(18, 22, 30, 0.88);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+            padding: 4px 14px;
+            color: #f8fafc;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 11.5px;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+            z-index: 22;
+            white-space: nowrap;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+        }
+
+        /* ================= BADGES (PIQUANT / NATURE) ================= */
+        .badge-choice {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            z-index: 25;
+        }
+
+        .badge-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 2.5px solid #111;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .badge-circle svg {
+            width: 30px;
+            height: 30px;
+        }
+
+        .badge-label {
+            background: #111;
+            color: #fff;
+            font-size: 9.5px;
+            font-weight: 800;
+            padding: 2px 5px;
+            border-radius: 3px;
+            text-transform: uppercase;
+        }
+
+        .badge-choice .or-text {
+            font-family: 'Montserrat', sans-serif;
+            font-style: italic;
+            font-weight: 900;
+            font-size: 10px;
+            color: #d91c1c;
+            text-shadow: 1px 1px 0 #fff;
+        }
+
+        /* ================= SPARKLER FIREWORK FX ================= */
+        .sparkler-anchor {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            z-index: 30;
+            pointer-events: none;
+        }
+
+        .sparkler-burst {
+            position: absolute;
+            width: 55px;
+            height: 55px;
+            top: -22px;
+            left: -22px;
+            background: radial-gradient(circle, rgba(255, 245, 160, 1) 0%, rgba(255, 170, 0, 0.8) 40%, rgba(255, 60, 0, 0) 70%);
+            border-radius: 50%;
+            filter: blur(2px);
+            animation: sparkPulse 0.4s infinite alternate;
+        }
+
+        .spark {
+            position: absolute;
+            width: 3.5px;
+            height: 18px;
+            background: linear-gradient(to top, #fff, #ffd700, transparent);
+            border-radius: 2px;
+            transform-origin: bottom center;
+            animation: sparkShoot 0.6s infinite ease-out;
+        }
+
+        @keyframes sparkPulse {
+            0% { transform: scale(0.8); opacity: 0.8; }
+            100% { transform: scale(1.25); opacity: 1; }
+        }
+
+        @keyframes sparkShoot {
+            0% { transform: rotate(var(--rot)) translateY(0) scaleY(0.4); opacity: 1; }
+            100% { transform: rotate(var(--rot)) translateY(-32px) scaleY(1.3); opacity: 0; }
+        }
+
+        /* ================= PRODUCT CUTOUTS & DYNAMICS ================= */
+        .product-cutout-wrap {
+            position: absolute;
+            z-index: 15;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.25), opacity 0.6s ease;
+            transform-origin: bottom center;
+        }
+
+        .product-cutout {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: drop-shadow(0 14px 10px rgba(0, 0, 0, 0.6)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35));
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Realistic Contact Shadow on Wood */
+        .contact-shadow {
+            position: absolute;
+            bottom: 3px;
+            left: 4%;
+            width: 92%;
+            height: 20px;
+            background: radial-gradient(ellipse at center, rgba(12, 6, 2, 0.85) 0%, rgba(18, 9, 3, 0.5) 50%, transparent 75%);
+            border-radius: 50%;
+            filter: blur(4.5px);
+            z-index: 1;
+            transform: scaleY(0.7);
+        }
+
+        /* Entrance State: Hidden below shelf */
+        .menu-screen:not(.active) .product-cutout-wrap {
+            transform: translateY(85px) scale(0.94);
+            opacity: 0;
+        }
+
+        /* Active State: Raised up on the shelf */
+        .menu-screen.active .product-cutout-wrap {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        /* Breathing Living Idle Animation */
+        .menu-screen.active .living-breathe {
+            animation: gentleBreathe 4.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes gentleBreathe {
+            0% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-4px) scale(1.02); }
+            100% { transform: translateY(0) scale(1); }
+        }
+
+        /* Staggered entrance delays */
+        .delay-1 { transition-delay: 0.10s !important; }
+        .delay-2 { transition-delay: 0.20s !important; }
+        .delay-3 { transition-delay: 0.30s !important; }
+        .delay-4 { transition-delay: 0.40s !important; }
+        .delay-5 { transition-delay: 0.50s !important; }
+        .delay-6 { transition-delay: 0.60s !important; }
+
+        /* ================= RISING STEAM CANVAS ================= */
+        .steam-canvas {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 18;
+        }
+
+        /* ================= BRAND HEADER BAR ================= */
+        .header-brand-bar {
+            position: absolute;
+            top: 14px;
+            left: 30px;
+            z-index: 30;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-badge {
+            background: #d91c1c;
+            color: #ffffff;
+            font-family: 'Titan One', cursive;
+            font-size: 19px;
+            padding: 5px 14px;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(217, 28, 28, 0.45);
+            letter-spacing: 1px;
+        }
+
+        .screen-cat-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 24px;
+            color: #1e293b;
+            letter-spacing: 2px;
+            background: rgba(255, 255, 255, 0.88);
+            padding: 3px 12px;
+            border-radius: 4px;
+            border-left: 4px solid #d91c1c;
+        }
+
+        /* UI Control Floating Bar - Auto-hiding on TV */
+        .ui-controls {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            z-index: 100;
+            display: flex;
+            gap: 8px;
+            background: rgba(15, 23, 42, 0.94);
+            padding: 8px 14px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .ui-controls.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .btn-ctl {
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-ctl:hover {
+            background: #1d4ed8;
+            transform: scale(1.05);
+        }
+
+        .btn-ctl.active {
+            background: #d91c1c;
+        }
+
+        audio { display: none; }
+    </style>
+</head>
+<body>
+
+    <!-- Main 1920x1080 Stage -->
+    <div id="menu-stage">
+        <div class="ambient-light"></div>
+        <!-- Middle Wood Shelf for Left Column -->
+        <div class="left-shelf-wood"></div>
+
+        <!-- ================= SCREEN 1: BOCADILLOS DE TANGER ================= -->
+        <div id="screen-1" class="menu-screen active">
+            <!-- Brand Bar -->
+            <div class="header-brand-bar">
+                <div class="brand-badge">MON BOCADILLO TANGER</div>
+                <div class="screen-cat-title">✦ LES BOCADILLOS CHAMALI TRADITION ✦</div>
+            </div>
+
+            <!-- CELL 1: LEFT TOP (BOCADILLO COMPLET) -->
+            <div class="cell-left-top">
+                <div class="title-box" style="top: 25px; left: 10px;">
+                    <span class="title-prefix">LE</span>
+                    <span class="title-3d title-red">COMPLET</span>
+                </div>
+                <div class="price-box" style="top: 15px; right: 10px;">
+                    <div class="price-row">
+                        <span class="price-label">SEUL</span>
+                        <span class="price-val">29<span class="curr">DH</span></span>
+                    </div>
+                    <div class="price-divider"></div>
+                    <div class="price-row">
+                        <span class="price-label">MENU</span>
+                        <span class="price-val">39<span class="curr">DH</span></span>
+                    </div>
+                </div>
+                <div class="product-cutout-wrap delay-1 living-breathe" style="bottom: 20px; left: 10px; width: 520px;">
+                    <img src="cutouts_cropped/bocadillo complet 29 dh.png" class="product-cutout" alt="Bocadillo Complet">
+                    <div class="contact-shadow"></div>
+                </div>
+                <div class="ingredients-ribbon" style="bottom: 2px; left: 35px;">
+                    THON • TORTILLA • FROMAGE • CHARCUTERIE • SAUCES
+                </div>
+            </div>
+
+            <!-- CELL 2: LEFT BOT (BOCADILLO TORTILLA ROYALE) -->
+            <div class="cell-left-bot">
+                <div class="title-box" style="top: 20px; left: 10px;">
+                    <span class="title-prefix">TORTILLA</span>
+                    <span class="title-3d title-amber">ROYALE</span>
+                </div>
+                <div class="price-box" style="top: 10px; right: 10px;">
+                    <div class="price-row">
+                        <span class="price-label">SEUL</span>
+                        <span class="price-val">30<span class="curr">DH</span></span>
+                    </div>
+                    <div class="price-divider"></div>
+                    <div class="price-row">
+                        <span class="price-label">MENU</span>
+                        <span class="price-val">40<span class="curr">DH</span></span>
+                    </div>
+                </div>
+                <div class="product-cutout-wrap delay-4 living-breathe" style="bottom: 25px; left: 10px; width: 510px;">
+                    <img src="cutouts_cropped/bocadillo tortillia royale 30 dh.png" class="product-cutout" alt="Tortilla Royale">
+                    <div class="contact-shadow"></div>
+                </div>
+                <div class="ingredients-ribbon" style="bottom: 2px; left: 45px;">
+                    TORTILLA ESPAGNOLE GARNIE • FROMAGE FONDU • SAUCE ROYALE
+                </div>
+            </div>
+
+            <!-- CELL 3: MID TOP (BOCADILLO AU THON) -->
+            <div class="cell-mid-top">
+                <div class="title-box" style="top: 25px; left: 10px;">
+                    <span class="title-prefix">LE</span>
+                    <span class="title-3d title-blue">THON</span>
+                </div>
+                <div class="price-box" style="top: 15px; right: 15px;">
+                    <div class="price-row">
+                        <span class="price-label">SEUL</span>
+                        <span class="price-val">22<span class="curr">DH</span></span>
+                    </div>
+                    <div class="price-divider"></div>
+                    <div class="price-row">
+                        <span class="price-label">MENU</span>
+                        <span class="price-val">32<span class="curr">DH</span></span>
+                    </div>
+                </div>
+                <div class="product-cutout-wrap delay-2 living-breathe" style="bottom: 20px; left: 15px; width: 530px;">
+                    <img src="cutouts_cropped/bocadillo thon 22 dh.png" class="product-cutout" alt="Bocadillo Thon">
+                    <div class="contact-shadow"></div>
+                </div>
+                <div class="ingredients-ribbon" style="bottom: 2px; left: 50px;">
+                    THON 1ER CHOIX • CRUDITÉS FRAÎCHES • OEUF DUR • OLIVES
+                </div>
+            </div>
+
+            <!-- CELL 4: RIGHT TOP (BOCADILLO TORTILLA) -->
+            <div class="cell-right-top">
+                <div class="title-box" style="top: 25px; left: 10px;">
+                    <span class="title-prefix">LA</span>
+                    <span class="title-3d title-yellow">TORTILLA</span>
+                </div>
+                <div class="price-box" style="top: 15px; right: 25px;">
+                    <div class="price-row">
+                        <span class="price-label">SEUL</span>
+                        <span class="price-val">22<span class="curr">DH</span></span>
+                    </div>
+                    <div class="price-divider"></div>
+                    <div class="price-row">
+                        <span class="price-label">MENU</span>
+                        <span class="price-val">32<span class="curr">DH</span></span>
+                    </div>
+                </div>
+                <div class="product-cutout-wrap delay-3 living-breathe" style="bottom: 20px; left: 15px; width: 530px;">
+                    <img src="cutouts_cropped/bocadillo_tortillia 22 dh.png" class="product-cutout" alt="Bocadillo Tortilla">
+                    <div class="contact-shadow"></div>
+                </div>
+                <div class="ingredients-ribbon" style="bottom: 2px; left: 50px;">
+                    TORTILLA MAISON • PDT • CHEDDAR COULANT • SAUCE
+                </div>
+            </div>
+
+            <!-- CELL 5: MID BOT (BOCADILLO CHEESE - FEATURED WITH SPARKLER!) -->
+            <div class="cell-mid-bot">
+                <!-- Sparkler Firework Anchor -->
+                <div class="sparkler-anchor" style="top: 30px; left: 290px;">
+                    <div class="sparkler-burst"></div>
+                    <div class="spark" style="--rot: 0deg;"></div>
+                    <div class="spark" style="--rot: 45deg;"></div>
+                    <div class="spark" style="--rot: 90deg;"></div>
+                    <div class="spark" style="--rot: 135deg;"></div>
+                    <div class="spark" style="--rot: 180deg;"></div>
+                    <div class="spark" style="--rot: 225deg;"></div>
+                    <div class="spark" style="--rot: 270deg;"></div>
+                    <div class="spark" style="--rot: 315deg;"></div>
+                </div>
+
+                <div class="price-box" style="top: 10px; left: 15px;">
+                    <div class="price-row">
+                        <span class="price-label">SEUL</span>
+                        <span class="price-val">24<span class="curr">DH</span></span>
+                    </div>
+                    <div class="price-divider"></div>
+                    <div class="price-row">
+                        <span class="price-label">MENU</span>
+                        <span class="price-val">34<span class="curr">DH</span></span>
+                    </div>
+                </div>
+                <div class="title-box" style="top: 25px; left: 155px;">
+                    <span class="title-prefix">DOUBLE</span>
+                    <span class="title-3d title-yellow">CHEESE</span>
+                </div>
+                <div class="product-cutout-wrap delay-5 living-breathe" style="bottom: 25px; left: 15px; width: 530px;">
+                    <img src="cutouts_cropped/bocadillo cheese 24 dh.png" class="product-cutout" alt="Bocadillo Cheese">
+                    <div class="contact-shadow"></div>
+                </div>
+                <!-- Badge Piquant ou Nature -->
+                <div class="badge-choice" style="bottom: 75px; right: 15px;">
+                    <div class="badge-circle">
+                        <svg viewBox="0 0 24 24" fill="#dc2626"><path d="M19.64 6.88a10.05 10.05 0 0 0-4.52-4.52 1 1 0 0 0-1.34 1.34c.32.74.5 1.54.52 2.36-1.87.17-3.7.83-5.3 1.93-3.66 2.53-5.5 6.83-4.8 11.23.23 1.48 1.07 2.78 2.32 3.59a6.04 6.04 0 0 0 6.36.19c4.27-2.3 6.94-6.84 6.84-11.71.02-.82-.16-1.62-.48-2.36a1 1 0 0 0-1.6-.05z"/></svg>
+                    </div>
+                    <span class="badge-label" style="background:#dc2626;">PIQUANT</span>
+                    <span class="or-text">OU</span>
+                    <div class="badge-circle">
+                        <svg viewBox="0 0 24 24" fill="#16a34a"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66l.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/></svg>
+                    </div>
+                    <span class="badge-label" style="background:#16a34a;">NATURE</span>
+                </div>
+                <div class="ingredients-ribbon" style="bottom: 2px; left: 50px;">
+                    THON GOURMAND • DOUBLE CHEDDAR FONDU • SAUCE CHEESE
+                </div>
+            </div>
+
+            <!-- CELL 6: RIGHT BOT (BOCADILLO TANGÉROIS) -->
+            <div class="cell-right-bot">
+                <div class="price-box" style="top: 10px; left: 15px;">
+                    <div class="price-row">
+                        <span class="price-label">SEUL</span>
+                        <span class="price-val">24<span class="curr">DH</span></span>
+                    </div>
+                    <div class="price-divider"></div>
+                    <div class="price-row">
+                        <span class="price-label">MENU</span>
+                        <span class="price-val">34<span class="curr">DH</span></span>
+                    </div>
+                </div>
+                <div class="title-box" style="top: 25px; left: 155px;">
+                    <span class="title-prefix">LE</span>
+                    <span class="title-3d title-red">TANGÉROIS</span>
+                </div>
+                <div class="product-cutout-wrap delay-6 living-breathe" style="bottom: 25px; left: 15px; width: 530px;">
+                    <img src="cutouts_cropped/bocadillo tangerois 24 dh.png" class="product-cutout" alt="Bocadillo Tangerois">
+                    <div class="contact-shadow"></div>
+                </div>
+                <div class="ingredients-ribbon" style="bottom: 2px; left: 50px;">
+                    RECETTE SPÉCIALE TANGER 1980 • ÉPICES SECRÈTES • LÉGUMES FRAIS
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= SCREEN 2: SANDWICHES CHAUDS ================= -->
+        <div id="screen-2" class="menu-screen">
+            <!-- Brand Bar -->
+            <div class="header-brand-bar">
+                <div class="brand-badge">MON BOCADILLO TANGER</div>
+                <div class="screen-cat-title">✦ LES SANDWICHES CHAUDS & SPÉCIAUX ✦</div>
+            </div>
+
+            <!-- CELL 1: LEFT TOP (SANDWICH AMÉRICAIN) -->
+            <div class="cell-left-top">
+                <div class="title-box" style="top: 25px; left: 10px;">
+                    <span class="title-prefix">LE</span>
+                    <span class="title-3d title-red">AMÉRICAIN</span>
+                </div>
+                <div class="price-box" style="top: 15px; right: 10px;">
+                    <div class="price-row">
+                        <span class="price-label">SEUL</span>
+                        <span class="price-val">35<span class="curr">DH</span></span>
+                    </div>
+                    <div class="price-divider"></div>
+                    <div class="price-row">
+                        <span class="price-label">MENU</span>
+                        <span class="price-val">45<span class="curr">DH</span></span>
+                    </div>
+                </div>
+                <div class="product-cutout-wrap delay-1 living-breathe" style="bottom: 20px; left: 10px; width: 520px;">
+                    <img src="cutouts_cropped/sandwich americain 35 dh.png" class="product-cutout" alt="Sandwich Américain">
+                    <div class="contact-shadow"></div>
+                </div>
+                <div class="ingredients-ribbon" style="bottom: 2px; left: 35px;">
+                    STEAK HACHÉ • OEUF À CHEVAL • DOUBLE CHEDDAR • FRITES
+                </div>
+            </div>
+
+            <!-- CELL 2: LEFT BOT (SANDWICH MIXTE) -->
+            <div class="cell-left-bot">
+                <div class="title-box" style="top: 20px; left: 10px;">
+                    <span class="title-prefix">LE</span>
+                    <span class="title-3d title-amber">MIXTE</span>
+                </div>
+                <div class="price-box" style="top: 10px; right: 10px;">
+                    <div class="price-row">
+                        <span class="price-label">SEUL</span>
+                        <span class="price-val">35<span class="curr">DH</span></span>
+                    </div>
+                    <div class="price-divider"></div>
+                    <div class="price-row">
+                        <span class="price-label">MENU</span>
+                        <span class="price-val">45<span class="curr">DH</span></span>
+                    </div>
+                </div>
+                <div class="product-cutout-wrap delay-4 living-breathe" style="bottom: 25px; left: 10px; width: 510px;">
+                    <img src="cutouts_cropped/sandwiche mixte 35 dh.png" class="product-cutout" alt="Sandwich Mixte">
+                    <div class="contact-shadow"></div>
+                </div>
+                <div class="ingredients-ribbon" style="bottom: 2px; left: 45px;">
+                    DUO POULET MARINÉ & VIANDE HACHÉE • FROMAGE • SAUCES
+                </div>
+            </div>
+
+            <!-- CELL 3: MID TOP (SANDWICH POULET) -->
+            <div class="cell-mid-top">
+                <div class="title-box" style="top: 25px; left: 10px;">
+                    <span class="title-prefix">LE</span>
+                    <span class="title-3d title-yellow">POULET</span>
+                </div>
+                <div class="price-box" style="top: 15px; right: 15px;">
+                    <div class="price-row">
+                        <span class="price-label">SEUL</span>
+                        <span class="price-val">30<span class="curr">DH</span></span>
+                    </div>
+                    <div class="price-divider"></div>
+                    <div class="price-row">
+                        <span class="price-label">MENU</span>
+                        <span class="price-val">40<span class="curr">DH</span></span>
+                    </div>
+                </div>
+                <div class="product-cutout-wrap delay-2 living-breathe" style="bottom: 20px; left: 15px; width: 530px;">
+                    <img src="cutouts_cropped/sandwiche poulet 30 dh.png" class="product-cutout" alt="Sandwich Poulet">
+                    <div class="contact-shadow"></div>
+                </div>
+                <div class="ingredients-ribbon" style="bottom: 2px; left: 50px;">
+                    BLANC DE POULET GRILLÉ MARINÉ • SALADE • SAUCE BLANCHE
+                </div>
+            </div>
+
+            <!-- CELL 4: RIGHT TOP (SANDWICH VIANDE HACHÉE - FEATURED WITH SPARKLER!) -->
+            <div class="cell-right-top">
+                <!-- Sparkler Firework Anchor -->
+                <div class="sparkler-anchor" style="top: 30px; left: 240px;">
+                    <div class="sparkler-burst"></div>
+                    <div class="spark" style="--rot: 0deg;"></div>
+                    <div class="spark" style="--rot: 45deg;"></div>
+                    <div class="spark" style="--rot: 90deg;"></div>
+                    <div class="spark" style="--rot: 135deg;"></div>
+                    <div class="spark" style="--rot: 180deg;"></div>
+                    <div class="spark" style="--rot: 225deg;"></div>
+                    <div class="spark" style="--rot: 270deg;"></div>
+                    <div class="spark" style="--rot: 315deg;"></div>
+                </div>
+
+                <div class="title-box" style="top: 25px; left: 10px;">
+                    <span class="title-prefix">VIANDE</span>
+                    <span class="title-3d title-red">HACHÉE</span>
+                </div>
+                <div class="price-box" style="top: 15px; right: 25px;">
+                    <div class="price-row">
+                        <span class="price-label">SEUL</span>
+                        <span class="price-val">30<span class="curr">DH</span></span>
+                    </div>
+                    <div class="price-divider"></div>
+                    <div class="price-row">
+                        <span class="price-label">MENU</span>
+                        <span class="price-val">40<span class="curr">DH</span></span>
+                    </div>
+                </div>
+                <div class="product-cutout-wrap delay-3 living-breathe" style="bottom: 20px; left: 15px; width: 530px;">
+                    <img src="cutouts_cropped/sandwich viande hache 30 dh.png" class="product-cutout" alt="Sandwich Viande Hachée">
+                    <div class="contact-shadow"></div>
+                </div>
+                <div class="ingredients-ribbon" style="bottom: 2px; left: 50px;">
+                    PUR BOEUF HACHÉ ASSAISONNÉ • OIGNONS GRILLÉS • SAUCE BBQ
+                </div>
+            </div>
+
+            <!-- CELL 5: MID BOT (SANDWICH SAUCISSE) -->
+            <div class="cell-mid-bot">
+                <div class="price-box" style="top: 10px; left: 15px;">
+                    <div class="price-row">
+                        <span class="price-label">SEUL</span>
+                        <span class="price-val">30<span class="curr">DH</span></span>
+                    </div>
+                    <div class="price-divider"></div>
+                    <div class="price-row">
+                        <span class="price-label">MENU</span>
+                        <span class="price-val">40<span class="curr">DH</span></span>
+                    </div>
+                </div>
+                <div class="title-box" style="top: 25px; left: 155px;">
+                    <span class="title-prefix">LA</span>
+                    <span class="title-3d title-amber">SAUCISSE</span>
+                </div>
+                <div class="product-cutout-wrap delay-5 living-breathe" style="bottom: 25px; left: 15px; width: 530px;">
+                    <img src="cutouts_cropped/sandwiche saussice 30.png" class="product-cutout" alt="Sandwich Saucisse">
+                    <div class="contact-shadow"></div>
+                </div>
+                <!-- Badge Piquant ou Nature -->
+                <div class="badge-choice" style="bottom: 75px; right: 15px;">
+                    <div class="badge-circle">
+                        <svg viewBox="0 0 24 24" fill="#dc2626"><path d="M19.64 6.88a10.05 10.05 0 0 0-4.52-4.52 1 1 0 0 0-1.34 1.34c.32.74.5 1.54.52 2.36-1.87.17-3.7.83-5.3 1.93-3.66 2.53-5.5 6.83-4.8 11.23.23 1.48 1.07 2.78 2.32 3.59a6.04 6.04 0 0 0 6.36.19c4.27-2.3 6.94-6.84 6.84-11.71.02-.82-.16-1.62-.48-2.36a1 1 0 0 0-1.6-.05z"/></svg>
+                    </div>
+                    <span class="badge-label" style="background:#dc2626;">PIQUANT</span>
+                    <span class="or-text">OU</span>
+                    <div class="badge-circle">
+                        <svg viewBox="0 0 24 24" fill="#16a34a"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66l.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/></svg>
+                    </div>
+                    <span class="badge-label" style="background:#16a34a;">NATURE</span>
+                </div>
+                <div class="ingredients-ribbon" style="bottom: 2px; left: 50px;">
+                    SAUCISSES FUMÉES DORÉES • OIGNONS CARAMÉLISÉS • CHEDDAR
+                </div>
+            </div>
+
+            <!-- CELL 6: RIGHT BOT (FORMULE COMBO) -->
+            <div class="cell-right-bot">
+                <div class="price-box" style="top: 10px; left: 15px;">
+                    <div class="price-row">
+                        <span class="price-label">MENU</span>
+                        <span class="price-val">+10<span class="curr">DH</span></span>
+                    </div>
+                    <div class="price-divider"></div>
+                    <div class="price-row">
+                        <span class="price-label" style="font-size: 11px;">FRITES + BOISSON</span>
+                    </div>
+                </div>
+                <div class="title-box" style="top: 25px; left: 165px;">
+                    <span class="title-prefix">FORMULE</span>
+                    <span class="title-3d title-green">COMBO</span>
+                </div>
+                <div class="product-cutout-wrap delay-6 living-breathe" style="bottom: 25px; left: 15px; width: 530px;">
+                    <img src="cutouts_cropped/bocadillo complet 29 dh.png" class="product-cutout" alt="Formule Combo">
+                    <div class="contact-shadow"></div>
+                </div>
+                <div class="ingredients-ribbon" style="bottom: 2px; left: 35px;">
+                    TOUT SANDWICH EN FORMULE AVEC FRITES CROUSTILLANTES & BOISSON
+                </div>
+            </div>
+        </div>
+
+        <!-- Rising Steam Canvas Overlay -->
+        <canvas id="steam-canvas" class="steam-canvas" width="1920" height="1080"></canvas>
+    </div>
+
+    <!-- Floating TV Controls -->
+    <div class="ui-controls">
+        <button id="btn-auto" class="btn-ctl active" onclick="setMode('auto')">Auto-Boucle (15s)</button>
+        <button id="btn-s1" class="btn-ctl" onclick="setMode('screen-1')">TV 1: Bocadillos</button>
+        <button id="btn-s2" class="btn-ctl" onclick="setMode('screen-2')">TV 2: Sandwiches</button>
+        <button id="btn-sound" class="btn-ctl" onclick="toggleSound()">🔊 Son</button>
+        <button id="btn-fs" class="btn-ctl" onclick="toggleFullScreen()">⛶ Plein Écran</button>
+        <button id="btn-edit" class="btn-ctl" style="background: #10b981;" onclick="openEditModal()">⚙️ Modifier Prix</button>
+    </div>
+
+    <!-- Edit Modal Dialog -->
+    <div id="edit-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:200; align-items:center; justify-content:center; backdrop-filter:blur(6px);">
+        <div style="background:#1e293b; color:#fff; border-radius:12px; width:90%; max-width:960px; max-height:85vh; overflow-y:auto; padding:24px; box-shadow:0 15px 40px rgba(0,0,0,0.8); border:1px solid rgba(255,255,255,0.2);">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; padding-bottom:12px; margin-bottom:18px;">
+                <h2 style="font-size:22px; font-weight:800; color:#fbbf24;">⚙️ Modifier les Prix & Produits du Menu</h2>
+                <button onclick="closeEditModal()" style="background:#ef4444; border:none; color:#fff; font-size:16px; font-weight:bold; border-radius:50%; width:32px; height:32px; cursor:pointer;">✕</button>
+            </div>
+            
+            <div id="edit-items-container" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;"></div>
+
+            <div style="margin-top:24px; padding-top:16px; border-top:1px solid #334155; display:flex; gap:12px; justify-content:flex-end;">
+                <button onclick="resetDefaultConfig()" style="background:#64748b; color:#fff; border:none; padding:10px 18px; border-radius:8px; font-weight:700; cursor:pointer;">↺ Réinitialiser</button>
+                <button onclick="downloadConfigJSON()" style="background:#0284c7; color:#fff; border:none; padding:10px 18px; border-radius:8px; font-weight:700; cursor:pointer;">💾 Télécharger menu_config.json</button>
+                <button onclick="saveAndApplyConfig()" style="background:#10b981; color:#fff; border:none; padding:10px 22px; border-radius:8px; font-weight:800; font-size:15px; cursor:pointer;">✓ Enregistrer & Appliquer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Player -->
+    <audio id="bg-audio" loop preload="auto">
+        <source src="ref_audio.m4a" type="audio/mp4">
+        <source src="music_menu.aac" type="audio/aac">
+    </audio>
+
+    <script>
+        function scaleStage() {
+            const stage = document.getElementById('menu-stage');
+            const targetWidth = 1920;
+            const targetHeight = 1080;
+            const winWidth = window.innerWidth;
+            const winHeight = window.innerHeight;
+
+            const scaleX = winWidth / targetWidth;
+            const scaleY = winHeight / targetHeight;
+            const scale = Math.min(scaleX, scaleY);
+
+            stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        }
+
+        window.addEventListener('resize', scaleStage);
+        window.addEventListener('load', scaleStage);
+        setTimeout(scaleStage, 100);
+
+        let currentScreen = 1;
+        let autoCycle = true;
+        let cycleTimer = null;
+        const CYCLE_DURATION = 15000;
+
+        function showScreen(num) {
+            document.querySelectorAll('.menu-screen').forEach(s => s.classList.remove('active'));
+            const target = document.getElementById(`screen-${num}`);
+            if (target) {
+                target.classList.add('active');
+                currentScreen = num;
+            }
+        }
+
+        function cycleNext() {
+            if (!autoCycle) return;
+            const next = currentScreen === 1 ? 2 : 1;
+            showScreen(next);
+            cycleTimer = setTimeout(cycleNext, CYCLE_DURATION);
+        }
+
+        function setMode(mode) {
+            document.querySelectorAll('.ui-controls .btn-ctl').forEach(b => b.classList.remove('active'));
+            if (cycleTimer) clearTimeout(cycleTimer);
+
+            if (mode === 'auto') {
+                autoCycle = true;
+                document.getElementById('btn-auto').classList.add('active');
+                cycleTimer = setTimeout(cycleNext, CYCLE_DURATION);
+            } else if (mode === 'screen-1') {
+                autoCycle = false;
+                document.getElementById('btn-s1').classList.add('active');
+                showScreen(1);
+            } else if (mode === 'screen-2') {
+                autoCycle = false;
+                document.getElementById('btn-s2').classList.add('active');
+                showScreen(2);
+            }
+        }
+
+        cycleTimer = setTimeout(cycleNext, CYCLE_DURATION);
+
+        // Auto-hiding TV controls on inactivity
+        const controls = document.querySelector('.ui-controls');
+        let hideTimeout = null;
+        function showControls() {
+            controls.classList.add('visible');
+            if (hideTimeout) clearTimeout(hideTimeout);
+            hideTimeout = setTimeout(() => {
+                controls.classList.remove('visible');
+            }, 3000);
+        }
+        window.addEventListener('mousemove', showControls);
+        window.addEventListener('touchstart', showControls);
+        showControls();
+
+        // Config & Modal Management
+        let menuData = null;
+
+        const defaultMenuData = {
+            screen_1: [
+                { id: "complet", prefix: "LE", name: "COMPLET", price_seul: "29", price_menu: "39", ribbon: "THON • TORTILLA • FROMAGE • CHARCUTERIE • SAUCES" },
+                { id: "tortilla_royale", prefix: "TORTILLA", name: "ROYALE", price_seul: "30", price_menu: "40", ribbon: "TORTILLA ESPAGNOLE GARNIE • FROMAGE FONDU • SAUCE ROYALE" },
+                { id: "thon", prefix: "LE", name: "THON", price_seul: "22", price_menu: "32", ribbon: "THON 1ER CHOIX • CRUDITÉS FRAÎCHES • OEUF DUR • OLIVES" },
+                { id: "tortilla", prefix: "LA", name: "TORTILLA", price_seul: "22", price_menu: "32", ribbon: "TORTILLA MAISON • PDT • CHEDDAR COULANT • SAUCE" },
+                { id: "cheese", prefix: "DOUBLE", name: "CHEESE", price_seul: "24", price_menu: "34", ribbon: "THON GOURMAND • DOUBLE CHEDDAR FONDU • SAUCE CHEESE" },
+                { id: "tangerois", prefix: "LE", name: "TANGÉROIS", price_seul: "24", price_menu: "34", ribbon: "RECETTE SPÉCIALE TANGER 1980 • ÉPICES SECRÈTES • LÉGUMES FRAIS" }
+            ],
+            screen_2: [
+                { id: "americain", prefix: "LE", name: "AMÉRICAIN", price_seul: "35", price_menu: "45", ribbon: "STEAK HACHÉ • OEUF À CHEVAL • DOUBLE CHEDDAR • FRITES" },
+                { id: "mixte", prefix: "LE", name: "MIXTE", price_seul: "35", price_menu: "45", ribbon: "DUO POULET MARINÉ & VIANDE HACHÉE • FROMAGE • SAUCES" },
+                { id: "poulet", prefix: "LE", name: "POULET", price_seul: "30", price_menu: "40", ribbon: "BLANC DE POULET GRILLÉ MARINÉ • SALADE • SAUCE BLANCHE" },
+                { id: "viande_hache", prefix: "VIANDE", name: "HACHÉE", price_seul: "30", price_menu: "40", ribbon: "PUR BOEUF HACHÉ ASSAISONNÉ • OIGNONS GRILLÉS • SAUCE BBQ" },
+                { id: "saucisse", prefix: "LA", name: "SAUCISSE", price_seul: "30", price_menu: "40", ribbon: "SAUCISSES FUMÉES DORÉES • OIGNONS CARAMÉLISÉS • CHEDDAR" },
+                { id: "combo", prefix: "FORMULE", name: "COMBO", price_seul: "+10", price_menu: "FRITES", ribbon: "TOUT SANDWICH EN FORMULE AVEC FRITES CROUSTILLANTES & BOISSON" }
+            ]
+        };
+
+        async function initConfig() {
+            let loaded = false;
+            try {
+                const res = await fetch('menu_config.json?t=' + Date.now());
+                if (res.ok) {
+                    menuData = await res.json();
+                    loaded = true;
+                }
+            } catch(e) {}
+
+            if (!loaded) {
+                const saved = localStorage.getItem('mon_bocadillo_menu_config');
+                if (saved) {
+                    try {
+                        menuData = JSON.parse(saved);
+                        loaded = true;
+                    } catch(e) {}
+                }
+            }
+            if (!loaded) {
+                menuData = JSON.parse(JSON.stringify(defaultMenuData));
+            }
+            applyDataToDOM();
+
+            // Poll for updates every 30 seconds for live updates from GitHub / Local
+            setInterval(async () => {
+                try {
+                    const r = await fetch('menu_config.json?t=' + Date.now());
+                    if (r.ok) {
+                        const fresh = await r.json();
+                        if (JSON.stringify(fresh) !== JSON.stringify(menuData)) {
+                            menuData = fresh;
+                            applyDataToDOM();
+                        }
+                    }
+                } catch(e) {}
+            }, 30000);
+        }
+
+        function applyDataToDOM() {
+            // Apply Screen 1 items
+            const s1Cells = document.querySelectorAll('#screen-1 .cell-left-top, #screen-1 .cell-left-bot, #screen-1 .cell-mid-top, #screen-1 .cell-right-top, #screen-1 .cell-mid-bot, #screen-1 .cell-right-bot');
+            menuData.screen_1.forEach((it, idx) => {
+                const cell = s1Cells[idx];
+                if (!cell) return;
+                const pVals = cell.querySelectorAll('.price-val');
+                if (pVals[0]) pVals[0].innerHTML = `${it.price_seul}<span class="curr">DH</span>`;
+                if (pVals[1]) pVals[1].innerHTML = `${it.price_menu}<span class="curr">DH</span>`;
+                const tPrefix = cell.querySelector('.title-prefix');
+                if (tPrefix) tPrefix.textContent = it.prefix;
+                const t3d = cell.querySelector('.title-3d');
+                if (t3d) t3d.textContent = it.name;
+                const rib = cell.querySelector('.ingredients-ribbon');
+                if (rib) rib.textContent = it.ribbon;
+            });
+
+            // Apply Screen 2 items
+            const s2Cells = document.querySelectorAll('#screen-2 .cell-left-top, #screen-2 .cell-left-bot, #screen-2 .cell-mid-top, #screen-2 .cell-right-top, #screen-2 .cell-mid-bot, #screen-2 .cell-right-bot');
+            menuData.screen_2.forEach((it, idx) => {
+                const cell = s2Cells[idx];
+                if (!cell) return;
+                const pVals = cell.querySelectorAll('.price-val');
+                if (pVals[0]) pVals[0].innerHTML = `${it.price_seul}<span class="curr">DH</span>`;
+                if (pVals[1] && it.id !== 'combo') pVals[1].innerHTML = `${it.price_menu}<span class="curr">DH</span>`;
+                const tPrefix = cell.querySelector('.title-prefix');
+                if (tPrefix) tPrefix.textContent = it.prefix;
+                const t3d = cell.querySelector('.title-3d');
+                if (t3d) t3d.textContent = it.name;
+                const rib = cell.querySelector('.ingredients-ribbon');
+                if (rib) rib.textContent = it.ribbon;
+            });
+        }
+
+        function openEditModal() {
+            const container = document.getElementById('edit-items-container');
+            container.innerHTML = '';
+
+            const createSection = (title, items, screenKey) => {
+                const sec = document.createElement('div');
+                sec.style.gridColumn = 'span 2';
+                sec.innerHTML = `<h3 style="color:#38bdf8; font-size:16px; margin:8px 0; border-bottom:1px solid #475569; padding-bottom:4px;">${title}</h3>`;
+                container.appendChild(sec);
+
+                items.forEach((it, i) => {
+                    const card = document.createElement('div');
+                    card.style.background = '#0f172a';
+                    card.style.padding = '12px';
+                    card.style.borderRadius = '8px';
+                    card.style.border = '1px solid #334155';
+                    card.innerHTML = `
+                        <div style="font-weight:bold; color:#f8fafc; margin-bottom:8px; display:flex; justify-content:space-between;">
+                            <span>${it.prefix} ${it.name}</span>
+                            <span style="color:#94a3b8; font-size:11px;">#${it.id}</span>
+                        </div>
+                        <div style="display:flex; gap:8px; margin-bottom:6px;">
+                            <div style="flex:1;">
+                                <label style="font-size:11px; color:#cbd5e1; display:block;">Prix Seul (DH)</label>
+                                <input type="text" id="${screenKey}_${i}_seul" value="${it.price_seul}" style="width:100%; background:#1e293b; border:1px solid #475569; color:#fff; padding:6px; border-radius:4px; font-weight:bold;">
+                            </div>
+                            <div style="flex:1;">
+                                <label style="font-size:11px; color:#cbd5e1; display:block;">Prix Menu (DH)</label>
+                                <input type="text" id="${screenKey}_${i}_menu" value="${it.price_menu}" style="width:100%; background:#1e293b; border:1px solid #475569; color:#fff; padding:6px; border-radius:4px; font-weight:bold;">
+                            </div>
+                        </div>
+                        <div style="margin-bottom:6px;">
+                            <label style="font-size:11px; color:#cbd5e1; display:block;">Nom du Produit</label>
+                            <input type="text" id="${screenKey}_${i}_name" value="${it.name}" style="width:100%; background:#1e293b; border:1px solid #475569; color:#fff; padding:6px; border-radius:4px;">
+                        </div>
+                        <div>
+                            <label style="font-size:11px; color:#cbd5e1; display:block;">Ingrédients</label>
+                            <input type="text" id="${screenKey}_${i}_ribbon" value="${it.ribbon}" style="width:100%; background:#1e293b; border:1px solid #475569; color:#fff; padding:6px; border-radius:4px; font-size:11px;">
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            };
+
+            createSection('📺 Écran 1 : Les Bocadillos Chamali', menuData.screen_1, 's1');
+            createSection('📺 Écran 2 : Les Sandwiches Chauds', menuData.screen_2, 's2');
+
+            document.getElementById('edit-modal').style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').style.display = 'none';
+        }
+
+        function saveAndApplyConfig() {
+            // Read values
+            menuData.screen_1.forEach((it, i) => {
+                it.price_seul = document.getElementById(`s1_${i}_seul`).value;
+                it.price_menu = document.getElementById(`s1_${i}_menu`).value;
+                it.name = document.getElementById(`s1_${i}_name`).value;
+                it.ribbon = document.getElementById(`s1_${i}_ribbon`).value;
+            });
+            menuData.screen_2.forEach((it, i) => {
+                it.price_seul = document.getElementById(`s2_${i}_seul`).value;
+                it.price_menu = document.getElementById(`s2_${i}_menu`).value;
+                it.name = document.getElementById(`s2_${i}_name`).value;
+                it.ribbon = document.getElementById(`s2_${i}_ribbon`).value;
+            });
+
+            localStorage.setItem('mon_bocadillo_menu_config', JSON.stringify(menuData));
+            applyDataToDOM();
+            closeEditModal();
+            alert('✓ Modifications enregistrées avec succès !');
+        }
+
+        function resetDefaultConfig() {
+            if (confirm('Réinitialiser tous les prix et noms par défaut ?')) {
+                localStorage.removeItem('mon_bocadillo_menu_config');
+                menuData = JSON.parse(JSON.stringify(defaultMenuData));
+                applyDataToDOM();
+                closeEditModal();
+            }
+        }
+
+        function downloadConfigJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(menuData, null, 2));
+            const dlAnchor = document.createElement('a');
+            dlAnchor.setAttribute("href", dataStr);
+            dlAnchor.setAttribute("download", "menu_config.json");
+            dlAnchor.click();
+        }
+
+        window.addEventListener('DOMContentLoaded', initConfig);
+
+        function toggleSound() {
+            const audio = document.getElementById('bg-audio');
+            const btn = document.getElementById('btn-sound');
+            if (audio.paused) {
+                audio.play().then(() => {
+                    btn.textContent = '🔊 Son Activé';
+                    btn.classList.add('active');
+                }).catch(e => {
+                    console.log('Audio error:', e);
+                });
+            } else {
+                audio.pause();
+                btn.textContent = '🔇 Son';
+                btn.classList.remove('active');
+            }
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.error('Fullscreen error:', err);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        // ================= REALISTIC STEAM PARTICLE SIMULATION =================
+        const canvas = document.getElementById('steam-canvas');
+        const ctx = canvas.getContext('2d');
+
+        const emitters = [
+            { x: 300, y: 380 },
+            { x: 300, y: 880 },
+            { x: 960, y: 380 },
+            { x: 1580, y: 380 },
+            { x: 960, y: 880 },
+            { x: 1580, y: 880 }
+        ];
+
+        class SteamParticle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                const em = emitters[Math.floor(Math.random() * emitters.length)];
+                this.x = em.x + (Math.random() * 260 - 130);
+                this.y = em.y + (Math.random() * 20 - 10);
+                this.vx = (Math.random() - 0.5) * 0.45;
+                this.vy = -(Math.random() * 0.85 + 0.65);
+                this.radius = Math.random() * 14 + 10;
+                this.maxRadius = this.radius * (Math.random() * 3.5 + 3.0);
+                this.alpha = 0;
+                this.maxAlpha = Math.random() * 0.16 + 0.08;
+                this.life = 0;
+                this.maxLife = Math.random() * 110 + 80;
+                this.turb = Math.random() * Math.PI * 2;
+                this.turbSpeed = (Math.random() - 0.5) * 0.05;
+            }
+
+            update() {
+                this.life++;
+                this.turb += this.turbSpeed;
+                this.x += this.vx + Math.sin(this.turb) * 0.6;
+                this.y += this.vy;
+                this.radius += (this.maxRadius - this.radius) * 0.016;
+
+                const progress = this.life / this.maxLife;
+                if (progress < 0.2) {
+                    this.alpha = (progress / 0.2) * this.maxAlpha;
+                } else {
+                    this.alpha = (1 - progress) * this.maxAlpha;
+                }
+
+                if (this.life >= this.maxLife) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                if (this.alpha <= 0.005) return;
+                ctx.save();
+                ctx.beginPath();
+                const grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
+                grad.addColorStop(0, `rgba(255, 255, 255, ${this.alpha})`);
+                grad.addColorStop(0.5, `rgba(255, 250, 240, ${this.alpha * 0.6})`);
+                grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                ctx.fillStyle = grad;
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        const particles = Array.from({ length: 70 }, () => new SteamParticle());
+
+        function animateSteam() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let p of particles) {
+                p.update();
+                p.draw();
+            }
+            requestAnimationFrame(animateSteam);
+        }
+
+        requestAnimationFrame(animateSteam);
+    </script>
+</body>
+</html>

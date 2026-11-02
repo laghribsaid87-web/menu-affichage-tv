@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu TV Live — Mon Bocadillo Tanger</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,400;0,700;0,800;0,900;1,800&family=Titan+One&family=Oswald:wght@700;900&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        html, body {
+            background-color: #0b0d10;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* 16:9 Stage Canvas locked at 1920x1080 */
+        #menu-stage {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 1920px;
+            height: 1080px;
+            transform: translate(-50%, -50%);
+            transform-origin: center center;
+            background: url('emirates_bg_1080p.jpg') no-repeat center center;
+            background-size: cover;
+            overflow: hidden;
+            box-shadow: 0 0 70px rgba(0, 0, 0, 0.95);
+        }
+
+        /* Ambient Studio Lighting Overlay */
+        .ambient-light {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 25%, rgba(255, 245, 220, 0.1) 0%, rgba(0, 0, 0, 0.2) 100%);
+            z-index: 5;
+        }
+
+        /* Screen Sections Containers */
+        .menu-screen {
+            position: absolute;
+            inset: 0;
+            width: 1920px;
+            height: 1080px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.6s;
+            z-index: 10;
+        }
+
+        .menu-screen.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Continuous Animations */
+        @keyframes anim-breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+        @keyframes anim-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+        @keyframes anim-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        @keyframes anim-glow {
+            0%, 100% { filter: drop-shadow(0 15px 25px rgba(0,0,0,0.6)); }
+            50% { filter: drop-shadow(0 20px 35px rgba(255,170,0,0.45)); }
+        }
+
+        .anim-breathe { animation: anim-breathe 4s ease-in-out infinite; }
+        .anim-float { animation: anim-float 3.5s ease-in-out infinite; }
+        .anim-pulse { animation: anim-pulse 2s ease-in-out infinite; }
+        .anim-glow { animation: anim-glow 3s ease-in-out infinite; }
+
+        /* Floating TV Controls */
+        .ui-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99999;
+            display: flex;
+            gap: 10px;
+            background: rgba(15, 23, 42, 0.90);
+            padding: 8px 16px;
+            border-radius: 40px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .ui-controls:hover, .ui-controls.visible {
+            opacity: 1;
+        }
+        .btn-ctl {
+            background: #334155;
+            color: #fff;
+            border: none;
+            padding: 7px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-ctl:hover, .btn-ctl.active {
+            background: #e11d48;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 16:9 Canvas Stage -->
+    <div id="menu-stage">
+        <div class="ambient-light"></div>
+        <div id="screens-container"></div>
+    </div>
+
+    <!-- Floating TV Controls -->
+    <div class="ui-controls" id="tv-controls">
+        <button id="btn-auto" class="btn-ctl active" onclick="setScreenMode('auto')">Auto-Boucle (15s)</button>
+        <button id="btn-s1" class="btn-ctl" onclick="setScreenMode('screen-1')">TV 1: Bocadillos</button>
+        <button id="btn-s2" class="btn-ctl" onclick="setScreenMode('screen-2')">TV 2: Sandwiches</button>
+        <button id="btn-sound" class="btn-ctl" onclick="toggleSound()">🔊 Son</button>
+        <button id="btn-fs" class="btn-ctl" onclick="toggleFullScreen()">⛶ Plein Écran</button>
+        <a href="/dashboard.html" class="btn-ctl" style="background:#2563eb; text-decoration:none;">✏️ Éditeur CMS</a>
+    </div>
+
+    <!-- Audio Player -->
+    <audio id="bg-audio" loop preload="auto">
+        <source src="music_menu.aac" type="audio/aac">
+        <source src="ref_audio.m4a" type="audio/mp4">
+    </audio>
+
+    <script>
+        // 1. Stage Auto Scaling to Fit Any Screen
+        function scaleStage() {
+            const stage = document.getElementById('menu-stage');
+            const targetWidth = 1920;
+            const targetHeight = 1080;
+            const winWidth = window.innerWidth;
+            const winHeight = window.innerHeight;
+
+            const scaleX = winWidth / targetWidth;
+            const scaleY = winHeight / targetHeight;
+            const scale = Math.min(scaleX, scaleY);
+
+            stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        }
+        window.addEventListener('resize', scaleStage);
+        window.addEventListener('load', scaleStage);
+        setTimeout(scaleStage, 100);
+
+        // 2. Global State & Data Loading
+        let menuData = null;
+        let currentScreenIndex = 0;
+        let screenKeys = [];
+        let autoLoopTimer = null;
+        const SCREEN_DURATION = 15000; // 15 seconds per screen
+
+        function getAssetUrl(id) {
+            if (!menuData || !menuData.assets) return "";
+            for (let cat in menuData.assets) {
+                const asset = menuData.assets[cat].find(a => a.id === id);
+                if (asset) return asset.url;
+            }
+            return "";
+        }
+
+        // 3. Render Components Exactly as positioned in CMS
+        function renderMenu(data) {
+            menuData = data;
+            const container = document.getElementById('screens-container');
+            container.innerHTML = '';
+            screenKeys = [];
+
+            if (!data.formules) return;
+
+            let sIdx = 0;
+            for (let fKey in data.formules) {
+                const formule = data.formules[fKey];
+                screenKeys.push(fKey);
+
+                const screenDiv = document.createElement('div');
+                screenDiv.className = `menu-screen ${sIdx === currentScreenIndex ? 'active' : ''}`;
+                screenDiv.id = `screen-${sIdx + 1}`;
+
+                // Formule Background image if specific
+                if (formule.bgImage && formule.bgImage !== 'emirates_bg_1080p.jpg') {
+                    const bgDiv = document.createElement('div');
+                    bgDiv.style.cssText = `position:absolute; inset:0; background:url('/${formule.bgImage}') center/cover no-repeat; opacity:${formule.bgOpacity || 0.8}; z-index:1;`;
+                    screenDiv.appendChild(bgDiv);
+                }
+
+                // Render each component at exact x, y, scale, rotation, z
+                if (formule.components && Array.isArray(formule.components)) {
+                    formule.components.forEach((comp, cIdx) => {
+                        let compHtml = '';
+                        const animClass = (comp.continuousAnim && comp.continuousAnim !== 'none') ? `anim-${comp.continuousAnim}` : '';
+
+                        if (comp.type === 'customText') {
+                            compHtml = `<div class="${animClass}">${comp.content || ''}</div>`;
+                        } else if (comp.type === 'rawImage' || comp.type === 'main') {
+                            const src = comp.url ? (comp.url.startsWith('http') ? comp.url : '/' + comp.url) : getAssetUrl(comp.assetId);
+                            if (!src) return;
+                            const flipStyle = (comp.flipX || comp.flip) ? 'transform: scaleX(-1);' : '';
+                            compHtml = `<img src="${src}" class="${animClass}" style="filter: drop-shadow(0 20px 30px rgba(0,0,0,0.6)); max-width:2500px; ${flipStyle}">`;
+                        } else if (comp.type === 'shape') {
+                            compHtml = `<div class="${animClass}" style="background-color:${comp.color || '#000'}; width:${comp.width || 100}px; height:${comp.height || 50}px; border-radius:${comp.borderRadius || 0}px; opacity:${comp.opacity !== undefined ? comp.opacity : 1};"></div>`;
+                        }
+
+                        const scaleVal = comp.scale !== undefined ? comp.scale : 1;
+                        const rotVal = comp.rotation || 0;
+                        const zVal = comp.z || 10;
+
+                        const compWrap = document.createElement('div');
+                        compWrap.style.cssText = `position:absolute; top:350px; left:50%; width:0; height:0; overflow:visible; z-index:${zVal};`;
+                        compWrap.innerHTML = `
+                            <div style="transform: translate(${comp.x}px, ${comp.y}px) scale(${scaleVal});">
+                                <div style="position:absolute; width:max-content; height:max-content; transform: translate(-50%, -50%) rotate(${rotVal}deg);">
+                                    ${compHtml}
+                                </div>
+                            </div>
+                        `;
+                        screenDiv.appendChild(compWrap);
+                    });
+                }
+
+                container.appendChild(screenDiv);
+                sIdx++;
+            }
+
+            scaleStage();
+        }
+
+        // 4. Screen Switching & Loop
+        function showScreen(idx) {
+            const screens = document.querySelectorAll('.menu-screen');
+            if (!screens.length) return;
+            currentScreenIndex = idx % screens.length;
+            screens.forEach((s, i) => {
+                if (i === currentScreenIndex) s.classList.add('active');
+                else s.classList.remove('active');
+            });
+        }
+
+        function cycleNext() {
+            showScreen(currentScreenIndex + 1);
+            if (autoLoopTimer) clearTimeout(autoLoopTimer);
+            autoLoopTimer = setTimeout(cycleNext, SCREEN_DURATION);
+        }
+
+        function setScreenMode(mode) {
+            document.querySelectorAll('.ui-controls .btn-ctl').forEach(b => b.classList.remove('active'));
+            if (autoLoopTimer) {
+                clearTimeout(autoLoopTimer);
+                autoLoopTimer = null;
+            }
+
+            if (mode === 'auto') {
+                document.getElementById('btn-auto').classList.add('active');
+                autoLoopTimer = setTimeout(cycleNext, SCREEN_DURATION);
+            } else if (mode === 'screen-1') {
+                document.getElementById('btn-s1').classList.add('active');
+                showScreen(0);
+            } else if (mode === 'screen-2') {
+                document.getElementById('btn-s2').classList.add('active');
+                showScreen(1);
+            }
+        }
+
+        // 5. Controls Autohide & Fullscreen & Audio
+        let ctlTimeout = null;
+        const ctlBar = document.getElementById('tv-controls');
+        function showCtl() {
+            if (!ctlBar) return;
+            ctlBar.classList.add('visible');
+            if (ctlTimeout) clearTimeout(ctlTimeout);
+            ctlTimeout = setTimeout(() => ctlBar.classList.remove('visible'), 3000);
+        }
+        window.addEventListener('mousemove', showCtl);
+        window.addEventListener('touchstart', showCtl);
+        showCtl();
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(e => {});
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        }
+
+        let isAudioPlaying = false;
+        function toggleSound() {
+            const a = document.getElementById('bg-audio');
+            const btn = document.getElementById('btn-sound');
+            if (!a) return;
+            if (isAudioPlaying) {
+                a.pause();
+                isAudioPlaying = false;
+                btn.innerHTML = '🔇 Son';
+                btn.classList.remove('active');
+            } else {
+                a.play().then(() => {
+                    isAudioPlaying = true;
+                    btn.innerHTML = '🔊 Son Actif';
+                    btn.classList.add('active');
+                }).catch(e => console.log('Audio error:', e));
+            }
+        }
+
+        // 6. Data Fetching & Live Sync Polling
+        let lastDataHash = "";
+        async function fetchAndRender() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const targetProject = urlParams.get('project') || 'default';
+                const targetTv = urlParams.get('tv') || '1';
+                const res = await fetch(`/api/menu/${targetProject}/${targetTv}?t=${Date.now()}`);
+                if (res.ok) {
+                    const text = await res.text();
+                    if (text !== lastDataHash) {
+                        lastDataHash = text;
+                        const data = JSON.parse(text);
+                        renderMenu(data);
+                    }
+                }
+            } catch(e) {
+                console.error("Error loading menu:", e);
+            }
+        }
+
+        // Initial Load
+        fetchAndRender().then(() => {
+            autoLoopTimer = setTimeout(cycleNext, SCREEN_DURATION);
+        });
+
+        // Live-Poll every 2.5 seconds: if user saves in CMS, TV updates automatically!
+        setInterval(fetchAndRender, 2500);
+    </script>
+</body>
+</html>

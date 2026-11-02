@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Bocadillo - Premium Menu 2 Screens</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,900;1,900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        montserrat: ['Montserrat', 'sans-serif'],
+                        oswald: ['Oswald', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            red: '#e60000',
+                            orange: '#ff5500',
+                            yellow: '#ffaa00',
+                            dark: '#000000'
+                        }
+                    },
+                    animation: {
+                        'anim-1': 'bounceIn 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards',
+                        'anim-2': 'slideUpFade 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards',
+                        'anim-3': 'flipIn 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards',
+                        'anim-4': 'zoomInRotate 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards',
+                        'anim-5': 'slideLeftFade 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards',
+                        'spotlight-in': 'slideRightFade 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards',
+                        'spotlight-out': 'slideLeftOut 0.8s cubic-bezier(0.8, 0.2, 0.8, 1) forwards',
+                    },
+                    keyframes: {
+                        bounceIn: {
+                            '0%': { transform: 'translateY(-150px) scale(0.8)', opacity: '0' },
+                            '60%': { transform: 'translateY(20px) scale(1.05)', opacity: '1' },
+                            '100%': { transform: 'translateY(0) scale(1)', opacity: '1' }
+                        },
+                        slideUpFade: {
+                            '0%': { transform: 'translateY(150px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        },
+                        flipIn: {
+                            '0%': { transform: 'perspective(400px) rotateY(-90deg)', opacity: '0' },
+                            '100%': { transform: 'perspective(400px) rotateY(0)', opacity: '1' }
+                        },
+                        zoomInRotate: {
+                            '0%': { transform: 'scale(0.3) rotate(-30deg)', opacity: '0' },
+                            '100%': { transform: 'scale(1) rotate(0)', opacity: '1' }
+                        },
+                        slideLeftFade: {
+                            '0%': { transform: 'translateX(-150px)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' }
+                        },
+                        slideRightFade: {
+                            '0%': { transform: 'translateX(-300px) scale(0.8)', opacity: '0' },
+                            '80%': { transform: 'translateX(20px) scale(1.02)', opacity: '1' },
+                            '100%': { transform: 'translateX(0) scale(1)', opacity: '1' }
+                        },
+                        slideLeftOut: {
+                            '0%': { transform: 'translateX(0) scale(1)', opacity: '1' },
+                            '100%': { transform: 'translateX(300px) scale(0.8)', opacity: '0' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #000000;
+            margin: 0;
+            overflow: hidden;
+            color: #ffffff;
+        }
+
+        .sandwich-img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            max-height: 250px;
+            object-fit: contain;
+            transform: scale(1.1) rotate(-2deg);
+            filter: drop-shadow(0 20px 25px rgba(0,0,0,0.9)) saturate(1.15);
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 10;
+        }
+
+        .spotlight-img {
+            filter: drop-shadow(0 30px 40px rgba(0,0,0,1)) saturate(1.2);
+            transition: transform 10s linear; /* Slow panning effect */
+        }
+
+        /* Typography */
+        .title-main {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-style: italic;
+            text-transform: uppercase;
+            line-height: 0.95;
+            background: linear-gradient(to bottom, #ffffff, #d4d4d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.9));
+        }
+
+        .title-sub {
+            font-family: 'Oswald', sans-serif;
+            color: #ffaa00;
+            letter-spacing: 0.2em;
+            text-shadow: 0 2px 10px rgba(255, 170, 0, 0.4);
+        }
+
+        /* Premium Price Tag */
+        .price-container {
+            position: relative;
+            display: inline-block;
+            z-index: 20;
+            transform: rotate(-3deg);
+        }
+        
+        .price-value {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-style: italic;
+            font-size: 70px;
+            color: #ffaa00;
+            line-height: 0.75;
+            text-shadow: 4px 4px 0 #e60000, 8px 8px 25px rgba(230,0,0,0.8);
+        }
+        
+        .price-currency {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 25px;
+            color: #ffffff;
+            position: absolute;
+            top: -10px;
+            right: -35px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.9);
+        }
+
+        .page-out {
+            animation: fadeOut 0.6s cubic-bezier(0.8, 0.2, 0.8, 1) forwards;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; transform: scale(1) translateY(0); }
+            100% { opacity: 0; transform: scale(1.05) translateY(-50px); }
+        }
+
+        .ribbon {
+            background: linear-gradient(90deg, #da291c, #e60000, #da291c);
+            box-shadow: 0 15px 40px rgba(218, 41, 28, 0.5);
+            transform: skew(-15deg);
+        }
+        .ribbon-text {
+            transform: skew(15deg);
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen">
+    
+    <!-- Brand Logo (Top Left) -->
+    <div class="absolute top-6 left-8 z-50 flex items-center drop-shadow-2xl">
+        <div class="bg-brand-red text-brand-yellow px-4 py-2 rounded-xl shadow-2xl border-4 border-brand-yellow transform -rotate-3 hover:rotate-0 transition duration-300 cursor-default">
+            <span class="font-oswald font-black text-3xl tracking-widest leading-none block text-center shadow-black" style="text-shadow: 2px 2px 0 #000;">MON<br><span class="text-white text-4xl">BOCADILLO</span></span>
+        </div>
+    </div>
+
+    <!-- FULL SCREEN VIDEO BACKGROUND -->
+    <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <video autoplay loop muted class="absolute w-full h-full object-cover opacity-60">
+            <source src="d9dfc322_bois_mere.mp4" type="video/mp4">
+        </video>
+        <!-- Overlay Gradient for legibility -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/90"></div>
+    </div>
+
+    <!-- Header Dynamic Title -->
+    <div class="absolute top-6 left-0 w-full flex justify-center z-50">
+        <div class="ribbon px-20 py-3 border-b-[5px] border-brand-yellow">
+            <h1 id="screen-title" class="ribbon-text text-4xl xl:text-5xl font-montserrat font-black italic text-white tracking-widest shadow-sm">NOS BOCADILLOS</h1>
+        </div>
+    </div>
+
+    <!-- TOP SECTION: Slider Container (Takes 55% of height) -->
+    <div id="slider" class="w-full h-[55%] relative z-10 pt-24 px-6">
+        <!-- Pages will be injected here -->
+    </div>
+
+    <!-- BOTTOM SECTION: Spotlight Animation (Takes 45% of height) -->
+    <div class="w-full h-[45%] relative z-20 flex items-center justify-center p-8">
+        <div id="spotlight-container" class="w-[90%] max-w-6xl h-full flex items-center">
+            <!-- Spotlight item injected here -->
+        </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="absolute bottom-0 left-0 w-full h-2 bg-gray-900 z-50">
+        <div id="progress" class="h-full bg-gradient-to-r from-brand-orange to-brand-yellow w-0"></div>
+    </div>
+
+    <script>
+        let bocadillos = [];
+        let sandwiches = [];
+        let screens = [];
+        let allItems = [];
+
+        // Fetch Data from Server
+        fetch('/api/dynamic_menu')
+            .then(res => res.json())
+            .then(data => {
+                bocadillos = data.bocadillos || [];
+                sandwiches = data.sandwiches || [];
+                window.designSettings = data.settings || {};
+                
+                screens = [
+                    { title: "NOS BOCADILLOS", items: bocadillos.slice(0, 4) },
+                    { title: "NOS SANDWICHES", items: sandwiches.slice(0, 4) }
+                ];
+
+                allItems = [...bocadillos, ...sandwiches];
+                // Shuffle array for spotlight randomness
+                for (let i = allItems.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [allItems[i], allItems[j]] = [allItems[j], allItems[i]];
+                }
+
+                // Start Top Slider
+                cycleScreens();
+                setInterval(cycleScreens, DURATION);
+
+                // Start Bottom Spotlight
+                renderSpotlight();
+                setInterval(renderSpotlight, SPOTLIGHT_DURATION);
+            })
+            .catch(err => console.error("Error loading menu data:", err));
+
+        // 5 distinct animations for the top items entrance
+        const animations = ['animate-anim-1', 'animate-anim-2', 'animate-anim-3', 'animate-anim-4', 'animate-anim-5'];
+
+        let currentScreen = 0;
+        const DURATION = 10000; // 10 seconds per screen for the TOP slider
+
+        function renderScreen(screenIndex) {
+            const slider = document.getElementById('slider');
+            const titleEl = document.getElementById('screen-title');
+            const screenData = screens[screenIndex];
+
+            // Update Header Title
+            titleEl.textContent = screenData.title;
+
+            // Create new page
+            const pageEl = document.createElement('div');
+            pageEl.className = 'absolute inset-0 flex items-center justify-center pt-8 px-4 gap-4';
+            
+            let html = '';
+            screenData.items.forEach((s, i) => {
+                const words = s.name.split(' ');
+                const first = words.shift();
+                const rest = words.join(' ');
+                
+                // Assign a distinct animation to each item
+                const animClass = animations[i % animations.length];
+
+                html += `
+                    <div class="flex-1 flex flex-col items-center justify-between h-full pb-4 ${animClass} opacity-0 relative" style="animation-delay: ${i * 0.15}s;">
+                        
+                        <!-- Titles -->
+                        <div class="text-center z-20 mb-[-5px] relative w-full px-1">
+                            <h3 class="title-sub text-lg xl:text-xl uppercase">${first}</h3>
+                            <h2 class="title-main mt-1 text-[28px] xl:text-[38px] leading-[0.95]">${rest || first}</h2>
+                        </div>
+                        
+                        <!-- Image Container with Fries Image appended -->
+                        <div class="flex-1 w-full flex items-center justify-center relative mt-2 px-1">
+                            <!-- Real Fries Image (Behind sandwich, Top Right) -->
+                            <div class="absolute -top-4 right-[10%] z-0">
+                                <img src="processed_images/cornet1.png" class="w-32 h-32 xl:w-40 xl:h-40 drop-shadow-2xl" alt="Frites">
+                            </div>
+                            <img src="${s.img}" class="sandwich-img relative z-10" onerror="this.src='https://via.placeholder.com/600x400/000000/ffffff?text=Image'">
+                        </div>
+
+                        <!-- Price -->
+                        <div class="z-20 mt-2">
+                            <div class="price-container">
+                                <span class="price-value">${s.price}</span>
+                                <span class="price-currency">DH</span>
+                            </div>
+                        </div>
+
+                    </div>
+                `;
+            });
+
+            pageEl.innerHTML = html;
+            slider.appendChild(pageEl);
+
+            // Progress Bar Animation
+            const progress = document.getElementById('progress');
+            progress.style.transition = 'none';
+            progress.style.width = '0%';
+            setTimeout(() => {
+                progress.style.transition = `width ${DURATION}ms linear`;
+                progress.style.width = '100%';
+            }, 50);
+
+            // Exit Animation
+            setTimeout(() => {
+                pageEl.classList.add('page-out');
+                setTimeout(() => {
+                    pageEl.remove();
+                }, 600);
+            }, DURATION - 600);
+        }
+
+        function cycleScreens() {
+            renderScreen(currentScreen);
+            currentScreen = (currentScreen + 1) % screens.length;
+        }
+
+        // ==========================================
+        // SPOTLIGHT ANIMATION (BOTTOM SECTION)
+        // ==========================================
+        
+        let currentSpotlight = 0;
+        const SPOTLIGHT_DURATION = 6000; // 6 seconds per spotlight
+
+        const spotlightTitles = [
+            "🔥 LE CHOIX DU CHEF",
+            "⭐ TRÈS DEMANDÉ",
+            "🍔 SPÉCIALITÉ MAISON",
+            "✨ COUP DE COEUR"
+        ];
+
+        function renderSpotlight() {
+            const container = document.getElementById('spotlight-container');
+            const s = allItems[currentSpotlight];
+            const badgeTitle = spotlightTitles[currentSpotlight % spotlightTitles.length];
+
+            const animClass = window.designSettings?.spotlight_anim === 'slide-up' ? 'animate-anim-2' :
+                              window.designSettings?.spotlight_anim === 'zoom' ? 'animate-anim-4' :
+                              window.designSettings?.spotlight_anim === 'fade' ? 'opacity-100 transition-opacity duration-1000' :
+                              'animate-spotlight-in';
+
+            const spotlightEl = document.createElement('div');
+            spotlightEl.className = `w-full h-[85%] flex items-center justify-between bg-gradient-to-r from-brand-red/90 to-brand-orange/40 rounded-3xl border-l-8 border-brand-yellow p-8 shadow-2xl relative ${animClass} opacity-0 backdrop-blur-sm`;
+            
+            const fX = window.designSettings?.spotlight_fries_x || 0;
+            const fY = window.designSettings?.spotlight_fries_y || 0;
+            const fS = (window.designSettings?.spotlight_fries_scale || 100) / 100;
+            
+            const sX = window.designSettings?.spotlight_sandwich_x || 0;
+            const sY = window.designSettings?.spotlight_sandwich_y || 0;
+            const sS = (window.designSettings?.spotlight_sandwich_scale || 110) / 100;
+
+            spotlightEl.innerHTML = `
+                <!-- Promo Badge -->
+                <div class="absolute -top-5 left-8 bg-brand-yellow text-black font-oswald font-black px-6 py-2 rounded-full text-2xl tracking-widest shadow-xl border-4 border-black transform -rotate-2">
+                    ${badgeTitle}
+                </div>
+
+                <!-- Text & Price (Left) -->
+                <div class="flex-1 flex flex-col justify-center z-20 pl-4 mt-6 max-w-[60%]">
+                    <h2 class="text-white font-montserrat font-black italic text-5xl xl:text-[65px] uppercase leading-none drop-shadow-lg">${s.name}</h2>
+                    <div class="mt-4">
+                        <span class="font-montserrat font-black italic text-[90px] xl:text-[110px] text-white drop-shadow-xl" style="text-shadow: 4px 4px 0 #000, 8px 8px 20px rgba(0,0,0,0.8);">${s.price}</span>
+                        <span class="font-oswald font-bold text-4xl text-brand-yellow ml-2" style="text-shadow: 2px 2px 5px rgba(0,0,0,0.8);">DH</span>
+                    </div>
+                </div>
+
+                <!-- Massive POP-OUT Image (Right) with Fries -->
+                <div class="absolute right-[-10%] top-1/2 -translate-y-1/2 w-[75%] h-[200%] flex items-center justify-center z-50">
+                    <!-- Real Fries Image (Behind, Top Right) -->
+                    <div class="absolute top-[15%] right-[25%] z-10" style="transform: translate(${fX}px, ${fY}px) scale(${fS}); transition: all 0.5s;">
+                        <img src="processed_images/cornet1.png" class="w-64 h-64 xl:w-80 xl:h-80 drop-shadow-2xl" alt="Frites">
+                    </div>
+                    <!-- Image gets a slow pan animation (scale up over 10s) -->
+                    <img id="spotlight-img-${currentSpotlight}" src="${s.img}" class="spotlight-img relative z-20 object-contain w-full h-full" style="filter: drop-shadow(0 40px 50px rgba(0,0,0,0.9)) saturate(1.3); transform: translate(${sX}px, ${sY}px) scale(${sS}) rotate(-6deg); transition: all 0.5s;">
+                </div>
+            `;
+
+            container.innerHTML = '';
+            container.appendChild(spotlightEl);
+
+            // Trigger slow pan on image
+            setTimeout(() => {
+                const img = document.getElementById(`spotlight-img-${currentSpotlight}`);
+                if(img) {
+                    const finalScale = (sS * 1.1).toFixed(2);
+                    img.style.transform = `translate(${sX}px, ${sY}px) scale(${finalScale}) rotate(0deg)`;
+                }
+            }, 100);
+
+            // Exit animation
+            setTimeout(() => {
+                spotlightEl.classList.remove('animate-spotlight-in');
+                spotlightEl.classList.add('animate-spotlight-out');
+            }, SPOTLIGHT_DURATION - 800);
+
+            currentSpotlight = (currentSpotlight + 1) % allItems.length;
+        }
+        
+        
+        // ==========================================
+        // VISUAL EDITOR MODE (if ?edit=1 in URL)
+        // ==========================================
+        const urlParams = new URLSearchParams(window.location.search);
+        if(urlParams.has('edit')) {
+            document.body.insertAdjacentHTML('beforeend', `
+                <div class="fixed top-4 right-4 z-[9999] bg-white p-4 rounded-xl shadow-2xl border-4 border-red-500 text-black">
+                    <h3 class="font-bold mb-2">Mode Édition Visuelle</h3>
+                    <p class="text-sm text-gray-600 mb-2">Glissez (drag) le sandwich ou les frites pour les déplacer.</p>
+                    <button id="save-visual-btn" class="bg-green-600 text-white px-4 py-2 rounded font-bold hover:bg-green-700 w-full">Sauvegarder</button>
+                    <button onclick="window.location.href='tv_dynamic.html'" class="bg-gray-500 text-white px-4 py-2 rounded font-bold hover:bg-gray-600 w-full mt-2">Quitter (Play)</button>
+                </div>
+            `);
+
+            let isDragging = false;
+            let currentTarget = null;
+            let startX, startY;
+            let initialX = 0, initialY = 0;
+            let settingX, settingY;
+
+            document.addEventListener('mousedown', (e) => {
+                const target = e.target;
+                let found = null;
+                
+                // Check if we clicked the big sandwich
+                if(target.classList.contains('spotlight-img')) {
+                    found = target;
+                    settingX = 'spotlight_sandwich_x';
+                    settingY = 'spotlight_sandwich_y';
+                }
+                // Check if we clicked the fries (the img inside the div)
+                else if(target.alt === 'Frites') {
+                    // Go up to the container
+                    if (target.parentElement.classList.contains('absolute') && target.parentElement.style.transform) {
+                        found = target.parentElement; // move the container
+                        settingX = 'spotlight_fries_x';
+                        settingY = 'spotlight_fries_y';
+                    }
+                }
+
+                if(found) {
+                    isDragging = true;
+                    currentTarget = found;
+                    startX = e.clientX;
+                    startY = e.clientY;
+                    initialX = window.designSettings[settingX] || 0;
+                    initialY = window.designSettings[settingY] || 0;
+                    e.preventDefault();
+                }
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if(!isDragging || !currentTarget) return;
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+                window.designSettings[settingX] = initialX + dx;
+                window.designSettings[settingY] = initialY + dy;
+                
+                if(settingX.includes('sandwich')) {
+                    const sS = (window.designSettings.spotlight_sandwich_scale || 110) / 100;
+                    currentTarget.style.transform = `translate(${window.designSettings[settingX]}px, ${window.designSettings[settingY]}px) scale(${sS}) rotate(0deg)`;
+                } else {
+                    const fS = (window.designSettings.spotlight_fries_scale || 100) / 100;
+                    currentTarget.style.transform = `translate(${window.designSettings[settingX]}px, ${window.designSettings[settingY]}px) scale(${fS})`;
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                if(isDragging) {
+                    isDragging = false;
+                    currentTarget = null;
+                }
+            });
+            
+            // Add hover cursor styles globally using CSS
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .spotlight-img { pointer-events: auto !important; }
+                .spotlight-img:hover { cursor: grab !important; outline: 3px dashed red; outline-offset: 5px; }
+                img[alt="Frites"] { pointer-events: auto !important; }
+                img[alt="Frites"]:hover { cursor: grab !important; outline: 3px dashed red; outline-offset: 5px; }
+            `;
+            document.head.appendChild(style);
+
+            document.getElementById('save-visual-btn').addEventListener('click', async () => {
+                const btn = document.getElementById('save-visual-btn');
+                btn.innerText = "Sauvegarde...";
+                try {
+                    const res = await fetch('/api/dynamic_menu');
+                    const fullData = await res.json();
+                    
+                    if(!fullData.settings) fullData.settings = {};
+                    fullData.settings.spotlight_sandwich_x = window.designSettings.spotlight_sandwich_x;
+                    fullData.settings.spotlight_sandwich_y = window.designSettings.spotlight_sandwich_y;
+                    fullData.settings.spotlight_fries_x = window.designSettings.spotlight_fries_x;
+                    fullData.settings.spotlight_fries_y = window.designSettings.spotlight_fries_y;
+                    
+                    await fetch('/api/dynamic_menu', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(fullData)
+                    });
+                    
+                    btn.innerText = "Sauvegardé !";
+                    btn.className = "bg-blue-600 text-white px-4 py-2 rounded font-bold w-full";
+                    setTimeout(() => {
+                        btn.innerText = "Sauvegarder";
+                        btn.className = "bg-green-600 text-white px-4 py-2 rounded font-bold hover:bg-green-700 w-full";
+                    }, 2000);
+                } catch(e) {
+                    alert("Erreur de sauvegarde!");
+                    btn.innerText = "Sauvegarder";
+                }
+            });
+        }
+
+        // End
+    </script>
+</body>
+</html>

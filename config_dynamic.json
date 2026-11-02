@@ -1,0 +1,71 @@
+{
+  "bocadillos": [
+    {
+      "img": "processed_images/bocadillo cheese 24 dh.png",
+      "name": "BOCADILLO CHEESE",
+      "price": "24"
+    },
+    {
+      "img": "processed_images/bocadillo complet 29 dh.png",
+      "name": "BOCADILLO COMPLET",
+      "price": "29"
+    },
+    {
+      "img": "processed_images/bocadillo tangerois 24 dh.png",
+      "name": "BOCADILLO TANGEROIS",
+      "price": "24"
+    },
+    {
+      "img": "processed_images/bocadillo thon 22 dh.png",
+      "name": "BOCADILLO THON",
+      "price": "22"
+    },
+    {
+      "img": "processed_images/bocadillo tortillia royale 30 dh.png",
+      "name": "TORTILLIA ROYALE",
+      "price": "30"
+    },
+    {
+      "img": "processed_images/bocadillo_tortillia 22 dh.png",
+      "name": "BOCADILLO TORTILLIA",
+      "price": "22"
+    }
+  ],
+  "sandwiches": [
+    {
+      "img": "processed_images/sandwich americain 35 dh.png",
+      "name": "SANDWICH AMERICAIN",
+      "price": "35"
+    },
+    {
+      "img": "processed_images/sandwiche mixte 35 dh.png",
+      "name": "SANDWICHE MIXTE",
+      "price": "35"
+    },
+    {
+      "img": "processed_images/sandwiche poulet 30 dh.png",
+      "name": "SANDWICHE POULET",
+      "price": "30"
+    },
+    {
+      "img": "processed_images/sandwiche saussice 30.png",
+      "name": "SANDWICHE SAUSSICE",
+      "price": "30"
+    },
+    {
+      "img": "processed_images/sandwich viande hache 30 dh.png",
+      "name": "VIANDE HACHE",
+      "price": "30"
+    }
+  ],
+  "settings": {
+    "grid_anim": "fade",
+    "spotlight_anim": "pop",
+    "spotlight_fries_scale": 114,
+    "spotlight_fries_x": 0,
+    "spotlight_fries_y": 300,
+    "spotlight_sandwich_scale": 110,
+    "spotlight_sandwich_x": 0,
+    "spotlight_sandwich_y": 20
+  }
+}

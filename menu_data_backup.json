@@ -1,0 +1,1898 @@
+{
+  "orientation": "horizontal",
+  "assets": {
+    "sandwiches": [
+      {
+        "id": "bocadillo cheese 24 dh.jpg",
+        "name": "BOCADILLO CHEESE",
+        "url": "processed_images/bocadillo cheese 24 dh.jpg"
+      },
+      {
+        "id": "bocadillo complet 29 dh.jpg",
+        "name": "BOCADILLO COMPLET",
+        "url": "processed_images/bocadillo complet 29 dh.jpg"
+      },
+      {
+        "id": "bocadillo tangerois 24 dh.jpg",
+        "name": "BOCADILLO TANGEROIS",
+        "url": "processed_images/bocadillo tangerois 24 dh.jpg"
+      },
+      {
+        "id": "bocadillo thon 22 dh.jpg",
+        "name": "BOCADILLO THON",
+        "url": "processed_images/bocadillo thon 22 dh.jpg"
+      },
+      {
+        "id": "bocadillo tortillia royale 30 dh.jpg",
+        "name": "BOCADILLO TORTILLIA ROYALE",
+        "url": "processed_images/bocadillo tortillia royale 30 dh.jpg"
+      },
+      {
+        "id": "bocadillo_tortillia 22 dh.jpg",
+        "name": "BOCADILLO TORTILLIA",
+        "url": "processed_images/bocadillo_tortillia 22 dh.jpg"
+      },
+      {
+        "id": "sandwich americain 35 dh.jpg",
+        "name": "SANDWICH AMERICAIN",
+        "url": "processed_images/sandwich americain 35 dh.jpg"
+      },
+      {
+        "id": "sandwich viande hache 30 dh.jpg",
+        "name": "SANDWICH VIANDE HACHE",
+        "url": "processed_images/sandwich viande hache 30 dh.jpg"
+      },
+      {
+        "id": "sandwiche mixte 35 dh.jpg",
+        "name": "SANDWICHE MIXTE",
+        "url": "processed_images/sandwiche mixte 35 dh.jpg"
+      },
+      {
+        "id": "sandwiche poulet 30 dh.jpg",
+        "name": "SANDWICHE POULET",
+        "url": "processed_images/sandwiche poulet 30 dh.jpg"
+      },
+      {
+        "id": "sandwiche saussice 30.jpg",
+        "name": "SANDWICHE SAUSSICE",
+        "url": "processed_images/sandwiche saussice 30.jpg"
+      }
+    ],
+    "drinks": [],
+    "sides": []
+  },
+  "formules": {
+    "formule_0": {
+      "id": "formule_0",
+      "name": "BOCADILLO CHEESE",
+      "description": "NOUVEAU & DÉLICIEUX",
+      "price": "24",
+      "badge": "SPÉCIALITÉS",
+      "duration": 8,
+      "bgColor": "#000000",
+      "bgEffect": "none",
+      "tv": "1",
+      "nameLayout": {
+        "x": 0,
+        "y": -400,
+        "scale": 1.2,
+        "rotation": 0,
+        "animIn": "fadeDown",
+        "delay": 0.2,
+        "z": 20
+      },
+      "descLayout": {
+        "x": 0,
+        "y": -330,
+        "scale": 0.7,
+        "rotation": 0,
+        "animIn": "fadeRight",
+        "delay": 0.4,
+        "z": 20
+      },
+      "priceLayout": {
+        "x": -700,
+        "y": 250,
+        "scale": 1.8,
+        "rotation": -15,
+        "animIn": "rollIn",
+        "delay": 0.6,
+        "z": 30
+      },
+      "badgeLayout": {
+        "x": 700,
+        "y": -350,
+        "scale": 1.1,
+        "rotation": 15,
+        "animIn": "pop",
+        "delay": 0.5,
+        "z": 30
+      },
+      "components": [
+        {
+          "type": "rawImage",
+          "url": "processed_images/bocadillo cheese 24 dh.jpg",
+          "x": 0,
+          "y": 0,
+          "scale": 1,
+          "z": 5,
+          "continuousAnim": "pulse",
+          "animIn": "zoomIn",
+          "delay": 0,
+          "fillScreen": true
+        },
+        {
+          "type": "customText",
+          "content": "✨",
+          "x": -450,
+          "y": 150,
+          "scale": 2.5,
+          "z": 25,
+          "animIn": "fadeUp",
+          "delay": 0.8,
+          "continuousAnim": "float"
+        },
+        {
+          "type": "customText",
+          "content": "🔥",
+          "x": 450,
+          "y": 100,
+          "scale": 3,
+          "z": 25,
+          "animIn": "fadeDown",
+          "delay": 0.9,
+          "continuousAnim": "breathe"
+        }
+      ]
+    },
+    "formule_1": {
+      "id": "formule_1",
+      "name": "BOCADILLO COMPLET",
+      "description": "NOUVEAU & DÉLICIEUX",
+      "price": "29",
+      "badge": "SPÉCIALITÉS",
+      "duration": 8,
+      "bgColor": "#000000",
+      "bgEffect": "none",
+      "tv": "1",
+      "nameLayout": {
+        "x": 0,
+        "y": -400,
+        "scale": 1.2,
+        "rotation": 0,
+        "animIn": "fadeDown",
+        "delay": 0.2,
+        "z": 20
+      },
+      "descLayout": {
+        "x": 0,
+        "y": -330,
+        "scale": 0.7,
+        "rotation": 0,
+        "animIn": "fadeRight",
+        "delay": 0.4,
+        "z": 20
+      },
+      "priceLayout": {
+        "x": -700,
+        "y": 250,
+        "scale": 1.8,
+        "rotation": -15,
+        "animIn": "rollIn",
+        "delay": 0.6,
+        "z": 30
+      },
+      "badgeLayout": {
+        "x": 700,
+        "y": -350,
+        "scale": 1.1,
+        "rotation": 15,
+        "animIn": "pop",
+        "delay": 0.5,
+        "z": 30
+      },
+      "components": [
+        {
+          "type": "rawImage",
+          "url": "processed_images/bocadillo complet 29 dh.jpg",
+          "x": 0,
+          "y": 0,
+          "scale": 1,
+          "z": 5,
+          "continuousAnim": "pulse",
+          "animIn": "zoomIn",
+          "delay": 0,
+          "fillScreen": true
+        },
+        {
+          "type": "customText",
+          "content": "✨",
+          "x": -450,
+          "y": 150,
+          "scale": 2.5,
+          "z": 25,
+          "animIn": "fadeUp",
+          "delay": 0.8,
+          "continuousAnim": "float"
+        },
+        {
+          "type": "customText",
+          "content": "🔥",
+          "x": 450,
+          "y": 100,
+          "scale": 3,
+          "z": 25,
+          "animIn": "fadeDown",
+          "delay": 0.9,
+          "continuousAnim": "breathe"
+        }
+      ]
+    },
+    "formule_2": {
+      "id": "formule_2",
+      "name": "BOCADILLO TANGEROIS",
+      "description": "NOUVEAU & DÉLICIEUX",
+      "price": "24",
+      "badge": "SPÉCIALITÉS",
+      "duration": 8,
+      "bgColor": "#000000",
+      "bgEffect": "none",
+      "tv": "1",
+      "nameLayout": {
+        "x": 0,
+        "y": -400,
+        "scale": 1.2,
+        "rotation": 0,
+        "animIn": "fadeDown",
+        "delay": 0.2,
+        "z": 20
+      },
+      "descLayout": {
+        "x": 0,
+        "y": -330,
+        "scale": 0.7,
+        "rotation": 0,
+        "animIn": "fadeRight",
+        "delay": 0.4,
+        "z": 20
+      },
+      "priceLayout": {
+        "x": -700,
+        "y": 250,
+        "scale": 1.8,
+        "rotation": -15,
+        "animIn": "rollIn",
+        "delay": 0.6,
+        "z": 30
+      },
+      "badgeLayout": {
+        "x": 700,
+        "y": -350,
+        "scale": 1.1,
+        "rotation": 15,
+        "animIn": "pop",
+        "delay": 0.5,
+        "z": 30
+      },
+      "components": [
+        {
+          "type": "rawImage",
+          "url": "processed_images/bocadillo tangerois 24 dh.jpg",
+          "x": 0,
+          "y": 0,
+          "scale": 1,
+          "z": 5,
+          "continuousAnim": "pulse",
+          "animIn": "zoomIn",
+          "delay": 0,
+          "fillScreen": true
+        },
+        {
+          "type": "customText",
+          "content": "✨",
+          "x": -450,
+          "y": 150,
+          "scale": 2.5,
+          "z": 25,
+          "animIn": "fadeUp",
+          "delay": 0.8,
+          "continuousAnim": "float"
+        },
+        {
+          "type": "customText",
+          "content": "🔥",
+          "x": 450,
+          "y": 100,
+          "scale": 3,
+          "z": 25,
+          "animIn": "fadeDown",
+          "delay": 0.9,
+          "continuousAnim": "breathe"
+        }
+      ]
+    },
+    "formule_3": {
+      "id": "formule_3",
+      "name": "BOCADILLO THON",
+      "description": "NOUVEAU & DÉLICIEUX",
+      "price": "22",
+      "badge": "SPÉCIALITÉS",
+      "duration": 8,
+      "bgColor": "#000000",
+      "bgEffect": "none",
+      "tv": "1",
+      "nameLayout": {
+        "x": 0,
+        "y": -400,
+        "scale": 1.2,
+        "rotation": 0,
+        "animIn": "fadeDown",
+        "delay": 0.2,
+        "z": 20
+      },
+      "descLayout": {
+        "x": 0,
+        "y": -330,
+        "scale": 0.7,
+        "rotation": 0,
+        "animIn": "fadeRight",
+        "delay": 0.4,
+        "z": 20
+      },
+      "priceLayout": {
+        "x": -700,
+        "y": 250,
+        "scale": 1.8,
+        "rotation": -15,
+        "animIn": "rollIn",
+        "delay": 0.6,
+        "z": 30
+      },
+      "badgeLayout": {
+        "x": 700,
+        "y": -350,
+        "scale": 1.1,
+        "rotation": 15,
+        "animIn": "pop",
+        "delay": 0.5,
+        "z": 30
+      },
+      "components": [
+        {
+          "type": "rawImage",
+          "url": "processed_images/bocadillo thon 22 dh.jpg",
+          "x": 0,
+          "y": 0,
+          "scale": 1,
+          "z": 5,
+          "continuousAnim": "pulse",
+          "animIn": "zoomIn",
+          "delay": 0,
+          "fillScreen": true
+        },
+        {
+          "type": "customText",
+          "content": "✨",
+          "x": -450,
+          "y": 150,
+          "scale": 2.5,
+          "z": 25,
+          "animIn": "fadeUp",
+          "delay": 0.8,
+          "continuousAnim": "float"
+        },
+        {
+          "type": "customText",
+          "content": "🔥",
+          "x": 450,
+          "y": 100,
+          "scale": 3,
+          "z": 25,
+          "animIn": "fadeDown",
+          "delay": 0.9,
+          "continuousAnim": "breathe"
+        }
+      ]
+    },
+    "formule_4": {
+      "id": "formule_4",
+      "name": "BOCADILLO TORTILLIA ROYALE",
+      "description": "NOUVEAU & DÉLICIEUX",
+      "price": "30",
+      "badge": "SPÉCIALITÉS",
+      "duration": 8,
+      "bgColor": "#000000",
+      "bgEffect": "none",
+      "tv": "2",
+      "nameLayout": {
+        "x": 0,
+        "y": -400,
+        "scale": 1.2,
+        "rotation": 0,
+        "animIn": "fadeDown",
+        "delay": 0.2,
+        "z": 20
+      },
+      "descLayout": {
+        "x": 0,
+        "y": -330,
+        "scale": 0.7,
+        "rotation": 0,
+        "animIn": "fadeRight",
+        "delay": 0.4,
+        "z": 20
+      },
+      "priceLayout": {
+        "x": -700,
+        "y": 250,
+        "scale": 1.8,
+        "rotation": -15,
+        "animIn": "rollIn",
+        "delay": 0.6,
+        "z": 30
+      },
+      "badgeLayout": {
+        "x": 700,
+        "y": -350,
+        "scale": 1.1,
+        "rotation": 15,
+        "animIn": "pop",
+        "delay": 0.5,
+        "z": 30
+      },
+      "components": [
+        {
+          "type": "rawImage",
+          "url": "processed_images/bocadillo tortillia royale 30 dh.jpg",
+          "x": 0,
+          "y": 0,
+          "scale": 1,
+          "z": 5,
+          "continuousAnim": "pulse",
+          "animIn": "zoomIn",
+          "delay": 0,
+          "fillScreen": true
+        },
+        {
+          "type": "customText",
+          "content": "✨",
+          "x": -450,
+          "y": 150,
+          "scale": 2.5,
+          "z": 25,
+          "animIn": "fadeUp",
+          "delay": 0.8,
+          "continuousAnim": "float"
+        },
+        {
+          "type": "customText",
+          "content": "🔥",
+          "x": 450,
+          "y": 100,
+          "scale": 3,
+          "z": 25,
+          "animIn": "fadeDown",
+          "delay": 0.9,
+          "continuousAnim": "breathe"
+        }
+      ]
+    },
+    "formule_5": {
+      "id": "formule_5",
+      "name": "BOCADILLO TORTILLIA",
+      "description": "NOUVEAU & DÉLICIEUX",
+      "price": "22",
+      "badge": "SPÉCIALITÉS",
+      "duration": 8,
+      "bgColor": "#000000",
+      "bgEffect": "none",
+      "tv": "2",
+      "nameLayout": {
+        "x": 0,
+        "y": -400,
+        "scale": 1.2,
+        "rotation": 0,
+        "animIn": "fadeDown",
+        "delay": 0.2,
+        "z": 20
+      },
+      "descLayout": {
+        "x": 0,
+        "y": -330,
+        "scale": 0.7,
+        "rotation": 0,
+        "animIn": "fadeRight",
+        "delay": 0.4,
+        "z": 20
+      },
+      "priceLayout": {
+        "x": -700,
+        "y": 250,
+        "scale": 1.8,
+        "rotation": -15,
+        "animIn": "rollIn",
+        "delay": 0.6,
+        "z": 30
+      },
+      "badgeLayout": {
+        "x": 700,
+        "y": -350,
+        "scale": 1.1,
+        "rotation": 15,
+        "animIn": "pop",
+        "delay": 0.5,
+        "z": 30
+      },
+      "components": [
+        {
+          "type": "rawImage",
+          "url": "processed_images/bocadillo_tortillia 22 dh.jpg",
+          "x": 0,
+          "y": 0,
+          "scale": 1,
+          "z": 5,
+          "continuousAnim": "pulse",
+          "animIn": "zoomIn",
+          "delay": 0,
+          "fillScreen": true
+        },
+        {
+          "type": "customText",
+          "content": "✨",
+          "x": -450,
+          "y": 150,
+          "scale": 2.5,
+          "z": 25,
+          "animIn": "fadeUp",
+          "delay": 0.8,
+          "continuousAnim": "float"
+        },
+        {
+          "type": "customText",
+          "content": "🔥",
+          "x": 450,
+          "y": 100,
+          "scale": 3,
+          "z": 25,
+          "animIn": "fadeDown",
+          "delay": 0.9,
+          "continuousAnim": "breathe"
+        }
+      ]
+    },
+    "formule_6": {
+      "id": "formule_6",
+      "name": "SANDWICH AMERICAIN",
+      "description": "NOUVEAU & DÉLICIEUX",
+      "price": "35",
+      "badge": "SPÉCIALITÉS",
+      "duration": 8,
+      "bgColor": "#000000",
+      "bgEffect": "none",
+      "tv": "2",
+      "nameLayout": {
+        "x": 0,
+        "y": -400,
+        "scale": 1.2,
+        "rotation": 0,
+        "animIn": "fadeDown",
+        "delay": 0.2,
+        "z": 20
+      },
+      "descLayout": {
+        "x": 0,
+        "y": -330,
+        "scale": 0.7,
+        "rotation": 0,
+        "animIn": "fadeRight",
+        "delay": 0.4,
+        "z": 20
+      },
+      "priceLayout": {
+        "x": -700,
+        "y": 250,
+        "scale": 1.8,
+        "rotation": -15,
+        "animIn": "rollIn",
+        "delay": 0.6,
+        "z": 30
+      },
+      "badgeLayout": {
+        "x": 700,
+        "y": -350,
+        "scale": 1.1,
+        "rotation": 15,
+        "animIn": "pop",
+        "delay": 0.5,
+        "z": 30
+      },
+      "components": [
+        {
+          "type": "rawImage",
+          "url": "processed_images/sandwich americain 35 dh.jpg",
+          "x": 0,
+          "y": 0,
+          "scale": 1,
+          "z": 5,
+          "continuousAnim": "pulse",
+          "animIn": "zoomIn",
+          "delay": 0,
+          "fillScreen": true
+        },
+        {
+          "type": "customText",
+          "content": "✨",
+          "x": -450,
+          "y": 150,
+          "scale": 2.5,
+          "z": 25,
+          "animIn": "fadeUp",
+          "delay": 0.8,
+          "continuousAnim": "float"
+        },
+        {
+          "type": "customText",
+          "content": "🔥",
+          "x": 450,
+          "y": 100,
+          "scale": 3,
+          "z": 25,
+          "animIn": "fadeDown",
+          "delay": 0.9,
+          "continuousAnim": "breathe"
+        }
+      ]
+    },
+    "formule_7": {
+      "id": "formule_7",
+      "name": "SANDWICH VIANDE HACHE",
+      "description": "NOUVEAU & DÉLICIEUX",
+      "price": "30",
+      "badge": "SPÉCIALITÉS",
+      "duration": 8,
+      "bgColor": "#000000",
+      "bgEffect": "none",
+      "tv": "2",
+      "nameLayout": {
+        "x": 0,
+        "y": -400,
+        "scale": 1.2,
+        "rotation": 0,
+        "animIn": "fadeDown",
+        "delay": 0.2,
+        "z": 20
+      },
+      "descLayout": {
+        "x": 0,
+        "y": -330,
+        "scale": 0.7,
+        "rotation": 0,
+        "animIn": "fadeRight",
+        "delay": 0.4,
+        "z": 20
+      },
+      "priceLayout": {
+        "x": -700,
+        "y": 250,
+        "scale": 1.8,
+        "rotation": -15,
+        "animIn": "rollIn",
+        "delay": 0.6,
+        "z": 30
+      },
+      "badgeLayout": {
+        "x": 700,
+        "y": -350,
+        "scale": 1.1,
+        "rotation": 15,
+        "animIn": "pop",
+        "delay": 0.5,
+        "z": 30
+      },
+      "components": [
+        {
+          "type": "rawImage",
+          "url": "processed_images/sandwich viande hache 30 dh.jpg",
+          "x": 0,
+          "y": 0,
+          "scale": 1,
+          "z": 5,
+          "continuousAnim": "pulse",
+          "animIn": "zoomIn",
+          "delay": 0,
+          "fillScreen": true
+        },
+        {
+          "type": "customText",
+          "content": "✨",
+          "x": -450,
+          "y": 150,
+          "scale": 2.5,
+          "z": 25,
+          "animIn": "fadeUp",
+          "delay": 0.8,
+          "continuousAnim": "float"
+        },
+        {
+          "type": "customText",
+          "content": "🔥",
+          "x": 450,
+          "y": 100,
+          "scale": 3,
+          "z": 25,
+          "animIn": "fadeDown",
+          "delay": 0.9,
+          "continuousAnim": "breathe"
+        }
+      ]
+    },
+    "formule_8": {
+      "id": "formule_8",
+      "name": "SANDWICHE MIXTE",
+      "description": "NOUVEAU & DÉLICIEUX",
+      "price": "35",
+      "badge": "SPÉCIALITÉS",
+      "duration": 8,
+      "bgColor": "#000000",
+      "bgEffect": "none",
+      "tv": "3",
+      "nameLayout": {
+        "x": 0,
+        "y": -400,
+        "scale": 1.2,
+        "rotation": 0,
+        "animIn": "fadeDown",
+        "delay": 0.2,
+        "z": 20
+      },
+      "descLayout": {
+        "x": 0,
+        "y": -330,
+        "scale": 0.7,
+        "rotation": 0,
+        "animIn": "fadeRight",
+        "delay": 0.4,
+        "z": 20
+      },
+      "priceLayout": {
+        "x": -700,
+        "y": 250,
+        "scale": 1.8,
+        "rotation": -15,
+        "animIn": "rollIn",
+        "delay": 0.6,
+        "z": 30
+      },
+      "badgeLayout": {
+        "x": 700,
+        "y": -350,
+        "scale": 1.1,
+        "rotation": 15,
+        "animIn": "pop",
+        "delay": 0.5,
+        "z": 30
+      },
+      "components": [
+        {
+          "type": "rawImage",
+          "url": "processed_images/sandwiche mixte 35 dh.jpg",
+          "x": 0,
+          "y": 0,
+          "scale": 1,
+          "z": 5,
+          "continuousAnim": "pulse",
+          "animIn": "zoomIn",
+          "delay": 0,
+          "fillScreen": true
+        },
+        {
+          "type": "customText",
+          "content": "✨",
+          "x": -450,
+          "y": 150,
+          "scale": 2.5,
+          "z": 25,
+          "animIn": "fadeUp",
+          "delay": 0.8,
+          "continuousAnim": "float"
+        },
+        {
+          "type": "customText",
+          "content": "🔥",
+          "x": 450,
+          "y": 100,
+          "scale": 3,
+          "z": 25,
+          "animIn": "fadeDown",
+          "delay": 0.9,
+          "continuousAnim": "breathe"
+        }
+      ]
+    },
+    "formule_9": {
+      "id": "formule_9",
+      "name": "SANDWICHE POULET",
+      "description": "NOUVEAU & DÉLICIEUX",
+      "price": "30",
+      "badge": "SPÉCIALITÉS",
+      "duration": 8,
+      "bgColor": "#000000",
+      "bgEffect": "none",
+      "tv": "3",
+      "nameLayout": {
+        "x": 0,
+        "y": -400,
+        "scale": 1.2,
+        "rotation": 0,
+        "animIn": "fadeDown",
+        "delay": 0.2,
+        "z": 20
+      },
+      "descLayout": {
+        "x": 0,
+        "y": -330,
+        "scale": 0.7,
+        "rotation": 0,
+        "animIn": "fadeRight",
+        "delay": 0.4,
+        "z": 20
+      },
+      "priceLayout": {
+        "x": -700,
+        "y": 250,
+        "scale": 1.8,
+        "rotation": -15,
+        "animIn": "rollIn",
+        "delay": 0.6,
+        "z": 30
+      },
+      "badgeLayout": {
+        "x": 700,
+        "y": -350,
+        "scale": 1.1,
+        "rotation": 15,
+        "animIn": "pop",
+        "delay": 0.5,
+        "z": 30
+      },
+      "components": [
+        {
+          "type": "rawImage",
+          "url": "processed_images/sandwiche poulet 30 dh.jpg",
+          "x": 0,
+          "y": 0,
+          "scale": 1,
+          "z": 5,
+          "continuousAnim": "pulse",
+          "animIn": "zoomIn",
+          "delay": 0,
+          "fillScreen": true
+        },
+        {
+          "type": "customText",
+          "content": "✨",
+          "x": -450,
+          "y": 150,
+          "scale": 2.5,
+          "z": 25,
+          "animIn": "fadeUp",
+          "delay": 0.8,
+          "continuousAnim": "float"
+        },
+        {
+          "type": "customText",
+          "content": "🔥",
+          "x": 450,
+          "y": 100,
+          "scale": 3,
+          "z": 25,
+          "animIn": "fadeDown",
+          "delay": 0.9,
+          "continuousAnim": "breathe"
+        }
+      ]
+    },
+    "formule_10": {
+      "id": "formule_10",
+      "name": "SANDWICHE SAUSSICE",
+      "description": "NOUVEAU & DÉLICIEUX",
+      "price": "30",
+      "badge": "SPÉCIALITÉS",
+      "duration": 8,
+      "bgColor": "#000000",
+      "bgEffect": "none",
+      "tv": "3",
+      "nameLayout": {
+        "x": 0,
+        "y": -400,
+        "scale": 1.2,
+        "rotation": 0,
+        "animIn": "fadeDown",
+        "delay": 0.2,
+        "z": 20
+      },
+      "descLayout": {
+        "x": 0,
+        "y": -330,
+        "scale": 0.7,
+        "rotation": 0,
+        "animIn": "fadeRight",
+        "delay": 0.4,
+        "z": 20
+      },
+      "priceLayout": {
+        "x": -700,
+        "y": 250,
+        "scale": 1.8,
+        "rotation": -15,
+        "animIn": "rollIn",
+        "delay": 0.6,
+        "z": 30
+      },
+      "badgeLayout": {
+        "x": 700,
+        "y": -350,
+        "scale": 1.1,
+        "rotation": 15,
+        "animIn": "pop",
+        "delay": 0.5,
+        "z": 30
+      },
+      "components": [
+        {
+          "type": "rawImage",
+          "url": "processed_images/sandwiche saussice 30.jpg",
+          "x": 0,
+          "y": 0,
+          "scale": 1,
+          "z": 5,
+          "continuousAnim": "pulse",
+          "animIn": "zoomIn",
+          "delay": 0,
+          "fillScreen": true
+        },
+        {
+          "type": "customText",
+          "content": "✨",
+          "x": -450,
+          "y": 150,
+          "scale": 2.5,
+          "z": 25,
+          "animIn": "fadeUp",
+          "delay": 0.8,
+          "continuousAnim": "float"
+        },
+        {
+          "type": "customText",
+          "content": "🔥",
+          "x": 450,
+          "y": 100,
+          "scale": 3,
+          "z": 25,
+          "animIn": "fadeDown",
+          "delay": 0.9,
+          "continuousAnim": "breathe"
+        }
+      ]
+    },
+    "formule_smart_0_e7b47e": {
+      "name": "BOCADILLO CHEESE (Smart)",
+      "tv": "Toutes",
+      "duration": 6,
+      "components": [
+        {
+          "type": "shape",
+          "shapeType": "rect",
+          "width": 1200,
+          "height": 400,
+          "color": "#a11111",
+          "opacity": 1,
+          "borderRadius": 40,
+          "x": -50,
+          "y": 250,
+          "scale": 1,
+          "z": 2,
+          "animIn": "fadeIn",
+          "animOut": "fadeOut",
+          "delay": 0,
+          "rotation": 0
+        },
+        {
+          "type": "customText",
+          "content": "BOCADILLO CHEESE",
+          "x": 40,
+          "y": 280,
+          "scale": 1,
+          "z": 15,
+          "animIn": "zoomIn",
+          "animOut": "zoomOut",
+          "delay": 0.2,
+          "rotation": 0,
+          "color": "#ffffff",
+          "fontSize": 70,
+          "fontFamily": "'Oswald', sans-serif"
+        },
+        {
+          "type": "customText",
+          "content": "24 DH",
+          "x": 60,
+          "y": 420,
+          "scale": 1,
+          "z": 15,
+          "animIn": "zoomIn",
+          "animOut": "zoomOut",
+          "delay": 0.4,
+          "rotation": 0,
+          "color": "#facc15",
+          "fontSize": 120,
+          "fontFamily": "'Oswald', sans-serif",
+          "hasShadow": true
+        },
+        {
+          "type": "image",
+          "src": "processed_images/bocadillo cheese 24 dh.png",
+          "x": 350,
+          "y": 100,
+          "scale": 1.2,
+          "z": 20,
+          "animIn": "zoomIn",
+          "animOut": "fadeOut",
+          "delay": 0.6,
+          "rotation": -5,
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "image",
+          "src": "processed_images/cornet1.png",
+          "x": 650,
+          "y": -20,
+          "scale": 0.6,
+          "z": 18,
+          "animIn": "fadeIn",
+          "animOut": "fadeOut",
+          "delay": 0.8,
+          "rotation": 0,
+          "width": 400,
+          "height": 400
+        }
+      ]
+    },
+    "formule_smart_1_4e1789": {
+      "name": "BOCADILLO COMPLET (Smart)",
+      "tv": "Toutes",
+      "duration": 6,
+      "components": [
+        {
+          "type": "shape",
+          "shapeType": "rect",
+          "width": 1200,
+          "height": 400,
+          "color": "#a11111",
+          "opacity": 1,
+          "borderRadius": 40,
+          "x": -50,
+          "y": 250,
+          "scale": 1,
+          "z": 2,
+          "animIn": "fadeIn",
+          "animOut": "fadeOut",
+          "delay": 0,
+          "rotation": 0
+        },
+        {
+          "type": "customText",
+          "content": "BOCADILLO COMPLET",
+          "x": 40,
+          "y": 280,
+          "scale": 1,
+          "z": 15,
+          "animIn": "zoomIn",
+          "animOut": "zoomOut",
+          "delay": 0.2,
+          "rotation": 0,
+          "color": "#ffffff",
+          "fontSize": 70,
+          "fontFamily": "'Oswald', sans-serif"
+        },
+        {
+          "type": "customText",
+          "content": "29 DH",
+          "x": 60,
+          "y": 420,
+          "scale": 1,
+          "z": 15,
+          "animIn": "zoomIn",
+          "animOut": "zoomOut",
+          "delay": 0.4,
+          "rotation": 0,
+          "color": "#facc15",
+          "fontSize": 120,
+          "fontFamily": "'Oswald', sans-serif",
+          "hasShadow": true
+        },
+        {
+          "type": "image",
+          "src": "processed_images/bocadillo complet 29 dh.png",
+          "x": 350,
+          "y": 100,
+          "scale": 1.2,
+          "z": 20,
+          "animIn": "zoomIn",
+          "animOut": "fadeOut",
+          "delay": 0.6,
+          "rotation": -5,
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "image",
+          "src": "processed_images/cornet1.png",
+          "x": 650,
+          "y": -20,
+          "scale": 0.6,
+          "z": 18,
+          "animIn": "fadeIn",
+          "animOut": "fadeOut",
+          "delay": 0.8,
+          "rotation": 0,
+          "width": 400,
+          "height": 400
+        }
+      ]
+    },
+    "formule_smart_2_f9e1df": {
+      "name": "BOCADILLO TANGEROIS (Smart)",
+      "tv": "Toutes",
+      "duration": 6,
+      "components": [
+        {
+          "type": "shape",
+          "shapeType": "rect",
+          "width": 1200,
+          "height": 400,
+          "color": "#a11111",
+          "opacity": 1,
+          "borderRadius": 40,
+          "x": -50,
+          "y": 250,
+          "scale": 1,
+          "z": 2,
+          "animIn": "fadeIn",
+          "animOut": "fadeOut",
+          "delay": 0,
+          "rotation": 0
+        },
+        {
+          "type": "customText",
+          "content": "BOCADILLO TANGEROIS",
+          "x": 40,
+          "y": 280,
+          "scale": 1,
+          "z": 15,
+          "animIn": "zoomIn",
+          "animOut": "zoomOut",
+          "delay": 0.2,
+          "rotation": 0,
+          "color": "#ffffff",
+          "fontSize": 70,
+          "fontFamily": "'Oswald', sans-serif"
+        },
+        {
+          "type": "customText",
+          "content": "24 DH",
+          "x": 60,
+          "y": 420,
+          "scale": 1,
+          "z": 15,
+          "animIn": "zoomIn",
+          "animOut": "zoomOut",
+          "delay": 0.4,
+          "rotation": 0,
+          "color": "#facc15",
+          "fontSize": 120,
+          "fontFamily": "'Oswald', sans-serif",
+          "hasShadow": true
+        },
+        {
+          "type": "image",
+          "src": "processed_images/bocadillo tangerois 24 dh.png",
+          "x": 350,
+          "y": 100,
+          "scale": 1.2,
+          "z": 20,
+          "animIn": "zoomIn",
+          "animOut": "fadeOut",
+          "delay": 0.6,
+          "rotation": -5,
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "image",
+          "src": "processed_images/cornet1.png",
+          "x": 650,
+          "y": -20,
+          "scale": 0.6,
+          "z": 18,
+          "animIn": "fadeIn",
+          "animOut": "fadeOut",
+          "delay": 0.8,
+          "rotation": 0,
+          "width": 400,
+          "height": 400
+        }
+      ]
+    },
+    "formule_smart_3_2e06ad": {
+      "name": "BOCADILLO THON (Smart)",
+      "tv": "Toutes",
+      "duration": 6,
+      "components": [
+        {
+          "type": "shape",
+          "shapeType": "rect",
+          "width": 1200,
+          "height": 400,
+          "color": "#a11111",
+          "opacity": 1,
+          "borderRadius": 40,
+          "x": -50,
+          "y": 250,
+          "scale": 1,
+          "z": 2,
+          "animIn": "fadeIn",
+          "animOut": "fadeOut",
+          "delay": 0,
+          "rotation": 0
+        },
+        {
+          "type": "customText",
+          "content": "BOCADILLO THON",
+          "x": 40,
+          "y": 280,
+          "scale": 1,
+          "z": 15,
+          "animIn": "zoomIn",
+          "animOut": "zoomOut",
+          "delay": 0.2,
+          "rotation": 0,
+          "color": "#ffffff",
+          "fontSize": 70,
+          "fontFamily": "'Oswald', sans-serif"
+        },
+        {
+          "type": "customText",
+          "content": "22 DH",
+          "x": 60,
+          "y": 420,
+          "scale": 1,
+          "z": 15,
+          "animIn": "zoomIn",
+          "animOut": "zoomOut",
+          "delay": 0.4,
+          "rotation": 0,
+          "color": "#facc15",
+          "fontSize": 120,
+          "fontFamily": "'Oswald', sans-serif",
+          "hasShadow": true
+        },
+        {
+          "type": "image",
+          "src": "processed_images/bocadillo thon 22 dh.png",
+          "x": 350,
+          "y": 100,
+          "scale": 1.2,
+          "z": 20,
+          "animIn": "zoomIn",
+          "animOut": "fadeOut",
+          "delay": 0.6,
+          "rotation": -5,
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "image",
+          "src": "processed_images/cornet1.png",
+          "x": 650,
+          "y": -20,
+          "scale": 0.6,
+          "z": 18,
+          "animIn": "fadeIn",
+          "animOut": "fadeOut",
+          "delay": 0.8,
+          "rotation": 0,
+          "width": 400,
+          "height": 400
+        }
+      ]
+    },
+    "formule_smart_4_68fd06": {
+      "name": "TORTILLIA ROYALE (Smart)",
+      "tv": "Toutes",
+      "duration": 6,
+      "components": [
+        {
+          "type": "shape",
+          "shapeType": "rect",
+          "width": 1200,
+          "height": 400,
+          "color": "#a11111",
+          "opacity": 1,
+          "borderRadius": 40,
+          "x": -50,
+          "y": 250,
+          "scale": 1,
+          "z": 2,
+          "animIn": "fadeIn",
+          "animOut": "fadeOut",
+          "delay": 0,
+          "rotation": 0
+        },
+        {
+          "type": "customText",
+          "content": "TORTILLIA ROYALE",
+          "x": 40,
+          "y": 280,
+          "scale": 1,
+          "z": 15,
+          "animIn": "zoomIn",
+          "animOut": "zoomOut",
+          "delay": 0.2,
+          "rotation": 0,
+          "color": "#ffffff",
+          "fontSize": 70,
+          "fontFamily": "'Oswald', sans-serif"
+        },
+        {
+          "type": "customText",
+          "content": "30 DH",
+          "x": 60,
+          "y": 420,
+          "scale": 1,
+          "z": 15,
+          "animIn": "zoomIn",
+          "animOut": "zoomOut",
+          "delay": 0.4,
+          "rotation": 0,
+          "color": "#facc15",
+          "fontSize": 120,
+          "fontFamily": "'Oswald', sans-serif",
+          "hasShadow": true
+        },
+        {
+          "type": "image",
+          "src": "processed_images/bocadillo tortillia royale 30 dh.png",
+          "x": 350,
+          "y": 100,
+          "scale": 1.2,
+          "z": 20,
+          "animIn": "zoomIn",
+          "animOut": "fadeOut",
+          "delay": 0.6,
+          "rotation": -5,
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "image",
+          "src": "processed_images/cornet1.png",
+          "x": 650,
+          "y": -20,
+          "scale": 0.6,
+          "z": 18,
+          "animIn": "fadeIn",
+          "animOut": "fadeOut",
+          "delay": 0.8,
+          "rotation": 0,
+          "width": 400,
+          "height": 400
+        }
+      ]
+    },
+    "formule_smart_5_624f19": {
+      "name": "BOCADILLO TORTILLIA (Smart)",
+      "tv": "Toutes",
+      "duration": 6,
+      "components": [
+        {
+          "type": "shape",
+          "shapeType": "rect",
+          "width": 1200,
+          "height": 400,
+          "color": "#a11111",
+          "opacity": 1,
+          "borderRadius": 40,
+          "x": -50,
+          "y": 250,
+          "scale": 1,
+          "z": 2,
+          "animIn": "fadeIn",
+          "animOut": "fadeOut",
+          "delay": 0,
+          "rotation": 0
+        },
+        {
+          "type": "customText",
+          "content": "BOCADILLO TORTILLIA",
+          "x": 40,
+          "y": 280,
+          "scale": 1,
+          "z": 15,
+          "animIn": "zoomIn",
+          "animOut": "zoomOut",
+          "delay": 0.2,
+          "rotation": 0,
+          "color": "#ffffff",
+          "fontSize": 70,
+          "fontFamily": "'Oswald', sans-serif"
+        },
+        {
+          "type": "customText",
+          "content": "22 DH",
+          "x": 60,
+          "y": 420,
+          "scale": 1,
+          "z": 15,
+          "animIn": "zoomIn",
+          "animOut": "zoomOut",
+          "delay": 0.4,
+          "rotation": 0,
+          "color": "#facc15",
+          "fontSize": 120,
+          "fontFamily": "'Oswald', sans-serif",
+          "hasShadow": true
+        },
+        {
+          "type": "image",
+          "src": "processed_images/bocadillo_tortillia 22 dh.png",
+          "x": 350,
+          "y": 100,
+          "scale": 1.2,
+          "z": 20,
+          "animIn": "zoomIn",
+          "animOut": "fadeOut",
+          "delay": 0.6,
+          "rotation": -5,
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "image",
+          "src": "processed_images/cornet1.png",
+          "x": 650,
+          "y": -20,
+          "scale": 0.6,
+          "z": 18,
+          "animIn": "fadeIn",
+          "animOut": "fadeOut",
+          "delay": 0.8,
+          "rotation": 0,
+          "width": 400,
+          "height": 400
+        }
+      ]
+    },
+    "formule_smart_6_f2b50b": {
+      "name": "SANDWICH AMERICAIN (Smart)",
+      "tv": "Toutes",
+      "duration": 6,
+      "components": [
+        {
+          "type": "shape",
+          "shapeType": "rect",
+          "width": 1200,
+          "height": 400,
+          "color": "#a11111",
+          "opacity": 1,
+          "borderRadius": 40,
+          "x": -50,
+          "y": 250,
+          "scale": 1,
+          "z": 2,
+          "animIn": "fadeIn",
+          "animOut": "fadeOut",
+          "delay": 0,
+          "rotation": 0
+        },
+        {
+          "type": "customText",
+          "content": "SANDWICH AMERICAIN",
+          "x": 40,
+          "y": 280,
+          "scale": 1,
+          "z": 15,
+          "animIn": "zoomIn",
+          "animOut": "zoomOut",
+          "delay": 0.2,
+          "rotation": 0,
+          "color": "#ffffff",
+          "fontSize": 70,
+          "fontFamily": "'Oswald', sans-serif"
+        },
+        {
+          "type": "customText",
+          "content": "35 DH",
+          "x": 60,
+          "y": 420,
+          "scale": 1,
+          "z": 15,
+          "animIn": "zoomIn",
+          "animOut": "zoomOut",
+          "delay": 0.4,
+          "rotation": 0,
+          "color": "#facc15",
+          "fontSize": 120,
+          "fontFamily": "'Oswald', sans-serif",
+          "hasShadow": true
+        },
+        {
+          "type": "image",
+          "src": "processed_images/sandwich americain 35 dh.png",
+          "x": 350,
+          "y": 100,
+          "scale": 1.2,
+          "z": 20,
+          "animIn": "zoomIn",
+          "animOut": "fadeOut",
+          "delay": 0.6,
+          "rotation": -5,
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "image",
+          "src": "processed_images/cornet1.png",
+          "x": 650,
+          "y": -20,
+          "scale": 0.6,
+          "z": 18,
+          "animIn": "fadeIn",
+          "animOut": "fadeOut",
+          "delay": 0.8,
+          "rotation": 0,
+          "width": 400,
+          "height": 400
+        }
+      ]
+    },
+    "formule_smart_7_7dc16f": {
+      "name": "SANDWICHE MIXTE (Smart)",
+      "tv": "Toutes",
+      "duration": 6,
+      "components": [
+        {
+          "type": "shape",
+          "shapeType": "rect",
+          "width": 1200,
+          "height": 400,
+          "color": "#a11111",
+          "opacity": 1,
+          "borderRadius": 40,
+          "x": -50,
+          "y": 250,
+          "scale": 1,
+          "z": 2,
+          "animIn": "fadeIn",
+          "animOut": "fadeOut",
+          "delay": 0,
+          "rotation": 0
+        },
+        {
+          "type": "customText",
+          "content": "SANDWICHE MIXTE",
+          "x": 40,
+          "y": 280,
+          "scale": 1,
+          "z": 15,
+          "animIn": "zoomIn",
+          "animOut": "zoomOut",
+          "delay": 0.2,
+          "rotation": 0,
+          "color": "#ffffff",
+          "fontSize": 70,
+          "fontFamily": "'Oswald', sans-serif"
+        },
+        {
+          "type": "customText",
+          "content": "35 DH",
+          "x": 60,
+          "y": 420,
+          "scale": 1,
+          "z": 15,
+          "animIn": "zoomIn",
+          "animOut": "zoomOut",
+          "delay": 0.4,
+          "rotation": 0,
+          "color": "#facc15",
+          "fontSize": 120,
+          "fontFamily": "'Oswald', sans-serif",
+          "hasShadow": true
+        },
+        {
+          "type": "image",
+          "src": "processed_images/sandwiche mixte 35 dh.png",
+          "x": 350,
+          "y": 100,
+          "scale": 1.2,
+          "z": 20,
+          "animIn": "zoomIn",
+          "animOut": "fadeOut",
+          "delay": 0.6,
+          "rotation": -5,
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "image",
+          "src": "processed_images/cornet1.png",
+          "x": 650,
+          "y": -20,
+          "scale": 0.6,
+          "z": 18,
+          "animIn": "fadeIn",
+          "animOut": "fadeOut",
+          "delay": 0.8,
+          "rotation": 0,
+          "width": 400,
+          "height": 400
+        }
+      ]
+    },
+    "formule_smart_8_785030": {
+      "name": "SANDWICHE POULET (Smart)",
+      "tv": "Toutes",
+      "duration": 6,
+      "components": [
+        {
+          "type": "shape",
+          "shapeType": "rect",
+          "width": 1200,
+          "height": 400,
+          "color": "#a11111",
+          "opacity": 1,
+          "borderRadius": 40,
+          "x": -50,
+          "y": 250,
+          "scale": 1,
+          "z": 2,
+          "animIn": "fadeIn",
+          "animOut": "fadeOut",
+          "delay": 0,
+          "rotation": 0
+        },
+        {
+          "type": "customText",
+          "content": "SANDWICHE POULET",
+          "x": 40,
+          "y": 280,
+          "scale": 1,
+          "z": 15,
+          "animIn": "zoomIn",
+          "animOut": "zoomOut",
+          "delay": 0.2,
+          "rotation": 0,
+          "color": "#ffffff",
+          "fontSize": 70,
+          "fontFamily": "'Oswald', sans-serif"
+        },
+        {
+          "type": "customText",
+          "content": "30 DH",
+          "x": 60,
+          "y": 420,
+          "scale": 1,
+          "z": 15,
+          "animIn": "zoomIn",
+          "animOut": "zoomOut",
+          "delay": 0.4,
+          "rotation": 0,
+          "color": "#facc15",
+          "fontSize": 120,
+          "fontFamily": "'Oswald', sans-serif",
+          "hasShadow": true
+        },
+        {
+          "type": "image",
+          "src": "processed_images/sandwiche poulet 30 dh.png",
+          "x": 350,
+          "y": 100,
+          "scale": 1.2,
+          "z": 20,
+          "animIn": "zoomIn",
+          "animOut": "fadeOut",
+          "delay": 0.6,
+          "rotation": -5,
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "image",
+          "src": "processed_images/cornet1.png",
+          "x": 650,
+          "y": -20,
+          "scale": 0.6,
+          "z": 18,
+          "animIn": "fadeIn",
+          "animOut": "fadeOut",
+          "delay": 0.8,
+          "rotation": 0,
+          "width": 400,
+          "height": 400
+        }
+      ]
+    },
+    "formule_smart_9_f821ed": {
+      "name": "SANDWICHE SAUSSICE (Smart)",
+      "tv": "Toutes",
+      "duration": 6,
+      "components": [
+        {
+          "type": "shape",
+          "shapeType": "rect",
+          "width": 1200,
+          "height": 400,
+          "color": "#a11111",
+          "opacity": 1,
+          "borderRadius": 40,
+          "x": -50,
+          "y": 250,
+          "scale": 1,
+          "z": 2,
+          "animIn": "fadeIn",
+          "animOut": "fadeOut",
+          "delay": 0,
+          "rotation": 0
+        },
+        {
+          "type": "customText",
+          "content": "SANDWICHE SAUSSICE",
+          "x": 40,
+          "y": 280,
+          "scale": 1,
+          "z": 15,
+          "animIn": "zoomIn",
+          "animOut": "zoomOut",
+          "delay": 0.2,
+          "rotation": 0,
+          "color": "#ffffff",
+          "fontSize": 70,
+          "fontFamily": "'Oswald', sans-serif"
+        },
+        {
+          "type": "customText",
+          "content": "30 DH",
+          "x": 60,
+          "y": 420,
+          "scale": 1,
+          "z": 15,
+          "animIn": "zoomIn",
+          "animOut": "zoomOut",
+          "delay": 0.4,
+          "rotation": 0,
+          "color": "#facc15",
+          "fontSize": 120,
+          "fontFamily": "'Oswald', sans-serif",
+          "hasShadow": true
+        },
+        {
+          "type": "image",
+          "src": "processed_images/sandwiche saussice 30.png",
+          "x": 350,
+          "y": 100,
+          "scale": 1.2,
+          "z": 20,
+          "animIn": "zoomIn",
+          "animOut": "fadeOut",
+          "delay": 0.6,
+          "rotation": -5,
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "image",
+          "src": "processed_images/cornet1.png",
+          "x": 650,
+          "y": -20,
+          "scale": 0.6,
+          "z": 18,
+          "animIn": "fadeIn",
+          "animOut": "fadeOut",
+          "delay": 0.8,
+          "rotation": 0,
+          "width": 400,
+          "height": 400
+        }
+      ]
+    },
+    "formule_smart_10_51fe9c": {
+      "name": "VIANDE HACHE (Smart)",
+      "tv": "Toutes",
+      "duration": 6,
+      "components": [
+        {
+          "type": "shape",
+          "shapeType": "rect",
+          "width": 1200,
+          "height": 400,
+          "color": "#a11111",
+          "opacity": 1,
+          "borderRadius": 40,
+          "x": -50,
+          "y": 250,
+          "scale": 1,
+          "z": 2,
+          "animIn": "fadeIn",
+          "animOut": "fadeOut",
+          "delay": 0,
+          "rotation": 0
+        },
+        {
+          "type": "customText",
+          "content": "VIANDE HACHE",
+          "x": 40,
+          "y": 280,
+          "scale": 1,
+          "z": 15,
+          "animIn": "zoomIn",
+          "animOut": "zoomOut",
+          "delay": 0.2,
+          "rotation": 0,
+          "color": "#ffffff",
+          "fontSize": 70,
+          "fontFamily": "'Oswald', sans-serif"
+        },
+        {
+          "type": "customText",
+          "content": "30 DH",
+          "x": 60,
+          "y": 420,
+          "scale": 1,
+          "z": 15,
+          "animIn": "zoomIn",
+          "animOut": "zoomOut",
+          "delay": 0.4,
+          "rotation": 0,
+          "color": "#facc15",
+          "fontSize": 120,
+          "fontFamily": "'Oswald', sans-serif",
+          "hasShadow": true
+        },
+        {
+          "type": "image",
+          "src": "processed_images/sandwich viande hache 30 dh.png",
+          "x": 350,
+          "y": 100,
+          "scale": 1.2,
+          "z": 20,
+          "animIn": "zoomIn",
+          "animOut": "fadeOut",
+          "delay": 0.6,
+          "rotation": -5,
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "image",
+          "src": "processed_images/cornet1.png",
+          "x": 650,
+          "y": -20,
+          "scale": 0.6,
+          "z": 18,
+          "animIn": "fadeIn",
+          "animOut": "fadeOut",
+          "delay": 0.8,
+          "rotation": 0,
+          "width": 400,
+          "height": 400
+        }
+      ]
+    }
+  },
+  "promos": {
+    "video": "",
+    "image": "",
+    "videoDuration": 0,
+    "imageDuration": 0
+  }
+}

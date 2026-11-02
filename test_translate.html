@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#box {
+    width: 100px; height: 100px; background: red;
+    transform: translateX(50px) !important;
+    animation: floatAnim 2s infinite alternate;
+}
+@keyframes floatAnim {
+    0% { translate: 0px 0px; }
+    100% { translate: 0px -20px; }
+}
+</style>
+</head>
+<body>
+<div id="box"></div>
+<script>
+const el = document.getElementById('box');
+const style = window.getComputedStyle(el);
+document.body.innerHTML += '<p id="res">TRANSFORM: ' + style.transform + ' | TRANSLATE: ' + style.translate + '</p>';
+</script>
+</body>
+</html>

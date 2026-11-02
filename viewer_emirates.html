@@ -1159,6 +1159,11 @@
             });
 
             localStorage.setItem('mon_bocadillo_menu_config', JSON.stringify(menuData));
+            fetch('/api/save_emirates_config', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(menuData)
+            }).catch(e => console.log('Error saving to server:', e));
             applyDataToDOM();
             closeEditModal();
             alert('✓ Modifications enregistrées avec succès !');

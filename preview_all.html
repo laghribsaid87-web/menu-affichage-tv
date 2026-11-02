@@ -150,6 +150,13 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                    for(let registration of registrations) {
+                        registration.unregister();
+                    }
+                });
+            }
             const urlParams = new URLSearchParams(window.location.search);
             const project = urlParams.get('project') || 'default';
             
@@ -159,7 +166,7 @@
             
             tvs.forEach(tvId => {
                 const iframe = document.getElementById(`iframe-${tvId}`);
-                iframe.src = `viewer.html?project=${project}&tv=${tvId}`;
+                iframe.src = `viewer.html?project=${project}&tv=${tvId}&t=${Date.now()}`;
                 
                 // Scale the iframe to fit the wrapper
                 function resizeIframe() {

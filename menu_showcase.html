@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Showcase : 3 Modèles Menu TV Pro | Mon Bocadillo Tanger</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800;900&family=Oswald:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #030712;
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Interactive Switcher Bar */
+        .showcase-nav {
+            height: 70px;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            z-index: 100;
+            flex-shrink: 0;
+        }
+
+        .showcase-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .badge-live {
+            background: #ef4444;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 900;
+            padding: 4px 10px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            animation: pulse-live 2s infinite;
+        }
+
+        @keyframes pulse-live {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .title-text {
+            font-size: 16px;
+            font-weight: 800;
+            color: #f8fafc;
+        }
+
+        .tabs-container {
+            display: flex;
+            gap: 12px;
+        }
+
+        .tab-btn {
+            background: #1e293b;
+            color: #94a3b8;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 22px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-btn:hover {
+            color: #ffffff;
+            background: #334155;
+            transform: translateY(-1px);
+        }
+
+        .tab-btn.active-1 {
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+            color: #ffffff;
+            border-color: #f59e0b;
+            box-shadow: 0 4px 20px rgba(217, 119, 6, 0.5);
+        }
+
+        .tab-btn.active-2 {
+            background: linear-gradient(135deg, #ff6b00 0%, #ea580c 100%);
+            color: #000000;
+            border-color: #ffaa00;
+            box-shadow: 0 4px 20px rgba(255, 107, 0, 0.5);
+        }
+
+        .tab-btn.active-3 {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: #ffffff;
+            border-color: #60a5fa;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.5);
+        }
+
+        .actions-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .act-btn {
+            background: #334155;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s;
+        }
+
+        .act-btn:hover {
+            background: #475569;
+        }
+
+        /* Iframe Display Area */
+        .frame-wrapper {
+            flex: 1;
+            width: 100%;
+            height: calc(100vh - 70px);
+            position: relative;
+            background: #000;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+    </style>
+    <!-- Cache Buster & Service Worker Purger -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(registrations => {
+                for (let r of registrations) r.unregister();
+            });
+        }
+        if ('caches' in window) {
+            caches.keys().then(keys => {
+                for (let k of keys) caches.delete(k);
+            });
+        }
+    </script>
+</head>
+<body>
+
+    <!-- Top Switcher -->
+    <header class="showcase-nav">
+        <div class="showcase-brand">
+            <span class="badge-live">● STUDIO 2026</span>
+            <div class="title-text">Mon Bocadillo — 3 Modèles TV Dynamiques</div>
+        </div>
+
+        <div class="tabs-container">
+            <button class="tab-btn active-1" id="tab-1" onclick="switchModel(1)">
+                👑 Modèle 1 : Luxe Emirates (Bois &amp; Chalkboard)
+            </button>
+            <button class="tab-btn" id="tab-2" onclick="switchModel(2)">
+                ⚡ Modèle 2 : Modern Urban 2026 (Orange Électrique)
+            </button>
+            <button class="tab-btn" id="tab-3" onclick="switchModel(3)">
+                🌊 Modèle 3 : Vibrant Tanger (Bleu &amp; Pop)
+            </button>
+        </div>
+
+        <div class="actions-group">
+            <a href="/dashboard_pro.html" target="_blank" class="act-btn" style="background: #ea580c; border: 1px solid rgba(255,255,255,0.2);">
+                📱 Dashboard Prix
+            </a>
+            <a id="btn-open-tv" href="/menu_model1_emirates.html" target="_blank" class="act-btn" style="background: #10b981;">
+                📺 Ouvrir en Plein Écran TV
+            </a>
+            <button onclick="toggleFS()" class="act-btn">
+                ⛶ Plein Écran
+            </button>
+        </div>
+    </header>
+
+    <!-- Content Iframe -->
+    <div class="frame-wrapper">
+        <iframe id="menu-frame" src="/menu_model1_emirates.html"></iframe>
+    </div>
+
+    <script>
+                const models = {
+            1: { url: '/menu_model1_emirates.html', class: 'active-1' },
+            2: { url: '/menu_model2_urban.html', class: 'active-2' },
+            3: { url: '/menu_model3_vibrant.html', class: 'active-3' }
+        };
+
+        let currentActive = 1;
+
+        function switchModel(num) {
+            currentActive = num;
+            const frame = document.getElementById('menu-frame');
+            const openLink = document.getElementById('btn-open-tv');
+
+            // Reset tab styles
+            [1, 2, 3].forEach(i => {
+                const btn = document.getElementById(`tab-${i}`);
+                btn.className = 'tab-btn';
+            });
+
+            // Set active
+            document.getElementById(`tab-${num}`).classList.add(models[num].class);
+            frame.src = models[num].url;
+            openLink.href = models[num].url;
+        }
+
+        // Keyboard Shortcuts 1, 2, 3
+        window.addEventListener('keydown', e => {
+            if (e.key === '1') switchModel(1);
+            if (e.key === '2') switchModel(2);
+            if (e.key === '3') switchModel(3);
+            
+            if (e.key === 'f' || e.key === 'F') toggleFS();
+        });
+
+        function toggleFS() {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(e => {});
+            else if (document.exitFullscreen) document.exitFullscreen();
+        }
+    </script>
+</body>
+</html>
