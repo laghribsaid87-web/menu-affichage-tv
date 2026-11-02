@@ -4,7 +4,7 @@
     "drink_badge_text": "🥤 + BOISSON",
     "restaurant_name": "Mon Bocadillo Tanger",
     "sandwich_badge_text": "🍟 SANDWICH + FRITES",
-    "updated_at": "2026-11-02T20:15:20.134285",
+    "updated_at": "2026-11-02T20:35:49.936466",
     "active_model": 3
   },
   "items": [
@@ -29,7 +29,7 @@
       "is_available": true,
       "order": 2,
       "price_drink": "+7",
-      "price_sandwich": "30",
+      "price_sandwich": "34",
       "screen": 1,
       "title": "ROYALE",
       "title_prefix": "TORTILLA"

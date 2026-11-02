@@ -1,0 +1,35 @@
+
+<!DOCTYPE html>
+<html>
+<body>
+<div class="stall-cell">
+    <div class="stall-header">
+        <div class="title-block">
+            <span class="title-3d">COMPLET</span>
+        </div>
+        <div class="price-chalkboard">
+            <div class="price-col">
+                <span class="label">🍟 SANDWICH + FRITES</span>
+                <span class="num">29<span class="curr">DH</span></span>
+            </div>
+            <div class="price-sep"></div>
+            <div class="price-col">
+                <span class="label">🥤 + BOISSON</span>
+                <span class="num">+7<span class="curr">DH</span></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const card = document.querySelector('.stall-cell');
+const p1 = card.querySelector('.price-col:nth-child(1) .num');
+const p2 = card.querySelector('.price-col:nth-child(3) .num');
+
+console.log("TEST RESULT:");
+console.log("p1 found:", !!p1, p1 ? p1.innerText : "NULL");
+console.log("p2 found:", !!p2, p2 ? p2.innerText : "NULL");
+document.title = (p1 ? p1.innerText : "ERR1") + "___" + (p2 ? p2.innerText : "ERR2");
+</script>
+</body>
+</html>

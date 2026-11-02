@@ -307,12 +307,16 @@
 
     <!-- SCRIPT -->
     <script>
+                const API_BASE = (window.location.protocol === 'file:') ? 'http://localhost:8000' : '';
         let menuData = { items: [], global_settings: {}, tv_config: {} };
         let currentFilter = 'screen-1';
 
         async function loadItems() {
             try {
-                const res = await fetch('/api/menu_items?t=' + Date.now());
+                let res = await fetch(API_BASE + '/api/menu_items?t=' + Date.now());
+                if (!res.ok) {
+                    res = await fetch(API_BASE + '/menu_items.json?t=' + Date.now());
+                }
                 if (res.ok) {
                     menuData = await res.json();
                 } else {
@@ -420,7 +424,7 @@
                                 <div class="flex items-center justify-between mt-1">
                                     <button onclick="adjustPrice(${index}, -1)" class="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 text-gray-300 font-bold flex items-center justify-center text-sm active:scale-95 transition">&minus;</button>
                                     <div class="flex items-baseline">
-                                        <input type="text" value="${item.price_sandwich}" onchange="updateSandwichPrice(${index}, this.value)" class="w-12 bg-transparent text-center font-black text-xl text-yellow-400 focus:outline-none">
+                                        <input type="text" value="${item.price_sandwich}" oninput="updateSandwichPrice(${index}, this.value)" class="w-12 bg-transparent text-center font-black text-xl text-yellow-400 focus:outline-none">
                                         <span class="text-xs font-black text-yellow-500">DH</span>
                                     </div>
                                     <button onclick="adjustPrice(${index}, 1)" class="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 text-gray-300 font-bold flex items-center justify-center text-sm active:scale-95 transition">&plus;</button>
@@ -433,7 +437,7 @@
                                     🥤 + Boisson
                                 </span>
                                 <div class="flex items-center justify-center mt-1">
-                                    <input type="text" value="${item.price_drink}" onchange="updateDrinkPrice(${index}, this.value)" class="w-16 bg-white/5 border border-white/10 rounded-lg py-1 px-1.5 text-center font-black text-base text-orange-400 focus:outline-none focus:border-orange-500">
+                                    <input type="text" value="${item.price_drink}" oninput="updateDrinkPrice(${index}, this.value)" class="w-16 bg-white/5 border border-white/10 rounded-lg py-1 px-1.5 text-center font-black text-base text-orange-400 focus:outline-none focus:border-orange-500">
                                     <span class="ml-1 text-xs font-black text-orange-500">DH</span>
                                 </div>
                             </div>
@@ -508,19 +512,28 @@
 
         async function saveAllItems() {
             try {
+                // 1. Instant LocalStorage & Cross-Tab Broadcast (0ms)
                 localStorage.setItem('MENU_ITEMS_CACHE', JSON.stringify(menuData));
-                const res = await fetch('/api/menu_items', {
+                if (window.BroadcastChannel) {
+                    const bc = new BroadcastChannel('MENU_TV_CHANNEL');
+                    bc.postMessage({ type: 'PRICES_UPDATED', data: menuData });
+                }
+
+                // 2. Persist to Backend Server
+                const res = await fetch(API_BASE + '/api/menu_items', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(menuData)
                 });
+
                 if (res.ok) {
-                    showToast("Prix Enregistrés !", "Les télévisions ont reçu les nouveaux prix.");
+                    showToast("✅ Prix Enregistrés !", "Les télévisions ont reçu les nouveaux prix en direct.");
                 } else {
-                    showToast("Enregistré Localement", "Stocké en mémoire locale.");
+                    showToast("⚠️ Attention", "Enregistré dans le navigateur mais serveur injoignable.");
                 }
             } catch(e) {
-                showToast("Enregistré Localement", "Mode hors-ligne.");
+                console.error("Save error:", e);
+                showToast("💾 Enregistré Localement", "Mode hors-ligne (Vérifiez si Localhost est lancé).");
             }
         }
 
@@ -528,7 +541,7 @@
             showToast("Publication TV...", "Synchronisation avec GitHub Pages...");
             await saveAllItems();
             try {
-                const res = await fetch('/api/publish_to_tv', { method: 'POST' });
+                const res = await fetch(API_BASE + '/api/publish_to_tv', { method: 'POST' });
                 if (res.ok) {
                     showToast("🎉 3 Télés Synchronisées !", "Les nouveaux menus sont en direct sur les écrans !");
                 } else {

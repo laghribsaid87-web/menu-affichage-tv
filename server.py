@@ -17,6 +17,9 @@ def add_no_cache_headers(response):
     response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '0'
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Headers'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS, PUT, DELETE'
     return response
 
 # Config
@@ -34,7 +37,7 @@ MENU_ITEMS_FILE = os.path.join(MENU_DIR, 'menu_items.json')
 
 @app.route('/')
 def index():
-    return send_from_directory(MENU_DIR, 'dashboard.html')
+    return send_from_directory(MENU_DIR, 'dashboard_pro.html')
 
 
 @app.route('/<path:filename>')
