@@ -401,18 +401,25 @@
 
     <!-- BROADCAST ANIMATIONS ENGINE FOR PRODUCTS & PRICES (2026 EDITION) -->
     <style id="broadcast-animations-style">
-        /* 1. PRODUITS : SANDWICHES & FRITES FLOATING + GLOW */
+
+        /* 1. PRODUITS : HARDWARE-ACCELERATED FLOATING (ZERO LAG FOR ANDROID TV) */
         .food-sandwich {
-            animation: anim-sandwich-live 4.5s ease-in-out infinite alternate !important;
-            will-change: translate, filter !important;
+            animation: anim-sandwich-live 4.8s ease-in-out infinite !important;
+            filter: drop-shadow(0 18px 25px rgba(0,0,0,0.55)) !important;
+            will-change: translate !important;
+            transform: translateZ(0) !important;
+            backface-visibility: hidden !important;
         }
 
         .food-fries, .food-fries-side, .food-fries-corner {
-            animation: anim-fries-live 3.8s ease-in-out infinite alternate !important;
-            will-change: translate, filter !important;
+            animation: anim-fries-live 4.0s ease-in-out infinite !important;
+            filter: drop-shadow(0 12px 18px rgba(0,0,0,0.5)) !important;
+            will-change: translate !important;
+            transform: translateZ(0) !important;
+            backface-visibility: hidden !important;
         }
 
-        /* Staggered Floating Delays across cards so motion is organic */
+        /* Staggered Floating Delays */
         .pop-card:nth-child(1) .food-sandwich, .urban-card:nth-child(1) .food-sandwich, .stall-cell:nth-child(1) .food-sandwich { animation-delay: 0s !important; }
         .pop-card:nth-child(2) .food-sandwich, .urban-card:nth-child(2) .food-sandwich, .stall-cell:nth-child(2) .food-sandwich { animation-delay: 0.8s !important; }
         .pop-card:nth-child(3) .food-sandwich, .urban-card:nth-child(3) .food-sandwich, .stall-cell:nth-child(3) .food-sandwich { animation-delay: 1.6s !important; }
@@ -427,41 +434,26 @@
         .pop-card:nth-child(5) .food-fries-corner, .urban-card:nth-child(5) .food-fries-side, .stall-cell:nth-child(5) .food-fries { animation-delay: 1.7s !important; }
         .pop-card:nth-child(6) .food-fries-corner, .urban-card:nth-child(6) .food-fries-side, .stall-cell:nth-child(6) .food-fries { animation-delay: 2.5s !important; }
 
+        /* Pure translate - 0 repaint, 0 blur GPU overhead */
         @keyframes anim-sandwich-live {
-            0% {
-                translate: 0px 0px;
-                filter: drop-shadow(0 14px 22px rgba(0,0,0,0.45)) brightness(1);
-            }
-            50% {
-                filter: drop-shadow(0 20px 30px rgba(255, 107, 0, 0.35)) brightness(1.05);
-            }
-            100% {
-                translate: 0px -10px;
-                filter: drop-shadow(0 24px 34px rgba(0,0,0,0.55)) brightness(1.03);
-            }
+            0%, 100% { translate: 0px 0px; }
+            50% { translate: 0px -10px; }
         }
 
         @keyframes anim-fries-live {
-            0% {
-                translate: 0px 0px;
-                filter: drop-shadow(0 10px 18px rgba(0,0,0,0.5)) brightness(1);
-            }
-            100% {
-                translate: 0px -8px;
-                filter: drop-shadow(0 16px 26px rgba(255, 199, 44, 0.45)) brightness(1.08);
-            }
+            0%, 100% { translate: 0px 0px; }
+            50% { translate: 0px -8px; }
         }
 
-        /* 2. PRIX : LIGHT SHEEN SWEEP + GLOW PULSE */
+        /* 2. PRIX : LIGHT SHEEN SWEEP (COMPOSITED) */
         .price-chip-alone, .price-chip-menu, 
         .price-badge-alone, .price-badge-menu, 
         .price-chalkboard, .price-col, .urban-price-box {
             position: relative !important;
             overflow: hidden !important;
-            animation: price-subtle-glow 3.5s ease-in-out infinite alternate !important;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5) !important;
         }
 
-        /* Diagonal Beam of Light (Sheen) */
         .price-chip-alone::after, .price-chip-menu::after, 
         .price-badge-alone::after, .price-badge-menu::after, 
         .price-chalkboard::after, .urban-price-box::after {
@@ -475,53 +467,30 @@
                 90deg, 
                 transparent 0%, 
                 rgba(255, 255, 255, 0) 25%, 
-                rgba(255, 255, 255, 0.65) 50%, 
+                rgba(255, 255, 255, 0.6) 50%, 
                 rgba(255, 255, 255, 0) 75%, 
                 transparent 100%
             ) !important;
-            transform: rotate(25deg) !important;
-            animation: price-sheen-sweep 4s cubic-bezier(0.4, 0, 0.2, 1) infinite !important;
+            transform: rotate(25deg) translateZ(0) !important;
+            animation: price-sheen-sweep 5s cubic-bezier(0.4, 0, 0.2, 1) infinite !important;
             pointer-events: none !important;
             z-index: 5 !important;
+            will-change: transform !important;
         }
 
-        /* Staggered Sheen Timing across cards */
         .pop-card:nth-child(1) .price-chip-alone::after, .urban-card:nth-child(1) .price-badge-alone::after, .stall-cell:nth-child(1) .price-chalkboard::after { animation-delay: 0s !important; }
-        .pop-card:nth-child(2) .price-chip-alone::after, .urban-card:nth-child(2) .price-badge-alone::after, .stall-cell:nth-child(2) .price-chalkboard::after { animation-delay: 0.6s !important; }
-        .pop-card:nth-child(3) .price-chip-alone::after, .urban-card:nth-child(3) .price-badge-alone::after, .stall-cell:nth-child(3) .price-chalkboard::after { animation-delay: 1.2s !important; }
-        .pop-card:nth-child(4) .price-chip-alone::after, .urban-card:nth-child(4) .price-badge-alone::after, .stall-cell:nth-child(4) .price-chalkboard::after { animation-delay: 1.8s !important; }
-        .pop-card:nth-child(5) .price-chip-alone::after, .urban-card:nth-child(5) .price-badge-alone::after, .stall-cell:nth-child(5) .price-chalkboard::after { animation-delay: 2.4s !important; }
-        .pop-card:nth-child(6) .price-chip-alone::after, .urban-card:nth-child(6) .price-badge-alone::after, .stall-cell:nth-child(6) .price-chalkboard::after { animation-delay: 3.0s !important; }
-
-        .price-chip-menu::after, .price-badge-menu::after {
-            animation-delay: 0.3s !important;
-        }
+        .pop-card:nth-child(2) .price-chip-alone::after, .urban-card:nth-child(2) .price-badge-alone::after, .stall-cell:nth-child(2) .price-chalkboard::after { animation-delay: 0.8s !important; }
+        .pop-card:nth-child(3) .price-chip-alone::after, .urban-card:nth-child(3) .price-badge-alone::after, .stall-cell:nth-child(3) .price-chalkboard::after { animation-delay: 1.6s !important; }
+        .pop-card:nth-child(4) .price-chip-alone::after, .urban-card:nth-child(4) .price-badge-alone::after, .stall-cell:nth-child(4) .price-chalkboard::after { animation-delay: 2.4s !important; }
+        .pop-card:nth-child(5) .price-chip-alone::after, .urban-card:nth-child(5) .price-badge-alone::after, .stall-cell:nth-child(5) .price-chalkboard::after { animation-delay: 3.2s !important; }
+        .pop-card:nth-child(6) .price-chip-alone::after, .urban-card:nth-child(6) .price-badge-alone::after, .stall-cell:nth-child(6) .price-chalkboard::after { animation-delay: 4.0s !important; }
 
         @keyframes price-sheen-sweep {
-            0% { left: -120%; }
-            30% { left: 220%; }
-            100% { left: 220%; }
+            0% { transform: translateX(0) rotate(25deg); }
+            30% { transform: translateX(650px) rotate(25deg); }
+            100% { transform: translateX(650px) rotate(25deg); }
         }
 
-        @keyframes price-subtle-glow {
-            0% {
-                box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
-            }
-            100% {
-                box-shadow: 0 5px 18px rgba(255, 107, 0, 0.55), 0 0 10px rgba(255, 199, 44, 0.4);
-            }
-        }
-
-        /* Attention pulse on price numbers */
-        .p-number, .u-number, .price-num {
-            display: inline-block !important;
-            animation: number-subtle-pulse 3s ease-in-out infinite alternate !important;
-        }
-
-        @keyframes number-subtle-pulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.05); color: #ffffff; text-shadow: 0 0 12px rgba(255, 199, 44, 0.7); }
-        }
     </style>
 
 </head>
@@ -2116,11 +2085,14 @@
         // 3. Background Polling & Auto-Sync (Fallback to static JSON if API 404s)
         let lastDataHash = "";
         async function syncPrices() {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 4000);
             try {
-                let res = await fetch('/api/menu_items?t=' + Date.now());
+                let res = await fetch('/api/menu_items?t=' + Date.now(), { signal: controller.signal });
                 if (!res.ok) {
-                    res = await fetch('menu_items.json?t=' + Date.now());
+                    res = await fetch('menu_items.json?t=' + Date.now(), { signal: controller.signal });
                 }
+                clearTimeout(timeoutId);
                 if (res.ok) {
                     const text = await res.text();
                     if (text !== lastDataHash) {
@@ -2131,12 +2103,12 @@
                     }
                 }
             } catch(e) {
-                // Offline fallback
+                clearTimeout(timeoutId);
             }
         }
 
         syncPrices();
-        setInterval(syncPrices, 2000);
+        setInterval(syncPrices, 15000);
     })();
     </script>
 
