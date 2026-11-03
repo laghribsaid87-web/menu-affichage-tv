@@ -213,6 +213,13 @@
                             <i class="fa-solid fa-rotate text-amber-400"></i>
                             <span>Mode Défilement Automatique (Rotation 15s)</span>
                         </button>
+
+                        <!-- Open 8 Models Gallery Button -->
+                        <button type="button" onclick="openModelsGallery('1')" class="w-full mt-2 py-1.5 px-2 rounded-xl bg-gradient-to-r from-white/5 to-white/10 hover:from-white/10 hover:to-white/15 border border-white/15 text-xs font-black text-white flex items-center justify-center gap-2 transition cursor-pointer shadow-sm">
+                            <i class="fa-solid fa-crown text-amber-400 text-xs"></i>
+                            <span>Voir les 8 Modèles Grands Marques (Photos)</span>
+                        </button>
+
                     </div>
 
                     <!-- Footer -->
@@ -292,6 +299,13 @@
                             <i class="fa-solid fa-rotate text-orange-400"></i>
                             <span>Mode Défilement Automatique (Rotation 15s)</span>
                         </button>
+
+                        <!-- Open 8 Models Gallery Button -->
+                        <button type="button" onclick="openModelsGallery('2')" class="w-full mt-2 py-1.5 px-2 rounded-xl bg-gradient-to-r from-white/5 to-white/10 hover:from-white/10 hover:to-white/15 border border-white/15 text-xs font-black text-white flex items-center justify-center gap-2 transition cursor-pointer shadow-sm">
+                            <i class="fa-solid fa-crown text-amber-400 text-xs"></i>
+                            <span>Voir les 8 Modèles Grands Marques (Photos)</span>
+                        </button>
+
                     </div>
 
                     <!-- Footer -->
@@ -371,6 +385,13 @@
                             <i class="fa-solid fa-rotate text-blue-400"></i>
                             <span>Mode Défilement Automatique (Rotation 15s)</span>
                         </button>
+
+                        <!-- Open 8 Models Gallery Button -->
+                        <button type="button" onclick="openModelsGallery('3')" class="w-full mt-2 py-1.5 px-2 rounded-xl bg-gradient-to-r from-white/5 to-white/10 hover:from-white/10 hover:to-white/15 border border-white/15 text-xs font-black text-white flex items-center justify-center gap-2 transition cursor-pointer shadow-sm">
+                            <i class="fa-solid fa-crown text-amber-400 text-xs"></i>
+                            <span>Voir les 8 Modèles Grands Marques (Photos)</span>
+                        </button>
+
                     </div>
 
                     <!-- Footer -->
@@ -501,38 +522,72 @@
             'model1_s1': {
                 url: 'menu_model1_emirates.html?mode=tv&screen=1',
                 title: 'Bocadillos Chamali Tradition',
-                sub: 'Modèle 1 (Émirates Sombre)',
-                img: 'thumbnails/thumb_m1_s1.jpg'
+                sub: 'Modèle 1 (Émirates Sombre & Or)',
+                img: 'thumbnails/thumb_m1_s1.jpg',
+                badge: 'Émirates'
             },
             'model1_s2': {
                 url: 'menu_model1_emirates.html?mode=tv&screen=2',
                 title: 'Sandwiches Chauds Spécialités',
-                sub: 'Modèle 1 (Émirates Sombre)',
-                img: 'thumbnails/thumb_m1_s2.jpg'
+                sub: 'Modèle 1 (Émirates Sombre & Or)',
+                img: 'thumbnails/thumb_m1_s2.jpg',
+                badge: 'Chauds'
             },
             'model2_s1': {
                 url: 'menu_model2_urban.html?mode=tv&screen=1',
                 title: 'Bocadillos Street Food',
                 sub: 'Modèle 2 (Urban Kraft & Bois)',
-                img: 'thumbnails/thumb_m2_s1.jpg'
-            },
-            'model2_s2': {
-                url: 'menu_model2_urban.html?mode=tv&screen=2',
-                title: 'Sandwiches Chauds Urban',
-                sub: 'Modèle 2 (Urban Kraft & Bois)',
-                img: 'thumbnails/thumb_m2_s2.jpg'
+                img: 'thumbnails/thumb_m2_s1.jpg',
+                badge: 'Urban'
             },
             'model3_all': {
                 url: 'menu_model3_vibrant.html?mode=tv',
                 title: 'Menu Vibrant Pop Dynamique',
-                sub: 'Modèle 3 (Orange & Blanc)',
-                img: 'thumbnails/thumb_m3_all.jpg'
+                sub: 'Modèle 3 (Orange & Blanc Pop)',
+                img: 'thumbnails/thumb_m3_all.jpg',
+                badge: 'Vibrant'
+            },
+            'model4_shakeshack': {
+                url: 'menu_model4_shakeshack.html?mode=tv&screen=1',
+                title: 'Shake Shack Botanical Luxe',
+                sub: 'Modèle 4 (Vert Forêt & Or Champagne)',
+                img: 'thumbnails/thumb_m4_shakeshack.jpg',
+                badge: 'Shake Shack'
+            },
+            'model5_fiveguys': {
+                url: 'menu_model5_fiveguys.html?mode=tv&screen=1',
+                title: 'Five Guys American Diner 1950s',
+                sub: 'Modèle 5 (Rouge Gourmand & Ivoire)',
+                img: 'thumbnails/thumb_m5_fiveguys.jpg',
+                badge: 'Five Guys'
+            },
+            'model6_chipotle': {
+                url: 'menu_model6_chipotle.html?mode=tv&screen=1',
+                title: 'Chipotle Craft Slate & Fire',
+                sub: 'Modèle 6 (Charbon Volcanique & Terracotta)',
+                img: 'thumbnails/thumb_m6_chipotle.jpg',
+                badge: 'Chipotle'
+            },
+            'model7_gold': {
+                url: 'menu_model7_gold_steakhouse.html?mode=tv&screen=1',
+                title: 'Gold Steakhouse VIP Lounge',
+                sub: 'Modèle 7 (Marbre Noir & Or Fondu 3D)',
+                img: 'thumbnails/thumb_m7_gold.jpg',
+                badge: 'Steakhouse'
+            },
+            'model8_cyber': {
+                url: 'menu_model8_cyber_neon.html?mode=tv&screen=1',
+                title: 'Cyber Neon Tokyo Night Diner',
+                sub: 'Modèle 8 (Obsidienne & Néons Cyan/Rose)',
+                img: 'thumbnails/thumb_m8_cyber.jpg',
+                badge: 'Cyber Neon'
             },
             'model1_auto': {
                 url: 'menu_model1_emirates.html?mode=tv',
                 title: 'Boucle Automatique (Rotation 15s)',
                 sub: 'Tous les menus défilent en continu',
-                img: 'thumbnails/thumb_m1_s1.jpg'
+                img: 'thumbnails/thumb_m1_s1.jpg',
+                badge: 'Auto-Boucle'
             }
         };
 
@@ -584,6 +639,29 @@
                     if (badge) badge.classList.add('hidden');
                 }
             });
+        }
+
+        
+        let targetTvForModal = '1';
+
+        function openModelsGallery(tvId) {
+            targetTvForModal = tvId || '1';
+            const modal = document.getElementById('models-gallery-modal');
+            if (modal) {
+                document.getElementById('modal-target-tv-name').innerText = `TV ${targetTvForModal}`;
+                modal.classList.remove('hidden');
+            }
+        }
+
+        function closeModelsGallery() {
+            const modal = document.getElementById('models-gallery-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function assignFromGallery(presetId, tvId) {
+            const assignedTv = tvId || targetTvForModal || '1';
+            selectVisualMenu(assignedTv, presetId);
+            closeModelsGallery();
         }
 
         function openFullPreview(tvId) {

@@ -5,7 +5,7 @@
     "drink_badge_text": "🥤 + BOISSON",
     "restaurant_name": "Mon Bocadillo Tanger",
     "sandwich_badge_text": "🍟 SANDWICH + FRITES",
-    "updated_at": "2026-11-02T23:26:28.054798"
+    "updated_at": "2026-11-03T00:05:24.639042"
   },
   "items": [
     {
@@ -209,15 +209,15 @@
       "name": "TV 1",
       "option_id": "model1_s2",
       "target_url": "menu_model1_emirates.html?mode=tv&screen=2",
-      "title": "Modèle 1 (Émirates) — Sandwiches Chauds",
-      "updated_at": "2026-11-02T23:25:18.850Z"
+      "title": "Sandwiches Chauds Spécialités",
+      "updated_at": "2026-11-03T00:05:22.138Z"
     },
     "2": {
       "name": "TV 2",
       "option_id": "model1_s1",
       "target_url": "menu_model1_emirates.html?mode=tv&screen=1",
-      "title": "Modèle 1 (Émirates) — Bocadillos Chamali",
-      "updated_at": "2026-11-02T23:26:28.042Z"
+      "title": "Bocadillos Chamali Tradition",
+      "updated_at": "2026-11-03T00:05:24.634Z"
     },
     "3": {
       "name": "TV 3",
