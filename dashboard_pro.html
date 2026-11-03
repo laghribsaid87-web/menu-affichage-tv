@@ -217,7 +217,7 @@
                         <!-- Open 8 Models Gallery Button -->
                         <button type="button" onclick="openModelsGallery('1')" class="w-full mt-2 py-1.5 px-2 rounded-xl bg-gradient-to-r from-white/5 to-white/10 hover:from-white/10 hover:to-white/15 border border-white/15 text-xs font-black text-white flex items-center justify-center gap-2 transition cursor-pointer shadow-sm">
                             <i class="fa-solid fa-crown text-amber-400 text-xs"></i>
-                            <span>Voir les 8 Modèles Grands Marques (Photos)</span>
+                            <span>Changer de Décor & Modèle (18 Modèles par Photos)</span>
                         </button>
 
                     </div>
@@ -303,7 +303,7 @@
                         <!-- Open 8 Models Gallery Button -->
                         <button type="button" onclick="openModelsGallery('2')" class="w-full mt-2 py-1.5 px-2 rounded-xl bg-gradient-to-r from-white/5 to-white/10 hover:from-white/10 hover:to-white/15 border border-white/15 text-xs font-black text-white flex items-center justify-center gap-2 transition cursor-pointer shadow-sm">
                             <i class="fa-solid fa-crown text-amber-400 text-xs"></i>
-                            <span>Voir les 8 Modèles Grands Marques (Photos)</span>
+                            <span>Changer de Décor & Modèle (18 Modèles par Photos)</span>
                         </button>
 
                     </div>
@@ -389,7 +389,7 @@
                         <!-- Open 8 Models Gallery Button -->
                         <button type="button" onclick="openModelsGallery('3')" class="w-full mt-2 py-1.5 px-2 rounded-xl bg-gradient-to-r from-white/5 to-white/10 hover:from-white/10 hover:to-white/15 border border-white/15 text-xs font-black text-white flex items-center justify-center gap-2 transition cursor-pointer shadow-sm">
                             <i class="fa-solid fa-crown text-amber-400 text-xs"></i>
-                            <span>Voir les 8 Modèles Grands Marques (Photos)</span>
+                            <span>Changer de Décor & Modèle (18 Modèles par Photos)</span>
                         </button>
 
                     </div>
@@ -486,6 +486,637 @@
         </button>
     </div>
 
+    
+    <!-- VISUAL MODELS & CONCEPTS GALLERY MODAL -->
+    <div id="models-gallery-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 md:p-6 overflow-y-auto">
+        <div class="glass-card max-w-5xl w-full max-h-[92vh] flex flex-col rounded-3xl border border-white/20 shadow-2xl relative bg-[#0b0f17]">
+            
+            <!-- Modal Header -->
+            <div class="p-4 md:p-6 border-b border-white/10 flex items-center justify-between shrink-0 bg-[#0f172a]/80 rounded-t-3xl">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-xl bg-gradient-to-tr from-orange-500 to-amber-500 flex items-center justify-center text-white text-sm">
+                            <i class="fa-solid fa-images"></i>
+                        </span>
+                        <h3 class="text-lg md:text-xl font-black text-white">Galerie Visuelle des Décorations TV</h3>
+                    </div>
+                    <p class="text-xs text-gray-300 mt-1">
+                        Cliquez sur <strong>"Choisir"</strong> pour afficher le décor sur <span id="modal-target-tv-name" class="text-orange-400 font-extrabold px-1.5 py-0.5 rounded bg-orange-500/20 border border-orange-500/30">TV 1</span>
+                    </p>
+                </div>
+                <button type="button" onclick="closeModelsGallery()" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white flex items-center justify-center text-lg transition">
+                    &times;
+                </button>
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="px-4 md:px-6 py-3 border-b border-white/10 bg-black/40 flex items-center gap-2 overflow-x-auto no-scrollbar shrink-0">
+                <button type="button" onclick="filterGallery('all')" id="gtab-all" class="g-tab-btn active px-4 py-1.5 rounded-xl text-xs font-black bg-orange-500 text-white shadow transition cursor-pointer">
+                    🌟 Tous les Modèles (18)
+                </button>
+                <button type="button" onclick="filterGallery('concept')" id="gtab-concept" class="g-tab-btn px-4 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 transition cursor-pointer">
+                    ✨ 10 Nouveaux Décors & Effets Animés
+                </button>
+                <button type="button" onclick="filterGallery('brand')" id="gtab-brand" class="g-tab-btn px-4 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 transition cursor-pointer">
+                    👑 8 Modèles Grands Marques Fast-Food
+                </button>
+            </div>
+
+            <!-- Gallery Cards Grid -->
+            <div class="p-4 md:p-6 overflow-y-auto max-h-[calc(92vh-160px)] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                
+    <div class="gallery-card bg-[#111827] border border-white/10 hover:border-orange-500/80 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between" data-cat="concept">
+        <div>
+            <div class="relative overflow-hidden bg-black aspect-video">
+                <img src="thumbnails/thumb_concept1_wood.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Atelier Bois Rustique & Vapeur">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+                <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider bg-amber-600 text-amber-100 shadow">
+                    BOIS RUSTIQUE
+                </span>
+                <span class="absolute bottom-2 right-2 text-[10px] bg-black/70 text-gray-300 px-2 py-0.5 rounded font-bold backdrop-blur-sm">
+                    Vapeur Chaude + Étiquettes Kraft
+                </span>
+            </div>
+            <div class="p-4">
+                <h4 class="text-sm font-black text-white group-hover:text-orange-400 transition-colors leading-tight mb-1">Atelier Bois Rustique & Vapeur</h4>
+                <p class="text-[11px] text-gray-400 leading-snug line-clamp-2">Bois chêne sombre, planches à découper et étiquettes kraft suspendues</p>
+            </div>
+        </div>
+        <div class="p-4 pt-0 grid grid-cols-2 gap-2 mt-2">
+            <a href="menu_concept1_wood_atelier.html?mode=tv&screen=1" target="_blank" class="py-2 px-2 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white border border-white/10 text-[11px] font-bold text-center flex items-center justify-center gap-1 transition">
+                <i class="fa-solid fa-eye text-xs"></i> Tester
+            </a>
+            <button type="button" onclick="assignFromGallery('concept1_wood')" class="py-2 px-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-[11px] text-center shadow-md shadow-orange-500/20 flex items-center justify-center gap-1 transition cursor-pointer">
+                <i class="fa-solid fa-check text-xs"></i> Choisir
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="gallery-card bg-[#111827] border border-white/10 hover:border-orange-500/80 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between" data-cat="concept">
+        <div>
+            <div class="relative overflow-hidden bg-black aspect-video">
+                <img src="thumbnails/thumb_concept2_sky.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Ciel Dégagé & Nuages Flottants">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+                <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider bg-sky-500 text-white shadow">
+                    CIEL DÉGAGÉ
+                </span>
+                <span class="absolute bottom-2 right-2 text-[10px] bg-black/70 text-gray-300 px-2 py-0.5 rounded font-bold backdrop-blur-sm">
+                    Nuages Mobiles + Rayons 360°
+                </span>
+            </div>
+            <div class="p-4">
+                <h4 class="text-sm font-black text-white group-hover:text-orange-400 transition-colors leading-tight mb-1">Ciel Dégagé & Nuages Flottants</h4>
+                <p class="text-[11px] text-gray-400 leading-snug line-clamp-2">Ciel bleu azur animé, nuages en défilement et rayons de soleil 360°</p>
+            </div>
+        </div>
+        <div class="p-4 pt-0 grid grid-cols-2 gap-2 mt-2">
+            <a href="menu_concept2_sky_terrace.html?mode=tv&screen=1" target="_blank" class="py-2 px-2 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white border border-white/10 text-[11px] font-bold text-center flex items-center justify-center gap-1 transition">
+                <i class="fa-solid fa-eye text-xs"></i> Tester
+            </a>
+            <button type="button" onclick="assignFromGallery('concept2_sky')" class="py-2 px-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-[11px] text-center shadow-md shadow-orange-500/20 flex items-center justify-center gap-1 transition cursor-pointer">
+                <i class="fa-solid fa-check text-xs"></i> Choisir
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="gallery-card bg-[#111827] border border-white/10 hover:border-orange-500/80 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between" data-cat="concept">
+        <div>
+            <div class="relative overflow-hidden bg-black aspect-video">
+                <img src="thumbnails/thumb_concept3_hero.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Hero Spotlight 3D Sandwich Animé">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+                <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider bg-purple-600 text-white shadow">
+                    HERO 3D ANIMÉ
+                </span>
+                <span class="absolute bottom-2 right-2 text-[10px] bg-black/70 text-gray-300 px-2 py-0.5 rounded font-bold backdrop-blur-sm">
+                    Glisse 3D + Halo Lumineux
+                </span>
+            </div>
+            <div class="p-4">
+                <h4 class="text-sm font-black text-white group-hover:text-orange-400 transition-colors leading-tight mb-1">Hero Spotlight 3D Sandwich Animé</h4>
+                <p class="text-[11px] text-gray-400 leading-snug line-clamp-2">Grand sandwich vedette entrant en glisse 3D, projecteur et badge clignotant</p>
+            </div>
+        </div>
+        <div class="p-4 pt-0 grid grid-cols-2 gap-2 mt-2">
+            <a href="menu_concept3_hero_spotlight.html?mode=tv&screen=1" target="_blank" class="py-2 px-2 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white border border-white/10 text-[11px] font-bold text-center flex items-center justify-center gap-1 transition">
+                <i class="fa-solid fa-eye text-xs"></i> Tester
+            </a>
+            <button type="button" onclick="assignFromGallery('concept3_hero')" class="py-2 px-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-[11px] text-center shadow-md shadow-orange-500/20 flex items-center justify-center gap-1 transition cursor-pointer">
+                <i class="fa-solid fa-check text-xs"></i> Choisir
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="gallery-card bg-[#111827] border border-white/10 hover:border-orange-500/80 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between" data-cat="concept">
+        <div>
+            <div class="relative overflow-hidden bg-black aspect-video">
+                <img src="thumbnails/thumb_concept4_chalk.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Ardoise Bistro Chamali & Craie">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+                <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider bg-emerald-600 text-white shadow">
+                    ARDOISE BISTRO
+                </span>
+                <span class="absolute bottom-2 right-2 text-[10px] bg-black/70 text-gray-300 px-2 py-0.5 rounded font-bold backdrop-blur-sm">
+                    Craie Vintage + Prix Fluo
+                </span>
+            </div>
+            <div class="p-4">
+                <h4 class="text-sm font-black text-white group-hover:text-orange-400 transition-colors leading-tight mb-1">Ardoise Bistro Chamali & Craie</h4>
+                <p class="text-[11px] text-gray-400 leading-snug line-clamp-2">Véritable tableau noir restaurant, pointillés à la craie et prix néon</p>
+            </div>
+        </div>
+        <div class="p-4 pt-0 grid grid-cols-2 gap-2 mt-2">
+            <a href="menu_concept4_chalkboard_bistro.html?mode=tv&screen=1" target="_blank" class="py-2 px-2 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white border border-white/10 text-[11px] font-bold text-center flex items-center justify-center gap-1 transition">
+                <i class="fa-solid fa-eye text-xs"></i> Tester
+            </a>
+            <button type="button" onclick="assignFromGallery('concept4_chalk')" class="py-2 px-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-[11px] text-center shadow-md shadow-orange-500/20 flex items-center justify-center gap-1 transition cursor-pointer">
+                <i class="fa-solid fa-check text-xs"></i> Choisir
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="gallery-card bg-[#111827] border border-white/10 hover:border-orange-500/80 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between" data-cat="concept">
+        <div>
+            <div class="relative overflow-hidden bg-black aspect-video">
+                <img src="thumbnails/thumb_concept5_fire.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Grill & Braises de Charbon En Feu">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+                <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider bg-red-600 text-white shadow">
+                    GRILL EN BRAISES
+                </span>
+                <span class="absolute bottom-2 right-2 text-[10px] bg-black/70 text-gray-300 px-2 py-0.5 rounded font-bold backdrop-blur-sm">
+                    Particules de Feu + Éclats
+                </span>
+            </div>
+            <div class="p-4">
+                <h4 class="text-sm font-black text-white group-hover:text-orange-400 transition-colors leading-tight mb-1">Grill & Braises de Charbon En Feu</h4>
+                <p class="text-[11px] text-gray-400 leading-snug line-clamp-2">Fond grill en fusion rougeoyante avec braises et étincelles volantes</p>
+            </div>
+        </div>
+        <div class="p-4 pt-0 grid grid-cols-2 gap-2 mt-2">
+            <a href="menu_concept5_fire_grill.html?mode=tv&screen=1" target="_blank" class="py-2 px-2 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white border border-white/10 text-[11px] font-bold text-center flex items-center justify-center gap-1 transition">
+                <i class="fa-solid fa-eye text-xs"></i> Tester
+            </a>
+            <button type="button" onclick="assignFromGallery('concept5_fire')" class="py-2 px-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-[11px] text-center shadow-md shadow-orange-500/20 flex items-center justify-center gap-1 transition cursor-pointer">
+                <i class="fa-solid fa-check text-xs"></i> Choisir
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="gallery-card bg-[#111827] border border-white/10 hover:border-orange-500/80 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between" data-cat="concept">
+        <div>
+            <div class="relative overflow-hidden bg-black aspect-video">
+                <img src="thumbnails/thumb_concept6_bento.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Bento Conveyor Stream">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+                <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider bg-blue-600 text-white shadow">
+                    BENTO RAIL
+                </span>
+                <span class="absolute bottom-2 right-2 text-[10px] bg-black/70 text-gray-300 px-2 py-0.5 rounded font-bold backdrop-blur-sm">
+                    Rails Métalliques + Flottement
+                </span>
+            </div>
+            <div class="p-4">
+                <h4 class="text-sm font-black text-white group-hover:text-orange-400 transition-colors leading-tight mb-1">Bento Conveyor Stream</h4>
+                <p class="text-[11px] text-gray-400 leading-snug line-clamp-2">Rails de convoyeur modernes ardoise, capsules bleues et lévitation fluide</p>
+            </div>
+        </div>
+        <div class="p-4 pt-0 grid grid-cols-2 gap-2 mt-2">
+            <a href="menu_concept6_conveyor_bento.html?mode=tv&screen=1" target="_blank" class="py-2 px-2 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white border border-white/10 text-[11px] font-bold text-center flex items-center justify-center gap-1 transition">
+                <i class="fa-solid fa-eye text-xs"></i> Tester
+            </a>
+            <button type="button" onclick="assignFromGallery('concept6_bento')" class="py-2 px-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-[11px] text-center shadow-md shadow-orange-500/20 flex items-center justify-center gap-1 transition cursor-pointer">
+                <i class="fa-solid fa-check text-xs"></i> Choisir
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="gallery-card bg-[#111827] border border-white/10 hover:border-orange-500/80 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between" data-cat="concept">
+        <div>
+            <div class="relative overflow-hidden bg-black aspect-video">
+                <img src="thumbnails/thumb_concept7_gold.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Royal Gold & Marbre Onyx Noir">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+                <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider bg-amber-400 text-black font-black shadow">
+                    ROYAL GOLD
+                </span>
+                <span class="absolute bottom-2 right-2 text-[10px] bg-black/70 text-gray-300 px-2 py-0.5 rounded font-bold backdrop-blur-sm">
+                    Or Liquide 24K + Couronne
+                </span>
+            </div>
+            <div class="p-4">
+                <h4 class="text-sm font-black text-white group-hover:text-orange-400 transition-colors leading-tight mb-1">Royal Gold & Marbre Onyx Noir</h4>
+                <p class="text-[11px] text-gray-400 leading-snug line-clamp-2">Reflets d'or liquide qui traversent les cartes, couronne et luxe VIP</p>
+            </div>
+        </div>
+        <div class="p-4 pt-0 grid grid-cols-2 gap-2 mt-2">
+            <a href="menu_concept7_gold_luxury.html?mode=tv&screen=1" target="_blank" class="py-2 px-2 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white border border-white/10 text-[11px] font-bold text-center flex items-center justify-center gap-1 transition">
+                <i class="fa-solid fa-eye text-xs"></i> Tester
+            </a>
+            <button type="button" onclick="assignFromGallery('concept7_gold')" class="py-2 px-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-[11px] text-center shadow-md shadow-orange-500/20 flex items-center justify-center gap-1 transition cursor-pointer">
+                <i class="fa-solid fa-check text-xs"></i> Choisir
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="gallery-card bg-[#111827] border border-white/10 hover:border-orange-500/80 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between" data-cat="concept">
+        <div>
+            <div class="relative overflow-hidden bg-black aspect-video">
+                <img src="thumbnails/thumb_concept8_neon.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Cyber Neon Arcade Synthwave">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+                <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider bg-pink-600 text-white shadow">
+                    CYBER ARCADE
+                </span>
+                <span class="absolute bottom-2 right-2 text-[10px] bg-black/70 text-gray-300 px-2 py-0.5 rounded font-bold backdrop-blur-sm">
+                    Grille 3D + Néons Vibrants
+                </span>
+            </div>
+            <div class="p-4">
+                <h4 class="text-sm font-black text-white group-hover:text-orange-400 transition-colors leading-tight mb-1">Cyber Neon Arcade Synthwave</h4>
+                <p class="text-[11px] text-gray-400 leading-snug line-clamp-2">Sol perspective 3D en grille rétro, néons cyan/rose et prix clignotants</p>
+            </div>
+        </div>
+        <div class="p-4 pt-0 grid grid-cols-2 gap-2 mt-2">
+            <a href="menu_concept8_neon_arcade.html?mode=tv&screen=1" target="_blank" class="py-2 px-2 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white border border-white/10 text-[11px] font-bold text-center flex items-center justify-center gap-1 transition">
+                <i class="fa-solid fa-eye text-xs"></i> Tester
+            </a>
+            <button type="button" onclick="assignFromGallery('concept8_neon')" class="py-2 px-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-[11px] text-center shadow-md shadow-orange-500/20 flex items-center justify-center gap-1 transition cursor-pointer">
+                <i class="fa-solid fa-check text-xs"></i> Choisir
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="gallery-card bg-[#111827] border border-white/10 hover:border-orange-500/80 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between" data-cat="concept">
+        <div>
+            <div class="relative overflow-hidden bg-black aspect-video">
+                <img src="thumbnails/thumb_concept9_truck.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Food Truck & Container Industriel">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+                <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider bg-amber-700 text-white shadow">
+                    FOOD TRUCK
+                </span>
+                <span class="absolute bottom-2 right-2 text-[10px] bg-black/70 text-gray-300 px-2 py-0.5 rounded font-bold backdrop-blur-sm">
+                    Planches Suspendues + Tampons
+                </span>
+            </div>
+            <div class="p-4">
+                <h4 class="text-sm font-black text-white group-hover:text-orange-400 transition-colors leading-tight mb-1">Food Truck & Container Industriel</h4>
+                <p class="text-[11px] text-gray-400 leading-snug line-clamp-2">Tôle ondulée sombre, planchettes kraft suspendues qui se balancent</p>
+            </div>
+        </div>
+        <div class="p-4 pt-0 grid grid-cols-2 gap-2 mt-2">
+            <a href="menu_concept9_food_truck.html?mode=tv&screen=1" target="_blank" class="py-2 px-2 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white border border-white/10 text-[11px] font-bold text-center flex items-center justify-center gap-1 transition">
+                <i class="fa-solid fa-eye text-xs"></i> Tester
+            </a>
+            <button type="button" onclick="assignFromGallery('concept9_truck')" class="py-2 px-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-[11px] text-center shadow-md shadow-orange-500/20 flex items-center justify-center gap-1 transition cursor-pointer">
+                <i class="fa-solid fa-check text-xs"></i> Choisir
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="gallery-card bg-[#111827] border border-white/10 hover:border-orange-500/80 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between" data-cat="concept">
+        <div>
+            <div class="relative overflow-hidden bg-black aspect-video">
+                <img src="thumbnails/thumb_concept10_ticker.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Studio TV Direct & Bandeau Marquee">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+                <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider bg-red-500 text-white shadow">
+                    STUDIO TV DIRECT
+                </span>
+                <span class="absolute bottom-2 right-2 text-[10px] bg-black/70 text-gray-300 px-2 py-0.5 rounded font-bold backdrop-blur-sm">
+                    Horloge Live + Marquee Défilant
+                </span>
+            </div>
+            <div class="p-4">
+                <h4 class="text-sm font-black text-white group-hover:text-orange-400 transition-colors leading-tight mb-1">Studio TV Direct & Bandeau Marquee</h4>
+                <p class="text-[11px] text-gray-400 leading-snug line-clamp-2">Horloge Tanger en direct, cartes studio et bandeau défilant d'actualités</p>
+            </div>
+        </div>
+        <div class="p-4 pt-0 grid grid-cols-2 gap-2 mt-2">
+            <a href="menu_concept10_broadcast_ticker.html?mode=tv&screen=1" target="_blank" class="py-2 px-2 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white border border-white/10 text-[11px] font-bold text-center flex items-center justify-center gap-1 transition">
+                <i class="fa-solid fa-eye text-xs"></i> Tester
+            </a>
+            <button type="button" onclick="assignFromGallery('concept10_ticker')" class="py-2 px-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-[11px] text-center shadow-md shadow-orange-500/20 flex items-center justify-center gap-1 transition cursor-pointer">
+                <i class="fa-solid fa-check text-xs"></i> Choisir
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="gallery-card bg-[#111827] border border-white/10 hover:border-orange-500/80 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between" data-cat="brand">
+        <div>
+            <div class="relative overflow-hidden bg-black aspect-video">
+                <img src="thumbnails/thumb_m1_s1.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Modèle 1 : Émirates Sombre (Bocadillos)">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+                <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider bg-amber-500 text-black font-black shadow">
+                    ÉMIRATES
+                </span>
+                <span class="absolute bottom-2 right-2 text-[10px] bg-black/70 text-gray-300 px-2 py-0.5 rounded font-bold backdrop-blur-sm">
+                    Ardoise Fine & Liseré Doré
+                </span>
+            </div>
+            <div class="p-4">
+                <h4 class="text-sm font-black text-white group-hover:text-orange-400 transition-colors leading-tight mb-1">Modèle 1 : Émirates Sombre (Bocadillos)</h4>
+                <p class="text-[11px] text-gray-400 leading-snug line-clamp-2">Texture ardoise & or brossé haute gastronomie chamali</p>
+            </div>
+        </div>
+        <div class="p-4 pt-0 grid grid-cols-2 gap-2 mt-2">
+            <a href="menu_model1_emirates.html?mode=tv&screen=1" target="_blank" class="py-2 px-2 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white border border-white/10 text-[11px] font-bold text-center flex items-center justify-center gap-1 transition">
+                <i class="fa-solid fa-eye text-xs"></i> Tester
+            </a>
+            <button type="button" onclick="assignFromGallery('model1_s1')" class="py-2 px-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-[11px] text-center shadow-md shadow-orange-500/20 flex items-center justify-center gap-1 transition cursor-pointer">
+                <i class="fa-solid fa-check text-xs"></i> Choisir
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="gallery-card bg-[#111827] border border-white/10 hover:border-orange-500/80 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between" data-cat="brand">
+        <div>
+            <div class="relative overflow-hidden bg-black aspect-video">
+                <img src="thumbnails/thumb_m1_s2.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Modèle 1 : Émirates Sombre (Chauds)">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+                <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider bg-amber-500 text-black font-black shadow">
+                    ÉMIRATES CHAUDS
+                </span>
+                <span class="absolute bottom-2 right-2 text-[10px] bg-black/70 text-gray-300 px-2 py-0.5 rounded font-bold backdrop-blur-sm">
+                    Plats Chauds & Spécialités
+                </span>
+            </div>
+            <div class="p-4">
+                <h4 class="text-sm font-black text-white group-hover:text-orange-400 transition-colors leading-tight mb-1">Modèle 1 : Émirates Sombre (Chauds)</h4>
+                <p class="text-[11px] text-gray-400 leading-snug line-clamp-2">Texture ardoise & or brossé pour sandwiches chauds</p>
+            </div>
+        </div>
+        <div class="p-4 pt-0 grid grid-cols-2 gap-2 mt-2">
+            <a href="menu_model1_emirates.html?mode=tv&screen=2" target="_blank" class="py-2 px-2 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white border border-white/10 text-[11px] font-bold text-center flex items-center justify-center gap-1 transition">
+                <i class="fa-solid fa-eye text-xs"></i> Tester
+            </a>
+            <button type="button" onclick="assignFromGallery('model1_s2')" class="py-2 px-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-[11px] text-center shadow-md shadow-orange-500/20 flex items-center justify-center gap-1 transition cursor-pointer">
+                <i class="fa-solid fa-check text-xs"></i> Choisir
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="gallery-card bg-[#111827] border border-white/10 hover:border-orange-500/80 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between" data-cat="brand">
+        <div>
+            <div class="relative overflow-hidden bg-black aspect-video">
+                <img src="thumbnails/thumb_m2_s1.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Modèle 2 : Modern Urban (Bocadillos)">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+                <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider bg-orange-600 text-white shadow">
+                    URBAN KRAFT
+                </span>
+                <span class="absolute bottom-2 right-2 text-[10px] bg-black/70 text-gray-300 px-2 py-0.5 rounded font-bold backdrop-blur-sm">
+                    Kraft Chaleureux & Bois
+                </span>
+            </div>
+            <div class="p-4">
+                <h4 class="text-sm font-black text-white group-hover:text-orange-400 transition-colors leading-tight mb-1">Modèle 2 : Modern Urban (Bocadillos)</h4>
+                <p class="text-[11px] text-gray-400 leading-snug line-clamp-2">Ambiance street food artisanale orange & bois</p>
+            </div>
+        </div>
+        <div class="p-4 pt-0 grid grid-cols-2 gap-2 mt-2">
+            <a href="menu_model2_urban.html?mode=tv&screen=1" target="_blank" class="py-2 px-2 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white border border-white/10 text-[11px] font-bold text-center flex items-center justify-center gap-1 transition">
+                <i class="fa-solid fa-eye text-xs"></i> Tester
+            </a>
+            <button type="button" onclick="assignFromGallery('model2_s1')" class="py-2 px-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-[11px] text-center shadow-md shadow-orange-500/20 flex items-center justify-center gap-1 transition cursor-pointer">
+                <i class="fa-solid fa-check text-xs"></i> Choisir
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="gallery-card bg-[#111827] border border-white/10 hover:border-orange-500/80 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between" data-cat="brand">
+        <div>
+            <div class="relative overflow-hidden bg-black aspect-video">
+                <img src="thumbnails/thumb_m2_s2.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Modèle 2 : Modern Urban (Chauds)">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+                <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider bg-orange-600 text-white shadow">
+                    URBAN CHAUDS
+                </span>
+                <span class="absolute bottom-2 right-2 text-[10px] bg-black/70 text-gray-300 px-2 py-0.5 rounded font-bold backdrop-blur-sm">
+                    Plats Chauds Urban
+                </span>
+            </div>
+            <div class="p-4">
+                <h4 class="text-sm font-black text-white group-hover:text-orange-400 transition-colors leading-tight mb-1">Modèle 2 : Modern Urban (Chauds)</h4>
+                <p class="text-[11px] text-gray-400 leading-snug line-clamp-2">Ambiance street food artisanale pour sandwiches chauds</p>
+            </div>
+        </div>
+        <div class="p-4 pt-0 grid grid-cols-2 gap-2 mt-2">
+            <a href="menu_model2_urban.html?mode=tv&screen=2" target="_blank" class="py-2 px-2 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white border border-white/10 text-[11px] font-bold text-center flex items-center justify-center gap-1 transition">
+                <i class="fa-solid fa-eye text-xs"></i> Tester
+            </a>
+            <button type="button" onclick="assignFromGallery('model2_s2')" class="py-2 px-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-[11px] text-center shadow-md shadow-orange-500/20 flex items-center justify-center gap-1 transition cursor-pointer">
+                <i class="fa-solid fa-check text-xs"></i> Choisir
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="gallery-card bg-[#111827] border border-white/10 hover:border-orange-500/80 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between" data-cat="brand">
+        <div>
+            <div class="relative overflow-hidden bg-black aspect-video">
+                <img src="thumbnails/thumb_m3_all.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Modèle 3 : Vibrant Pop Dynamique">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+                <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider bg-orange-500 text-white shadow">
+                    VIBRANT POP
+                </span>
+                <span class="absolute bottom-2 right-2 text-[10px] bg-black/70 text-gray-300 px-2 py-0.5 rounded font-bold backdrop-blur-sm">
+                    Pop Lumineux & Clarté
+                </span>
+            </div>
+            <div class="p-4">
+                <h4 class="text-sm font-black text-white group-hover:text-orange-400 transition-colors leading-tight mb-1">Modèle 3 : Vibrant Pop Dynamique</h4>
+                <p class="text-[11px] text-gray-400 leading-snug line-clamp-2">Design vitaminé jeune et moderne blanc & orange</p>
+            </div>
+        </div>
+        <div class="p-4 pt-0 grid grid-cols-2 gap-2 mt-2">
+            <a href="menu_model3_vibrant.html?mode=tv" target="_blank" class="py-2 px-2 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white border border-white/10 text-[11px] font-bold text-center flex items-center justify-center gap-1 transition">
+                <i class="fa-solid fa-eye text-xs"></i> Tester
+            </a>
+            <button type="button" onclick="assignFromGallery('model3_all')" class="py-2 px-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-[11px] text-center shadow-md shadow-orange-500/20 flex items-center justify-center gap-1 transition cursor-pointer">
+                <i class="fa-solid fa-check text-xs"></i> Choisir
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="gallery-card bg-[#111827] border border-white/10 hover:border-orange-500/80 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between" data-cat="brand">
+        <div>
+            <div class="relative overflow-hidden bg-black aspect-video">
+                <img src="thumbnails/thumb_m4_shakeshack.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Modèle 4 : Shake Shack Botanical">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+                <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider bg-emerald-700 text-white shadow">
+                    SHAKE SHACK
+                </span>
+                <span class="absolute bottom-2 right-2 text-[10px] bg-black/70 text-gray-300 px-2 py-0.5 rounded font-bold backdrop-blur-sm">
+                    Vert Forêt & Laiton
+                </span>
+            </div>
+            <div class="p-4">
+                <h4 class="text-sm font-black text-white group-hover:text-orange-400 transition-colors leading-tight mb-1">Modèle 4 : Shake Shack Botanical</h4>
+                <p class="text-[11px] text-gray-400 leading-snug line-clamp-2">Vert forêt profond et laiton champagne ultra frais</p>
+            </div>
+        </div>
+        <div class="p-4 pt-0 grid grid-cols-2 gap-2 mt-2">
+            <a href="menu_model4_shakeshack.html?mode=tv&screen=1" target="_blank" class="py-2 px-2 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white border border-white/10 text-[11px] font-bold text-center flex items-center justify-center gap-1 transition">
+                <i class="fa-solid fa-eye text-xs"></i> Tester
+            </a>
+            <button type="button" onclick="assignFromGallery('model4_shakeshack')" class="py-2 px-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-[11px] text-center shadow-md shadow-orange-500/20 flex items-center justify-center gap-1 transition cursor-pointer">
+                <i class="fa-solid fa-check text-xs"></i> Choisir
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="gallery-card bg-[#111827] border border-white/10 hover:border-orange-500/80 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between" data-cat="brand">
+        <div>
+            <div class="relative overflow-hidden bg-black aspect-video">
+                <img src="thumbnails/thumb_m5_fiveguys.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Modèle 5 : Five Guys American Diner">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+                <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider bg-red-700 text-white shadow">
+                    FIVE GUYS
+                </span>
+                <span class="absolute bottom-2 right-2 text-[10px] bg-black/70 text-gray-300 px-2 py-0.5 rounded font-bold backdrop-blur-sm">
+                    Diner Rétro & Damier
+                </span>
+            </div>
+            <div class="p-4">
+                <h4 class="text-sm font-black text-white group-hover:text-orange-400 transition-colors leading-tight mb-1">Modèle 5 : Five Guys American Diner</h4>
+                <p class="text-[11px] text-gray-400 leading-snug line-clamp-2">Diner américain rouge vif & damier rétro 1950</p>
+            </div>
+        </div>
+        <div class="p-4 pt-0 grid grid-cols-2 gap-2 mt-2">
+            <a href="menu_model5_fiveguys.html?mode=tv&screen=1" target="_blank" class="py-2 px-2 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white border border-white/10 text-[11px] font-bold text-center flex items-center justify-center gap-1 transition">
+                <i class="fa-solid fa-eye text-xs"></i> Tester
+            </a>
+            <button type="button" onclick="assignFromGallery('model5_fiveguys')" class="py-2 px-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-[11px] text-center shadow-md shadow-orange-500/20 flex items-center justify-center gap-1 transition cursor-pointer">
+                <i class="fa-solid fa-check text-xs"></i> Choisir
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="gallery-card bg-[#111827] border border-white/10 hover:border-orange-500/80 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between" data-cat="brand">
+        <div>
+            <div class="relative overflow-hidden bg-black aspect-video">
+                <img src="thumbnails/thumb_m6_chipotle.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Modèle 6 : Chipotle Slate Volcanique">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+                <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider bg-stone-700 text-orange-300 shadow">
+                    CHIPOTLE SLATE
+                </span>
+                <span class="absolute bottom-2 right-2 text-[10px] bg-black/70 text-gray-300 px-2 py-0.5 rounded font-bold backdrop-blur-sm">
+                    Volcanique & Terracotta
+                </span>
+            </div>
+            <div class="p-4">
+                <h4 class="text-sm font-black text-white group-hover:text-orange-400 transition-colors leading-tight mb-1">Modèle 6 : Chipotle Slate Volcanique</h4>
+                <p class="text-[11px] text-gray-400 leading-snug line-clamp-2">Pierre volcanique brute & terracotta authentique</p>
+            </div>
+        </div>
+        <div class="p-4 pt-0 grid grid-cols-2 gap-2 mt-2">
+            <a href="menu_model6_chipotle.html?mode=tv&screen=1" target="_blank" class="py-2 px-2 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white border border-white/10 text-[11px] font-bold text-center flex items-center justify-center gap-1 transition">
+                <i class="fa-solid fa-eye text-xs"></i> Tester
+            </a>
+            <button type="button" onclick="assignFromGallery('model6_chipotle')" class="py-2 px-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-[11px] text-center shadow-md shadow-orange-500/20 flex items-center justify-center gap-1 transition cursor-pointer">
+                <i class="fa-solid fa-check text-xs"></i> Choisir
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="gallery-card bg-[#111827] border border-white/10 hover:border-orange-500/80 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between" data-cat="brand">
+        <div>
+            <div class="relative overflow-hidden bg-black aspect-video">
+                <img src="thumbnails/thumb_m7_gold.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Modèle 7 : Gold Steakhouse VIP Lounge">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+                <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider bg-yellow-500 text-black font-black shadow">
+                    GOLD STEAKHOUSE
+                </span>
+                <span class="absolute bottom-2 right-2 text-[10px] bg-black/70 text-gray-300 px-2 py-0.5 rounded font-bold backdrop-blur-sm">
+                    Marbre & Or Fondu 3D
+                </span>
+            </div>
+            <div class="p-4">
+                <h4 class="text-sm font-black text-white group-hover:text-orange-400 transition-colors leading-tight mb-1">Modèle 7 : Gold Steakhouse VIP Lounge</h4>
+                <p class="text-[11px] text-gray-400 leading-snug line-clamp-2">Marbre noir imperial et or fondu 3D</p>
+            </div>
+        </div>
+        <div class="p-4 pt-0 grid grid-cols-2 gap-2 mt-2">
+            <a href="menu_model7_gold_steakhouse.html?mode=tv&screen=1" target="_blank" class="py-2 px-2 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white border border-white/10 text-[11px] font-bold text-center flex items-center justify-center gap-1 transition">
+                <i class="fa-solid fa-eye text-xs"></i> Tester
+            </a>
+            <button type="button" onclick="assignFromGallery('model7_gold')" class="py-2 px-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-[11px] text-center shadow-md shadow-orange-500/20 flex items-center justify-center gap-1 transition cursor-pointer">
+                <i class="fa-solid fa-check text-xs"></i> Choisir
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="gallery-card bg-[#111827] border border-white/10 hover:border-orange-500/80 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between" data-cat="brand">
+        <div>
+            <div class="relative overflow-hidden bg-black aspect-video">
+                <img src="thumbnails/thumb_m8_cyber.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Modèle 8 : Cyber Neon Tokyo Diner">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+                <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider bg-cyan-500 text-black font-black shadow">
+                    CYBER TOKYO
+                </span>
+                <span class="absolute bottom-2 right-2 text-[10px] bg-black/70 text-gray-300 px-2 py-0.5 rounded font-bold backdrop-blur-sm">
+                    Néons Cyan & Magenta
+                </span>
+            </div>
+            <div class="p-4">
+                <h4 class="text-sm font-black text-white group-hover:text-orange-400 transition-colors leading-tight mb-1">Modèle 8 : Cyber Neon Tokyo Diner</h4>
+                <p class="text-[11px] text-gray-400 leading-snug line-clamp-2">Obsidienne et néons cyan/magenta électrisants</p>
+            </div>
+        </div>
+        <div class="p-4 pt-0 grid grid-cols-2 gap-2 mt-2">
+            <a href="menu_model8_cyber_neon.html?mode=tv&screen=1" target="_blank" class="py-2 px-2 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white border border-white/10 text-[11px] font-bold text-center flex items-center justify-center gap-1 transition">
+                <i class="fa-solid fa-eye text-xs"></i> Tester
+            </a>
+            <button type="button" onclick="assignFromGallery('model8_cyber')" class="py-2 px-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-[11px] text-center shadow-md shadow-orange-500/20 flex items-center justify-center gap-1 transition cursor-pointer">
+                <i class="fa-solid fa-check text-xs"></i> Choisir
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="gallery-card bg-[#111827] border border-white/10 hover:border-orange-500/80 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between" data-cat="auto">
+        <div>
+            <div class="relative overflow-hidden bg-black aspect-video">
+                <img src="thumbnails/thumb_m1_s1.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Boucle Automatique (Rotation 15s)">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+                <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider bg-blue-600 text-white shadow">
+                    AUTO-BOUCLE
+                </span>
+                <span class="absolute bottom-2 right-2 text-[10px] bg-black/70 text-gray-300 px-2 py-0.5 rounded font-bold backdrop-blur-sm">
+                    Rotation 15s sans intervention
+                </span>
+            </div>
+            <div class="p-4">
+                <h4 class="text-sm font-black text-white group-hover:text-orange-400 transition-colors leading-tight mb-1">Boucle Automatique (Rotation 15s)</h4>
+                <p class="text-[11px] text-gray-400 leading-snug line-clamp-2">Tous les menus défilent automatiquement en continu</p>
+            </div>
+        </div>
+        <div class="p-4 pt-0 grid grid-cols-2 gap-2 mt-2">
+            <a href="menu_model1_emirates.html?mode=tv" target="_blank" class="py-2 px-2 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white border border-white/10 text-[11px] font-bold text-center flex items-center justify-center gap-1 transition">
+                <i class="fa-solid fa-eye text-xs"></i> Tester
+            </a>
+            <button type="button" onclick="assignFromGallery('model1_auto')" class="py-2 px-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-[11px] text-center shadow-md shadow-orange-500/20 flex items-center justify-center gap-1 transition cursor-pointer">
+                <i class="fa-solid fa-check text-xs"></i> Choisir
+            </button>
+        </div>
+    </div>
+    
+            </div>
+
+        </div>
+    </div>
+
     <!-- QR CODE MODAL -->
     <div id="qr-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="glass-card max-w-sm w-full p-6 rounded-3xl border border-white/20 text-center relative shadow-2xl">
@@ -518,77 +1149,154 @@
         let currentFilter = 'screen-1';
 
         
-        const MENU_VISUAL_PRESETS = {
+                const MENU_VISUAL_PRESETS = {
+            'concept1_wood': {
+                url: 'menu_concept1_wood_atelier.html?mode=tv&screen=1',
+                title: 'Atelier Bois Rustique & Vapeur',
+                sub: 'Bois chêne sombre, planches à découper et étiquettes kraft suspendues',
+                img: 'thumbnails/thumb_concept1_wood.jpg',
+                badge: 'BOIS RUSTIQUE'
+            },
+            'concept2_sky': {
+                url: 'menu_concept2_sky_terrace.html?mode=tv&screen=1',
+                title: 'Ciel Dégagé & Nuages Flottants',
+                sub: 'Ciel bleu azur animé, nuages en défilement et rayons de soleil 360°',
+                img: 'thumbnails/thumb_concept2_sky.jpg',
+                badge: 'CIEL DÉGAGÉ'
+            },
+            'concept3_hero': {
+                url: 'menu_concept3_hero_spotlight.html?mode=tv&screen=1',
+                title: 'Hero Spotlight 3D Sandwich Animé',
+                sub: 'Grand sandwich vedette entrant en glisse 3D, projecteur et badge clignotant',
+                img: 'thumbnails/thumb_concept3_hero.jpg',
+                badge: 'HERO 3D ANIMÉ'
+            },
+            'concept4_chalk': {
+                url: 'menu_concept4_chalkboard_bistro.html?mode=tv&screen=1',
+                title: 'Ardoise Bistro Chamali & Craie',
+                sub: 'Véritable tableau noir restaurant, pointillés à la craie et prix néon',
+                img: 'thumbnails/thumb_concept4_chalk.jpg',
+                badge: 'ARDOISE BISTRO'
+            },
+            'concept5_fire': {
+                url: 'menu_concept5_fire_grill.html?mode=tv&screen=1',
+                title: 'Grill & Braises de Charbon En Feu',
+                sub: 'Fond grill en fusion rougeoyante avec braises et étincelles volantes',
+                img: 'thumbnails/thumb_concept5_fire.jpg',
+                badge: 'GRILL EN BRAISES'
+            },
+            'concept6_bento': {
+                url: 'menu_concept6_conveyor_bento.html?mode=tv&screen=1',
+                title: 'Bento Conveyor Stream',
+                sub: 'Rails de convoyeur modernes ardoise, capsules bleues et lévitation fluide',
+                img: 'thumbnails/thumb_concept6_bento.jpg',
+                badge: 'BENTO RAIL'
+            },
+            'concept7_gold': {
+                url: 'menu_concept7_gold_luxury.html?mode=tv&screen=1',
+                title: 'Royal Gold & Marbre Onyx Noir',
+                sub: 'Reflets d'or liquide qui traversent les cartes, couronne et luxe VIP',
+                img: 'thumbnails/thumb_concept7_gold.jpg',
+                badge: 'ROYAL GOLD'
+            },
+            'concept8_neon': {
+                url: 'menu_concept8_neon_arcade.html?mode=tv&screen=1',
+                title: 'Cyber Neon Arcade Synthwave',
+                sub: 'Sol perspective 3D en grille rétro, néons cyan/rose et prix clignotants',
+                img: 'thumbnails/thumb_concept8_neon.jpg',
+                badge: 'CYBER ARCADE'
+            },
+            'concept9_truck': {
+                url: 'menu_concept9_food_truck.html?mode=tv&screen=1',
+                title: 'Food Truck & Container Industriel',
+                sub: 'Tôle ondulée sombre, planchettes kraft suspendues qui se balancent',
+                img: 'thumbnails/thumb_concept9_truck.jpg',
+                badge: 'FOOD TRUCK'
+            },
+            'concept10_ticker': {
+                url: 'menu_concept10_broadcast_ticker.html?mode=tv&screen=1',
+                title: 'Studio TV Direct & Bandeau Marquee',
+                sub: 'Horloge Tanger en direct, cartes studio et bandeau défilant d'actualités',
+                img: 'thumbnails/thumb_concept10_ticker.jpg',
+                badge: 'STUDIO TV DIRECT'
+            },
             'model1_s1': {
                 url: 'menu_model1_emirates.html?mode=tv&screen=1',
-                title: 'Bocadillos Chamali Tradition',
-                sub: 'Modèle 1 (Émirates Sombre & Or)',
+                title: 'Modèle 1 : Émirates Sombre (Bocadillos)',
+                sub: 'Texture ardoise & or brossé haute gastronomie chamali',
                 img: 'thumbnails/thumb_m1_s1.jpg',
-                badge: 'Émirates'
+                badge: 'ÉMIRATES'
             },
             'model1_s2': {
                 url: 'menu_model1_emirates.html?mode=tv&screen=2',
-                title: 'Sandwiches Chauds Spécialités',
-                sub: 'Modèle 1 (Émirates Sombre & Or)',
+                title: 'Modèle 1 : Émirates Sombre (Chauds)',
+                sub: 'Texture ardoise & or brossé pour sandwiches chauds',
                 img: 'thumbnails/thumb_m1_s2.jpg',
-                badge: 'Chauds'
+                badge: 'ÉMIRATES CHAUDS'
             },
             'model2_s1': {
                 url: 'menu_model2_urban.html?mode=tv&screen=1',
-                title: 'Bocadillos Street Food',
-                sub: 'Modèle 2 (Urban Kraft & Bois)',
+                title: 'Modèle 2 : Modern Urban (Bocadillos)',
+                sub: 'Ambiance street food artisanale orange & bois',
                 img: 'thumbnails/thumb_m2_s1.jpg',
-                badge: 'Urban'
+                badge: 'URBAN KRAFT'
+            },
+            'model2_s2': {
+                url: 'menu_model2_urban.html?mode=tv&screen=2',
+                title: 'Modèle 2 : Modern Urban (Chauds)',
+                sub: 'Ambiance street food artisanale pour sandwiches chauds',
+                img: 'thumbnails/thumb_m2_s2.jpg',
+                badge: 'URBAN CHAUDS'
             },
             'model3_all': {
                 url: 'menu_model3_vibrant.html?mode=tv',
-                title: 'Menu Vibrant Pop Dynamique',
-                sub: 'Modèle 3 (Orange & Blanc Pop)',
+                title: 'Modèle 3 : Vibrant Pop Dynamique',
+                sub: 'Design vitaminé jeune et moderne blanc & orange',
                 img: 'thumbnails/thumb_m3_all.jpg',
-                badge: 'Vibrant'
+                badge: 'VIBRANT POP'
             },
             'model4_shakeshack': {
                 url: 'menu_model4_shakeshack.html?mode=tv&screen=1',
-                title: 'Shake Shack Botanical Luxe',
-                sub: 'Modèle 4 (Vert Forêt & Or Champagne)',
+                title: 'Modèle 4 : Shake Shack Botanical',
+                sub: 'Vert forêt profond et laiton champagne ultra frais',
                 img: 'thumbnails/thumb_m4_shakeshack.jpg',
-                badge: 'Shake Shack'
+                badge: 'SHAKE SHACK'
             },
             'model5_fiveguys': {
                 url: 'menu_model5_fiveguys.html?mode=tv&screen=1',
-                title: 'Five Guys American Diner 1950s',
-                sub: 'Modèle 5 (Rouge Gourmand & Ivoire)',
+                title: 'Modèle 5 : Five Guys American Diner',
+                sub: 'Diner américain rouge vif & damier rétro 1950',
                 img: 'thumbnails/thumb_m5_fiveguys.jpg',
-                badge: 'Five Guys'
+                badge: 'FIVE GUYS'
             },
             'model6_chipotle': {
                 url: 'menu_model6_chipotle.html?mode=tv&screen=1',
-                title: 'Chipotle Craft Slate & Fire',
-                sub: 'Modèle 6 (Charbon Volcanique & Terracotta)',
+                title: 'Modèle 6 : Chipotle Slate Volcanique',
+                sub: 'Pierre volcanique brute & terracotta authentique',
                 img: 'thumbnails/thumb_m6_chipotle.jpg',
-                badge: 'Chipotle'
+                badge: 'CHIPOTLE SLATE'
             },
             'model7_gold': {
                 url: 'menu_model7_gold_steakhouse.html?mode=tv&screen=1',
-                title: 'Gold Steakhouse VIP Lounge',
-                sub: 'Modèle 7 (Marbre Noir & Or Fondu 3D)',
+                title: 'Modèle 7 : Gold Steakhouse VIP Lounge',
+                sub: 'Marbre noir imperial et or fondu 3D',
                 img: 'thumbnails/thumb_m7_gold.jpg',
-                badge: 'Steakhouse'
+                badge: 'GOLD STEAKHOUSE'
             },
             'model8_cyber': {
                 url: 'menu_model8_cyber_neon.html?mode=tv&screen=1',
-                title: 'Cyber Neon Tokyo Night Diner',
-                sub: 'Modèle 8 (Obsidienne & Néons Cyan/Rose)',
+                title: 'Modèle 8 : Cyber Neon Tokyo Diner',
+                sub: 'Obsidienne et néons cyan/magenta électrisants',
                 img: 'thumbnails/thumb_m8_cyber.jpg',
-                badge: 'Cyber Neon'
+                badge: 'CYBER TOKYO'
             },
             'model1_auto': {
                 url: 'menu_model1_emirates.html?mode=tv',
                 title: 'Boucle Automatique (Rotation 15s)',
-                sub: 'Tous les menus défilent en continu',
+                sub: 'Tous les menus défilent automatiquement en continu',
                 img: 'thumbnails/thumb_m1_s1.jpg',
-                badge: 'Auto-Boucle'
-            }
+                badge: 'AUTO-BOUCLE'
+            },
         };
 
         function selectVisualMenu(tvId, presetId) {
@@ -643,6 +1351,27 @@
 
         
         let targetTvForModal = '1';
+
+        
+        function filterGallery(cat) {
+            document.querySelectorAll('.g-tab-btn').forEach(b => {
+                b.className = "g-tab-btn px-4 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 transition cursor-pointer";
+            });
+            const activeBtn = document.getElementById('gtab-' + cat);
+            if (activeBtn) {
+                activeBtn.className = "g-tab-btn active px-4 py-1.5 rounded-xl text-xs font-black bg-orange-500 text-white shadow transition cursor-pointer";
+            }
+
+            document.querySelectorAll('.gallery-card').forEach(card => {
+                if (cat === 'all') {
+                    card.classList.remove('hidden');
+                } else {
+                    const cardCat = card.getAttribute('data-cat');
+                    if (cardCat === cat) card.classList.remove('hidden');
+                    else card.classList.add('hidden');
+                }
+            });
+        }
 
         function openModelsGallery(tvId) {
             targetTvForModal = tvId || '1';

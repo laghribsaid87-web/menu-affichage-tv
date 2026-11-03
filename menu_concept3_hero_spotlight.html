@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Bocadillo — Concept 3 Hero Spotlight Showcase</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Titan+One&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap');
+        * { margin:0; padding:0; box-sizing:border-box; user-select:none; }
+        body { width:100vw; height:100vh; overflow:hidden; background:#080b11; font-family:'Plus Jakarta Sans', sans-serif; color:#fff; }
+        #menu-stage {
+            width:1920px; height:1080px; position:absolute; top:50%; left:50%;
+            transform-origin:center center;
+            background: radial-gradient(circle at 25% 45%, #182238 0%, #080b11 70%);
+            overflow:hidden;
+        }
+
+        /* Top Header */
+        .stage-header {
+            height:105px; padding:0 45px; display:flex; align-items:center; justify-content:space-between;
+            background:rgba(8, 11, 17, 0.9); border-bottom:2px solid rgba(255, 107, 0, 0.4);
+            box-shadow:0 8px 30px rgba(0,0,0,0.8);
+        }
+        .brand-box { display:flex; align-items:center; gap:16px; }
+        .hero-badge {
+            background:linear-gradient(135deg, #ff6b00, #ff8800); color:#fff;
+            font-family:'Titan One', cursive; font-size:20px; padding:6px 18px; border-radius:10px;
+            box-shadow:0 0 20px rgba(255, 107, 0, 0.5);
+        }
+        .brand-name { font-size:32px; font-weight:900; color:#fff; }
+        .brand-name span { color:#ff6b00; }
+        .cat-title { font-family:'Titan One', cursive; font-size:30px; color:#fff; letter-spacing:2px; }
+        .header-perk {
+            background:rgba(255, 107, 0, 0.15); border:1px solid #ff6b00;
+            color:#ffaa66; padding:8px 22px; border-radius:30px; font-weight:800; font-size:14px;
+        }
+
+        /* Asymmetric Layout */
+        .asym-container {
+            display:flex; gap:30px; padding:25px 45px; height:940px;
+        }
+
+        /* LEFT 45% : GIANT HERO SHOWCASE STAGE */
+        .hero-stage-card {
+            width:44%; background:linear-gradient(160deg, #121a2d 0%, #0a0e18 100%);
+            border:2px solid rgba(255, 107, 0, 0.45); border-radius:30px; padding:35px 30px;
+            display:flex; flex-direction:column; justify-content:space-between; position:relative;
+            overflow:hidden; box-shadow:0 25px 60px rgba(0,0,0,0.9), 0 0 35px rgba(255, 107, 0, 0.15);
+        }
+        /* Spotlight Radial Beam */
+        .hero-spotlight {
+            position:absolute; top:20%; left:50%; transform:translateX(-50%);
+            width:500px; height:500px;
+            background:radial-gradient(circle, rgba(255, 107, 0, 0.25) 0%, rgba(255, 107, 0, 0.05) 50%, transparent 70%);
+            pointer-events:none; border-radius:50%; z-index:1;
+        }
+        .hero-top-badge {
+            background:#ff6b00; color:#fff; font-weight:900; font-size:12px;
+            padding:6px 16px; border-radius:20px; align-self:flex-start;
+            text-transform:uppercase; letter-spacing:1px; z-index:2;
+            box-shadow:0 0 15px rgba(255, 107, 0, 0.6);
+            animation:pulseBadge 2s infinite ease-in-out;
+        }
+        @keyframes pulseBadge {
+            0%, 100% { transform:scale(1); }
+            50% { transform:scale(1.05); }
+        }
+
+        /* FLYING IN ANIMATED HERO FOOD */
+        .hero-food-box {
+            position:relative; height:380px; display:flex; align-items:center; justify-content:center;
+            z-index:2; margin:10px 0;
+        }
+        .hero-sandwich {
+            max-width:98%; max-height:280px; object-fit:contain; position:relative; z-index:3;
+            filter:drop-shadow(0 20px 30px rgba(0,0,0,0.95));
+            will-change:transform, opacity;
+            animation:heroFlyIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .hero-fries {
+            position:absolute; right:15px; bottom:20px; width:150px; z-index:4;
+            filter:drop-shadow(0 15px 25px rgba(0,0,0,0.9));
+        }
+        @keyframes heroFlyIn {
+            0% { transform:translateX(-400px) scale(0.7) rotate(-10deg); opacity:0; }
+            100% { transform:translateX(0) scale(1) rotate(0deg); opacity:1; }
+        }
+
+        /* BLINKING HERO PRICE TAG */
+        .hero-price-panel {
+            background:#06080e; border:2px solid #ff6b00; border-radius:24px;
+            padding:18px 24px; display:flex; align-items:center; justify-content:space-between;
+            z-index:2; box-shadow:0 0 25px rgba(255, 107, 0, 0.35);
+        }
+        .hero-title-text { font-family:'Titan One', cursive; font-size:36px; color:#fff; line-height:1; }
+        .hero-price-val {
+            font-size:44px; font-weight:900; color:#ff6b00; line-height:1;
+            text-shadow:0 0 20px rgba(255, 107, 0, 0.7);
+            animation:flickerPrice 3s infinite alternate;
+        }
+        .hero-price-val span { font-size:20px; color:#fff; margin-left:4px; }
+        @keyframes flickerPrice {
+            0%, 90% { opacity:1; }
+            92% { opacity:0.8; }
+            94% { opacity:1; }
+            96% { opacity:0.75; }
+            98% { opacity:1; }
+        }
+
+        /* RIGHT 55% : SPECIALTIES GRID (4 WIDESCREEN CARDS) */
+        .specialties-grid {
+            width:56%; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr;
+            gap:22px;
+        }
+        .spec-card {
+            background:#101726; border:1px solid rgba(255,255,255,0.1); border-radius:22px;
+            padding:16px 20px; display:flex; flex-direction:column; justify-content:space-between;
+            position:relative; overflow:hidden; box-shadow:0 15px 35px rgba(0,0,0,0.6);
+            transition:border-color 0.3s;
+        }
+        .spec-card:hover { border-color:#ff6b00; }
+        .spec-top { display:flex; justify-content:space-between; align-items:flex-start; z-index:2; }
+        .spec-title { font-family:'Titan One', cursive; font-size:24px; color:#fff; }
+        .spec-price-tag {
+            background:#ff6b00; color:#fff; font-weight:900; font-size:22px;
+            padding:4px 12px; border-radius:12px; line-height:1;
+            box-shadow:0 0 12px rgba(255, 107, 0, 0.4);
+        }
+        .spec-price-tag span { font-size:12px; }
+        
+        .spec-food-box {
+            position:relative; height:190px; display:flex; align-items:center; justify-content:center;
+            margin:4px 0; z-index:2;
+        }
+        .spec-sandwich {
+            max-width:96%; max-height:155px; object-fit:contain; z-index:2;
+            filter:drop-shadow(0 12px 18px rgba(0,0,0,0.8));
+        }
+        .spec-fries { position:absolute; right:6px; bottom:10px; width:95px; z-index:3; }
+        .spec-desc {
+            font-size:11px; font-weight:700; color:#94a3b8; text-transform:uppercase;
+            border-top:1px solid rgba(255,255,255,0.08); padding-top:8px;
+            display:flex; align-items:center; justify-content:space-between;
+        }
+
+        .menu-screen { display:none; }
+        .menu-screen.active { display:block; }
+
+        .ui-controls { position:fixed; bottom:20px; right:20px; z-index:999999; display:flex; gap:10px; }
+        .btn-ctl {
+            background:#111827; color:#fff; border:1px solid #ff6b00; padding:8px 16px;
+            border-radius:10px; font-weight:800; font-size:12px; cursor:pointer;
+        }
+        .btn-ctl.active { background:#ff6b00; color:#fff; }
+        body.tv-display-mode .ui-controls { display:none !important; }
+    </style>
+</head>
+<body>
+    <div class="ui-controls" id="tv-controls">
+        <button id="btn-auto" class="btn-ctl active" onclick="setScreenMode('auto')">Auto (15s)</button>
+        <button id="btn-s1" class="btn-ctl" onclick="setScreenMode('screen-1')">TV 1: Bocadillos</button>
+        <button id="btn-s2" class="btn-ctl" onclick="setScreenMode('screen-2')">TV 2: Chauds</button>
+        <button id="btn-fs" class="btn-ctl" onclick="toggleFullScreen()">⛶ Plein Écran</button>
+    </div>
+
+    <div id="menu-stage">
+        <header class="stage-header">
+            <div class="brand-box">
+                <div class="hero-badge">HERO STAGE</div>
+                <div class="brand-name">MON BOCADILLO <span>TANGER</span></div>
+            </div>
+            <div id="cat-title-1" class="cat-title">✦ VÉDETTE DU JOUR : LE COMPLET CHAMALI ✦</div>
+            <div id="cat-title-2" class="cat-title" style="display:none;">✦ VÉDETTE DU JOUR : LE AMÉRICAIN GOURMET ✦</div>
+            <div class="header-perk">🍟 FRITES MAISON INCLUSES AVEC TOUS NOS SANDWICHS</div>
+        </header>
+
+        <!-- SCREEN 1 : BOCADILLOS -->
+        <div id="screen-1" class="menu-screen active">
+            <div class="asym-container">
+                <!-- HERO CARD -->
+                <div class="hero-stage-card" data-item-id="complet">
+                    <div class="hero-spotlight"></div>
+                    <div class="hero-top-badge">⭐ BEST-SELLER NUMÉRO 1</div>
+                    <div class="hero-food-box">
+                        <img id="hero-img-1" src="cutouts_hd/bocadillo complet 29 dh.png" class="hero-sandwich" alt="Hero Complet">
+                        <img src="cutouts_hd/frites_cone_kraft_2026.png" class="hero-fries" alt="Frites">
+                    </div>
+                    <div class="hero-price-panel">
+                        <div>
+                            <div style="font-size:12px; font-weight:800; color:#ffaa66; text-transform:uppercase; letter-spacing:1.5px;">RECETTE TRADITIONNELLE</div>
+                            <div class="hero-title-text">LE COMPLET</div>
+                            <div style="font-size:12px; color:#cbd5e1; margin-top:4px;">Thon • Tortilla Maison • Fromage • Charcuterie • Sauces</div>
+                        </div>
+                        <div class="hero-price-val price-sand-num">30<span>DH</span></div>
+                    </div>
+                </div>
+
+                <!-- 4 COMPANION SPECIALTIES -->
+                <div class="specialties-grid">
+                    <div class="spec-card" data-item-id="tortilla_royale">
+                        <div class="spec-top">
+                            <div class="spec-title">TORTILLA ROYALE</div>
+                            <div class="spec-price-tag price-sand-num">34<span>DH</span></div>
+                        </div>
+                        <div class="spec-food-box">
+                            <img src="cutouts_hd/bocadillo tortillia royale 30 dh.png" class="spec-sandwich" alt="Royale">
+                            <img src="cutouts_hd/frites_cone_kraft_2026.png" class="spec-fries" alt="Frites">
+                        </div>
+                        <div class="spec-desc"><span>Tortilla Espagnole • Fromage Fondu</span><span style="color:#ffaa66;">+7DH SODA</span></div>
+                    </div>
+
+                    <div class="spec-card" data-item-id="thon">
+                        <div class="spec-top">
+                            <div class="spec-title">LE THON</div>
+                            <div class="spec-price-tag price-sand-num">22<span>DH</span></div>
+                        </div>
+                        <div class="spec-food-box">
+                            <img src="cutouts_hd/bocadillo thon 22 dh.png" class="spec-sandwich" alt="Thon">
+                            <img src="cutouts_hd/frites_cone_kraft_2026.png" class="spec-fries" alt="Frites">
+                        </div>
+                        <div class="spec-desc"><span>Thon Émietté • Crudités Fraîches</span><span style="color:#ffaa66;">+7DH SODA</span></div>
+                    </div>
+
+                    <div class="spec-card" data-item-id="cheese">
+                        <div class="spec-top">
+                            <div class="spec-title">DOUBLE CHEESE</div>
+                            <div class="spec-price-tag price-sand-num">24<span>DH</span></div>
+                        </div>
+                        <div class="spec-food-box">
+                            <img src="cutouts_hd/bocadillo cheese 24 dh.png" class="spec-sandwich" alt="Cheese">
+                            <img src="cutouts_hd/frites_cone_kraft_2026.png" class="spec-fries" alt="Frites">
+                        </div>
+                        <div class="spec-desc"><span>Thon Gourmand • Double Cheddar</span><span style="color:#ffaa66;">+7DH SODA</span></div>
+                    </div>
+
+                    <div class="spec-card" data-item-id="tangerois">
+                        <div class="spec-top">
+                            <div class="spec-title">LE TANGÉROIS</div>
+                            <div class="spec-price-tag price-sand-num">24<span>DH</span></div>
+                        </div>
+                        <div class="spec-food-box">
+                            <img src="cutouts_hd/bocadillo tangerois 24 dh.png" class="spec-sandwich" alt="Tangerois">
+                            <img src="cutouts_hd/frites_cone_kraft_2026.png" class="spec-fries" alt="Frites">
+                        </div>
+                        <div class="spec-desc"><span>Recette Historique 1980</span><span style="color:#ffaa66;">+7DH SODA</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 2 : CHAUDS -->
+        <div id="screen-2" class="menu-screen">
+            <div class="asym-container">
+                <!-- HERO CARD CHAUDS -->
+                <div class="hero-stage-card" data-item-id="americain">
+                    <div class="hero-spotlight"></div>
+                    <div class="hero-top-badge" style="background:#ef4444;">🔥 ROI DES SANDWICHES CHAUDS</div>
+                    <div class="hero-food-box">
+                        <img src="cutouts_hd/sandwich americain 35 dh.png" class="hero-sandwich" alt="Hero Americain">
+                        <img src="cutouts_hd/frites_cone_kraft_2026.png" class="hero-fries" alt="Frites">
+                    </div>
+                    <div class="hero-price-panel" style="border-color:#ef4444;">
+                        <div>
+                            <div style="font-size:12px; font-weight:800; color:#fca5a5; text-transform:uppercase; letter-spacing:1.5px;">STEAK HACHÉ PUR BOEUF</div>
+                            <div class="hero-title-text">L'AMÉRICAIN</div>
+                            <div style="font-size:12px; color:#cbd5e1; margin-top:4px;">Oeuf à Cheval • Double Cheddar • Frites Croustillantes</div>
+                        </div>
+                        <div class="hero-price-val price-sand-num" style="color:#ef4444;">35<span>DH</span></div>
+                    </div>
+                </div>
+
+                <!-- 4 COMPANION SPECIALTIES -->
+                <div class="specialties-grid">
+                    <div class="spec-card" data-item-id="viande_hachee">
+                        <div class="spec-top">
+                            <div class="spec-title">VIANDE HACHÉE</div>
+                            <div class="spec-price-tag price-sand-num" style="background:#ef4444;">30<span>DH</span></div>
+                        </div>
+                        <div class="spec-food-box">
+                            <img src="cutouts_hd/sandwich viande hache 30 dh.png" class="spec-sandwich" alt="Viande Hachee">
+                            <img src="cutouts_hd/frites_cone_kraft_2026.png" class="spec-fries" alt="Frites">
+                        </div>
+                        <div class="spec-desc"><span>Pur Boeuf • Oignons Grillés</span><span style="color:#fca5a5;">+7DH SODA</span></div>
+                    </div>
+
+                    <div class="spec-card" data-item-id="mixte">
+                        <div class="spec-top">
+                            <div class="spec-title">LE MIXTE</div>
+                            <div class="spec-price-tag price-sand-num" style="background:#ef4444;">35<span>DH</span></div>
+                        </div>
+                        <div class="spec-food-box">
+                            <img src="cutouts_hd/sandwiche mixte 35 dh.png" class="spec-sandwich" alt="Mixte">
+                            <img src="cutouts_hd/frites_cone_kraft_2026.png" class="spec-fries" alt="Frites">
+                        </div>
+                        <div class="spec-desc"><span>Duo Poulet & Viande Hachée</span><span style="color:#fca5a5;">+7DH SODA</span></div>
+                    </div>
+
+                    <div class="spec-card" data-item-id="poulet">
+                        <div class="spec-top">
+                            <div class="spec-title">LE POULET</div>
+                            <div class="spec-price-tag price-sand-num" style="background:#ef4444;">35<span>DH</span></div>
+                        </div>
+                        <div class="spec-food-box">
+                            <img src="cutouts_hd/sandwiche poulet 30 dh.png" class="spec-sandwich" alt="Poulet">
+                            <img src="cutouts_hd/frites_cone_kraft_2026.png" class="spec-fries" alt="Frites">
+                        </div>
+                        <div class="spec-desc"><span>Blanc de Poulet Mariné Grillé</span><span style="color:#fca5a5;">+7DH SODA</span></div>
+                    </div>
+
+                    <div class="spec-card" data-item-id="saucisse">
+                        <div class="spec-top">
+                            <div class="spec-title">LA SAUCISSE</div>
+                            <div class="spec-price-tag price-sand-num" style="background:#ef4444;">30<span>DH</span></div>
+                        </div>
+                        <div class="spec-food-box">
+                            <img src="cutouts_hd/sandwiche saussice 30.png" class="spec-sandwich" alt="Saucisse">
+                            <img src="cutouts_hd/frites_cone_kraft_2026.png" class="spec-fries" alt="Frites">
+                        </div>
+                        <div class="spec-desc"><span>Saucisses Fumées à la Plancha</span><span style="color:#fca5a5;">+7DH SODA</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function scaleStage() {
+            const stage = document.getElementById('menu-stage');
+            if (!stage) return;
+            const targetWidth = 1920;
+            const targetHeight = 1080;
+            const scale = Math.min(window.innerWidth / targetWidth, window.innerHeight / targetHeight);
+            stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        }
+        window.addEventListener('resize', scaleStage);
+        window.addEventListener('load', scaleStage);
+        setTimeout(scaleStage, 50);
+
+        let currentScreen = 1;
+        let autoLoopTimer = null;
+        const SCREEN_DURATION = 15000;
+
+        function showScreen(num) {
+            document.querySelectorAll('.menu-screen').forEach(s => s.classList.remove('active'));
+            const s = document.getElementById(`screen-${num}`);
+            if (s) {
+                s.classList.add('active');
+                currentScreen = num;
+                const cat1 = document.getElementById('cat-title-1');
+                const cat2 = document.getElementById('cat-title-2');
+                if (cat1 && cat2) {
+                    if (num === 1) { cat1.style.display = 'block'; cat2.style.display = 'none'; }
+                    else { cat1.style.display = 'none'; cat2.style.display = 'block'; }
+                }
+            }
+        }
+
+        function cycleNext() {
+            const next = currentScreen === 1 ? 2 : 1;
+            showScreen(next);
+            if (autoLoopTimer) clearTimeout(autoLoopTimer);
+            autoLoopTimer = setTimeout(cycleNext, SCREEN_DURATION);
+        }
+
+        function setScreenMode(mode) {
+            document.querySelectorAll('.ui-controls .btn-ctl').forEach(b => b.classList.remove('active'));
+            if (autoLoopTimer) { clearTimeout(autoLoopTimer); autoLoopTimer = null; }
+
+            if (mode === 'auto') {
+                const btn = document.getElementById('btn-auto');
+                if (btn) btn.classList.add('active');
+                autoLoopTimer = setTimeout(cycleNext, SCREEN_DURATION);
+            } else if (mode === 'screen-1') {
+                const btn = document.getElementById('btn-s1');
+                if (btn) btn.classList.add('active');
+                showScreen(1);
+            } else if (mode === 'screen-2') {
+                const btn = document.getElementById('btn-s2');
+                if (btn) btn.classList.add('active');
+                showScreen(2);
+            }
+        }
+
+        autoLoopTimer = setTimeout(cycleNext, SCREEN_DURATION);
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(e => {});
+            else if (document.exitFullscreen) document.exitFullscreen();
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('mode') === 'tv') {
+            document.body.classList.add('tv-display-mode');
+        }
+        const reqScreen = params.get('screen');
+        if (reqScreen) {
+            if (typeof setScreenMode === 'function') {
+                setScreenMode('screen-' + reqScreen);
+            } else if (typeof showScreen === 'function') {
+                showScreen(parseInt(reqScreen));
+            }
+            if (typeof autoLoopTimer !== 'undefined' && autoLoopTimer) {
+                clearTimeout(autoLoopTimer);
+                autoLoopTimer = null;
+            }
+        }
+
+        // Live Price Sync Engine
+        (function() {
+            const CACHE_KEY = 'MENU_ITEMS_CACHE';
+
+            function applyLivePrices(data) {
+                if (!data || !data.items || !Array.isArray(data.items)) return;
+
+                data.items.forEach(item => {
+                    const card = document.querySelector(`[data-item-id="${item.id}"]`);
+                    if (!card) return;
+
+                    const pSand = card.querySelector('.price-sand-num, .p-sand-val, .p-sand');
+                    if (pSand && item.price_sandwich !== undefined) {
+                        const currSpan = pSand.querySelector('span');
+                        const currClass = currSpan && currSpan.className ? currSpan.className : 'curr';
+                        pSand.innerHTML = `${item.price_sandwich}<span class="${currClass}">DH</span>`;
+                    }
+
+                    const pDrk = card.querySelector('.price-drk-num, .p-drk-val, .p-drk');
+                    if (pDrk && item.price_drink !== undefined) {
+                        const currSpan = pDrk.querySelector('span');
+                        const currClass = currSpan && currSpan.className ? currSpan.className : 'curr';
+                        const dVal = item.price_drink.toString().startsWith('+') ? item.price_drink : ('+' + item.price_drink);
+                        pDrk.innerHTML = `${dVal}<span class="${currClass}">DH</span>`;
+                    }
+                });
+            }
+
+            const cached = localStorage.getItem(CACHE_KEY);
+            if (cached) {
+                try { applyLivePrices(JSON.parse(cached)); } catch(e) {}
+            }
+
+            if (window.BroadcastChannel) {
+                const bc = new BroadcastChannel('MENU_TV_CHANNEL');
+                bc.onmessage = (event) => {
+                    if (event.data && event.data.type === 'PRICES_UPDATED' && event.data.data) {
+                        applyLivePrices(event.data.data);
+                    }
+                };
+            }
+
+            let lastDataHash = "";
+            async function syncPrices() {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 4000);
+                try {
+                    let res = await fetch('/api/menu_items?t=' + Date.now(), { signal: controller.signal });
+                    if (!res.ok) res = await fetch('menu_items.json?t=' + Date.now(), { signal: controller.signal });
+                    clearTimeout(timeoutId);
+                    if (res.ok) {
+                        const text = await res.text();
+                        if (text !== lastDataHash) {
+                            lastDataHash = text;
+                            localStorage.setItem(CACHE_KEY, text);
+                            applyLivePrices(JSON.parse(text));
+                        }
+                    }
+                } catch(e) {
+                    clearTimeout(timeoutId);
+                }
+            }
+            syncPrices();
+            setInterval(syncPrices, 15000);
+        })();
+    </script>
+</body>
+</html>

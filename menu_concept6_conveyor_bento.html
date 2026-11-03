@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Bocadillo — Concept 6 Bento Conveyor</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=Oswald:wght@600;700&display=swap');
+        * { margin:0; padding:0; box-sizing:border-box; user-select:none; }
+        body { width:100vw; height:100vh; overflow:hidden; background:#14161b; font-family:'Plus Jakarta Sans', sans-serif; color:#fff; }
+        #menu-stage {
+            width:1920px; height:1080px; position:absolute; top:50%; left:50%;
+            transform-origin:center center;
+            background: linear-gradient(135deg, #181b22 0%, #0d0f13 100%);
+            overflow:hidden;
+        }
+
+        /* Ambient Conveyor Rails */
+        .rail-track-top {
+            position:absolute; top:230px; left:0; width:100%; height:8px;
+            background:linear-gradient(90deg, #334155, #64748b, #334155); opacity:0.4;
+        }
+        .rail-track-bottom {
+            position:absolute; top:690px; left:0; width:100%; height:8px;
+            background:linear-gradient(90deg, #334155, #64748b, #334155); opacity:0.4;
+        }
+
+        /* Top Clean Header */
+        .stage-header {
+            height:105px; padding:0 45px; display:flex; align-items:center; justify-content:space-between;
+            border-bottom:2px solid #3b82f6; background:rgba(15, 23, 42, 0.9); backdrop-filter:blur(10px);
+        }
+        .brand-box { display:flex; align-items:center; gap:16px; }
+        .bento-badge {
+            background:#3b82f6; color:#fff; font-family:'Oswald', sans-serif;
+            font-size:20px; padding:6px 16px; border-radius:8px; letter-spacing:1px;
+        }
+        .brand-name { font-size:32px; font-weight:900; color:#fff; }
+        .brand-name span { color:#3b82f6; }
+        .cat-title { font-family:'Oswald', sans-serif; font-size:30px; color:#fff; letter-spacing:2px; }
+        .header-perk {
+            background:rgba(59, 130, 246, 0.15); border:1px solid #3b82f6; color:#93c5fd;
+            padding:8px 22px; border-radius:20px; font-weight:800; font-size:14px;
+        }
+
+        /* Conveyor Stream Cards */
+        .stalls-grid {
+            display:grid; grid-template-columns:repeat(3, 1fr); grid-template-rows:repeat(2, 1fr);
+            gap:24px; padding:24px 45px; height:935px;
+        }
+        .bento-card {
+            background: #1e293b; border: 2px solid #334155; border-left: 6px solid #3b82f6;
+            border-radius:20px; padding:18px 22px; display:flex; flex-direction:column;
+            justify-content:space-between; position:relative; overflow:hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            transition: all 0.35s ease;
+        }
+        .bento-card:hover { transform:translateY(-6px); border-color:#3b82f6; }
+        .card-top { display:flex; justify-content:space-between; align-items:flex-start; z-index:2; }
+        .title-group .prefix { font-size:11px; font-weight:800; color:#38bdf8; letter-spacing:1.5px; }
+        .title-group .main-title { font-size:26px; font-weight:900; color:#fff; line-height:1.1; margin-top:2px; }
+        
+        /* Modern Price Pill */
+        .bento-price {
+            background:#0f172a; border:1px solid #3b82f6; border-radius:14px;
+            padding:6px 14px; text-align:center; box-shadow:0 0 15px rgba(59, 130, 246, 0.25);
+        }
+        .price-sand-num { font-size:24px; font-weight:900; color:#60a5fa; line-height:1; }
+        .price-sand-num .curr { font-size:12px; margin-left:1px; color:#fff; }
+        .price-drk-num { font-size:11px; font-weight:800; color:#94a3b8; margin-top:2px; }
+
+        /* Food Area */
+        .food-showcase {
+            position:relative; height:230px; display:flex; align-items:center; justify-content:center;
+            margin:4px 0; z-index:2;
+        }
+        .bento-shadow {
+            position:absolute; bottom:12px; width:88%; height:20px;
+            background:radial-gradient(ellipse at center, rgba(0,0,0,0.8) 0%, transparent 70%);
+            border-radius:50%; z-index:1;
+        }
+        .food-sandwich {
+            position:relative; z-index:2; max-width:96%; max-height:185px; object-fit:contain;
+            filter:drop-shadow(0 14px 20px rgba(0,0,0,0.8));
+            will-change:transform; transform:translateZ(0);
+            animation:floatBento 6s ease-in-out infinite alternate;
+        }
+        .food-fries {
+            position:absolute; right:10px; bottom:20px; z-index:3; width:105px; height:auto;
+            filter:drop-shadow(0 10px 14px rgba(0,0,0,0.8));
+            will-change:transform; transform:translateZ(0);
+        }
+        @keyframes floatBento {
+            0% { transform:translateY(0px); }
+            100% { transform:translateY(-6px); }
+        }
+
+        .card-desc {
+            font-size:11px; font-weight:800; color:#94a3b8; text-transform:uppercase;
+            border-top:1px solid rgba(255,255,255,0.1); padding-top:8px;
+            display:flex; align-items:center; justify-content:space-between; z-index:2;
+        }
+        .card-desc .tag { background:#0f172a; color:#38bdf8; border:1px solid #3b82f6; padding:2px 8px; border-radius:5px; font-size:10px; }
+
+        .menu-screen { display:none; }
+        .menu-screen.active { display:block; }
+
+        .ui-controls { position:fixed; bottom:20px; right:20px; z-index:999999; display:flex; gap:10px; }
+        .btn-ctl {
+            background:#0f172a; color:#fff; border:1px solid #3b82f6; padding:8px 16px;
+            border-radius:10px; font-weight:800; font-size:12px; cursor:pointer;
+        }
+        .btn-ctl.active { background:#3b82f6; color:#fff; }
+        body.tv-display-mode .ui-controls { display:none !important; }
+    </style>
+</head>
+<body>
+    <div class="ui-controls" id="tv-controls">
+        <button id="btn-auto" class="btn-ctl active" onclick="setScreenMode('auto')">Auto (15s)</button>
+        <button id="btn-s1" class="btn-ctl" onclick="setScreenMode('screen-1')">TV 1: Bocadillos</button>
+        <button id="btn-s2" class="btn-ctl" onclick="setScreenMode('screen-2')">TV 2: Chauds</button>
+        <button id="btn-fs" class="btn-ctl" onclick="toggleFullScreen()">⛶ Plein Écran</button>
+    </div>
+
+    <div id="menu-stage">
+        <div class="rail-track-top"></div>
+        <div class="rail-track-bottom"></div>
+
+        <header class="stage-header">
+            <div class="brand-box">
+                <div class="bento-badge">BENTO CONVEYOR</div>
+                <div class="brand-name">MON BOCADILLO <span>TANGER</span></div>
+            </div>
+            <div id="cat-title-1" class="cat-title">✦ SÉLECTION BOCADILLOS CHAMALI ✦</div>
+            <div id="cat-title-2" class="cat-title" style="display:none;">✦ SÉLECTION SANDWICHES CHAUDS ✦</div>
+            <div class="header-perk">🍟 FRITES MAISON INCLUSES DANS TOUTES NOS FORMULES</div>
+        </header>
+
+        <div id="screen-1" class="menu-screen active">
+            <div class="stalls-grid">
+        <div class="bento-card" data-item-id="complet">
+            <div class="card-top">
+                <div class="title-group">
+                    <span class="prefix">LE</span>
+                    <h3 class="main-title">COMPLET</h3>
+                </div>
+                <div class="bento-price">
+                    <div class="price-sand-num">30<span class="curr">DH</span></div>
+                    <div class="price-drk-num">+SODA +7DH</div>
+                </div>
+            </div>
+            <div class="food-showcase">
+                <div class="bento-shadow"></div>
+                <img src="cutouts_hd/bocadillo complet 29 dh.png" class="food-sandwich" alt="COMPLET">
+                <img src="cutouts_hd/frites_cone_kraft_2026.png" class="food-fries" alt="Frites">
+            </div>
+            <div class="card-desc">
+                <span>Thon 1er Choix • Tortilla Maison • Fromage Fondu • Charcuterie • Sauces</span>
+                <span class="tag">BEST-SELLER</span>
+            </div>
+        </div>
+        
+        <div class="bento-card" data-item-id="tortilla_royale">
+            <div class="card-top">
+                <div class="title-group">
+                    <span class="prefix">TORTILLA</span>
+                    <h3 class="main-title">ROYALE</h3>
+                </div>
+                <div class="bento-price">
+                    <div class="price-sand-num">34<span class="curr">DH</span></div>
+                    <div class="price-drk-num">+SODA +7DH</div>
+                </div>
+            </div>
+            <div class="food-showcase">
+                <div class="bento-shadow"></div>
+                <img src="cutouts_hd/bocadillo tortillia royale 30 dh.png" class="food-sandwich" alt="ROYALE">
+                <img src="cutouts_hd/frites_cone_kraft_2026.png" class="food-fries" alt="Frites">
+            </div>
+            <div class="card-desc">
+                <span>Véritable Tortilla Espagnole Garnie • Fromage Fondu • Sauce Royale</span>
+                <span class="tag">CHAMALI</span>
+            </div>
+        </div>
+        
+        <div class="bento-card" data-item-id="thon">
+            <div class="card-top">
+                <div class="title-group">
+                    <span class="prefix">LE</span>
+                    <h3 class="main-title">THON</h3>
+                </div>
+                <div class="bento-price">
+                    <div class="price-sand-num">22<span class="curr">DH</span></div>
+                    <div class="price-drk-num">+SODA +7DH</div>
+                </div>
+            </div>
+            <div class="food-showcase">
+                <div class="bento-shadow"></div>
+                <img src="cutouts_hd/bocadillo thon 22 dh.png" class="food-sandwich" alt="THON">
+                <img src="cutouts_hd/frites_cone_kraft_2026.png" class="food-fries" alt="Frites">
+            </div>
+            <div class="card-desc">
+                <span>Thon Émietté de Choix • Crudités Fraîches Croquantes • Oeuf Dur • Olives</span>
+                <span class="tag">LÉGER</span>
+            </div>
+        </div>
+        
+        <div class="bento-card" data-item-id="tortilla">
+            <div class="card-top">
+                <div class="title-group">
+                    <span class="prefix">LA</span>
+                    <h3 class="main-title">TORTILLA</h3>
+                </div>
+                <div class="bento-price">
+                    <div class="price-sand-num">22<span class="curr">DH</span></div>
+                    <div class="price-drk-num">+SODA +7DH</div>
+                </div>
+            </div>
+            <div class="food-showcase">
+                <div class="bento-shadow"></div>
+                <img src="cutouts_hd/bocadillo_tortillia 22 dh.png" class="food-sandwich" alt="TORTILLA">
+                <img src="cutouts_hd/frites_cone_kraft_2026.png" class="food-fries" alt="Frites">
+            </div>
+            <div class="card-desc">
+                <span>Omelette Tortilla Maison aux Pommes de Terre • Cheddar Coulant</span>
+                <span class="tag">AUTHENTIQUE</span>
+            </div>
+        </div>
+        
+        <div class="bento-card" data-item-id="cheese">
+            <div class="card-top">
+                <div class="title-group">
+                    <span class="prefix">DOUBLE</span>
+                    <h3 class="main-title">CHEESE</h3>
+                </div>
+                <div class="bento-price">
+                    <div class="price-sand-num">24<span class="curr">DH</span></div>
+                    <div class="price-drk-num">+SODA +7DH</div>
+                </div>
+            </div>
+            <div class="food-showcase">
+                <div class="bento-shadow"></div>
+                <img src="cutouts_hd/bocadillo cheese 24 dh.png" class="food-sandwich" alt="CHEESE">
+                <img src="cutouts_hd/frites_cone_kraft_2026.png" class="food-fries" alt="Frites">
+            </div>
+            <div class="card-desc">
+                <span>Thon Gourmand • Double Tranche Cheddar Fondu • Sauce Cheese Onctueuse</span>
+                <span class="tag">GOURMAND</span>
+            </div>
+        </div>
+        
+        <div class="bento-card" data-item-id="tangerois">
+            <div class="card-top">
+                <div class="title-group">
+                    <span class="prefix">LE</span>
+                    <h3 class="main-title">TANGÉROIS</h3>
+                </div>
+                <div class="bento-price">
+                    <div class="price-sand-num">24<span class="curr">DH</span></div>
+                    <div class="price-drk-num">+SODA +7DH</div>
+                </div>
+            </div>
+            <div class="food-showcase">
+                <div class="bento-shadow"></div>
+                <img src="cutouts_hd/bocadillo tangerois 24 dh.png" class="food-sandwich" alt="TANGÉROIS">
+                <img src="cutouts_hd/frites_cone_kraft_2026.png" class="food-fries" alt="Frites">
+            </div>
+            <div class="card-desc">
+                <span>Recette Historique de Tanger 1980 • Épices Secrètes Chamali • Salade</span>
+                <span class="tag">AUTHENTIQUE</span>
+            </div>
+        </div>
+        </div>
+        </div>
+
+        <div id="screen-2" class="menu-screen">
+            <div class="stalls-grid">
+        <div class="bento-card" data-item-id="americain">
+            <div class="card-top">
+                <div class="title-group">
+                    <span class="prefix">LE</span>
+                    <h3 class="main-title">AMÉRICAIN</h3>
+                </div>
+                <div class="bento-price">
+                    <div class="price-sand-num">35<span class="curr">DH</span></div>
+                    <div class="price-drk-num">+SODA +7DH</div>
+                </div>
+            </div>
+            <div class="food-showcase">
+                <div class="bento-shadow"></div>
+                <img src="cutouts_hd/sandwich americain 35 dh.png" class="food-sandwich" alt="AMÉRICAIN">
+                <img src="cutouts_hd/frites_cone_kraft_2026.png" class="food-fries" alt="Frites">
+            </div>
+            <div class="card-desc">
+                <span>Pur Steak Haché Saisi • Oeuf à Cheval • Double Cheddar • Frites Croustillantes</span>
+                <span class="tag">CHAUD</span>
+            </div>
+        </div>
+        
+        <div class="bento-card" data-item-id="viande_hachee">
+            <div class="card-top">
+                <div class="title-group">
+                    <span class="prefix">VIANDE</span>
+                    <h3 class="main-title">HACHÉE</h3>
+                </div>
+                <div class="bento-price">
+                    <div class="price-sand-num">30<span class="curr">DH</span></div>
+                    <div class="price-drk-num">+SODA +7DH</div>
+                </div>
+            </div>
+            <div class="food-showcase">
+                <div class="bento-shadow"></div>
+                <img src="cutouts_hd/sandwich viande hache 30 dh.png" class="food-sandwich" alt="HACHÉE">
+                <img src="cutouts_hd/frites_cone_kraft_2026.png" class="food-fries" alt="Frites">
+            </div>
+            <div class="card-desc">
+                <span>Pur Boeuf Haché Frais Assaisonné Minute • Oignons Grillés • Sauce BBQ</span>
+                <span class="tag">GRILLÉ</span>
+            </div>
+        </div>
+        
+        <div class="bento-card" data-item-id="mixte">
+            <div class="card-top">
+                <div class="title-group">
+                    <span class="prefix">LE</span>
+                    <h3 class="main-title">MIXTE</h3>
+                </div>
+                <div class="bento-price">
+                    <div class="price-sand-num">35<span class="curr">DH</span></div>
+                    <div class="price-drk-num">+SODA +7DH</div>
+                </div>
+            </div>
+            <div class="food-showcase">
+                <div class="bento-shadow"></div>
+                <img src="cutouts_hd/sandwiche mixte 35 dh.png" class="food-sandwich" alt="MIXTE">
+                <img src="cutouts_hd/frites_cone_kraft_2026.png" class="food-fries" alt="Frites">
+            </div>
+            <div class="card-desc">
+                <span>Duo Gourmand Poulet Mariné & Boeuf Haché • Double Fromage • Sauces Maison</span>
+                <span class="tag">LARGE</span>
+            </div>
+        </div>
+        
+        <div class="bento-card" data-item-id="poulet">
+            <div class="card-top">
+                <div class="title-group">
+                    <span class="prefix">LE</span>
+                    <h3 class="main-title">POULET</h3>
+                </div>
+                <div class="bento-price">
+                    <div class="price-sand-num">35<span class="curr">DH</span></div>
+                    <div class="price-drk-num">+SODA +7DH</div>
+                </div>
+            </div>
+            <div class="food-showcase">
+                <div class="bento-shadow"></div>
+                <img src="cutouts_hd/sandwiche poulet 30 dh.png" class="food-sandwich" alt="POULET">
+                <img src="cutouts_hd/frites_cone_kraft_2026.png" class="food-fries" alt="Frites">
+            </div>
+            <div class="card-desc">
+                <span>Blanc de Poulet Tendre Grillé & Mariné • Salade Fraîche • Sauce Blanche Ail</span>
+                <span class="tag">MARINÉ</span>
+            </div>
+        </div>
+        
+        <div class="bento-card" data-item-id="saucisse">
+            <div class="card-top">
+                <div class="title-group">
+                    <span class="prefix">LA</span>
+                    <h3 class="main-title">SAUCISSE</h3>
+                </div>
+                <div class="bento-price">
+                    <div class="price-sand-num">30<span class="curr">DH</span></div>
+                    <div class="price-drk-num">+SODA +7DH</div>
+                </div>
+            </div>
+            <div class="food-showcase">
+                <div class="bento-shadow"></div>
+                <img src="cutouts_hd/sandwiche saussice 30.png" class="food-sandwich" alt="SAUCISSE">
+                <img src="cutouts_hd/frites_cone_kraft_2026.png" class="food-fries" alt="Frites">
+            </div>
+            <div class="card-desc">
+                <span>Saucisses Fumées Dorées à la Plancha • Oignons Caramélisés • Cheddar Fondu</span>
+                <span class="tag">FUMÉ</span>
+            </div>
+        </div>
+        
+        <div class="bento-card" style="border-left-color:#10b981; background:#064e3b;">
+            <div class="card-top">
+                <div class="title-group">
+                    <span class="prefix" style="color:#6ee7b7;">FORMULE DUO</span>
+                    <h3 class="main-title" style="color:#a7f3d0;">COMBO BENTO</h3>
+                </div>
+                <div class="bento-price" style="border-color:#10b981;">
+                    <div class="price-sand-num" style="color:#6ee7b7;">+10<span class="curr">DH</span></div>
+                    <div class="price-drk-num" style="color:#a7f3d0;">FRITE INCLUSE</div>
+                </div>
+            </div>
+            <div class="food-showcase">
+                <div class="bento-shadow"></div>
+                <img src="cutouts_hd/bocadillo complet 29 dh.png" class="food-sandwich" alt="Combo">
+                <img src="cutouts_hd/frites_cone_kraft_2026.png" class="food-fries" style="right:35px; width:130px;" alt="Frites">
+            </div>
+            <div class="card-desc">
+                <span style="color:#a7f3d0;">CANETTE FRAÎCHE 33CL & GRANDE PORTION FRITES MAISON COMPRISES</span>
+                <span class="tag" style="background:#10b981; color:#000;">OFFRE VIP</span>
+            </div>
+        </div>
+        </div>
+        </div>
+    </div>
+
+    <script>
+        function scaleStage() {
+            const stage = document.getElementById('menu-stage');
+            if (!stage) return;
+            const targetWidth = 1920;
+            const targetHeight = 1080;
+            const scale = Math.min(window.innerWidth / targetWidth, window.innerHeight / targetHeight);
+            stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        }
+        window.addEventListener('resize', scaleStage);
+        window.addEventListener('load', scaleStage);
+        setTimeout(scaleStage, 50);
+
+        let currentScreen = 1;
+        let autoLoopTimer = null;
+        const SCREEN_DURATION = 15000;
+
+        function showScreen(num) {
+            document.querySelectorAll('.menu-screen').forEach(s => s.classList.remove('active'));
+            const s = document.getElementById(`screen-${num}`);
+            if (s) {
+                s.classList.add('active');
+                currentScreen = num;
+                const cat1 = document.getElementById('cat-title-1');
+                const cat2 = document.getElementById('cat-title-2');
+                if (cat1 && cat2) {
+                    if (num === 1) { cat1.style.display = 'block'; cat2.style.display = 'none'; }
+                    else { cat1.style.display = 'none'; cat2.style.display = 'block'; }
+                }
+            }
+        }
+
+        function cycleNext() {
+            const next = currentScreen === 1 ? 2 : 1;
+            showScreen(next);
+            if (autoLoopTimer) clearTimeout(autoLoopTimer);
+            autoLoopTimer = setTimeout(cycleNext, SCREEN_DURATION);
+        }
+
+        function setScreenMode(mode) {
+            document.querySelectorAll('.ui-controls .btn-ctl').forEach(b => b.classList.remove('active'));
+            if (autoLoopTimer) { clearTimeout(autoLoopTimer); autoLoopTimer = null; }
+
+            if (mode === 'auto') {
+                const btn = document.getElementById('btn-auto');
+                if (btn) btn.classList.add('active');
+                autoLoopTimer = setTimeout(cycleNext, SCREEN_DURATION);
+            } else if (mode === 'screen-1') {
+                const btn = document.getElementById('btn-s1');
+                if (btn) btn.classList.add('active');
+                showScreen(1);
+            } else if (mode === 'screen-2') {
+                const btn = document.getElementById('btn-s2');
+                if (btn) btn.classList.add('active');
+                showScreen(2);
+            }
+        }
+
+        autoLoopTimer = setTimeout(cycleNext, SCREEN_DURATION);
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(e => {});
+            else if (document.exitFullscreen) document.exitFullscreen();
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('mode') === 'tv') {
+            document.body.classList.add('tv-display-mode');
+        }
+        const reqScreen = params.get('screen');
+        if (reqScreen) {
+            if (typeof setScreenMode === 'function') {
+                setScreenMode('screen-' + reqScreen);
+            } else if (typeof showScreen === 'function') {
+                showScreen(parseInt(reqScreen));
+            }
+            if (typeof autoLoopTimer !== 'undefined' && autoLoopTimer) {
+                clearTimeout(autoLoopTimer);
+                autoLoopTimer = null;
+            }
+        }
+
+        // Live Price Sync Engine
+        (function() {
+            const CACHE_KEY = 'MENU_ITEMS_CACHE';
+
+            function applyLivePrices(data) {
+                if (!data || !data.items || !Array.isArray(data.items)) return;
+
+                data.items.forEach(item => {
+                    const card = document.querySelector(`[data-item-id="${item.id}"]`);
+                    if (!card) return;
+
+                    const pSand = card.querySelector('.price-sand-num, .p-sand-val, .p-sand');
+                    if (pSand && item.price_sandwich !== undefined) {
+                        const currSpan = pSand.querySelector('span');
+                        const currClass = currSpan && currSpan.className ? currSpan.className : 'curr';
+                        pSand.innerHTML = `${item.price_sandwich}<span class="${currClass}">DH</span>`;
+                    }
+
+                    const pDrk = card.querySelector('.price-drk-num, .p-drk-val, .p-drk');
+                    if (pDrk && item.price_drink !== undefined) {
+                        const currSpan = pDrk.querySelector('span');
+                        const currClass = currSpan && currSpan.className ? currSpan.className : 'curr';
+                        const dVal = item.price_drink.toString().startsWith('+') ? item.price_drink : ('+' + item.price_drink);
+                        pDrk.innerHTML = `${dVal}<span class="${currClass}">DH</span>`;
+                    }
+                });
+            }
+
+            const cached = localStorage.getItem(CACHE_KEY);
+            if (cached) {
+                try { applyLivePrices(JSON.parse(cached)); } catch(e) {}
+            }
+
+            if (window.BroadcastChannel) {
+                const bc = new BroadcastChannel('MENU_TV_CHANNEL');
+                bc.onmessage = (event) => {
+                    if (event.data && event.data.type === 'PRICES_UPDATED' && event.data.data) {
+                        applyLivePrices(event.data.data);
+                    }
+                };
+            }
+
+            let lastDataHash = "";
+            async function syncPrices() {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 4000);
+                try {
+                    let res = await fetch('/api/menu_items?t=' + Date.now(), { signal: controller.signal });
+                    if (!res.ok) res = await fetch('menu_items.json?t=' + Date.now(), { signal: controller.signal });
+                    clearTimeout(timeoutId);
+                    if (res.ok) {
+                        const text = await res.text();
+                        if (text !== lastDataHash) {
+                            lastDataHash = text;
+                            localStorage.setItem(CACHE_KEY, text);
+                            applyLivePrices(JSON.parse(text));
+                        }
+                    }
+                } catch(e) {
+                    clearTimeout(timeoutId);
+                }
+            }
+            syncPrices();
+            setInterval(syncPrices, 15000);
+        })();
+    </script>
+</body>
+</html>
