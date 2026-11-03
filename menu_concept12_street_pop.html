@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Concept 12 — Street Pop & Neon Action | Mon Bocadillo Tanger</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Montserrat:ital,wght@0,400;0,700;0,900;1,900&family=Permanent+Marker&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --neon-pink: #ff007f;
+      --neon-cyan: #00f0ff;
+      --neon-yellow: #ffe600;
+      --neon-orange: #ff6a00;
+      --dark-slate: #0c0e12;
+      --font-comic: 'Bangers', cursive, sans-serif;
+      --font-marker: 'Permanent Marker', cursive, sans-serif;
+      --font-body: 'Outfit', 'Montserrat', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background: #000;
+      color: #fff;
+      font-family: var(--font-body);
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #stage {
+      width: 1920px;
+      height: 1080px;
+      position: absolute;
+      transform-origin: center center;
+      background: url('khalfyat_hd/chalkboard_dark.jpg') center center / cover no-repeat;
+      overflow: hidden;
+      box-shadow: 0 0 100px rgba(0,0,0,0.9);
+    }
+
+    /* Ambient dark overlay & chalkboard vignette */
+    .bg-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(15, 20, 28, 0.45) 0%, rgba(5, 7, 10, 0.92) 85%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Outer TV Neon Tube Frame (SVG based for broadcast precision) */
+    .tv-neon-frame-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 99;
+    }
+
+    /* HEADER */
+    .header-bar {
+      position: absolute;
+      top: 26px;
+      left: 36px;
+      right: 36px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 20;
+      padding: 0 20px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-logo-badge {
+      width: 64px;
+      height: 64px;
+      background: radial-gradient(circle, #ff6a00 0%, #b30000 100%);
+      border: 3px solid var(--neon-yellow);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      box-shadow: 0 0 20px rgba(255, 106, 0, 0.8), 0 0 35px rgba(255, 230, 0, 0.4);
+      animation: spinSubtle 12s linear infinite;
+    }
+
+    @keyframes spinSubtle {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .brand-titles {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-family: var(--font-comic);
+      font-size: 44px;
+      letter-spacing: 2.5px;
+      background: linear-gradient(180deg, #ffffff 20%, #ffe600 70%, #ff8c00 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 3px 6px rgba(0,0,0,0.9)) drop-shadow(0 0 14px rgba(255, 230, 0, 0.5));
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    .brand-sub {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 3.5px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .header-center-pills {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .scene-pill-btn {
+      background: rgba(18, 22, 32, 0.7);
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      padding: 8px 18px;
+      border-radius: 30px;
+      color: #94a3b8;
+      font-family: var(--font-comic);
+      font-size: 18px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      backdrop-filter: blur(8px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scene-pill-btn.active {
+      background: linear-gradient(135deg, var(--neon-pink) 0%, var(--neon-orange) 100%);
+      border-color: var(--neon-yellow);
+      color: #ffffff;
+      box-shadow: 0 0 20px rgba(255, 0, 127, 0.6), 0 0 30px rgba(255, 106, 0, 0.4);
+      transform: scale(1.06);
+    }
+
+    .scene-pill-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      background: var(--neon-yellow);
+      width: 100%;
+      animation: progressCountdown var(--scene-duration, 10s) linear forwards;
+    }
+
+    @keyframes progressCountdown {
+      from { width: 0%; }
+      to { width: 100%; }
+    }
+
+    .header-live-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .live-clock-badge {
+      background: rgba(15, 23, 42, 0.85);
+      border: 2px solid var(--neon-cyan);
+      border-radius: 12px;
+      padding: 6px 16px;
+      font-family: var(--font-comic);
+      font-size: 24px;
+      color: var(--neon-cyan);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+      letter-spacing: 1.5px;
+    }
+
+    .quality-stamp {
+      width: 66px;
+      height: 66px;
+      border: 3px dashed var(--neon-yellow);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--neon-yellow);
+      font-family: var(--font-comic);
+      text-align: center;
+      line-height: 0.9;
+      font-size: 11px;
+      transform: rotate(-12deg);
+      box-shadow: 0 0 15px rgba(255, 230, 0, 0.4);
+      animation: stampWobble 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes stampWobble {
+      0% { transform: rotate(-14deg) scale(1); }
+      100% { transform: rotate(-9deg) scale(1.04); }
+    }
+
+    /* SCENES CONTAINER */
+    .scenes-viewport {
+      position: absolute;
+      top: 115px;
+      left: 36px;
+      right: 36px;
+      bottom: 78px;
+      z-index: 10;
+    }
+
+    .scene-view {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: 56% 44%;
+      gap: 30px;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.96) translateY(20px);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .scene-view.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1) translateY(0);
+    }
+
+    /* LEFT STAGE: HERO COMBO & COMIC POP */
+    .hero-stage {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+    }
+
+    /* Comic Starburst Background */
+    .comic-starburst {
+      position: absolute;
+      width: 780px;
+      height: 780px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.85;
+      animation: rotateBurst 35s linear infinite;
+    }
+
+    @keyframes rotateBurst {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    /* Floating Decor Elements */
+    .decor-item {
+      position: absolute;
+      pointer-events: none;
+      z-index: 25;
+      filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 10px rgba(0,0,0,0.5));
+    }
+
+    .decor-tomato {
+      top: 180px;
+      left: 15px;
+      width: 105px;
+      animation: floatTomato 4.5s ease-in-out infinite alternate;
+    }
+
+    .decor-basil1 {
+      top: 90px;
+      left: 70px;
+      width: 100px;
+      animation: floatBasil 5s ease-in-out infinite alternate;
+    }
+
+    .decor-basil2 {
+      bottom: 60px;
+      left: 20px;
+      width: 90px;
+      animation: floatBasil 6s ease-in-out infinite alternate-reverse;
+    }
+
+    .decor-flying-fries {
+      top: 100px;
+      right: 10px;
+      width: 210px;
+      animation: floatFries 4.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatTomato {
+      0% { transform: translateY(0px) rotate(-10deg) scale(1); }
+      100% { transform: translateY(-22px) rotate(15deg) scale(1.08); }
+    }
+
+    @keyframes floatBasil {
+      0% { transform: translateY(0px) rotate(0deg); }
+      100% { transform: translateY(-18px) rotate(-25deg); }
+    }
+
+    @keyframes floatFries {
+      0% { transform: translateY(0) rotate(5deg); }
+      100% { transform: translateY(-15px) rotate(-5deg); }
+    }
+
+    /* Comic Speed Lines */
+    .comic-speedlines {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 500px;
+      height: 120px;
+      pointer-events: none;
+      z-index: 12;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .speed-line {
+      width: 4px;
+      height: 40px;
+      background: var(--neon-yellow);
+      border-radius: 4px;
+      transform-origin: bottom center;
+    }
+
+    /* Comic Title Skewed Badge */
+    .comic-hero-title-box {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-3deg);
+      z-index: 18;
+      text-align: center;
+      width: 100%;
+    }
+
+    .comic-hero-title {
+      font-family: var(--font-comic);
+      font-size: 76px;
+      line-height: 0.95;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      background: linear-gradient(180deg, #ffffff 10%, #fff04d 45%, #ff9500 80%, #ff4d00 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      -webkit-text-stroke: 3px #050505;
+      filter: drop-shadow(5px 5px 0px #000000) drop-shadow(0 0 25px rgba(255, 149, 0, 0.8));
+    }
+
+    .comic-hero-sub {
+      font-family: var(--font-marker);
+      font-size: 20px;
+      color: #ffffff;
+      background: linear-gradient(90deg, #e11d48, #ef4444);
+      display: inline-block;
+      padding: 6px 24px;
+      border-radius: 12px;
+      border: 3px solid #ffffff;
+      transform: rotate(2deg);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.7), 0 0 15px rgba(239, 68, 68, 0.5);
+      margin-top: 4px;
+      letter-spacing: 1.5px;
+    }
+
+    /* Hero Food Platter Visual */
+    .hero-platter-group {
+      position: relative;
+      width: 100%;
+      height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      margin-top: 40px;
+    }
+
+    /* Grounding Dark Slate Platter */
+    .hero-slate-base {
+      position: absolute;
+      bottom: 25px;
+      width: 820px;
+      height: 280px;
+      background: url('cutouts_hd/slate_serving_board.png') center center / contain no-repeat;
+      filter: drop-shadow(0 30px 40px rgba(0,0,0,0.95));
+      z-index: 5;
+    }
+
+    /* Main Sandwich Cutout */
+    .hero-sandwich-img {
+      position: absolute;
+      bottom: 85px;
+      width: 680px;
+      height: auto;
+      max-height: 440px;
+      object-fit: contain;
+      filter: drop-shadow(0 20px 30px rgba(0,0,0,0.85)) drop-shadow(0 0 35px rgba(255, 230, 0, 0.2));
+      z-index: 8;
+      transition: transform 0.4s ease;
+      animation: heroBreath 5s ease-in-out infinite alternate;
+    }
+
+    @keyframes heroBreath {
+      0% { transform: translateY(0px) scale(1); }
+      100% { transform: translateY(-8px) scale(1.02); }
+    }
+
+    /* Side Fries Cup & Sauces in Hero */
+    .hero-side-fries {
+      position: absolute;
+      bottom: 95px;
+      right: 40px;
+      width: 250px;
+      height: auto;
+      z-index: 9;
+      filter: drop-shadow(0 15px 25px rgba(0,0,0,0.9));
+      animation: subtleShake 6s ease-in-out infinite alternate;
+    }
+
+    .hero-side-sauces {
+      position: absolute;
+      bottom: 35px;
+      left: 50px;
+      width: 250px;
+      height: auto;
+      z-index: 9;
+      filter: drop-shadow(0 15px 25px rgba(0,0,0,0.9));
+    }
+
+    @keyframes subtleShake {
+      0% { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(-6px) rotate(2deg); }
+    }
+
+    /* Chalk & Marker Callout Arrows */
+    .chalk-callout-1 {
+      position: absolute;
+      top: 170px;
+      right: 15px;
+      z-index: 18;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform: rotate(6deg);
+    }
+
+    .chalk-badge {
+      background: rgba(15, 23, 42, 0.95);
+      border: 3px solid var(--neon-yellow);
+      border-radius: 18px;
+      padding: 10px 22px;
+      text-align: center;
+      box-shadow: 0 0 25px rgba(255, 230, 0, 0.5), 0 10px 20px rgba(0,0,0,0.8);
+    }
+
+    .chalk-badge-label {
+      font-family: var(--font-marker);
+      font-size: 15px;
+      color: var(--neon-yellow);
+      letter-spacing: 1px;
+    }
+
+    .chalk-badge-price {
+      font-family: var(--font-comic);
+      font-size: 48px;
+      line-height: 1;
+      color: #fff;
+      text-shadow: 0 0 12px rgba(255, 230, 0, 0.8);
+    }
+
+    .chalk-arrow-svg {
+      width: 80px;
+      height: 70px;
+      margin-top: -6px;
+      filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
+    }
+
+    /* RIGHT STAGE: GLASSMORPHISM MENU CARD */
+    .menu-card-stage {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 10px 15px 10px 0;
+    }
+
+    .glass-acrylic-card {
+      background: rgba(14, 18, 27, 0.78);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 24px;
+      padding: 28px 32px;
+      backdrop-filter: blur(16px);
+      box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.8),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 0 35px rgba(0, 240, 255, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glass-acrylic-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--neon-pink), var(--neon-yellow), var(--neon-cyan));
+    }
+
+    .card-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px dashed rgba(255, 255, 255, 0.18);
+      padding-bottom: 14px;
+      margin-bottom: 20px;
+    }
+
+    .card-category-title {
+      font-family: var(--font-comic);
+      font-size: 38px;
+      letter-spacing: 2px;
+      color: var(--neon-yellow);
+      text-shadow: 0 0 15px rgba(255, 230, 0, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-category-tag {
+      background: rgba(255, 0, 127, 0.2);
+      border: 1.5px solid var(--neon-pink);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 13px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    /* Menu Items Dot Leader List */
+    .menu-item-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      position: relative;
+      transition: transform 0.2s ease;
+    }
+
+    .menu-item-row:hover {
+      transform: translateX(4px);
+    }
+
+    .item-meta {
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      max-width: 58%;
+    }
+
+    .item-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .item-badge-pill {
+      font-size: 10px;
+      font-weight: 900;
+      background: var(--neon-orange);
+      color: #000;
+      padding: 2px 7px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .item-title {
+      font-size: 21px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .item-desc {
+      font-size: 12px;
+      color: #94a3b8;
+      font-weight: 500;
+      margin-top: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      line-height: 1.2;
+    }
+
+    .item-dots {
+      flex-grow: 1;
+      margin: 0 12px;
+      border-bottom: 2px dotted rgba(255, 255, 255, 0.25);
+      position: relative;
+      top: -4px;
+    }
+
+    .item-price-pill {
+      background: linear-gradient(135deg, rgba(255, 230, 0, 0.15) 0%, rgba(255, 106, 0, 0.25) 100%);
+      border: 1.5px solid var(--neon-yellow);
+      border-radius: 12px;
+      padding: 6px 14px;
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      box-shadow: 0 0 15px rgba(255, 230, 0, 0.25);
+      flex-shrink: 0;
+    }
+
+    .price-num {
+      font-family: var(--font-comic);
+      font-size: 28px;
+      color: var(--neon-yellow);
+      line-height: 1;
+    }
+
+    .price-cur {
+      font-size: 14px;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    /* Included Banner inside Card */
+    .card-footer-banner {
+      margin-top: 18px;
+      background: linear-gradient(90deg, rgba(255, 0, 127, 0.2), rgba(0, 240, 255, 0.2));
+      border: 1.5px dashed var(--neon-cyan);
+      border-radius: 14px;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .banner-text {
+      font-size: 13px;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: 0.8px;
+    }
+
+    .banner-highlight {
+      color: var(--neon-yellow);
+      font-family: var(--font-comic);
+      font-size: 18px;
+      letter-spacing: 1px;
+    }
+
+    /* FOOTER TICKER */
+    .footer-bar {
+      position: absolute;
+      bottom: 24px;
+      left: 36px;
+      right: 36px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      z-index: 20;
+      background: rgba(10, 14, 22, 0.9);
+      border: 2px solid rgba(255, 230, 0, 0.4);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0,0,0,0.8), inset 0 0 15px rgba(255, 230, 0, 0.15);
+    }
+
+    .ticker-lead-badge {
+      background: linear-gradient(135deg, var(--neon-pink) 0%, var(--neon-orange) 100%);
+      color: #fff;
+      font-family: var(--font-comic);
+      font-size: 20px;
+      padding: 0 20px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      letter-spacing: 1.5px;
+      flex-shrink: 0;
+      box-shadow: 4px 0 15px rgba(0,0,0,0.5);
+    }
+
+    .ticker-track {
+      flex: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .ticker-content {
+      display: inline-block;
+      padding-left: 100%;
+      animation: tickerLoop 30s linear infinite;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: #f1f5f9;
+    }
+
+    .ticker-content span {
+      color: var(--neon-yellow);
+      margin: 0 14px;
+    }
+
+    @keyframes tickerLoop {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    .footer-contact-pill {
+      background: rgba(15, 23, 42, 0.95);
+      border-left: 2px solid rgba(255, 255, 255, 0.2);
+      padding: 0 20px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: var(--neon-cyan);
+    }
+
+    /* INTERACTIVE FLOATING CONTROLS */
+    .dock-controls {
+      position: fixed;
+      bottom: 85px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.92);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 40px;
+      padding: 6px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 1000;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .dock-controls.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(-50%) translateY(20px);
+    }
+
+    .dock-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .dock-btn:hover {
+      background: var(--neon-yellow);
+      color: #000;
+      border-color: var(--neon-yellow);
+    }
+
+    .dock-btn.active {
+      background: var(--neon-pink);
+      border-color: var(--neon-pink);
+    }
+
+    /* TV Hide Cursor */
+    body.tv-mode {
+      cursor: none;
+    }
+
+    body.tv-mode .dock-controls {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="stage">
+    <!-- Overlay Chalk Texture -->
+    <div class="bg-overlay"></div>
+
+    <!-- Outer Animated Neon TV Tube Frame -->
+    <svg class="tv-neon-frame-svg" viewBox="0 0 1920 1080" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="neonGlowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ff007f"/>
+          <stop offset="25%" stop-color="#ff6a00"/>
+          <stop offset="50%" stop-color="#ffe600"/>
+          <stop offset="75%" stop-color="#00f0ff"/>
+          <stop offset="100%" stop-color="#a855f7"/>
+        </linearGradient>
+        <filter id="neonFilter" x="-10%" y="-10%" width="120%" height="120%">
+          <feGaussianBlur stdDeviation="5" result="blur1"/>
+          <feGaussianBlur stdDeviation="14" result="blur2"/>
+          <feMerge>
+            <feMergeNode in="blur2"/>
+            <feMergeNode in="blur1"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      <!-- Outer soft glow -->
+      <rect x="18" y="18" width="1884" height="1044" rx="22" ry="22" fill="none" stroke="url(#neonGlowGrad)" stroke-width="5" filter="url(#neonFilter)"/>
+      <!-- Inner core tube -->
+      <rect x="18" y="18" width="1884" height="1044" rx="22" ry="22" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-opacity="0.85"/>
+    </svg>
+
+    <!-- HEADER BAR -->
+    <header class="header-bar">
+      <div class="brand-group">
+        <div class="brand-logo-badge">🍔</div>
+        <div class="brand-titles">
+          <h1 class="brand-title">MON BOCADILLO TANGER</h1>
+          <span class="brand-sub">★ HAUTE GASTRONOMIE CHAMALI & STREET FOOD ★</span>
+        </div>
+      </div>
+
+      <!-- Center Scene Pills -->
+      <div class="header-center-pills">
+        <button class="scene-pill-btn active" id="pill-scene-1" onclick="switchScene(0)">
+          ✦ 1. COMBO SUPRÊME
+        </button>
+        <button class="scene-pill-btn" id="pill-scene-2" onclick="switchScene(1)">
+          🔥 2. FIRE GRILL & CHAUDS
+        </button>
+        <button class="scene-pill-btn" id="pill-scene-3" onclick="switchScene(2)">
+          🍟 3. SNACK ATTACK & SIDES
+        </button>
+      </div>
+
+      <!-- Right Badges -->
+      <div class="header-live-info">
+        <div class="live-clock-badge" id="live-clock">12:00:00</div>
+        <div class="quality-stamp">
+          <span>100%</span>
+          <span>FRAIS</span>
+          <span>MAISON</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- SCENES VIEWPORT -->
+    <main class="scenes-viewport">
+
+      <!-- ================= SCENE 1: LE COMBO SUPRÊME (BOCADILLOS) ================= -->
+      <section class="scene-view active" id="scene-0">
+        <!-- LEFT: HERO COMBO WITH COMIC STARBURST -->
+        <div class="hero-stage">
+          <!-- Comic Starburst SVG -->
+          <svg class="comic-starburst" viewBox="0 0 500 500">
+            <defs>
+              <radialGradient id="burstGrad1" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
+                <stop offset="35%" stop-color="#ffe600" stop-opacity="0.95"/>
+                <stop offset="75%" stop-color="#ff7300" stop-opacity="0.85"/>
+                <stop offset="100%" stop-color="#e11d48" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <polygon fill="url(#burstGrad1)" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" points="
+              250,15 285,150 415,75 345,195 485,225 365,285 465,385 325,355 
+              315,485 250,370 185,485 175,355 35,385 135,285 15,225 155,195 
+              85,75 215,150
+            "/>
+          </svg>
+
+          <!-- Floating Decor Assets -->
+          <img src="cutouts_hd/decor_tomato_slice.png" alt="Tomato" class="decor-item decor-tomato">
+          <img src="cutouts_hd/decor_basil_leaf.png" alt="Basil" class="decor-item decor-basil1">
+          <img src="cutouts_hd/decor_basil_leaf2.png" alt="Basil" class="decor-item decor-basil2">
+
+          <!-- Comic Title -->
+          <div class="comic-hero-title-box">
+            <h2 class="comic-hero-title">LE COMBO SUPRÊME !</h2>
+            <div class="comic-hero-sub">★ SAVEUR AUTHENTIQUE CHAMALI ★</div>
+          </div>
+
+          <!-- Hero Combo Platter -->
+          <div class="hero-platter-group">
+            <div class="hero-slate-base"></div>
+            <!-- Authentic Bocadillo Complet Cutout -->
+            <img src="cutouts_hd/bocadillo complet 29 dh.png" alt="Bocadillo Complet Chamali" class="hero-sandwich-img">
+            <!-- French Fries Cone -->
+            <img src="cutouts_hd/frites_cone_kraft_2026.png" alt="Frites Maison" class="hero-side-fries">
+            <!-- Sauces Trio -->
+            <img src="cutouts_hd/sauces_trio_ramekins.png" alt="Sauces Trio" class="hero-side-sauces">
+          </div>
+
+          <!-- Chalk & Marker Callout Arrow -->
+          <div class="chalk-callout-1">
+            <div class="chalk-badge">
+              <div class="chalk-badge-label">COMBO COMPLET + FRITES</div>
+              <div class="chalk-badge-price" data-item-id="complet" data-price-type="sandwich">30 DH</div>
+            </div>
+            <!-- Hand-drawn curved SVG arrow pointing to sandwich -->
+            <svg class="chalk-arrow-svg" viewBox="0 0 100 80" fill="none" stroke="#ffe600" stroke-width="4" stroke-linecap="round">
+              <path d="M 85 15 Q 45 30 25 65" />
+              <polyline points="15,55 25,65 38,62" />
+            </svg>
+          </div>
+        </div>
+
+        <!-- RIGHT: GLASSMORPHISM MENU CARD -->
+        <div class="menu-card-stage">
+          <div class="glass-acrylic-card">
+            <div class="card-header-bar">
+              <h3 class="card-category-title">✦ NOS BOCADILLOS SIGNATURE ✦</h3>
+              <span class="card-category-tag">CHAMALI</span>
+            </div>
+
+            <!-- Item 1: Complet -->
+            <div class="menu-item-row" data-item-id="complet">
+              <div class="item-meta">
+                <div class="item-title-wrap">
+                  <span class="item-badge-pill">POPULAIRE</span>
+                  <span class="item-title">LE COMPLET CHAMALI</span>
+                </div>
+                <span class="item-desc">Thon 1er choix • Tortilla • Fromage • Charcuterie • Sauces</span>
+              </div>
+              <div class="item-dots"></div>
+              <div class="item-price-pill">
+                <span class="price-num" data-price-role="price">30</span>
+                <span class="price-cur">DH</span>
+              </div>
+            </div>
+
+            <!-- Item 2: Tortilla Royale -->
+            <div class="menu-item-row" data-item-id="tortilla_royale">
+              <div class="item-meta">
+                <div class="item-title-wrap">
+                  <span class="item-badge-pill">CHEF</span>
+                  <span class="item-title">TORTILLA ROYALE</span>
+                </div>
+                <span class="item-desc">Tortilla espagnole garnie • Fromage fondu • Sauce Royale</span>
+              </div>
+              <div class="item-dots"></div>
+              <div class="item-price-pill">
+                <span class="price-num" data-price-role="price">34</span>
+                <span class="price-cur">DH</span>
+              </div>
+            </div>
+
+            <!-- Item 3: Tangérois -->
+            <div class="menu-item-row" data-item-id="tangerois">
+              <div class="item-meta">
+                <div class="item-title-wrap">
+                  <span class="item-title">LE TANGÉROIS TRADITION</span>
+                </div>
+                <span class="item-desc">Recette traditionnelle de Tanger • Sauce spéciale maison</span>
+              </div>
+              <div class="item-dots"></div>
+              <div class="item-price-pill">
+                <span class="price-num" data-price-role="price">24</span>
+                <span class="price-cur">DH</span>
+              </div>
+            </div>
+
+            <!-- Item 4: Thon -->
+            <div class="menu-item-row" data-item-id="thon">
+              <div class="item-meta">
+                <div class="item-title-wrap">
+                  <span class="item-title">LE THON FRAIS & ŒUF</span>
+                </div>
+                <span class="item-desc">Thon de choix • Crudités fraîches • Œuf dur • Olives</span>
+              </div>
+              <div class="item-dots"></div>
+              <div class="item-price-pill">
+                <span class="price-num" data-price-role="price">22</span>
+                <span class="price-cur">DH</span>
+              </div>
+            </div>
+
+            <!-- Item 5: Double Cheese -->
+            <div class="menu-item-row" data-item-id="cheese">
+              <div class="item-meta">
+                <div class="item-title-wrap">
+                  <span class="item-title">LE DOUBLE CHEESE</span>
+                </div>
+                <span class="item-desc">Triple fromage fondu • Crème onctueuse gourmande</span>
+              </div>
+              <div class="item-dots"></div>
+              <div class="item-price-pill">
+                <span class="price-num" data-price-role="price">24</span>
+                <span class="price-cur">DH</span>
+              </div>
+            </div>
+
+            <!-- Card Footer Promo -->
+            <div class="card-footer-banner">
+              <div class="banner-text">
+                <span>🍟</span>
+                <span>FRITES MAISON INCLUSES DANS TOUS LES SANDWICHS</span>
+              </div>
+              <div class="banner-highlight">+7 DH BOISSON</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SCENE 2: FIRE GRILL & CHAUDS ================= -->
+      <section class="scene-view" id="scene-1">
+        <!-- LEFT: HERO GRILL -->
+        <div class="hero-stage">
+          <!-- Comic Fire Starburst SVG -->
+          <svg class="comic-starburst" viewBox="0 0 500 500">
+            <defs>
+              <radialGradient id="burstGrad2" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
+                <stop offset="35%" stop-color="#ff9500" stop-opacity="0.95"/>
+                <stop offset="75%" stop-color="#ef4444" stop-opacity="0.85"/>
+                <stop offset="100%" stop-color="#7f1d1d" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <polygon fill="url(#burstGrad2)" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" points="
+              250,15 285,150 415,75 345,195 485,225 365,285 465,385 325,355 
+              315,485 250,370 185,485 175,355 35,385 135,285 15,225 155,195 
+              85,75 215,150
+            "/>
+          </svg>
+
+          <!-- Floating Decor Assets -->
+          <img src="cutouts_hd/decor_flying_fries.png" alt="Flying Fries" class="decor-item decor-flying-fries">
+          <img src="cutouts_hd/decor_basil_leaf.png" alt="Basil" class="decor-item decor-basil1">
+          <img src="cutouts_hd/decor_tomato_slice.png" alt="Tomato" class="decor-item decor-tomato">
+
+          <!-- Comic Title -->
+          <div class="comic-hero-title-box">
+            <h2 class="comic-hero-title">FIRE GRILL & CHAUDS !</h2>
+            <div class="comic-hero-sub">★ 100% PUR BŒUF & VOLAILLE FRAÎCHE ★</div>
+          </div>
+
+          <!-- Hero Platter Group -->
+          <div class="hero-platter-group">
+            <div class="hero-slate-base"></div>
+            <!-- Authentic Américain Cutout -->
+            <img src="cutouts_hd/sandwich americain 35 dh.png" alt="L'Américain Royal" class="hero-sandwich-img">
+            <!-- French Fries Cone -->
+            <img src="cutouts_hd/frites_cone_kraft_2026.png" alt="Frites Maison" class="hero-side-fries">
+            <!-- Sauces Trio -->
+            <img src="cutouts_hd/sauces_trio_ramekins.png" alt="Sauces Trio" class="hero-side-sauces">
+          </div>
+
+          <!-- Chalk Callout Arrow -->
+          <div class="chalk-callout-1">
+            <div class="chalk-badge" style="border-color: var(--neon-cyan);">
+              <div class="chalk-badge-label" style="color: var(--neon-cyan);">L'AMÉRICAIN ROYAL PUR BŒUF</div>
+              <div class="chalk-badge-price" data-item-id="americain" data-price-type="sandwich" style="text-shadow: 0 0 12px rgba(0, 240, 255, 0.8);">35 DH</div>
+            </div>
+            <svg class="chalk-arrow-svg" viewBox="0 0 100 80" fill="none" stroke="#00f0ff" stroke-width="4" stroke-linecap="round">
+              <path d="M 85 15 Q 45 30 25 65" />
+              <polyline points="15,55 25,65 38,62" />
+            </svg>
+          </div>
+        </div>
+
+        <!-- RIGHT: CHAUDS MENU CARD -->
+        <div class="menu-card-stage">
+          <div class="glass-acrylic-card" style="box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 35px rgba(255, 106, 0, 0.2);">
+            <div class="card-header-bar">
+              <h3 class="card-category-title" style="color: var(--neon-orange);">🔥 SPÉCIALITÉS CHAUDES 🔥</h3>
+              <span class="card-category-tag" style="border-color: var(--neon-orange); background: rgba(255, 106, 0, 0.2);">GRILL</span>
+            </div>
+
+            <!-- Item 1: Américain -->
+            <div class="menu-item-row" data-item-id="americain">
+              <div class="item-meta">
+                <div class="item-title-wrap">
+                  <span class="item-badge-pill" style="background: var(--neon-yellow);">BEST-SELLER</span>
+                  <span class="item-title">L'AMÉRICAIN ROYAL</span>
+                </div>
+                <span class="item-desc">Steak haché pur bœuf • Cheddar fondu • Double frites</span>
+              </div>
+              <div class="item-dots"></div>
+              <div class="item-price-pill" style="border-color: var(--neon-orange);">
+                <span class="price-num" data-price-role="price" style="color: var(--neon-orange);">35</span>
+                <span class="price-cur">DH</span>
+              </div>
+            </div>
+
+            <!-- Item 2: Viande Hachée -->
+            <div class="menu-item-row" data-item-id="viande_hachee">
+              <div class="item-meta">
+                <div class="item-title-wrap">
+                  <span class="item-title">VIANDE HACHÉE FAÇON BOUCHER</span>
+                </div>
+                <span class="item-desc">Pur bœuf assaisonné minute • Épices tangéroises secrètes</span>
+              </div>
+              <div class="item-dots"></div>
+              <div class="item-price-pill" style="border-color: var(--neon-orange);">
+                <span class="price-num" data-price-role="price" style="color: var(--neon-orange);">30</span>
+                <span class="price-cur">DH</span>
+              </div>
+            </div>
+
+            <!-- Item 3: Poulet Mariné -->
+            <div class="menu-item-row" data-item-id="poulet">
+              <div class="item-meta">
+                <div class="item-title-wrap">
+                  <span class="item-badge-pill" style="background: var(--neon-cyan); color: #000;">TENDRE</span>
+                  <span class="item-title">LE POULET MARINÉ GRILLÉ</span>
+                </div>
+                <span class="item-desc">Filet de poulet mariné aux herbes • Sauce blanche onctueuse</span>
+              </div>
+              <div class="item-dots"></div>
+              <div class="item-price-pill" style="border-color: var(--neon-orange);">
+                <span class="price-num" data-price-role="price" style="color: var(--neon-orange);">30</span>
+                <span class="price-cur">DH</span>
+              </div>
+            </div>
+
+            <!-- Item 4: Mixte Royal -->
+            <div class="menu-item-row" data-item-id="mixte">
+              <div class="item-meta">
+                <div class="item-title-wrap">
+                  <span class="item-title">LE MIXTE ROYAL LARGE</span>
+                </div>
+                <span class="item-desc">Duo poulet mariné & viande hachée • Fromage • Sauces</span>
+              </div>
+              <div class="item-dots"></div>
+              <div class="item-price-pill" style="border-color: var(--neon-orange);">
+                <span class="price-num" data-price-role="price" style="color: var(--neon-orange);">35</span>
+                <span class="price-cur">DH</span>
+              </div>
+            </div>
+
+            <!-- Item 5: Saucisse Fumée -->
+            <div class="menu-item-row" data-item-id="saucisse">
+              <div class="item-meta">
+                <div class="item-title-wrap">
+                  <span class="item-title">LA SAUCISSE FUMÉE ARTISANALE</span>
+                </div>
+                <span class="item-desc">Saucisses fumées dorées à la plancha • Oignons caramélisés</span>
+              </div>
+              <div class="item-dots"></div>
+              <div class="item-price-pill" style="border-color: var(--neon-orange);">
+                <span class="price-num" data-price-role="price" style="color: var(--neon-orange);">30</span>
+                <span class="price-cur">DH</span>
+              </div>
+            </div>
+
+            <!-- Card Footer Promo -->
+            <div class="card-footer-banner">
+              <div class="banner-text">
+                <span>🔥</span>
+                <span>VIANDES FRAÎCHES CUISINÉES À LA COMMANDE</span>
+              </div>
+              <div class="banner-highlight">100% PUR BŒUF</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SCENE 3: SNACK ATTACK, SIDES & BOISSONS ================= -->
+      <section class="scene-view" id="scene-2">
+        <!-- LEFT: HERO LOADED SNACK COMBO -->
+        <div class="hero-stage">
+          <!-- Comic Starburst SVG -->
+          <svg class="comic-starburst" viewBox="0 0 500 500">
+            <defs>
+              <radialGradient id="burstGrad3" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
+                <stop offset="35%" stop-color="#00f0ff" stop-opacity="0.95"/>
+                <stop offset="75%" stop-color="#3b82f6" stop-opacity="0.85"/>
+                <stop offset="100%" stop-color="#1e1b4b" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <polygon fill="url(#burstGrad3)" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" points="
+              250,15 285,150 415,75 345,195 485,225 365,285 465,385 325,355 
+              315,485 250,370 185,485 175,355 35,385 135,285 15,225 155,195 
+              85,75 215,150
+            "/>
+          </svg>
+
+          <!-- Comic Title -->
+          <div class="comic-hero-title-box">
+            <h2 class="comic-hero-title" style="background: linear-gradient(180deg, #ffffff 10%, #a5f3fc 45%, #00f0ff 80%, #0284c7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(5px 5px 0px #000) drop-shadow(0 0 25px rgba(0, 240, 255, 0.8));">THE ULTIMATE SNACK BOX !</h2>
+            <div class="comic-hero-sub" style="background: linear-gradient(90deg, #0284c7, #06b6d4); box-shadow: 0 6px 16px rgba(0,0,0,0.7), 0 0 15px rgba(6, 182, 212, 0.5);">★ FORMULE SNACK & BOISSON FRAÎCHE ★</div>
+          </div>
+
+          <!-- Hero Platter Group -->
+          <div class="hero-platter-group">
+            <div class="hero-slate-base"></div>
+            <!-- Authentic Tortilla Royale Snack Sandwich -->
+            <img src="cutouts_hd/bocadillo tortillia royale 30 dh.png" alt="Tortilla Royale Snack" class="hero-sandwich-img">
+            <!-- French Fries Cone -->
+            <img src="cutouts_hd/frites_cone_kraft_2026.png" alt="Frites Maison" class="hero-side-fries">
+            <!-- Sauces Trio -->
+            <img src="cutouts_hd/sauces_trio_ramekins.png" alt="Sauces Trio" class="hero-side-sauces">
+            <!-- Fresh Drink Can -->
+            <img src="processed_images/coca.png" alt="Boisson Fraîche" style="position: absolute; bottom: 120px; right: 250px; width: 140px; height: auto; z-index: 10; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.9)); animation: subtleShake 5s ease-in-out infinite alternate;">
+          </div>
+
+          <!-- Chalk Callout Arrow -->
+          <div class="chalk-callout-1">
+            <div class="chalk-badge" style="border-color: var(--neon-cyan);">
+              <div class="chalk-badge-label" style="color: var(--neon-cyan);">PACK SNACK ROYALE</div>
+              <div class="chalk-badge-price" data-item-id="tortilla_royale" data-price-type="sandwich" style="text-shadow: 0 0 12px rgba(0, 240, 255, 0.8);">34 DH</div>
+            </div>
+            <svg class="chalk-arrow-svg" viewBox="0 0 100 80" fill="none" stroke="#00f0ff" stroke-width="4" stroke-linecap="round">
+              <path d="M 85 15 Q 45 30 25 65" />
+              <polyline points="15,55 25,65 38,62" />
+            </svg>
+          </div>
+        </div>
+
+        <!-- RIGHT: SIDES & DRINKS MENU CARD -->
+        <div class="menu-card-stage">
+          <div class="glass-acrylic-card" style="box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 35px rgba(0, 240, 255, 0.2);">
+            <div class="card-header-bar">
+              <h3 class="card-category-title" style="color: var(--neon-cyan);">🍟 SIDES & BOISSONS FRAÎCHES 🥤</h3>
+              <span class="card-category-tag" style="border-color: var(--neon-cyan); background: rgba(0, 240, 255, 0.2);">EXTRAS</span>
+            </div>
+
+            <!-- Item 1: Grande Portion Frites -->
+            <div class="menu-item-row" data-item-id="grande_frite">
+              <div class="item-meta">
+                <div class="item-title-wrap">
+                  <span class="item-badge-pill" style="background: var(--neon-yellow); color: #000;">CROUSTILLANTE</span>
+                  <span class="item-title">GRANDE PORTION FRITES MAISON</span>
+                </div>
+                <span class="item-desc">Pommes de terre fraîches dorées • Sel marin & herbes</span>
+              </div>
+              <div class="item-dots"></div>
+              <div class="item-price-pill" style="border-color: var(--neon-cyan);">
+                <span class="price-num" data-price-role="price" style="color: var(--neon-cyan);">12</span>
+                <span class="price-cur">DH</span>
+              </div>
+            </div>
+
+            <!-- Item 2: Boisson Gazeuse -->
+            <div class="menu-item-row" data-item-id="soda_canette">
+              <div class="item-meta">
+                <div class="item-title-wrap">
+                  <span class="item-title">CANETTE FRAÎCHE 33CL</span>
+                </div>
+                <span class="item-desc">Coca-Cola • Fanta • Sprite • Hawaï • Schweppes</span>
+              </div>
+              <div class="item-dots"></div>
+              <div class="item-price-pill" style="border-color: var(--neon-cyan);">
+                <span class="price-num" data-price-role="price" style="color: var(--neon-cyan);">7</span>
+                <span class="price-cur">DH</span>
+              </div>
+            </div>
+
+            <!-- Item 3: Jus d'Orange -->
+            <div class="menu-item-row" data-item-id="jus_orange">
+              <div class="item-meta">
+                <div class="item-title-wrap">
+                  <span class="item-badge-pill" style="background: var(--neon-orange);">100% PUR</span>
+                  <span class="item-title">JUS D'ORANGE PRESSÉ FRAIS</span>
+                </div>
+                <span class="item-desc">Oranges du Maroc pressées à la commande</span>
+              </div>
+              <div class="item-dots"></div>
+              <div class="item-price-pill" style="border-color: var(--neon-cyan);">
+                <span class="price-num" data-price-role="price" style="color: var(--neon-cyan);">15</span>
+                <span class="price-cur">DH</span>
+              </div>
+            </div>
+
+            <!-- Item 4: Eau Minérale -->
+            <div class="menu-item-row" data-item-id="eau_minerale">
+              <div class="item-meta">
+                <div class="item-title-wrap">
+                  <span class="item-title">EAU MINÉRALE GLACÉE (50CL)</span>
+                </div>
+                <span class="item-desc">Eau de source naturelle marocaine</span>
+              </div>
+              <div class="item-dots"></div>
+              <div class="item-price-pill" style="border-color: var(--neon-cyan);">
+                <span class="price-num" data-price-role="price" style="color: var(--neon-cyan);">5</span>
+                <span class="price-cur">DH</span>
+              </div>
+            </div>
+
+            <!-- Item 5: Sauces & Fromage -->
+            <div class="menu-item-row">
+              <div class="item-meta">
+                <div class="item-title-wrap">
+                  <span class="item-title">SUPPLÉMENT FROMAGE OU SAUCE</span>
+                </div>
+                <span class="item-desc">Cheddar fondu • Mozzarella • Trio sauces spéciales</span>
+              </div>
+              <div class="item-dots"></div>
+              <div class="item-price-pill" style="border-color: var(--neon-cyan);">
+                <span class="price-num" style="color: var(--neon-cyan);">5</span>
+                <span class="price-cur">DH</span>
+              </div>
+            </div>
+
+            <!-- Card Footer Promo -->
+            <div class="card-footer-banner">
+              <div class="banner-text">
+                <span>🥤</span>
+                <span>PACK GOURMAND : SANDWICH + FRITES + SODA</span>
+              </div>
+              <div class="banner-highlight">FORMULE COMPLETE</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER TICKER -->
+    <footer class="footer-bar">
+      <div class="ticker-lead-badge">⚡ EN DIRECT</div>
+      <div class="ticker-track">
+        <div class="ticker-content">
+          ★ BIENVENUE CHEZ MON BOCADILLO TANGER <span>⚡</span> HAUTE GASTRONOMIE CHAMALI <span>⚡</span> INGRÉDIENTS 100% FRAIS DU JOUR <span>⚡</span> PAIN ARTISANAL CUIT SUR PLACE <span>⚡</span> FRITES MAISON CROUSTILLANTES <span>⚡</span> COMMANDEZ AU COMPTOIR OU PAR TÉLÉPHONE : 06 00 00 00 00 <span>⚡</span> SUIVEZ-NOUS SUR INSTAGRAM : @MONBOCADILLO.MA ★
+        </div>
+      </div>
+      <div class="footer-contact-pill">
+        <span>📍 TANGER</span>
+        <span>•</span>
+        <span>06 00 00 00 00</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- FLOATING INTERACTIVE CONTROLS DOCK -->
+  <div class="dock-controls" id="dock-controls">
+    <button class="dock-btn" id="btn-play-pause" onclick="togglePlayPause()">⏸ Pause</button>
+    <button class="dock-btn active" onclick="switchScene(0)">1. Bocadillos</button>
+    <button class="dock-btn" onclick="switchScene(1)">2. Chauds</button>
+    <button class="dock-btn" onclick="switchScene(2)">3. Snacks</button>
+    <span style="color:#64748b; font-size:12px;">|</span>
+    <select id="select-duration" onchange="changeDuration(this.value)" style="background:#1e293b; color:#fff; border:1px solid #475569; border-radius:12px; padding:4px 8px; font-size:12px; cursor:pointer;">
+      <option value="8000">8s</option>
+      <option value="10000" selected>10s</option>
+      <option value="15000">15s</option>
+      <option value="20000">20s</option>
+    </select>
+    <button class="dock-btn" onclick="toggleFullscreen()">⛶ Plein Écran</button>
+  </div>
+
+  <script>
+    /* STAGE AUTO-SCALING FOR 1080p / 4K / ANY SCREEN */
+    function scaleStage() {
+      const stage = document.getElementById('stage');
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const scale = Math.min(w / 1920, h / 1080);
+      stage.style.transform = `scale(${scale})`;
+    }
+    window.addEventListener('resize', scaleStage);
+    scaleStage();
+
+    /* LIVE CLOCK */
+    function updateClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      const clockEl = document.getElementById('live-clock');
+      if (clockEl) clockEl.textContent = `${h}:${m}:${s}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    /* SCENE SWITCHING LOGIC */
+    let currentScene = 0;
+    const totalScenes = 3;
+    let sceneDuration = 10000;
+    let autoPlay = true;
+    let sceneTimer = null;
+
+    function switchScene(index) {
+      currentScene = (index + totalScenes) % totalScenes;
+      
+      // Update Scene Views
+      for (let i = 0; i < totalScenes; i++) {
+        const view = document.getElementById(`scene-${i}`);
+        const pill = document.getElementById(`pill-scene-${i+1}`);
+        if (view) {
+          if (i === currentScene) {
+            view.classList.add('active');
+          } else {
+            view.classList.remove('active');
+          }
+        }
+        if (pill) {
+          if (i === currentScene) {
+            pill.classList.add('active');
+          } else {
+            pill.classList.remove('active');
+          }
+        }
+      }
+
+      // Update Dock Buttons
+      const dockBtns = document.querySelectorAll('.dock-controls .dock-btn');
+      if (dockBtns.length >= 4) {
+        dockBtns[1].classList.toggle('active', currentScene === 0);
+        dockBtns[2].classList.toggle('active', currentScene === 1);
+        dockBtns[3].classList.toggle('active', currentScene === 2);
+      }
+
+      // Reset timer if playing
+      resetTimer();
+    }
+
+    function nextScene() {
+      switchScene(currentScene + 1);
+    }
+
+    function resetTimer() {
+      if (sceneTimer) clearTimeout(sceneTimer);
+      if (autoPlay) {
+        document.documentElement.style.setProperty('--scene-duration', `${sceneDuration / 1000}s`);
+        sceneTimer = setTimeout(nextScene, sceneDuration);
+      }
+    }
+
+    function togglePlayPause() {
+      autoPlay = !autoPlay;
+      const btn = document.getElementById('btn-play-pause');
+      if (btn) {
+        btn.textContent = autoPlay ? '⏸ Pause' : '▶ Lecture';
+      }
+      if (autoPlay) {
+        resetTimer();
+      } else if (sceneTimer) {
+        clearTimeout(sceneTimer);
+      }
+    }
+
+    function changeDuration(val) {
+      sceneDuration = parseInt(val, 10);
+      resetTimer();
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+
+    // Start auto loop
+    resetTimer();
+
+    /* LIVE PRICE SYNC ENGINE VIA BroadcastChannel AND /api/menu_items */
+    function applyPricesFromData(items) {
+      if (!items || !Array.isArray(items)) return;
+      items.forEach(item => {
+        const itemRows = document.querySelectorAll(`[data-item-id="${item.id}"]`);
+        itemRows.forEach(row => {
+          const priceEl = row.querySelector('[data-price-role="price"]');
+          if (priceEl && item.price_sandwich) {
+            priceEl.textContent = item.price_sandwich;
+          }
+          // Also check callout badges
+          if (row.hasAttribute('data-price-type') && item.price_sandwich) {
+            row.textContent = `${item.price_sandwich} DH`;
+          }
+        });
+      });
+    }
+
+    // Fetch initial prices
+    fetch('/api/menu_items')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.items) applyPricesFromData(data.items);
+      })
+      .catch(err => console.log('Live sync offline or static mode'));
+
+    // Listen on BroadcastChannel for real-time dashboard updates
+    try {
+      const bc = new BroadcastChannel('MENU_TV_CHANNEL');
+      bc.onmessage = (e) => {
+        if (e.data && (e.data.type === 'MENU_UPDATED' || e.data.type === 'PRICE_UPDATED')) {
+          if (e.data.items) applyPricesFromData(e.data.items);
+          else if (e.data.item) applyPricesFromData([e.data.item]);
+        }
+      };
+    } catch(e) {}
+
+    /* TV MODE & CONTROLS AUTO-HIDE & SCENE URL PARAM */
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('mode') === 'tv') {
+      document.body.classList.add('tv-mode');
+    }
+
+    const initialScene = urlParams.get('scene');
+    if (initialScene !== null) {
+      const idx = parseInt(initialScene, 10);
+      if (!isNaN(idx) && idx >= 0 && idx < totalScenes) {
+        autoPlay = false;
+        switchScene(idx);
+        const playBtn = document.getElementById('btn-play-pause');
+        if (playBtn) playBtn.textContent = '▶ Lecture';
+      }
+    }
+
+    // Auto-hide controls after 3 seconds of inactivity
+    const dock = document.getElementById('dock-controls');
+    let idleTimer = null;
+    function resetIdle() {
+      if (dock && !document.body.classList.contains('tv-mode')) {
+        dock.classList.remove('hidden');
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => {
+          dock.classList.add('hidden');
+        }, 3500);
+      }
+    }
+    window.addEventListener('mousemove', resetIdle);
+    window.addEventListener('click', resetIdle);
+    resetIdle();
+  </script>
+</body>
+</html>
