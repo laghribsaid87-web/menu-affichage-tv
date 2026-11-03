@@ -3,20 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Concept 12 — Street Pop & Neon Action | Mon Bocadillo Tanger</title>
+  <title>Concept 12 — Canva Motion & Sequential Sandwiches | Mon Bocadillo Tanger</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Montserrat:ital,wght@0,400;0,700;0,900;1,900&family=Permanent+Marker&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Montserrat:ital,wght@0,500;0,700;0,900;1,900&family=Permanent+Marker&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
       --neon-pink: #ff007f;
       --neon-cyan: #00f0ff;
       --neon-yellow: #ffe600;
       --neon-orange: #ff6a00;
-      --dark-slate: #0c0e12;
       --font-comic: 'Bangers', cursive, sans-serif;
       --font-marker: 'Permanent Marker', cursive, sans-serif;
       --font-body: 'Outfit', 'Montserrat', sans-serif;
+      --spring-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --smooth-out: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     * {
@@ -45,19 +46,19 @@
       transform-origin: center center;
       background: url('khalfyat_hd/chalkboard_dark.jpg') center center / cover no-repeat;
       overflow: hidden;
-      box-shadow: 0 0 100px rgba(0,0,0,0.9);
+      box-shadow: 0 0 100px rgba(0,0,0,0.95);
     }
 
     /* Ambient dark overlay & chalkboard vignette */
     .bg-overlay {
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at 50% 50%, rgba(15, 20, 28, 0.45) 0%, rgba(5, 7, 10, 0.92) 85%);
+      background: radial-gradient(circle at 45% 50%, rgba(15, 23, 42, 0.4) 0%, rgba(5, 7, 10, 0.94) 85%);
       pointer-events: none;
       z-index: 1;
     }
 
-    /* Outer TV Neon Tube Frame (SVG based for broadcast precision) */
+    /* Outer TV Neon Tube Frame (broadcast precision) */
     .tv-neon-frame-svg {
       position: absolute;
       inset: 0;
@@ -67,18 +68,24 @@
       z-index: 99;
     }
 
-    /* HEADER */
+    /* ================= HEADER BAR ================= */
     .header-bar {
       position: absolute;
-      top: 26px;
+      top: 24px;
       left: 36px;
       right: 36px;
-      height: 80px;
+      height: 82px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       z-index: 20;
       padding: 0 20px;
+      animation: canvaDropHeader 0.8s var(--smooth-out) forwards;
+    }
+
+    @keyframes canvaDropHeader {
+      0% { opacity: 0; transform: translateY(-40px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
 
     .brand-group {
@@ -98,12 +105,12 @@
       justify-content: center;
       font-size: 32px;
       box-shadow: 0 0 20px rgba(255, 106, 0, 0.8), 0 0 35px rgba(255, 230, 0, 0.4);
-      animation: spinSubtle 12s linear infinite;
+      animation: canvaLogoBounce 0.9s var(--spring-ease) forwards;
     }
 
-    @keyframes spinSubtle {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    @keyframes canvaLogoBounce {
+      0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
     }
 
     .brand-titles {
@@ -114,7 +121,7 @@
     .brand-title {
       font-family: var(--font-comic);
       font-size: 44px;
-      letter-spacing: 2.5px;
+      letter-spacing: 2px;
       background: linear-gradient(180deg, #ffffff 20%, #ffe600 70%, #ff8c00 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -126,56 +133,39 @@
     .brand-sub {
       font-size: 13px;
       font-weight: 700;
-      letter-spacing: 3.5px;
+      letter-spacing: 3px;
       color: #94a3b8;
       text-transform: uppercase;
       margin-top: 4px;
     }
 
-    .header-center-pills {
+    /* Category Mode Filter Pills */
+    .header-category-pills {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
-    .scene-pill-btn {
-      background: rgba(18, 22, 32, 0.7);
+    .cat-pill-btn {
+      background: rgba(18, 22, 32, 0.75);
       border: 2px solid rgba(255, 255, 255, 0.15);
-      padding: 8px 18px;
+      padding: 7px 18px;
       border-radius: 30px;
-      color: #94a3b8;
+      color: #cbd5e1;
       font-family: var(--font-comic);
-      font-size: 18px;
+      font-size: 17px;
       letter-spacing: 1px;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.3s var(--smooth-out);
       backdrop-filter: blur(8px);
-      position: relative;
-      overflow: hidden;
     }
 
-    .scene-pill-btn.active {
+    .cat-pill-btn.active {
       background: linear-gradient(135deg, var(--neon-pink) 0%, var(--neon-orange) 100%);
       border-color: var(--neon-yellow);
       color: #ffffff;
       box-shadow: 0 0 20px rgba(255, 0, 127, 0.6), 0 0 30px rgba(255, 106, 0, 0.4);
-      transform: scale(1.06);
-    }
-
-    .scene-pill-btn.active::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      height: 3px;
-      background: var(--neon-yellow);
-      width: 100%;
-      animation: progressCountdown var(--scene-duration, 10s) linear forwards;
-    }
-
-    @keyframes progressCountdown {
-      from { width: 0%; }
-      to { width: 100%; }
+      transform: scale(1.05);
     }
 
     .header-live-info {
@@ -210,46 +200,25 @@
       text-align: center;
       line-height: 0.9;
       font-size: 11px;
-      transform: rotate(-12deg);
+      transform: rotate(-10deg);
       box-shadow: 0 0 15px rgba(255, 230, 0, 0.4);
-      animation: stampWobble 6s ease-in-out infinite alternate;
     }
 
-    @keyframes stampWobble {
-      0% { transform: rotate(-14deg) scale(1); }
-      100% { transform: rotate(-9deg) scale(1.04); }
-    }
-
-    /* SCENES CONTAINER */
-    .scenes-viewport {
+    /* ================= MAIN STAGE: 2 COLUMNS ================= */
+    .main-viewport {
       position: absolute;
       top: 115px;
       left: 36px;
       right: 36px;
       bottom: 78px;
+      display: grid;
+      grid-template-columns: 56% 44%;
+      gap: 28px;
       z-index: 10;
     }
 
-    .scene-view {
-      position: absolute;
-      inset: 0;
-      display: grid;
-      grid-template-columns: 56% 44%;
-      gap: 30px;
-      opacity: 0;
-      pointer-events: none;
-      transform: scale(0.96) translateY(20px);
-      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .scene-view.active {
-      opacity: 1;
-      pointer-events: auto;
-      transform: scale(1) translateY(0);
-    }
-
-    /* LEFT STAGE: HERO COMBO & COMIC POP */
-    .hero-stage {
+    /* ================= LEFT COLUMN: DYNAMIC CANVA SHOWCASE ================= */
+    .hero-showcase-stage {
       position: relative;
       display: flex;
       flex-direction: column;
@@ -258,139 +227,90 @@
       padding: 10px;
     }
 
-    /* Comic Starburst Background */
-    .comic-starburst {
+    /* Clean Warm Ambient Food Spotlight (Replaced the rotating starburst) */
+    .hero-spotlight {
       position: absolute;
-      width: 780px;
-      height: 780px;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
+      width: 780px;
+      height: 700px;
+      transform: translate(-50%, -46%);
+      background: radial-gradient(ellipse at center, rgba(255, 150, 0, 0.28) 0%, rgba(255, 230, 0, 0.12) 40%, rgba(0, 0, 0, 0) 72%);
+      border-radius: 50%;
       pointer-events: none;
-      z-index: 1;
-      opacity: 0.85;
-      animation: rotateBurst 35s linear infinite;
+      z-index: 2;
+      animation: canvaBreatheLight 6s ease-in-out infinite alternate;
     }
 
-    @keyframes rotateBurst {
-      0% { transform: translate(-50%, -50%) rotate(0deg); }
-      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    @keyframes canvaBreatheLight {
+      0% { transform: translate(-50%, -46%) scale(0.95); opacity: 0.8; }
+      100% { transform: translate(-50%, -46%) scale(1.08); opacity: 1; }
     }
 
-    /* Floating Decor Elements */
-    .decor-item {
+    /* Sequential Progress Bar for Current Sandwich */
+    .hero-timeline-progress {
       position: absolute;
-      pointer-events: none;
-      z-index: 25;
-      filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 10px rgba(0,0,0,0.5));
-    }
-
-    .decor-tomato {
-      top: 180px;
-      left: 15px;
-      width: 105px;
-      animation: floatTomato 4.5s ease-in-out infinite alternate;
-    }
-
-    .decor-basil1 {
-      top: 90px;
-      left: 70px;
-      width: 100px;
-      animation: floatBasil 5s ease-in-out infinite alternate;
-    }
-
-    .decor-basil2 {
-      bottom: 60px;
-      left: 20px;
-      width: 90px;
-      animation: floatBasil 6s ease-in-out infinite alternate-reverse;
-    }
-
-    .decor-flying-fries {
-      top: 100px;
-      right: 10px;
-      width: 210px;
-      animation: floatFries 4.5s ease-in-out infinite alternate;
-    }
-
-    @keyframes floatTomato {
-      0% { transform: translateY(0px) rotate(-10deg) scale(1); }
-      100% { transform: translateY(-22px) rotate(15deg) scale(1.08); }
-    }
-
-    @keyframes floatBasil {
-      0% { transform: translateY(0px) rotate(0deg); }
-      100% { transform: translateY(-18px) rotate(-25deg); }
-    }
-
-    @keyframes floatFries {
-      0% { transform: translateY(0) rotate(5deg); }
-      100% { transform: translateY(-15px) rotate(-5deg); }
-    }
-
-    /* Comic Speed Lines */
-    .comic-speedlines {
-      position: absolute;
-      top: 20px;
+      top: 14px;
       left: 50%;
       transform: translateX(-50%);
-      width: 500px;
-      height: 120px;
-      pointer-events: none;
-      z-index: 12;
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-    }
-
-    .speed-line {
-      width: 4px;
-      height: 40px;
-      background: var(--neon-yellow);
+      width: 480px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.15);
       border-radius: 4px;
-      transform-origin: bottom center;
+      overflow: hidden;
+      z-index: 15;
     }
 
-    /* Comic Title Skewed Badge */
-    .comic-hero-title-box {
+    .hero-timeline-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--neon-pink), var(--neon-yellow), var(--neon-cyan));
+      border-radius: 4px;
+    }
+
+    /* Canva Skewed Title Banner */
+    .canva-hero-title-box {
       position: absolute;
-      top: 10px;
+      top: 30px;
       left: 50%;
-      transform: translateX(-50%) rotate(-3deg);
+      transform: translateX(-50%);
       z-index: 18;
       text-align: center;
       width: 100%;
     }
 
-    .comic-hero-title {
+    .canva-hero-title {
       font-family: var(--font-comic);
-      font-size: 76px;
+      font-size: 74px;
       line-height: 0.95;
       text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 2.5px;
       background: linear-gradient(180deg, #ffffff 10%, #fff04d 45%, #ff9500 80%, #ff4d00 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       -webkit-text-stroke: 3px #050505;
-      filter: drop-shadow(5px 5px 0px #000000) drop-shadow(0 0 25px rgba(255, 149, 0, 0.8));
+      filter: drop-shadow(5px 5px 0px #000000) drop-shadow(0 0 25px rgba(255, 149, 0, 0.7));
+      display: inline-block;
+      transition: all 0.4s var(--spring-ease);
     }
 
-    .comic-hero-sub {
+    .canva-hero-sub {
       font-family: var(--font-marker);
-      font-size: 20px;
+      font-size: 19px;
       color: #ffffff;
       background: linear-gradient(90deg, #e11d48, #ef4444);
       display: inline-block;
-      padding: 6px 24px;
+      padding: 5px 22px;
       border-radius: 12px;
-      border: 3px solid #ffffff;
-      transform: rotate(2deg);
+      border: 2px solid #ffffff;
+      transform: rotate(1.5deg);
       box-shadow: 0 6px 16px rgba(0,0,0,0.7), 0 0 15px rgba(239, 68, 68, 0.5);
-      margin-top: 4px;
+      margin-top: 6px;
       letter-spacing: 1.5px;
+      transition: all 0.4s var(--smooth-out);
     }
 
-    /* Hero Food Platter Visual */
+    /* Hero Food Platter Stage */
     .hero-platter-group {
       position: relative;
       width: 100%;
@@ -399,110 +319,224 @@
       align-items: center;
       justify-content: center;
       z-index: 10;
-      margin-top: 40px;
+      margin-top: 55px;
     }
 
     /* Grounding Dark Slate Platter */
     .hero-slate-base {
       position: absolute;
       bottom: 25px;
-      width: 820px;
-      height: 280px;
+      width: 830px;
+      height: 290px;
       background: url('cutouts_hd/slate_serving_board.png') center center / contain no-repeat;
       filter: drop-shadow(0 30px 40px rgba(0,0,0,0.95));
       z-index: 5;
     }
 
-    /* Main Sandwich Cutout */
-    .hero-sandwich-img {
-      position: absolute;
-      bottom: 85px;
-      width: 680px;
-      height: auto;
-      max-height: 440px;
-      object-fit: contain;
-      filter: drop-shadow(0 20px 30px rgba(0,0,0,0.85)) drop-shadow(0 0 35px rgba(255, 230, 0, 0.2));
-      z-index: 8;
-      transition: transform 0.4s ease;
-      animation: heroBreath 5s ease-in-out infinite alternate;
-    }
-
-    @keyframes heroBreath {
-      0% { transform: translateY(0px) scale(1); }
-      100% { transform: translateY(-8px) scale(1.02); }
-    }
-
-    /* Side Fries Cup & Sauces in Hero */
-    .hero-side-fries {
+    /* Active Dynamic Sandwich Cutout (Animated via Canva Pop) */
+    .hero-sandwich-container {
       position: absolute;
       bottom: 95px;
-      right: 40px;
+      width: 720px;
+      height: 420px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 8;
+    }
+
+    .hero-sandwich-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 20px 30px rgba(0,0,0,0.85)) drop-shadow(0 0 35px rgba(255, 230, 0, 0.25));
+      transform-origin: center bottom;
+    }
+
+    /* Side French Fries Cone & Sauces */
+    .hero-side-fries {
+      position: absolute;
+      bottom: 105px;
+      right: 35px;
       width: 250px;
       height: auto;
       z-index: 9;
       filter: drop-shadow(0 15px 25px rgba(0,0,0,0.9));
-      animation: subtleShake 6s ease-in-out infinite alternate;
+      animation: canvaGentleSway 6s ease-in-out infinite alternate;
     }
 
     .hero-side-sauces {
       position: absolute;
-      bottom: 35px;
-      left: 50px;
-      width: 250px;
+      bottom: 40px;
+      left: 55px;
+      width: 245px;
       height: auto;
       z-index: 9;
       filter: drop-shadow(0 15px 25px rgba(0,0,0,0.9));
     }
 
-    @keyframes subtleShake {
+    @keyframes canvaGentleSway {
       0% { transform: translateY(0) rotate(0deg); }
-      100% { transform: translateY(-6px) rotate(2deg); }
+      100% { transform: translateY(-8px) rotate(2deg); }
     }
 
-    /* Chalk & Marker Callout Arrows */
-    .chalk-callout-1 {
+    /* Canva Style Callout Price Badge with Elastic Overshoot */
+    .canva-callout-badge {
       position: absolute;
-      top: 170px;
-      right: 15px;
+      top: 175px;
+      right: 25px;
       z-index: 18;
       display: flex;
       flex-direction: column;
       align-items: center;
-      transform: rotate(6deg);
+      transform: rotate(5deg);
     }
 
-    .chalk-badge {
+    .canva-badge-card {
       background: rgba(15, 23, 42, 0.95);
       border: 3px solid var(--neon-yellow);
-      border-radius: 18px;
-      padding: 10px 22px;
+      border-radius: 20px;
+      padding: 10px 24px;
       text-align: center;
-      box-shadow: 0 0 25px rgba(255, 230, 0, 0.5), 0 10px 20px rgba(0,0,0,0.8);
+      box-shadow: 0 0 25px rgba(255, 230, 0, 0.5), 0 10px 25px rgba(0,0,0,0.85);
+      position: relative;
     }
 
-    .chalk-badge-label {
+    .canva-badge-pill {
       font-family: var(--font-marker);
-      font-size: 15px;
+      font-size: 14px;
       color: var(--neon-yellow);
       letter-spacing: 1px;
+      text-transform: uppercase;
     }
 
-    .chalk-badge-price {
+    .canva-badge-price {
       font-family: var(--font-comic);
-      font-size: 48px;
+      font-size: 50px;
       line-height: 1;
-      color: #fff;
-      text-shadow: 0 0 12px rgba(255, 230, 0, 0.8);
+      color: #ffffff;
+      text-shadow: 0 0 14px rgba(255, 230, 0, 0.85);
     }
 
-    .chalk-arrow-svg {
-      width: 80px;
-      height: 70px;
+    .canva-arrow-svg {
+      width: 75px;
+      height: 65px;
       margin-top: -6px;
       filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
     }
 
-    /* RIGHT STAGE: GLASSMORPHISM MENU CARD */
+    /* Thumbnail Carousel Strip (One by one selector) */
+    .sandwich-thumb-strip {
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 22;
+      background: rgba(15, 23, 42, 0.85);
+      padding: 6px 14px;
+      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+    }
+
+    .thumb-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      background: #0f172a;
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s var(--spring-ease);
+      padding: 3px;
+    }
+
+    .thumb-btn img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .thumb-btn.active {
+      border-color: var(--neon-yellow);
+      transform: scale(1.18);
+      box-shadow: 0 0 15px rgba(255, 230, 0, 0.8);
+      background: rgba(255, 230, 0, 0.15);
+    }
+
+    /* ================= CANVA TRANSITION CLASSES ================= */
+    /* Pop Entrance (Like Canva "Pop") */
+    .anim-canva-pop-in {
+      animation: canvaPopIn 0.75s var(--spring-ease) forwards !important;
+    }
+
+    @keyframes canvaPopIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.65) translateY(70px) rotate(-4deg);
+        filter: blur(6px);
+      }
+      65% {
+        opacity: 1;
+        transform: scale(1.05) translateY(-6px) rotate(1deg);
+        filter: blur(0px);
+      }
+      85% {
+        transform: scale(0.98) translateY(2px) rotate(0deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0) rotate(0deg);
+      }
+    }
+
+    /* Price Badge Bounce */
+    .anim-badge-bounce {
+      animation: canvaBadgeBounce 0.65s var(--spring-ease) forwards !important;
+    }
+
+    @keyframes canvaBadgeBounce {
+      0% {
+        opacity: 0;
+        transform: scale(0) rotate(-25deg);
+      }
+      65% {
+        opacity: 1;
+        transform: scale(1.18) rotate(7deg);
+      }
+      85% {
+        transform: scale(0.95) rotate(-2deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(5deg);
+      }
+    }
+
+    /* Exit Slide */
+    .anim-canva-exit {
+      animation: canvaExit 0.45s var(--smooth-out) forwards !important;
+    }
+
+    @keyframes canvaExit {
+      0% {
+        opacity: 1;
+        transform: scale(1) translateX(0);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(0.85) translateX(-80px);
+        filter: blur(6px);
+      }
+    }
+
+    /* ================= RIGHT COLUMN: GLASSMORPHISM MENU CARD ================= */
     .menu-card-stage {
       position: relative;
       display: flex;
@@ -512,17 +546,23 @@
     }
 
     .glass-acrylic-card {
-      background: rgba(14, 18, 27, 0.78);
+      background: rgba(14, 18, 27, 0.82);
       border: 2px solid rgba(255, 255, 255, 0.16);
       border-radius: 24px;
-      padding: 28px 32px;
+      padding: 26px 30px;
       backdrop-filter: blur(16px);
       box-shadow: 
-        0 20px 50px rgba(0, 0, 0, 0.8),
+        0 20px 50px rgba(0, 0, 0, 0.85),
         inset 0 1px 0 rgba(255, 255, 255, 0.2),
         0 0 35px rgba(0, 240, 255, 0.15);
       position: relative;
       overflow: hidden;
+      animation: canvaCardEnter 0.9s var(--smooth-out) forwards;
+    }
+
+    @keyframes canvaCardEnter {
+      0% { opacity: 0; transform: translateX(60px); }
+      100% { opacity: 1; transform: translateX(0); }
     }
 
     .glass-acrylic-card::before {
@@ -540,8 +580,8 @@
       align-items: center;
       justify-content: space-between;
       border-bottom: 2px dashed rgba(255, 255, 255, 0.18);
-      padding-bottom: 14px;
-      margin-bottom: 20px;
+      padding-bottom: 12px;
+      margin-bottom: 18px;
     }
 
     .card-category-title {
@@ -567,25 +607,44 @@
       text-transform: uppercase;
     }
 
-    /* Menu Items Dot Leader List */
+    /* Staggered Canva Menu Item Rows */
     .menu-item-row {
       display: flex;
       align-items: baseline;
       justify-content: space-between;
-      margin-bottom: 15px;
+      margin-bottom: 13px;
       position: relative;
-      transition: transform 0.2s ease;
+      padding: 6px 10px;
+      border-radius: 12px;
+      transition: all 0.3s var(--smooth-out);
+      cursor: pointer;
+      opacity: 0;
+      animation: canvaRowStagger 0.6s var(--spring-ease) forwards;
+      animation-delay: var(--delay, 0.1s);
     }
 
-    .menu-item-row:hover {
-      transform: translateX(4px);
+    @keyframes canvaRowStagger {
+      0% {
+        opacity: 0;
+        transform: translateX(45px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .menu-item-row:hover, .menu-item-row.current-active {
+      background: rgba(255, 230, 0, 0.12);
+      transform: translateX(6px) scale(1.02);
+      border-left: 4px solid var(--neon-yellow);
     }
 
     .item-meta {
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
-      max-width: 58%;
+      max-width: 60%;
     }
 
     .item-title-wrap {
@@ -606,7 +665,7 @@
     }
 
     .item-title {
-      font-size: 21px;
+      font-size: 20px;
       font-weight: 800;
       color: #ffffff;
       letter-spacing: 0.5px;
@@ -617,7 +676,7 @@
       font-size: 12px;
       color: #94a3b8;
       font-weight: 500;
-      margin-top: 3px;
+      margin-top: 2px;
       text-transform: uppercase;
       letter-spacing: 0.8px;
       line-height: 1.2;
@@ -635,30 +694,31 @@
       background: linear-gradient(135deg, rgba(255, 230, 0, 0.15) 0%, rgba(255, 106, 0, 0.25) 100%);
       border: 1.5px solid var(--neon-yellow);
       border-radius: 12px;
-      padding: 6px 14px;
+      padding: 5px 12px;
       display: flex;
       align-items: baseline;
       gap: 4px;
       box-shadow: 0 0 15px rgba(255, 230, 0, 0.25);
       flex-shrink: 0;
+      transition: all 0.3s var(--spring-ease);
     }
 
     .price-num {
       font-family: var(--font-comic);
-      font-size: 28px;
+      font-size: 26px;
       color: var(--neon-yellow);
       line-height: 1;
     }
 
     .price-cur {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 900;
       color: #fff;
     }
 
     /* Included Banner inside Card */
     .card-footer-banner {
-      margin-top: 18px;
+      margin-top: 14px;
       background: linear-gradient(90deg, rgba(255, 0, 127, 0.2), rgba(0, 240, 255, 0.2));
       border: 1.5px dashed var(--neon-cyan);
       border-radius: 14px;
@@ -666,6 +726,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      opacity: 0;
+      animation: canvaRowStagger 0.6s var(--spring-ease) 0.85s forwards;
     }
 
     .banner-text {
@@ -685,10 +747,10 @@
       letter-spacing: 1px;
     }
 
-    /* FOOTER TICKER */
+    /* ================= FOOTER TICKER ================= */
     .footer-bar {
       position: absolute;
-      bottom: 24px;
+      bottom: 22px;
       left: 36px;
       right: 36px;
       height: 48px;
@@ -759,10 +821,10 @@
       color: var(--neon-cyan);
     }
 
-    /* INTERACTIVE FLOATING CONTROLS */
+    /* ================= FLOATING CONTROLS DOCK ================= */
     .dock-controls {
       position: fixed;
-      bottom: 85px;
+      bottom: 82px;
       left: 50%;
       transform: translateX(-50%);
       background: rgba(15, 23, 42, 0.92);
@@ -823,7 +885,7 @@
 <body>
 
   <div id="stage">
-    <!-- Overlay Chalk Texture -->
+    <!-- Dark Vignette Overlay -->
     <div class="bg-overlay"></div>
 
     <!-- Outer Animated Neon TV Tube Frame -->
@@ -846,9 +908,7 @@
           </feMerge>
         </filter>
       </defs>
-      <!-- Outer soft glow -->
       <rect x="18" y="18" width="1884" height="1044" rx="22" ry="22" fill="none" stroke="url(#neonGlowGrad)" stroke-width="5" filter="url(#neonFilter)"/>
-      <!-- Inner core tube -->
       <rect x="18" y="18" width="1884" height="1044" rx="22" ry="22" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-opacity="0.85"/>
     </svg>
 
@@ -862,16 +922,16 @@
         </div>
       </div>
 
-      <!-- Center Scene Pills -->
-      <div class="header-center-pills">
-        <button class="scene-pill-btn active" id="pill-scene-1" onclick="switchScene(0)">
-          ✦ 1. COMBO SUPRÊME
+      <!-- Mode Selector Pills -->
+      <div class="header-category-pills">
+        <button class="cat-pill-btn active" id="btn-cat-bocadillos" onclick="switchCategory('bocadillo')">
+          ✦ NOS BOCADILLOS
         </button>
-        <button class="scene-pill-btn" id="pill-scene-2" onclick="switchScene(1)">
-          🔥 2. FIRE GRILL & CHAUDS
+        <button class="cat-pill-btn" id="btn-cat-chauds" onclick="switchCategory('chaud')">
+          🔥 SPECIALITÉS CHAUDES
         </button>
-        <button class="scene-pill-btn" id="pill-scene-3" onclick="switchScene(2)">
-          🍟 3. SNACK ATTACK & SIDES
+        <button class="cat-pill-btn" id="btn-cat-sides" onclick="switchCategory('sides')">
+          🍟 SIDES & BOISSONS
         </button>
       </div>
 
@@ -886,462 +946,80 @@
       </div>
     </header>
 
-    <!-- SCENES VIEWPORT -->
-    <main class="scenes-viewport">
+    <!-- MAIN VIEWPORT -->
+    <main class="main-viewport">
 
-      <!-- ================= SCENE 1: LE COMBO SUPRÊME (BOCADILLOS) ================= -->
-      <section class="scene-view active" id="scene-0">
-        <!-- LEFT: HERO COMBO WITH COMIC STARBURST -->
-        <div class="hero-stage">
-          <!-- Comic Starburst SVG -->
-          <svg class="comic-starburst" viewBox="0 0 500 500">
-            <defs>
-              <radialGradient id="burstGrad1" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
-                <stop offset="35%" stop-color="#ffe600" stop-opacity="0.95"/>
-                <stop offset="75%" stop-color="#ff7300" stop-opacity="0.85"/>
-                <stop offset="100%" stop-color="#e11d48" stop-opacity="0"/>
-              </radialGradient>
-            </defs>
-            <polygon fill="url(#burstGrad1)" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" points="
-              250,15 285,150 415,75 345,195 485,225 365,285 465,385 325,355 
-              315,485 250,370 185,485 175,355 35,385 135,285 15,225 155,195 
-              85,75 215,150
-            "/>
-          </svg>
+      <!-- ================= LEFT: DYNAMIC CANVA SHOWCASE ================= -->
+      <section class="hero-showcase-stage">
+        <!-- Clean Warm Spotlight (NO Starburst!) -->
+        <div class="hero-spotlight"></div>
 
-          <!-- Floating Decor Assets -->
-          <img src="cutouts_hd/decor_tomato_slice.png" alt="Tomato" class="decor-item decor-tomato">
-          <img src="cutouts_hd/decor_basil_leaf.png" alt="Basil" class="decor-item decor-basil1">
-          <img src="cutouts_hd/decor_basil_leaf2.png" alt="Basil" class="decor-item decor-basil2">
-
-          <!-- Comic Title -->
-          <div class="comic-hero-title-box">
-            <h2 class="comic-hero-title">LE COMBO SUPRÊME !</h2>
-            <div class="comic-hero-sub">★ SAVEUR AUTHENTIQUE CHAMALI ★</div>
-          </div>
-
-          <!-- Hero Combo Platter -->
-          <div class="hero-platter-group">
-            <div class="hero-slate-base"></div>
-            <!-- Authentic Bocadillo Complet Cutout -->
-            <img src="cutouts_hd/bocadillo complet 29 dh.png" alt="Bocadillo Complet Chamali" class="hero-sandwich-img">
-            <!-- French Fries Cone -->
-            <img src="cutouts_hd/frites_cone_kraft_2026.png" alt="Frites Maison" class="hero-side-fries">
-            <!-- Sauces Trio -->
-            <img src="cutouts_hd/sauces_trio_ramekins.png" alt="Sauces Trio" class="hero-side-sauces">
-          </div>
-
-          <!-- Chalk & Marker Callout Arrow -->
-          <div class="chalk-callout-1">
-            <div class="chalk-badge">
-              <div class="chalk-badge-label">COMBO COMPLET + FRITES</div>
-              <div class="chalk-badge-price" data-item-id="complet" data-price-type="sandwich">30 DH</div>
-            </div>
-            <!-- Hand-drawn curved SVG arrow pointing to sandwich -->
-            <svg class="chalk-arrow-svg" viewBox="0 0 100 80" fill="none" stroke="#ffe600" stroke-width="4" stroke-linecap="round">
-              <path d="M 85 15 Q 45 30 25 65" />
-              <polyline points="15,55 25,65 38,62" />
-            </svg>
-          </div>
+        <!-- Sequential Timeline Progress Bar -->
+        <div class="hero-timeline-progress">
+          <div class="hero-timeline-bar" id="hero-progress-bar"></div>
         </div>
 
-        <!-- RIGHT: GLASSMORPHISM MENU CARD -->
-        <div class="menu-card-stage">
-          <div class="glass-acrylic-card">
-            <div class="card-header-bar">
-              <h3 class="card-category-title">✦ NOS BOCADILLOS SIGNATURE ✦</h3>
-              <span class="card-category-tag">CHAMALI</span>
-            </div>
+        <!-- Canva Skewed Title Banner -->
+        <div class="canva-hero-title-box">
+          <h2 class="canva-hero-title" id="hero-display-title">LE COMPLET CHAMALI</h2>
+          <div class="canva-hero-sub" id="hero-display-sub">★ RECETTE AUTHENTIQUE DE TANGER ★</div>
+        </div>
 
-            <!-- Item 1: Complet -->
-            <div class="menu-item-row" data-item-id="complet">
-              <div class="item-meta">
-                <div class="item-title-wrap">
-                  <span class="item-badge-pill">POPULAIRE</span>
-                  <span class="item-title">LE COMPLET CHAMALI</span>
-                </div>
-                <span class="item-desc">Thon 1er choix • Tortilla • Fromage • Charcuterie • Sauces</span>
-              </div>
-              <div class="item-dots"></div>
-              <div class="item-price-pill">
-                <span class="price-num" data-price-role="price">30</span>
-                <span class="price-cur">DH</span>
-              </div>
-            </div>
+        <!-- Hero Platter Group -->
+        <div class="hero-platter-group">
+          <!-- Dark Natural Slate Platter Base -->
+          <div class="hero-slate-base"></div>
 
-            <!-- Item 2: Tortilla Royale -->
-            <div class="menu-item-row" data-item-id="tortilla_royale">
-              <div class="item-meta">
-                <div class="item-title-wrap">
-                  <span class="item-badge-pill">CHEF</span>
-                  <span class="item-title">TORTILLA ROYALE</span>
-                </div>
-                <span class="item-desc">Tortilla espagnole garnie • Fromage fondu • Sauce Royale</span>
-              </div>
-              <div class="item-dots"></div>
-              <div class="item-price-pill">
-                <span class="price-num" data-price-role="price">34</span>
-                <span class="price-cur">DH</span>
-              </div>
-            </div>
-
-            <!-- Item 3: Tangérois -->
-            <div class="menu-item-row" data-item-id="tangerois">
-              <div class="item-meta">
-                <div class="item-title-wrap">
-                  <span class="item-title">LE TANGÉROIS TRADITION</span>
-                </div>
-                <span class="item-desc">Recette traditionnelle de Tanger • Sauce spéciale maison</span>
-              </div>
-              <div class="item-dots"></div>
-              <div class="item-price-pill">
-                <span class="price-num" data-price-role="price">24</span>
-                <span class="price-cur">DH</span>
-              </div>
-            </div>
-
-            <!-- Item 4: Thon -->
-            <div class="menu-item-row" data-item-id="thon">
-              <div class="item-meta">
-                <div class="item-title-wrap">
-                  <span class="item-title">LE THON FRAIS & ŒUF</span>
-                </div>
-                <span class="item-desc">Thon de choix • Crudités fraîches • Œuf dur • Olives</span>
-              </div>
-              <div class="item-dots"></div>
-              <div class="item-price-pill">
-                <span class="price-num" data-price-role="price">22</span>
-                <span class="price-cur">DH</span>
-              </div>
-            </div>
-
-            <!-- Item 5: Double Cheese -->
-            <div class="menu-item-row" data-item-id="cheese">
-              <div class="item-meta">
-                <div class="item-title-wrap">
-                  <span class="item-title">LE DOUBLE CHEESE</span>
-                </div>
-                <span class="item-desc">Triple fromage fondu • Crème onctueuse gourmande</span>
-              </div>
-              <div class="item-dots"></div>
-              <div class="item-price-pill">
-                <span class="price-num" data-price-role="price">24</span>
-                <span class="price-cur">DH</span>
-              </div>
-            </div>
-
-            <!-- Card Footer Promo -->
-            <div class="card-footer-banner">
-              <div class="banner-text">
-                <span>🍟</span>
-                <span>FRITES MAISON INCLUSES DANS TOUS LES SANDWICHS</span>
-              </div>
-              <div class="banner-highlight">+7 DH BOISSON</div>
-            </div>
+          <!-- Dynamic Animated Sandwich (Canva Pop-In) -->
+          <div class="hero-sandwich-container" id="sandwich-stage-container">
+            <img src="cutouts_hd/bocadillo complet 29 dh.png" alt="Hero Sandwich" class="hero-sandwich-img anim-canva-pop-in" id="hero-sandwich-image">
           </div>
+
+          <!-- French Fries Cone Kraft -->
+          <img src="cutouts_hd/frites_cone_kraft_2026.png" alt="Frites Maison" class="hero-side-fries">
+
+          <!-- Sauces Trio Ramekins -->
+          <img src="cutouts_hd/sauces_trio_ramekins.png" alt="Sauces Trio" class="hero-side-sauces">
+        </div>
+
+        <!-- Canva Style Price Callout Badge -->
+        <div class="canva-callout-badge" id="hero-callout-box">
+          <div class="canva-badge-card anim-badge-bounce" id="hero-badge-card">
+            <div class="canva-badge-pill" id="hero-badge-label">COMBO + FRITES</div>
+            <div class="canva-badge-price" id="hero-badge-price">30 DH</div>
+          </div>
+          <svg class="canva-arrow-svg" viewBox="0 0 100 80" fill="none" stroke="#ffe600" stroke-width="4" stroke-linecap="round">
+            <path d="M 85 15 Q 45 30 25 65" />
+            <polyline points="15,55 25,65 38,62" />
+          </svg>
+        </div>
+
+        <!-- Thumbnail Carousel Strip (One by One) -->
+        <div class="sandwich-thumb-strip" id="thumb-strip-container">
+          <!-- Populated dynamically by JS -->
         </div>
       </section>
 
-      <!-- ================= SCENE 2: FIRE GRILL & CHAUDS ================= -->
-      <section class="scene-view" id="scene-1">
-        <!-- LEFT: HERO GRILL -->
-        <div class="hero-stage">
-          <!-- Comic Fire Starburst SVG -->
-          <svg class="comic-starburst" viewBox="0 0 500 500">
-            <defs>
-              <radialGradient id="burstGrad2" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
-                <stop offset="35%" stop-color="#ff9500" stop-opacity="0.95"/>
-                <stop offset="75%" stop-color="#ef4444" stop-opacity="0.85"/>
-                <stop offset="100%" stop-color="#7f1d1d" stop-opacity="0"/>
-              </radialGradient>
-            </defs>
-            <polygon fill="url(#burstGrad2)" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" points="
-              250,15 285,150 415,75 345,195 485,225 365,285 465,385 325,355 
-              315,485 250,370 185,485 175,355 35,385 135,285 15,225 155,195 
-              85,75 215,150
-            "/>
-          </svg>
-
-          <!-- Floating Decor Assets -->
-          <img src="cutouts_hd/decor_flying_fries.png" alt="Flying Fries" class="decor-item decor-flying-fries">
-          <img src="cutouts_hd/decor_basil_leaf.png" alt="Basil" class="decor-item decor-basil1">
-          <img src="cutouts_hd/decor_tomato_slice.png" alt="Tomato" class="decor-item decor-tomato">
-
-          <!-- Comic Title -->
-          <div class="comic-hero-title-box">
-            <h2 class="comic-hero-title">FIRE GRILL & CHAUDS !</h2>
-            <div class="comic-hero-sub">★ 100% PUR BŒUF & VOLAILLE FRAÎCHE ★</div>
+      <!-- ================= RIGHT: GLASSMORPHISM MENU CARD ================= -->
+      <section class="menu-card-stage">
+        <div class="glass-acrylic-card">
+          <div class="card-header-bar">
+            <h3 class="card-category-title" id="card-cat-title">✦ NOS BOCADILLOS SIGNATURE ✦</h3>
+            <span class="card-category-tag" id="card-cat-tag">CHAMALI</span>
           </div>
 
-          <!-- Hero Platter Group -->
-          <div class="hero-platter-group">
-            <div class="hero-slate-base"></div>
-            <!-- Authentic Américain Cutout -->
-            <img src="cutouts_hd/sandwich americain 35 dh.png" alt="L'Américain Royal" class="hero-sandwich-img">
-            <!-- French Fries Cone -->
-            <img src="cutouts_hd/frites_cone_kraft_2026.png" alt="Frites Maison" class="hero-side-fries">
-            <!-- Sauces Trio -->
-            <img src="cutouts_hd/sauces_trio_ramekins.png" alt="Sauces Trio" class="hero-side-sauces">
+          <!-- Dynamic Item Rows with Staggered Delays -->
+          <div id="menu-items-list">
+            <!-- Populated dynamically by JS -->
           </div>
 
-          <!-- Chalk Callout Arrow -->
-          <div class="chalk-callout-1">
-            <div class="chalk-badge" style="border-color: var(--neon-cyan);">
-              <div class="chalk-badge-label" style="color: var(--neon-cyan);">L'AMÉRICAIN ROYAL PUR BŒUF</div>
-              <div class="chalk-badge-price" data-item-id="americain" data-price-type="sandwich" style="text-shadow: 0 0 12px rgba(0, 240, 255, 0.8);">35 DH</div>
+          <!-- Card Footer Promo Banner -->
+          <div class="card-footer-banner">
+            <div class="banner-text">
+              <span>🍟</span>
+              <span>FRITES MAISON INCLUSES DANS TOUS LES SANDWICHS</span>
             </div>
-            <svg class="chalk-arrow-svg" viewBox="0 0 100 80" fill="none" stroke="#00f0ff" stroke-width="4" stroke-linecap="round">
-              <path d="M 85 15 Q 45 30 25 65" />
-              <polyline points="15,55 25,65 38,62" />
-            </svg>
-          </div>
-        </div>
-
-        <!-- RIGHT: CHAUDS MENU CARD -->
-        <div class="menu-card-stage">
-          <div class="glass-acrylic-card" style="box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 35px rgba(255, 106, 0, 0.2);">
-            <div class="card-header-bar">
-              <h3 class="card-category-title" style="color: var(--neon-orange);">🔥 SPÉCIALITÉS CHAUDES 🔥</h3>
-              <span class="card-category-tag" style="border-color: var(--neon-orange); background: rgba(255, 106, 0, 0.2);">GRILL</span>
-            </div>
-
-            <!-- Item 1: Américain -->
-            <div class="menu-item-row" data-item-id="americain">
-              <div class="item-meta">
-                <div class="item-title-wrap">
-                  <span class="item-badge-pill" style="background: var(--neon-yellow);">BEST-SELLER</span>
-                  <span class="item-title">L'AMÉRICAIN ROYAL</span>
-                </div>
-                <span class="item-desc">Steak haché pur bœuf • Cheddar fondu • Double frites</span>
-              </div>
-              <div class="item-dots"></div>
-              <div class="item-price-pill" style="border-color: var(--neon-orange);">
-                <span class="price-num" data-price-role="price" style="color: var(--neon-orange);">35</span>
-                <span class="price-cur">DH</span>
-              </div>
-            </div>
-
-            <!-- Item 2: Viande Hachée -->
-            <div class="menu-item-row" data-item-id="viande_hachee">
-              <div class="item-meta">
-                <div class="item-title-wrap">
-                  <span class="item-title">VIANDE HACHÉE FAÇON BOUCHER</span>
-                </div>
-                <span class="item-desc">Pur bœuf assaisonné minute • Épices tangéroises secrètes</span>
-              </div>
-              <div class="item-dots"></div>
-              <div class="item-price-pill" style="border-color: var(--neon-orange);">
-                <span class="price-num" data-price-role="price" style="color: var(--neon-orange);">30</span>
-                <span class="price-cur">DH</span>
-              </div>
-            </div>
-
-            <!-- Item 3: Poulet Mariné -->
-            <div class="menu-item-row" data-item-id="poulet">
-              <div class="item-meta">
-                <div class="item-title-wrap">
-                  <span class="item-badge-pill" style="background: var(--neon-cyan); color: #000;">TENDRE</span>
-                  <span class="item-title">LE POULET MARINÉ GRILLÉ</span>
-                </div>
-                <span class="item-desc">Filet de poulet mariné aux herbes • Sauce blanche onctueuse</span>
-              </div>
-              <div class="item-dots"></div>
-              <div class="item-price-pill" style="border-color: var(--neon-orange);">
-                <span class="price-num" data-price-role="price" style="color: var(--neon-orange);">30</span>
-                <span class="price-cur">DH</span>
-              </div>
-            </div>
-
-            <!-- Item 4: Mixte Royal -->
-            <div class="menu-item-row" data-item-id="mixte">
-              <div class="item-meta">
-                <div class="item-title-wrap">
-                  <span class="item-title">LE MIXTE ROYAL LARGE</span>
-                </div>
-                <span class="item-desc">Duo poulet mariné & viande hachée • Fromage • Sauces</span>
-              </div>
-              <div class="item-dots"></div>
-              <div class="item-price-pill" style="border-color: var(--neon-orange);">
-                <span class="price-num" data-price-role="price" style="color: var(--neon-orange);">35</span>
-                <span class="price-cur">DH</span>
-              </div>
-            </div>
-
-            <!-- Item 5: Saucisse Fumée -->
-            <div class="menu-item-row" data-item-id="saucisse">
-              <div class="item-meta">
-                <div class="item-title-wrap">
-                  <span class="item-title">LA SAUCISSE FUMÉE ARTISANALE</span>
-                </div>
-                <span class="item-desc">Saucisses fumées dorées à la plancha • Oignons caramélisés</span>
-              </div>
-              <div class="item-dots"></div>
-              <div class="item-price-pill" style="border-color: var(--neon-orange);">
-                <span class="price-num" data-price-role="price" style="color: var(--neon-orange);">30</span>
-                <span class="price-cur">DH</span>
-              </div>
-            </div>
-
-            <!-- Card Footer Promo -->
-            <div class="card-footer-banner">
-              <div class="banner-text">
-                <span>🔥</span>
-                <span>VIANDES FRAÎCHES CUISINÉES À LA COMMANDE</span>
-              </div>
-              <div class="banner-highlight">100% PUR BŒUF</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= SCENE 3: SNACK ATTACK, SIDES & BOISSONS ================= -->
-      <section class="scene-view" id="scene-2">
-        <!-- LEFT: HERO LOADED SNACK COMBO -->
-        <div class="hero-stage">
-          <!-- Comic Starburst SVG -->
-          <svg class="comic-starburst" viewBox="0 0 500 500">
-            <defs>
-              <radialGradient id="burstGrad3" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
-                <stop offset="35%" stop-color="#00f0ff" stop-opacity="0.95"/>
-                <stop offset="75%" stop-color="#3b82f6" stop-opacity="0.85"/>
-                <stop offset="100%" stop-color="#1e1b4b" stop-opacity="0"/>
-              </radialGradient>
-            </defs>
-            <polygon fill="url(#burstGrad3)" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" points="
-              250,15 285,150 415,75 345,195 485,225 365,285 465,385 325,355 
-              315,485 250,370 185,485 175,355 35,385 135,285 15,225 155,195 
-              85,75 215,150
-            "/>
-          </svg>
-
-          <!-- Comic Title -->
-          <div class="comic-hero-title-box">
-            <h2 class="comic-hero-title" style="background: linear-gradient(180deg, #ffffff 10%, #a5f3fc 45%, #00f0ff 80%, #0284c7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(5px 5px 0px #000) drop-shadow(0 0 25px rgba(0, 240, 255, 0.8));">THE ULTIMATE SNACK BOX !</h2>
-            <div class="comic-hero-sub" style="background: linear-gradient(90deg, #0284c7, #06b6d4); box-shadow: 0 6px 16px rgba(0,0,0,0.7), 0 0 15px rgba(6, 182, 212, 0.5);">★ FORMULE SNACK & BOISSON FRAÎCHE ★</div>
-          </div>
-
-          <!-- Hero Platter Group -->
-          <div class="hero-platter-group">
-            <div class="hero-slate-base"></div>
-            <!-- Authentic Tortilla Royale Snack Sandwich -->
-            <img src="cutouts_hd/bocadillo tortillia royale 30 dh.png" alt="Tortilla Royale Snack" class="hero-sandwich-img">
-            <!-- French Fries Cone -->
-            <img src="cutouts_hd/frites_cone_kraft_2026.png" alt="Frites Maison" class="hero-side-fries">
-            <!-- Sauces Trio -->
-            <img src="cutouts_hd/sauces_trio_ramekins.png" alt="Sauces Trio" class="hero-side-sauces">
-            <!-- Fresh Drink Can -->
-            <img src="processed_images/coca.png" alt="Boisson Fraîche" style="position: absolute; bottom: 120px; right: 250px; width: 140px; height: auto; z-index: 10; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.9)); animation: subtleShake 5s ease-in-out infinite alternate;">
-          </div>
-
-          <!-- Chalk Callout Arrow -->
-          <div class="chalk-callout-1">
-            <div class="chalk-badge" style="border-color: var(--neon-cyan);">
-              <div class="chalk-badge-label" style="color: var(--neon-cyan);">PACK SNACK ROYALE</div>
-              <div class="chalk-badge-price" data-item-id="tortilla_royale" data-price-type="sandwich" style="text-shadow: 0 0 12px rgba(0, 240, 255, 0.8);">34 DH</div>
-            </div>
-            <svg class="chalk-arrow-svg" viewBox="0 0 100 80" fill="none" stroke="#00f0ff" stroke-width="4" stroke-linecap="round">
-              <path d="M 85 15 Q 45 30 25 65" />
-              <polyline points="15,55 25,65 38,62" />
-            </svg>
-          </div>
-        </div>
-
-        <!-- RIGHT: SIDES & DRINKS MENU CARD -->
-        <div class="menu-card-stage">
-          <div class="glass-acrylic-card" style="box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 35px rgba(0, 240, 255, 0.2);">
-            <div class="card-header-bar">
-              <h3 class="card-category-title" style="color: var(--neon-cyan);">🍟 SIDES & BOISSONS FRAÎCHES 🥤</h3>
-              <span class="card-category-tag" style="border-color: var(--neon-cyan); background: rgba(0, 240, 255, 0.2);">EXTRAS</span>
-            </div>
-
-            <!-- Item 1: Grande Portion Frites -->
-            <div class="menu-item-row" data-item-id="grande_frite">
-              <div class="item-meta">
-                <div class="item-title-wrap">
-                  <span class="item-badge-pill" style="background: var(--neon-yellow); color: #000;">CROUSTILLANTE</span>
-                  <span class="item-title">GRANDE PORTION FRITES MAISON</span>
-                </div>
-                <span class="item-desc">Pommes de terre fraîches dorées • Sel marin & herbes</span>
-              </div>
-              <div class="item-dots"></div>
-              <div class="item-price-pill" style="border-color: var(--neon-cyan);">
-                <span class="price-num" data-price-role="price" style="color: var(--neon-cyan);">12</span>
-                <span class="price-cur">DH</span>
-              </div>
-            </div>
-
-            <!-- Item 2: Boisson Gazeuse -->
-            <div class="menu-item-row" data-item-id="soda_canette">
-              <div class="item-meta">
-                <div class="item-title-wrap">
-                  <span class="item-title">CANETTE FRAÎCHE 33CL</span>
-                </div>
-                <span class="item-desc">Coca-Cola • Fanta • Sprite • Hawaï • Schweppes</span>
-              </div>
-              <div class="item-dots"></div>
-              <div class="item-price-pill" style="border-color: var(--neon-cyan);">
-                <span class="price-num" data-price-role="price" style="color: var(--neon-cyan);">7</span>
-                <span class="price-cur">DH</span>
-              </div>
-            </div>
-
-            <!-- Item 3: Jus d'Orange -->
-            <div class="menu-item-row" data-item-id="jus_orange">
-              <div class="item-meta">
-                <div class="item-title-wrap">
-                  <span class="item-badge-pill" style="background: var(--neon-orange);">100% PUR</span>
-                  <span class="item-title">JUS D'ORANGE PRESSÉ FRAIS</span>
-                </div>
-                <span class="item-desc">Oranges du Maroc pressées à la commande</span>
-              </div>
-              <div class="item-dots"></div>
-              <div class="item-price-pill" style="border-color: var(--neon-cyan);">
-                <span class="price-num" data-price-role="price" style="color: var(--neon-cyan);">15</span>
-                <span class="price-cur">DH</span>
-              </div>
-            </div>
-
-            <!-- Item 4: Eau Minérale -->
-            <div class="menu-item-row" data-item-id="eau_minerale">
-              <div class="item-meta">
-                <div class="item-title-wrap">
-                  <span class="item-title">EAU MINÉRALE GLACÉE (50CL)</span>
-                </div>
-                <span class="item-desc">Eau de source naturelle marocaine</span>
-              </div>
-              <div class="item-dots"></div>
-              <div class="item-price-pill" style="border-color: var(--neon-cyan);">
-                <span class="price-num" data-price-role="price" style="color: var(--neon-cyan);">5</span>
-                <span class="price-cur">DH</span>
-              </div>
-            </div>
-
-            <!-- Item 5: Sauces & Fromage -->
-            <div class="menu-item-row">
-              <div class="item-meta">
-                <div class="item-title-wrap">
-                  <span class="item-title">SUPPLÉMENT FROMAGE OU SAUCE</span>
-                </div>
-                <span class="item-desc">Cheddar fondu • Mozzarella • Trio sauces spéciales</span>
-              </div>
-              <div class="item-dots"></div>
-              <div class="item-price-pill" style="border-color: var(--neon-cyan);">
-                <span class="price-num" style="color: var(--neon-cyan);">5</span>
-                <span class="price-cur">DH</span>
-              </div>
-            </div>
-
-            <!-- Card Footer Promo -->
-            <div class="card-footer-banner">
-              <div class="banner-text">
-                <span>🥤</span>
-                <span>PACK GOURMAND : SANDWICH + FRITES + SODA</span>
-              </div>
-              <div class="banner-highlight">FORMULE COMPLETE</div>
-            </div>
+            <div class="banner-highlight" id="footer-promo-highlight">+7 DH BOISSON</div>
           </div>
         </div>
       </section>
@@ -1367,21 +1045,369 @@
   <!-- FLOATING INTERACTIVE CONTROLS DOCK -->
   <div class="dock-controls" id="dock-controls">
     <button class="dock-btn" id="btn-play-pause" onclick="togglePlayPause()">⏸ Pause</button>
-    <button class="dock-btn active" onclick="switchScene(0)">1. Bocadillos</button>
-    <button class="dock-btn" onclick="switchScene(1)">2. Chauds</button>
-    <button class="dock-btn" onclick="switchScene(2)">3. Snacks</button>
+    <button class="dock-btn" onclick="prevSandwich()">⏮ Précédent</button>
+    <button class="dock-btn" onclick="nextSandwich()">Suivant ⏭</button>
     <span style="color:#64748b; font-size:12px;">|</span>
     <select id="select-duration" onchange="changeDuration(this.value)" style="background:#1e293b; color:#fff; border:1px solid #475569; border-radius:12px; padding:4px 8px; font-size:12px; cursor:pointer;">
-      <option value="8000">8s</option>
-      <option value="10000" selected>10s</option>
-      <option value="15000">15s</option>
-      <option value="20000">20s</option>
+      <option value="3500">3.5s (Rapide)</option>
+      <option value="4500" selected>4.5s (Canva)</option>
+      <option value="6000">6s (Standard)</option>
+      <option value="8000">8s (Doux)</option>
     </select>
     <button class="dock-btn" onclick="toggleFullscreen()">⛶ Plein Écran</button>
   </div>
 
   <script>
-    /* STAGE AUTO-SCALING FOR 1080p / 4K / ANY SCREEN */
+    /* ================= MENU DATABASE (AUTHENTIC CUTOUTS & PRICES) ================= */
+    const ALL_ITEMS = [
+      // Category: Bocadillos
+      {
+        id: "complet",
+        category: "bocadillo",
+        title: "LE COMPLET CHAMALI",
+        subtitle: "★ RECETTE AUTHENTIQUE DE TANGER ★",
+        desc: "Thon 1er choix • Tortilla • Fromage • Charcuterie • Sauces",
+        price: 30,
+        badge: "POPULAIRE",
+        img: "cutouts_hd/bocadillo complet 29 dh.png"
+      },
+      {
+        id: "tortilla_royale",
+        category: "bocadillo",
+        title: "TORTILLA ROYALE",
+        subtitle: "★ TORTILLA GARNIE & FROMAGE FONDU ★",
+        desc: "Tortilla espagnole maison • Fromage fondu • Sauce Royale",
+        price: 34,
+        badge: "CHEF",
+        img: "cutouts_hd/bocadillo tortillia royale 30 dh.png"
+      },
+      {
+        id: "tangerois",
+        category: "bocadillo",
+        title: "LE TANGÉROIS TRADITION",
+        subtitle: "★ SAVEUR DU NORD DEPUIS 1980 ★",
+        desc: "Recette traditionnelle de Tanger • Sauce spéciale maison",
+        price: 24,
+        badge: "ORIGINAL",
+        img: "cutouts_hd/bocadillo tangerois 24 dh.png"
+      },
+      {
+        id: "thon",
+        category: "bocadillo",
+        title: "LE THON FRAIS & ŒUF",
+        subtitle: "★ FRAÎCHEUR & CRUDITÉS CROQUANTES ★",
+        desc: "Thon de choix • Crudités fraîches • Œuf dur • Olives",
+        price: 22,
+        badge: "LÉGER",
+        img: "cutouts_hd/bocadillo thon 22 dh.png"
+      },
+      {
+        id: "cheese",
+        category: "bocadillo",
+        title: "LE DOUBLE CHEESE",
+        subtitle: "★ TRIPLE FROMAGE FONDU GOURMAND ★",
+        desc: "Triple fromage fondu • Crème onctueuse gourmande",
+        price: 24,
+        badge: "EXTRA FONDANT",
+        img: "cutouts_hd/bocadillo cheese 24 dh.png"
+      },
+
+      // Category: Chauds
+      {
+        id: "americain",
+        category: "chaud",
+        title: "L'AMÉRICAIN ROYAL",
+        subtitle: "★ 100% PUR BŒUF & CHEDDAR FONDU ★",
+        desc: "Steak haché pur bœuf • Cheddar fondu • Double frites",
+        price: 35,
+        badge: "BEST-SELLER",
+        img: "cutouts_hd/sandwich americain 35 dh.png"
+      },
+      {
+        id: "viande_hachee",
+        category: "chaud",
+        title: "VIANDE HACHÉE BOUCHER",
+        subtitle: "★ ASSAISONNÉ MINUTE AUX ÉPICES ★",
+        desc: "Pur bœuf assaisonné minute • Épices tangéroises secrètes",
+        price: 30,
+        badge: "GRILL",
+        img: "cutouts_hd/sandwich viande hache 30 dh.png"
+      },
+      {
+        id: "poulet",
+        category: "chaud",
+        title: "LE POULET MARINÉ GRILLÉ",
+        subtitle: "★ FILET TENDRE MARINÉ AUX HERBES ★",
+        desc: "Filet de poulet mariné aux herbes • Sauce blanche onctueuse",
+        price: 30,
+        badge: "TENDRE",
+        img: "cutouts_hd/sandwiche poulet 30 dh.png"
+      },
+      {
+        id: "mixte",
+        category: "chaud",
+        title: "LE MIXTE ROYAL LARGE",
+        subtitle: "★ DUO POULET GRILLÉ & PUR BŒUF ★",
+        desc: "Duo poulet mariné & viande hachée • Fromage • Sauces",
+        price: 35,
+        badge: "MAXI",
+        img: "cutouts_hd/sandwiche mixte 35 dh.png"
+      },
+      {
+        id: "saucisse",
+        category: "chaud",
+        title: "LA SAUCISSE FUMÉE",
+        subtitle: "★ PLANCHA OIGNONS CARAMÉLISÉS ★",
+        desc: "Saucisses fumées dorées à la plancha • Oignons confits",
+        price: 30,
+        badge: "SAVEUR",
+        img: "cutouts_hd/sandwiche saussice 30.png"
+      },
+
+      // Category: Sides & Drinks
+      {
+        id: "grande_frite",
+        category: "sides",
+        title: "GRANDE FRITE MAISON",
+        subtitle: "★ POMMES DE TERRE FRAÎCHES DORÉES ★",
+        desc: "Pommes de terre fraîches dorées • Sel marin & herbes",
+        price: 12,
+        badge: "CROUSTILLANT",
+        img: "cutouts_hd/frites_cone_kraft_2026.png"
+      },
+      {
+        id: "soda_canette",
+        category: "sides",
+        title: "CANETTE FRAÎCHE 33CL",
+        subtitle: "★ SODA GLACÉ AU CHOIX ★",
+        desc: "Coca-Cola • Fanta • Sprite • Hawaï • Schweppes",
+        price: 7,
+        badge: "GLACÉ",
+        img: "processed_images/coca.png"
+      },
+      {
+        id: "jus_orange",
+        category: "sides",
+        title: "JUS D'ORANGE PRESSÉ",
+        subtitle: "★ 100% PUR JUS NATUREL ★",
+        desc: "Oranges du Maroc pressées à la commande",
+        price: 15,
+        badge: "VITAMINES",
+        img: "processed_images/coca.png"
+      },
+      {
+        id: "eau_minerale",
+        category: "sides",
+        title: "EAU MINÉRALE 50CL",
+        subtitle: "★ EAU DE SOURCE NATURELLE ★",
+        desc: "Eau de source naturelle marocaine",
+        price: 5,
+        badge: "SOURCE",
+        img: "processed_images/coca.png"
+      }
+    ];
+
+    /* ================= SEQUENTIAL CANVA SHOWCASE ENGINE ================= */
+    let currentCategory = 'bocadillo';
+    let filteredItems = [];
+    let activeIndex = 0;
+    let cycleDuration = 4500;
+    let autoPlay = true;
+    let timerId = null;
+    let progressStartTime = 0;
+    let animFrameId = null;
+
+    function initCategoryItems() {
+      filteredItems = ALL_ITEMS.filter(it => it.category === currentCategory);
+      if (filteredItems.length === 0) filteredItems = ALL_ITEMS;
+      activeIndex = 0;
+      renderRightMenuCard();
+      renderThumbStrip();
+      displayCurrentSandwich(true);
+    }
+
+    function switchCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.cat-pill-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById(`btn-cat-${cat === 'bocadillo' ? 'bocadillos' : cat}`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      const cardCatTitle = document.getElementById('card-cat-title');
+      const cardCatTag = document.getElementById('card-cat-tag');
+      if (cat === 'bocadillo') {
+        cardCatTitle.textContent = "✦ NOS BOCADILLOS SIGNATURE ✦";
+        cardCatTag.textContent = "CHAMALI";
+      } else if (cat === 'chaud') {
+        cardCatTitle.textContent = "🔥 LES SPÉCIALITÉS CHAUDES 🔥";
+        cardCatTag.textContent = "GRILL";
+      } else {
+        cardCatTitle.textContent = "🍟 SIDES & BOISSONS FRAÎCHES 🥤";
+        cardCatTag.textContent = "EXTRAS";
+      }
+
+      initCategoryItems();
+    }
+
+    /* Render the Right Glassmorphism List */
+    function renderRightMenuCard() {
+      const container = document.getElementById('menu-items-list');
+      container.innerHTML = '';
+      filteredItems.forEach((item, idx) => {
+        const row = document.createElement('div');
+        row.className = `menu-item-row ${idx === activeIndex ? 'current-active' : ''}`;
+        row.style.setProperty('--delay', `${0.12 * (idx + 1)}s`);
+        row.setAttribute('data-item-id', item.id);
+        row.onclick = () => selectSandwich(idx);
+
+        row.innerHTML = `
+          <div class="item-meta">
+            <div class="item-title-wrap">
+              ${item.badge ? `<span class="item-badge-pill">${item.badge}</span>` : ''}
+              <span class="item-title">${item.title}</span>
+            </div>
+            <span class="item-desc">${item.desc}</span>
+          </div>
+          <div class="item-dots"></div>
+          <div class="item-price-pill">
+            <span class="price-num" data-price-role="price">${item.price}</span>
+            <span class="price-cur">DH</span>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    /* Render Thumbnail Strip */
+    function renderThumbStrip() {
+      const container = document.getElementById('thumb-strip-container');
+      container.innerHTML = '';
+      filteredItems.forEach((item, idx) => {
+        const btn = document.createElement('button');
+        btn.className = `thumb-btn ${idx === activeIndex ? 'active' : ''}`;
+        btn.onclick = () => selectSandwich(idx);
+        btn.innerHTML = `<img src="${item.img}" alt="${item.title}">`;
+        container.appendChild(btn);
+      });
+    }
+
+    /* Display Sandwich with Canva Pop Entrance Animation */
+    function displayCurrentSandwich(instant = false) {
+      if (filteredItems.length === 0) return;
+      const item = filteredItems[activeIndex];
+
+      // Update Titles
+      const titleEl = document.getElementById('hero-display-title');
+      const subEl = document.getElementById('hero-display-sub');
+      const priceEl = document.getElementById('hero-badge-price');
+      const labelEl = document.getElementById('hero-badge-label');
+      const imgEl = document.getElementById('hero-sandwich-image');
+      const badgeCard = document.getElementById('hero-badge-card');
+
+      titleEl.textContent = item.title;
+      subEl.textContent = item.subtitle;
+      priceEl.textContent = `${item.price} DH`;
+      labelEl.textContent = item.category === 'sides' ? 'PORTION FRAÎCHE' : 'COMBO + FRITES';
+
+      // Update Active Classes in Menu List & Thumbs
+      document.querySelectorAll('.menu-item-row').forEach((r, i) => {
+        r.classList.toggle('current-active', i === activeIndex);
+      });
+      document.querySelectorAll('.thumb-btn').forEach((b, i) => {
+        b.classList.toggle('active', i === activeIndex);
+      });
+
+      // Canva Image Pop Animation
+      imgEl.classList.remove('anim-canva-pop-in');
+      badgeCard.classList.remove('anim-badge-bounce');
+      void imgEl.offsetWidth; // trigger reflow
+      void badgeCard.offsetWidth;
+
+      imgEl.src = item.img;
+      imgEl.classList.add('anim-canva-pop-in');
+      badgeCard.classList.add('anim-badge-bounce');
+
+      // Reset Timeline Progress
+      startTimelineProgress();
+    }
+
+    function selectSandwich(index) {
+      activeIndex = (index + filteredItems.length) % filteredItems.length;
+      displayCurrentSandwich();
+      resetCycleTimer();
+    }
+
+    function nextSandwich() {
+      activeIndex = (activeIndex + 1) % filteredItems.length;
+      displayCurrentSandwich();
+      resetCycleTimer();
+    }
+
+    function prevSandwich() {
+      activeIndex = (activeIndex - 1 + filteredItems.length) % filteredItems.length;
+      displayCurrentSandwich();
+      resetCycleTimer();
+    }
+
+    /* Canva Progress Bar Animation */
+    function startTimelineProgress() {
+      if (animFrameId) cancelAnimationFrame(animFrameId);
+      progressStartTime = performance.now();
+      const bar = document.getElementById('hero-progress-bar');
+
+      function updateBar(time) {
+        if (!autoPlay) {
+          bar.style.width = '0%';
+          return;
+        }
+        const elapsed = time - progressStartTime;
+        const progress = Math.min(elapsed / cycleDuration, 1);
+        bar.style.width = `${progress * 100}%`;
+
+        if (progress < 1) {
+          animFrameId = requestAnimationFrame(updateBar);
+        }
+      }
+      animFrameId = requestAnimationFrame(updateBar);
+    }
+
+    function resetCycleTimer() {
+      if (timerId) clearTimeout(timerId);
+      if (autoPlay) {
+        timerId = setTimeout(() => {
+          nextSandwich();
+        }, cycleDuration);
+      }
+    }
+
+    function togglePlayPause() {
+      autoPlay = !autoPlay;
+      const btn = document.getElementById('btn-play-pause');
+      if (btn) btn.textContent = autoPlay ? '⏸ Pause' : '▶ Lecture';
+      if (autoPlay) {
+        startTimelineProgress();
+        resetCycleTimer();
+      } else {
+        if (timerId) clearTimeout(timerId);
+        if (animFrameId) cancelAnimationFrame(animFrameId);
+        document.getElementById('hero-progress-bar').style.width = '0%';
+      }
+    }
+
+    function changeDuration(val) {
+      cycleDuration = parseInt(val, 10);
+      startTimelineProgress();
+      resetCycleTimer();
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+
+    /* Auto Stage Scaling for 1080p / 4K */
     function scaleStage() {
       const stage = document.getElementById('stage');
       const w = window.innerWidth;
@@ -1392,7 +1418,7 @@
     window.addEventListener('resize', scaleStage);
     scaleStage();
 
-    /* LIVE CLOCK */
+    /* Live Digital Clock */
     function updateClock() {
       const now = new Date();
       const h = String(now.getHours()).padStart(2, '0');
@@ -1404,116 +1430,29 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    /* SCENE SWITCHING LOGIC */
-    let currentScene = 0;
-    const totalScenes = 3;
-    let sceneDuration = 10000;
-    let autoPlay = true;
-    let sceneTimer = null;
-
-    function switchScene(index) {
-      currentScene = (index + totalScenes) % totalScenes;
-      
-      // Update Scene Views
-      for (let i = 0; i < totalScenes; i++) {
-        const view = document.getElementById(`scene-${i}`);
-        const pill = document.getElementById(`pill-scene-${i+1}`);
-        if (view) {
-          if (i === currentScene) {
-            view.classList.add('active');
-          } else {
-            view.classList.remove('active');
-          }
-        }
-        if (pill) {
-          if (i === currentScene) {
-            pill.classList.add('active');
-          } else {
-            pill.classList.remove('active');
-          }
-        }
-      }
-
-      // Update Dock Buttons
-      const dockBtns = document.querySelectorAll('.dock-controls .dock-btn');
-      if (dockBtns.length >= 4) {
-        dockBtns[1].classList.toggle('active', currentScene === 0);
-        dockBtns[2].classList.toggle('active', currentScene === 1);
-        dockBtns[3].classList.toggle('active', currentScene === 2);
-      }
-
-      // Reset timer if playing
-      resetTimer();
-    }
-
-    function nextScene() {
-      switchScene(currentScene + 1);
-    }
-
-    function resetTimer() {
-      if (sceneTimer) clearTimeout(sceneTimer);
-      if (autoPlay) {
-        document.documentElement.style.setProperty('--scene-duration', `${sceneDuration / 1000}s`);
-        sceneTimer = setTimeout(nextScene, sceneDuration);
-      }
-    }
-
-    function togglePlayPause() {
-      autoPlay = !autoPlay;
-      const btn = document.getElementById('btn-play-pause');
-      if (btn) {
-        btn.textContent = autoPlay ? '⏸ Pause' : '▶ Lecture';
-      }
-      if (autoPlay) {
-        resetTimer();
-      } else if (sceneTimer) {
-        clearTimeout(sceneTimer);
-      }
-    }
-
-    function changeDuration(val) {
-      sceneDuration = parseInt(val, 10);
-      resetTimer();
-    }
-
-    function toggleFullscreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      } else {
-        document.exitFullscreen().catch(() => {});
-      }
-    }
-
-    // Start auto loop
-    resetTimer();
-
-    /* LIVE PRICE SYNC ENGINE VIA BroadcastChannel AND /api/menu_items */
+    /* Live Price Sync via BroadcastChannel & /api/menu_items */
     function applyPricesFromData(items) {
       if (!items || !Array.isArray(items)) return;
-      items.forEach(item => {
-        const itemRows = document.querySelectorAll(`[data-item-id="${item.id}"]`);
-        itemRows.forEach(row => {
-          const priceEl = row.querySelector('[data-price-role="price"]');
-          if (priceEl && item.price_sandwich) {
-            priceEl.textContent = item.price_sandwich;
-          }
-          // Also check callout badges
-          if (row.hasAttribute('data-price-type') && item.price_sandwich) {
-            row.textContent = `${item.price_sandwich} DH`;
-          }
-        });
+      items.forEach(dbItem => {
+        const found = ALL_ITEMS.find(it => it.id === dbItem.id);
+        if (found && dbItem.price_sandwich) {
+          found.price = parseInt(dbItem.price_sandwich, 10) || found.price;
+        }
       });
+      renderRightMenuCard();
+      const cur = filteredItems[activeIndex];
+      if (cur) {
+        document.getElementById('hero-badge-price').textContent = `${cur.price} DH`;
+      }
     }
 
-    // Fetch initial prices
     fetch('/api/menu_items')
       .then(res => res.json())
       .then(data => {
         if (data && data.items) applyPricesFromData(data.items);
       })
-      .catch(err => console.log('Live sync offline or static mode'));
+      .catch(() => {});
 
-    // Listen on BroadcastChannel for real-time dashboard updates
     try {
       const bc = new BroadcastChannel('MENU_TV_CHANNEL');
       bc.onmessage = (e) => {
@@ -1524,24 +1463,17 @@
       };
     } catch(e) {}
 
-    /* TV MODE & CONTROLS AUTO-HIDE & SCENE URL PARAM */
+    /* TV Mode and Idle Auto-Hide */
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('mode') === 'tv') {
       document.body.classList.add('tv-mode');
     }
 
-    const initialScene = urlParams.get('scene');
-    if (initialScene !== null) {
-      const idx = parseInt(initialScene, 10);
-      if (!isNaN(idx) && idx >= 0 && idx < totalScenes) {
-        autoPlay = false;
-        switchScene(idx);
-        const playBtn = document.getElementById('btn-play-pause');
-        if (playBtn) playBtn.textContent = '▶ Lecture';
-      }
+    const catParam = urlParams.get('cat');
+    if (catParam && (catParam === 'bocadillo' || catParam === 'chaud' || catParam === 'sides')) {
+      switchCategory(catParam);
     }
 
-    // Auto-hide controls after 3 seconds of inactivity
     const dock = document.getElementById('dock-controls');
     let idleTimer = null;
     function resetIdle() {
@@ -1556,6 +1488,10 @@
     window.addEventListener('mousemove', resetIdle);
     window.addEventListener('click', resetIdle);
     resetIdle();
+
+    // Start Initial State
+    initCategoryItems();
+    resetCycleTimer();
   </script>
 </body>
 </html>
