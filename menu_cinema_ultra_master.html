@@ -287,6 +287,103 @@
         }
         .btn-ctl.active { background:#ff6b00; color:#fff; }
         body.tv-display-mode .ui-controls { display:none !important; }
+    
+        /* =========================================================================
+           ULTIMATE BROADCAST 3D ANIMATIONS & STEAM PLUMES
+           ========================================================================= */
+        
+        /* 3D Parallax Food Floating with Perspective Tilting */
+        @keyframes cinemaFloat3D {
+            0% {
+                transform: translateY(0px) perspective(900px) rotateY(-5deg) rotateX(3deg) scale(1);
+            }
+            50% {
+                transform: translateY(-9px) perspective(900px) rotateY(3deg) rotateX(-2deg) scale(1.02);
+            }
+            100% {
+                transform: translateY(0px) perspective(900px) rotateY(-5deg) rotateX(3deg) scale(1);
+            }
+        }
+
+        @keyframes cardFloat3D_Left {
+            0% {
+                transform: translateY(0px) perspective(800px) rotateY(-6deg) scale(1);
+            }
+            100% {
+                transform: translateY(-6px) perspective(800px) rotateY(-2deg) scale(1.02);
+            }
+        }
+
+        @keyframes cardFloat3D_Right {
+            0% {
+                transform: translateY(0px) perspective(800px) rotateY(6deg) scale(1);
+            }
+            100% {
+                transform: translateY(-6px) perspective(800px) rotateY(2deg) scale(1.02);
+            }
+        }
+
+        /* Hot Rising Steam Wisps */
+        .steam-container {
+            position: absolute; top: 15px; left: 30%; width: 140px; height: 160px;
+            pointer-events: none; z-index: 10;
+        }
+        .steam-wisp {
+            position: absolute; bottom: 0; width: 35px; height: 90px;
+            background: radial-gradient(ellipse at center, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.15) 50%, transparent 80%);
+            border-radius: 50%; filter: blur(8px);
+            opacity: 0;
+            animation: steamRise 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        .steam-1 { left: 10px; animation-delay: 0s; }
+        .steam-2 { left: 45px; animation-delay: 1.2s; width: 45px; height: 110px; }
+        .steam-3 { left: 80px; animation-delay: 2.1s; width: 30px; height: 80px; }
+
+        @keyframes steamRise {
+            0% { opacity: 0; transform: translateY(10px) scale(0.7) skewX(2deg); }
+            35% { opacity: 0.7; }
+            70% { opacity: 0.35; transform: translateY(-50px) scale(1.3) skewX(-6deg); }
+            100% { opacity: 0; transform: translateY(-90px) scale(1.7) skewX(-12deg); }
+        }
+
+        /* Sauce Ramekin Styling */
+        .hero-sauces-img {
+            position: absolute; right: 12px; bottom: 18px; z-index: 5;
+            width: 135px; height: auto;
+            filter: drop-shadow(0 12px 18px rgba(0,0,0,0.92));
+            transform: rotate(-3deg);
+            transition: transform 0.3s ease;
+        }
+        .card-sauces-img {
+            position: absolute; right: 6px; bottom: 10px; z-index: 5;
+            width: 82px; height: auto;
+            filter: drop-shadow(0 8px 14px rgba(0,0,0,0.92));
+            transform: rotate(-2deg);
+        }
+
+        /* Breathing Glowing Price Badge */
+        .cinema-price-badge, .hero-price-row {
+            animation: pricePulse 4s ease-in-out infinite alternate !important;
+        }
+        @keyframes pricePulse {
+            0% {
+                box-shadow: 0 4px 15px rgba(0,0,0,0.8), 0 0 12px rgba(255, 107, 0, 0.35);
+            }
+            100% {
+                box-shadow: 0 8px 30px rgba(0,0,0,0.9), 0 0 25px rgba(255, 107, 0, 0.7);
+            }
+        }
+
+        .hero-sandwich-img {
+            animation: cinemaFloat3D 6s ease-in-out infinite alternate !important;
+        }
+        .cinema-card:nth-child(odd) .card-sandwich-img {
+            animation: cardFloat3D_Left 5.5s ease-in-out infinite alternate !important;
+        }
+        .cinema-card:nth-child(even) .card-sandwich-img {
+            animation: cardFloat3D_Right 5.5s ease-in-out infinite alternate !important;
+        }
+
     </style>
 </head>
 <body>
@@ -342,10 +439,16 @@
                     <span class="hero-prefix">SIGNATURE MAISON</span>
                     <h2 class="hero-main-title">LE COMPLET CHAMALI</h2>
                 </div>
-                <div class="hero-showcase">
+                                <div class="hero-showcase">
                     <div class="hero-spotlight-disc"></div>
-                    <img src="cutouts_cinema/hero_bocadillo_complet.png" class="hero-sandwich-img" alt="Le Complet">
-                    <img src="cutouts_cinema/hero_french_fries.png" class="hero-fries-img" alt="Frites">
+                    <div class="steam-container">
+                        <div class="steam-wisp steam-1"></div>
+                        <div class="steam-wisp steam-2"></div>
+                        <div class="steam-wisp steam-3"></div>
+                    </div>
+                    <img src="cutouts_hd/bocadillo complet 29 dh.png" class="hero-sandwich-img" alt="Le Complet">
+                    <img src="cutouts_hd/frites_cone_kraft_2026.png" class="hero-fries-img" alt="Frites">
+                    <img src="cutouts_hd/sauces_trio_ramekins.png" class="hero-sauces-img" alt="Sauces Ramekins">
                 </div>
                 <div class="hero-price-row">
                     <div class="hero-price-tag">
@@ -381,8 +484,15 @@
                     </div>
                     <div class="card-food-showcase">
                         <div class="card-shadow"></div>
+                        <div class="steam-container" style="left:20%; top:5px; height:120px;">
+                            <div class="steam-wisp steam-1" style="height:60px;"></div>
+                            <div class="steam-wisp steam-2" style="height:75px;"></div>
+                        </div>
+                        
                         <img src="cutouts_cinema/hero_tortilla_royale.png" class="card-sandwich-img" alt="Tortilla Royale">
+                        
                         <img src="cutouts_cinema/hero_french_fries.png" class="card-fries-img" alt="Frites">
+                        <img src="cutouts_hd/sauces_trio_ramekins.png" class="card-sauces-img" alt="Sauces">
                     </div>
                     <div class="card-footer-desc">
                         <span>Tortilla Espagnole Garnie • Fromage Fondu</span>
@@ -404,8 +514,15 @@
                     </div>
                     <div class="card-food-showcase">
                         <div class="card-shadow"></div>
+                        <div class="steam-container" style="left:20%; top:5px; height:120px;">
+                            <div class="steam-wisp steam-1" style="height:60px;"></div>
+                            <div class="steam-wisp steam-2" style="height:75px;"></div>
+                        </div>
+                        
                         <img src="cutouts_hd/bocadillo thon 22 dh.png" class="card-sandwich-img" alt="Le Thon">
+                        
                         <img src="cutouts_cinema/hero_french_fries.png" class="card-fries-img" alt="Frites">
+                        <img src="cutouts_hd/sauces_trio_ramekins.png" class="card-sauces-img" alt="Sauces">
                     </div>
                     <div class="card-footer-desc">
                         <span>Thon Émietté • Crudités • Oeuf Dur • Olives</span>
@@ -427,8 +544,15 @@
                     </div>
                     <div class="card-food-showcase">
                         <div class="card-shadow"></div>
+                        <div class="steam-container" style="left:20%; top:5px; height:120px;">
+                            <div class="steam-wisp steam-1" style="height:60px;"></div>
+                            <div class="steam-wisp steam-2" style="height:75px;"></div>
+                        </div>
+                        
                         <img src="cutouts_hd/bocadillo cheese 24 dh.png" class="card-sandwich-img" alt="Double Cheese">
+                        
                         <img src="cutouts_cinema/hero_french_fries.png" class="card-fries-img" alt="Frites">
+                        <img src="cutouts_hd/sauces_trio_ramekins.png" class="card-sauces-img" alt="Sauces">
                     </div>
                     <div class="card-footer-desc">
                         <span>Thon Gourmand • Double Cheddar • Sauce Cheese</span>
@@ -450,8 +574,15 @@
                     </div>
                     <div class="card-food-showcase">
                         <div class="card-shadow"></div>
+                        <div class="steam-container" style="left:20%; top:5px; height:120px;">
+                            <div class="steam-wisp steam-1" style="height:60px;"></div>
+                            <div class="steam-wisp steam-2" style="height:75px;"></div>
+                        </div>
+                        
                         <img src="cutouts_hd/bocadillo tangerois 24 dh.png" class="card-sandwich-img" alt="Le Tangérois">
+                        
                         <img src="cutouts_cinema/hero_french_fries.png" class="card-fries-img" alt="Frites">
+                        <img src="cutouts_hd/sauces_trio_ramekins.png" class="card-sauces-img" alt="Sauces">
                     </div>
                     <div class="card-footer-desc">
                         <span>Recette Historique de Tanger • Épices Chamali</span>
@@ -473,10 +604,16 @@
                     <span class="hero-prefix">PUR STEAK HACHÉ</span>
                     <h2 class="hero-main-title">L'AMÉRICAIN ROYAL</h2>
                 </div>
-                <div class="hero-showcase">
+                                <div class="hero-showcase">
                     <div class="hero-spotlight-disc"></div>
-                    <img src="cutouts_cinema/hero_sandwich_americain.png" class="hero-sandwich-img" alt="L'Américain">
-                    <img src="cutouts_cinema/hero_french_fries.png" class="hero-fries-img" alt="Frites">
+                    <div class="steam-container">
+                        <div class="steam-wisp steam-1"></div>
+                        <div class="steam-wisp steam-2"></div>
+                        <div class="steam-wisp steam-3"></div>
+                    </div>
+                    <img src="cutouts_hd/sandwich americain 35 dh.png" class="hero-sandwich-img" alt="L'Américain">
+                    <img src="cutouts_hd/frites_cone_kraft_2026.png" class="hero-fries-img" alt="Frites">
+                    <img src="cutouts_hd/sauces_trio_ramekins.png" class="hero-sauces-img" alt="Sauces Ramekins">
                 </div>
                 <div class="hero-price-row">
                     <div class="hero-price-tag">
@@ -512,8 +649,15 @@
                     </div>
                     <div class="card-food-showcase">
                         <div class="card-shadow"></div>
+                        <div class="steam-container" style="left:20%; top:5px; height:120px;">
+                            <div class="steam-wisp steam-1" style="height:60px;"></div>
+                            <div class="steam-wisp steam-2" style="height:75px;"></div>
+                        </div>
+                        
                         <img src="cutouts_cinema/hero_sandwich_kefta.png" class="card-sandwich-img" alt="Viande Hachée">
+                        
                         <img src="cutouts_cinema/hero_french_fries.png" class="card-fries-img" alt="Frites">
+                        <img src="cutouts_hd/sauces_trio_ramekins.png" class="card-sauces-img" alt="Sauces">
                     </div>
                     <div class="card-footer-desc">
                         <span>Boeuf Assaisonné Minute • Oignons Caramélisés</span>
@@ -535,8 +679,15 @@
                     </div>
                     <div class="card-food-showcase">
                         <div class="card-shadow"></div>
+                        <div class="steam-container" style="left:20%; top:5px; height:120px;">
+                            <div class="steam-wisp steam-1" style="height:60px;"></div>
+                            <div class="steam-wisp steam-2" style="height:75px;"></div>
+                        </div>
+                        
                         <img src="cutouts_cinema/hero_sandwich_poulet.png" class="card-sandwich-img" alt="Poulet Mariné">
+                        
                         <img src="cutouts_cinema/hero_french_fries.png" class="card-fries-img" alt="Frites">
+                        <img src="cutouts_hd/sauces_trio_ramekins.png" class="card-sauces-img" alt="Sauces">
                     </div>
                     <div class="card-footer-desc">
                         <span>Blanc Poulet Grillé • Sauce Blanche Ail</span>
@@ -558,8 +709,15 @@
                     </div>
                     <div class="card-food-showcase">
                         <div class="card-shadow"></div>
+                        <div class="steam-container" style="left:20%; top:5px; height:120px;">
+                            <div class="steam-wisp steam-1" style="height:60px;"></div>
+                            <div class="steam-wisp steam-2" style="height:75px;"></div>
+                        </div>
+                        
                         <img src="cutouts_hd/sandwiche mixte 35 dh.png" class="card-sandwich-img" alt="Le Mixte">
+                        
                         <img src="cutouts_cinema/hero_french_fries.png" class="card-fries-img" alt="Frites">
+                        <img src="cutouts_hd/sauces_trio_ramekins.png" class="card-sauces-img" alt="Sauces">
                     </div>
                     <div class="card-footer-desc">
                         <span>Duo Poulet & Boeuf Haché • Double Fromage</span>
@@ -581,8 +739,15 @@
                     </div>
                     <div class="card-food-showcase">
                         <div class="card-shadow"></div>
+                        <div class="steam-container" style="left:20%; top:5px; height:120px;">
+                            <div class="steam-wisp steam-1" style="height:60px;"></div>
+                            <div class="steam-wisp steam-2" style="height:75px;"></div>
+                        </div>
+                        
                         <img src="cutouts_hd/sandwiche saussice 30.png" class="card-sandwich-img" alt="Saucisse">
+                        
                         <img src="cutouts_cinema/hero_french_fries.png" class="card-fries-img" alt="Frites">
+                        <img src="cutouts_hd/sauces_trio_ramekins.png" class="card-sauces-img" alt="Sauces">
                     </div>
                     <div class="card-footer-desc">
                         <span>Saucisses Fumées Dorées • Oignons Caramélisés</span>

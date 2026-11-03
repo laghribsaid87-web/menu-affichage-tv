@@ -150,6 +150,18 @@
         }
         .btn-ctl.active { background:#d4af37; color:#000; }
         body.tv-display-mode .ui-controls { display:none !important; }
+    
+        /* 3D Perspective Floating */
+        @keyframes float3D {
+            0% { transform: translateY(0px) perspective(800px) rotateY(-4deg) rotateX(2deg); }
+            50% { transform: translateY(-7px) perspective(800px) rotateY(3deg) rotateX(-2deg); }
+            100% { transform: translateY(0px) perspective(800px) rotateY(-4deg) rotateX(2deg); }
+        }
+        .food-sandwich {
+            animation: float3D 6s ease-in-out infinite alternate !important;
+            filter: drop-shadow(0 16px 24px rgba(0,0,0,0.92)) !important;
+        }
+        
     </style>
 </head>
 <body>
@@ -190,6 +202,7 @@
                 <div class="gold-pedestal"></div>
                 <img src="cutouts_hd/bocadillo complet 29 dh.png" class="food-sandwich" alt="COMPLET">
                 <img src="cutouts_hd/frites_cone_kraft_2026.png" class="food-fries" alt="Frites">
+                <img src="cutouts_hd/sauces_trio_ramekins.png" class="food-sauces" alt="Sauces" style="position:absolute; right:15px; bottom:12px; z-index:4; width:75px; height:auto; filter:drop-shadow(0 6px 10px rgba(0,0,0,0.85));">
             </div>
             <div class="card-desc">
                 <span>Thon 1er Choix • Tortilla Maison • Fromage Fondu • Charcuterie • Sauces</span>
@@ -212,6 +225,7 @@
                 <div class="gold-pedestal"></div>
                 <img src="cutouts_hd/bocadillo tortillia royale 30 dh.png" class="food-sandwich" alt="ROYALE">
                 <img src="cutouts_hd/frites_cone_kraft_2026.png" class="food-fries" alt="Frites">
+                <img src="cutouts_hd/sauces_trio_ramekins.png" class="food-sauces" alt="Sauces" style="position:absolute; right:15px; bottom:12px; z-index:4; width:75px; height:auto; filter:drop-shadow(0 6px 10px rgba(0,0,0,0.85));">
             </div>
             <div class="card-desc">
                 <span>Véritable Tortilla Espagnole Garnie • Fromage Fondu • Sauce Royale</span>
@@ -234,6 +248,7 @@
                 <div class="gold-pedestal"></div>
                 <img src="cutouts_hd/bocadillo thon 22 dh.png" class="food-sandwich" alt="THON">
                 <img src="cutouts_hd/frites_cone_kraft_2026.png" class="food-fries" alt="Frites">
+                <img src="cutouts_hd/sauces_trio_ramekins.png" class="food-sauces" alt="Sauces" style="position:absolute; right:15px; bottom:12px; z-index:4; width:75px; height:auto; filter:drop-shadow(0 6px 10px rgba(0,0,0,0.85));">
             </div>
             <div class="card-desc">
                 <span>Thon Émietté de Choix • Crudités Fraîches Croquantes • Oeuf Dur • Olives</span>
@@ -256,6 +271,7 @@
                 <div class="gold-pedestal"></div>
                 <img src="cutouts_hd/bocadillo_tortillia 22 dh.png" class="food-sandwich" alt="TORTILLA">
                 <img src="cutouts_hd/frites_cone_kraft_2026.png" class="food-fries" alt="Frites">
+                <img src="cutouts_hd/sauces_trio_ramekins.png" class="food-sauces" alt="Sauces" style="position:absolute; right:15px; bottom:12px; z-index:4; width:75px; height:auto; filter:drop-shadow(0 6px 10px rgba(0,0,0,0.85));">
             </div>
             <div class="card-desc">
                 <span>Omelette Tortilla Maison aux Pommes de Terre • Cheddar Coulant</span>
@@ -278,6 +294,7 @@
                 <div class="gold-pedestal"></div>
                 <img src="cutouts_hd/bocadillo cheese 24 dh.png" class="food-sandwich" alt="CHEESE">
                 <img src="cutouts_hd/frites_cone_kraft_2026.png" class="food-fries" alt="Frites">
+                <img src="cutouts_hd/sauces_trio_ramekins.png" class="food-sauces" alt="Sauces" style="position:absolute; right:15px; bottom:12px; z-index:4; width:75px; height:auto; filter:drop-shadow(0 6px 10px rgba(0,0,0,0.85));">
             </div>
             <div class="card-desc">
                 <span>Thon Gourmand • Double Tranche Cheddar Fondu • Sauce Cheese Onctueuse</span>
@@ -300,6 +317,7 @@
                 <div class="gold-pedestal"></div>
                 <img src="cutouts_hd/bocadillo tangerois 24 dh.png" class="food-sandwich" alt="TANGÉROIS">
                 <img src="cutouts_hd/frites_cone_kraft_2026.png" class="food-fries" alt="Frites">
+                <img src="cutouts_hd/sauces_trio_ramekins.png" class="food-sauces" alt="Sauces" style="position:absolute; right:15px; bottom:12px; z-index:4; width:75px; height:auto; filter:drop-shadow(0 6px 10px rgba(0,0,0,0.85));">
             </div>
             <div class="card-desc">
                 <span>Recette Historique de Tanger 1980 • Épices Secrètes Chamali • Salade</span>
@@ -326,6 +344,7 @@
                 <div class="gold-pedestal"></div>
                 <img src="cutouts_hd/sandwich americain 35 dh.png" class="food-sandwich" alt="AMÉRICAIN">
                 <img src="cutouts_hd/frites_cone_kraft_2026.png" class="food-fries" alt="Frites">
+                <img src="cutouts_hd/sauces_trio_ramekins.png" class="food-sauces" alt="Sauces" style="position:absolute; right:15px; bottom:12px; z-index:4; width:75px; height:auto; filter:drop-shadow(0 6px 10px rgba(0,0,0,0.85));">
             </div>
             <div class="card-desc">
                 <span>Pur Steak Haché Saisi • Oeuf à Cheval • Double Cheddar • Frites Croustillantes</span>
@@ -348,6 +367,7 @@
                 <div class="gold-pedestal"></div>
                 <img src="cutouts_hd/sandwich viande hache 30 dh.png" class="food-sandwich" alt="HACHÉE">
                 <img src="cutouts_hd/frites_cone_kraft_2026.png" class="food-fries" alt="Frites">
+                <img src="cutouts_hd/sauces_trio_ramekins.png" class="food-sauces" alt="Sauces" style="position:absolute; right:15px; bottom:12px; z-index:4; width:75px; height:auto; filter:drop-shadow(0 6px 10px rgba(0,0,0,0.85));">
             </div>
             <div class="card-desc">
                 <span>Pur Boeuf Haché Frais Assaisonné Minute • Oignons Grillés • Sauce BBQ</span>
@@ -370,6 +390,7 @@
                 <div class="gold-pedestal"></div>
                 <img src="cutouts_hd/sandwiche mixte 35 dh.png" class="food-sandwich" alt="MIXTE">
                 <img src="cutouts_hd/frites_cone_kraft_2026.png" class="food-fries" alt="Frites">
+                <img src="cutouts_hd/sauces_trio_ramekins.png" class="food-sauces" alt="Sauces" style="position:absolute; right:15px; bottom:12px; z-index:4; width:75px; height:auto; filter:drop-shadow(0 6px 10px rgba(0,0,0,0.85));">
             </div>
             <div class="card-desc">
                 <span>Duo Gourmand Poulet Mariné & Boeuf Haché • Double Fromage • Sauces Maison</span>
@@ -392,6 +413,7 @@
                 <div class="gold-pedestal"></div>
                 <img src="cutouts_hd/sandwiche poulet 30 dh.png" class="food-sandwich" alt="POULET">
                 <img src="cutouts_hd/frites_cone_kraft_2026.png" class="food-fries" alt="Frites">
+                <img src="cutouts_hd/sauces_trio_ramekins.png" class="food-sauces" alt="Sauces" style="position:absolute; right:15px; bottom:12px; z-index:4; width:75px; height:auto; filter:drop-shadow(0 6px 10px rgba(0,0,0,0.85));">
             </div>
             <div class="card-desc">
                 <span>Blanc de Poulet Tendre Grillé & Mariné • Salade Fraîche • Sauce Blanche Ail</span>
@@ -414,6 +436,7 @@
                 <div class="gold-pedestal"></div>
                 <img src="cutouts_hd/sandwiche saussice 30.png" class="food-sandwich" alt="SAUCISSE">
                 <img src="cutouts_hd/frites_cone_kraft_2026.png" class="food-fries" alt="Frites">
+                <img src="cutouts_hd/sauces_trio_ramekins.png" class="food-sauces" alt="Sauces" style="position:absolute; right:15px; bottom:12px; z-index:4; width:75px; height:auto; filter:drop-shadow(0 6px 10px rgba(0,0,0,0.85));">
             </div>
             <div class="card-desc">
                 <span>Saucisses Fumées Dorées à la Plancha • Oignons Caramélisés • Cheddar Fondu</span>

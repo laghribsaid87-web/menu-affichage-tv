@@ -153,6 +153,18 @@
         }
         .btn-ctl.active { background:#ff6b00; color:#fff; }
         body.tv-display-mode .ui-controls { display:none !important; }
+    
+        /* 3D Perspective Floating */
+        @keyframes float3D {
+            0% { transform: translateY(0px) perspective(800px) rotateY(-4deg) rotateX(2deg); }
+            50% { transform: translateY(-7px) perspective(800px) rotateY(3deg) rotateX(-2deg); }
+            100% { transform: translateY(0px) perspective(800px) rotateY(-4deg) rotateX(2deg); }
+        }
+        .food-sandwich {
+            animation: float3D 6s ease-in-out infinite alternate !important;
+            filter: drop-shadow(0 16px 24px rgba(0,0,0,0.92)) !important;
+        }
+        
     </style>
 </head>
 <body>
