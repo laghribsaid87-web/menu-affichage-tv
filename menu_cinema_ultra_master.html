@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Bocadillo — Ultra Cinema Master 4K</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Plus+Jakarta+Sans:wght@700;800;900&family=Bebas+Neue&family=Oswald:wght@600;700&display=swap');
+        * { margin:0; padding:0; box-sizing:border-box; user-select:none; }
+        body { width:100vw; height:100vh; overflow:hidden; background:#050608; font-family:'Plus Jakarta Sans', sans-serif; color:#fff; }
+        
+        #menu-stage {
+            width:1920px; height:1080px; position:absolute; top:50%; left:50%;
+            transform-origin:center center;
+            background: #090a0f;
+            overflow:hidden;
+        }
+
+        /* 4K Cinematic Video Background */
+        .bg-video {
+            position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover;
+            opacity:0.38; filter:contrast(1.2) brightness(0.9);
+            pointer-events:none; z-index:1;
+        }
+        .bg-overlay {
+            position:absolute; inset:0;
+            background: radial-gradient(circle at 25% 40%, rgba(255, 107, 0, 0.12) 0%, transparent 60%),
+                        radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
+                        linear-gradient(180deg, rgba(8,10,15,0.85) 0%, rgba(8,10,15,0.65) 50%, rgba(5,6,8,0.92) 100%);
+            z-index:2; pointer-events:none;
+        }
+
+        /* Ambient Embers Rising Particles */
+        .ember-particle {
+            position:absolute; width:4px; height:4px; border-radius:50%;
+            background:#ff8c00; box-shadow:0 0 10px #ff6b00, 0 0 20px #ff4500;
+            opacity:0; animation: emberRise 6s linear infinite; z-index:3; pointer-events:none;
+        }
+        .ember-1 { left:20%; animation-duration:5.5s; animation-delay:0.5s; }
+        .ember-2 { left:35%; animation-duration:7s; animation-delay:2s; width:5px; height:5px; }
+        .ember-3 { left:60%; animation-duration:6.2s; animation-delay:1.2s; }
+        .ember-4 { left:78%; animation-duration:5s; animation-delay:3s; width:3px; height:3px; }
+        .ember-5 { left:90%; animation-duration:6.8s; animation-delay:0.2s; }
+        @keyframes emberRise {
+            0% { bottom:-20px; opacity:0; transform:translateX(0) scale(0.8); }
+            20% { opacity:0.9; }
+            80% { opacity:0.8; }
+            100% { bottom:1080px; opacity:0; transform:translateX(50px) scale(1.4); }
+        }
+
+        /* Top Hollywood Broadcast Bar */
+        .stage-header {
+            position:relative; z-index:10;
+            height:95px; padding:0 45px; display:flex; align-items:center; justify-content:space-between;
+            background: linear-gradient(90deg, rgba(15,23,42,0.96), rgba(20,29,48,0.92), rgba(15,23,42,0.96));
+            border-bottom: 2px solid rgba(255, 107, 0, 0.6);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 25px rgba(255, 107, 0, 0.2);
+        }
+        .brand-container { display:flex; align-items:center; gap:16px; }
+        .brand-crest {
+            width:52px; height:52px; border-radius:14px;
+            background: linear-gradient(135deg, #ff6b00, #b91c1c);
+            display:flex; align-items:center; justify-content:center;
+            font-size:26px; color:#fff; box-shadow:0 0 20px rgba(255, 107, 0, 0.6);
+        }
+        .brand-text { display:flex; flex-direction:column; }
+        .brand-title { font-family:'Bebas Neue', sans-serif; font-size:36px; letter-spacing:2px; line-height:1; color:#fff; }
+        .brand-title span { color:#ff6b00; text-shadow:0 0 15px rgba(255,107,0,0.6); }
+        .brand-sub { font-size:11px; font-weight:900; letter-spacing:3px; color:#f59e0b; text-transform:uppercase; }
+
+        .cat-title-badge {
+            font-family:'Bebas Neue', sans-serif; font-size:32px; letter-spacing:3px; color:#fff;
+            background: linear-gradient(90deg, transparent, rgba(255,107,0,0.25), transparent);
+            padding:4px 30px; border-radius:30px; border:1px solid rgba(255,107,0,0.3);
+            text-shadow: 0 0 15px rgba(255,107,0,0.5);
+        }
+
+        .header-widgets { display:flex; align-items:center; gap:20px; }
+        .live-tag {
+            background:#dc2626; color:#fff; font-size:12px; font-weight:900; letter-spacing:1.5px;
+            padding:6px 14px; border-radius:8px; display:flex; align-items:center; gap:8px;
+            box-shadow: 0 0 15px rgba(220, 38, 38, 0.6);
+            animation: liveBlink 2s infinite;
+        }
+        .live-tag .dot { width:7px; height:7px; border-radius:50%; background:#fff; }
+        @keyframes liveBlink { 0%,100%{opacity:1;} 50%{opacity:0.65;} }
+        .clock-widget {
+            font-family:'Oswald', sans-serif; font-size:22px; color:#38bdf8;
+            background:rgba(2,6,23,0.8); border:1px solid rgba(56,189,248,0.3);
+            padding:5px 16px; border-radius:10px; letter-spacing:2px;
+        }
+
+        /* Cinema Content Area */
+        .cinema-body {
+            position:relative; z-index:5;
+            height:915px; padding:20px 45px 0 45px;
+            display:grid; grid-template-columns: 42% 58%; gap:30px;
+        }
+
+        /* LEFT HERO STAGE */
+        .hero-stage {
+            background: linear-gradient(145deg, rgba(22, 30, 48, 0.92) 0%, rgba(11, 15, 25, 0.96) 100%);
+            border: 2px solid rgba(255, 107, 0, 0.45);
+            border-radius:28px; padding:26px 30px; position:relative; overflow:hidden;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.9), inset 0 0 40px rgba(255,107,0,0.06);
+            display:flex; flex-direction:column; justify-content:space-between;
+        }
+        .hero-stage::before {
+            content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%;
+            background: radial-gradient(circle at 40% 40%, rgba(255,107,0,0.12) 0%, transparent 60%);
+            pointer-events:none;
+        }
+
+        .hero-top-ribbon { display:flex; justify-content:space-between; align-items:center; z-index:2; }
+        .hero-best-seller {
+            background: linear-gradient(135deg, #ff6b00, #ea580c);
+            color:#fff; font-family:'Bebas Neue', sans-serif; font-size:18px; letter-spacing:2px;
+            padding:6px 18px; border-radius:30px; box-shadow:0 0 20px rgba(255,107,0,0.6);
+        }
+        .hero-fries-included {
+            background: rgba(34, 197, 94, 0.2); border:1px solid #22c55e; color:#4ade80;
+            font-size:12px; font-weight:900; padding:6px 16px; border-radius:20px;
+            letter-spacing:1px;
+        }
+
+        .hero-title-area { margin-top:14px; z-index:2; }
+        .hero-prefix { font-size:14px; font-weight:900; color:#f59e0b; letter-spacing:3px; }
+        .hero-main-title {
+            font-family:'Bebas Neue', sans-serif; font-size:56px; color:#fff; line-height:0.95;
+            letter-spacing:1.5px; text-shadow:0 4px 15px rgba(0,0,0,0.9);
+        }
+
+        /* Hero Food Showcase */
+        .hero-showcase {
+            position:relative; height:410px; display:flex; align-items:center; justify-content:center;
+            margin:10px 0; z-index:2;
+        }
+        .hero-spotlight-disc {
+            position:absolute; bottom:15px; width:92%; height:32px;
+            background: radial-gradient(ellipse at center, rgba(255, 107, 0, 0.45) 0%, rgba(0,0,0,0.95) 70%, transparent 100%);
+            border-radius:50%; z-index:1;
+        }
+        .hero-sandwich-img {
+            position:relative; z-index:3; max-width:96%; max-height:330px; object-fit:contain;
+            filter: drop-shadow(0 25px 35px rgba(0,0,0,0.95)) drop-shadow(0 0 25px rgba(255,107,0,0.25));
+            will-change:transform; transform:translateZ(0);
+            animation: cinemaFloat 6s ease-in-out infinite alternate;
+        }
+        .hero-fries-img {
+            position:absolute; right:15px; bottom:25px; z-index:4; width:160px; height:auto;
+            filter: drop-shadow(0 20px 25px rgba(0,0,0,0.95));
+            transform: rotate(4deg);
+        }
+        @keyframes cinemaFloat {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-10px) rotate(-1deg); }
+        }
+
+        /* Hero Giant Price Medallion */
+        .hero-price-row {
+            display:flex; align-items:center; justify-content:space-between;
+            padding:18px 24px; border-radius:20px;
+            background: linear-gradient(135deg, rgba(15,23,42,0.95), rgba(8,12,20,0.95));
+            border: 2px solid #ff6b00;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 25px rgba(255,107,0,0.3);
+            z-index:2;
+        }
+        .hero-price-tag .p-label { font-size:12px; font-weight:900; color:#cbd5e1; letter-spacing:1px; }
+        .hero-price-tag .p-val {
+            font-family:'Bebas Neue', sans-serif; font-size:62px; color:#ff6b00; line-height:0.9;
+            text-shadow:0 0 20px rgba(255,107,0,0.5);
+        }
+        .hero-price-tag .p-val .curr { font-size:24px; color:#fff; margin-left:4px; }
+        .hero-combo-tag {
+            text-align:right; border-left:1px solid rgba(255,255,255,0.15); padding-left:24px;
+        }
+        .hero-combo-tag .c-label { font-size:12px; font-weight:800; color:#38bdf8; }
+        .hero-combo-tag .c-val { font-family:'Bebas Neue', sans-serif; font-size:34px; color:#fff; }
+
+        /* Hero Ingredients Bullets */
+        .hero-specs {
+            display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; z-index:2;
+        }
+        .hero-pill {
+            background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);
+            padding:5px 14px; border-radius:20px; font-size:11px; font-weight:800; color:#e2e8f0;
+        }
+
+        /* RIGHT 2x2 GRID */
+        .cards-grid {
+            display:grid; grid-template-columns:repeat(2, 1fr); grid-template-rows:repeat(2, 1fr);
+            gap:22px; height:100%;
+        }
+
+        .cinema-card {
+            background: linear-gradient(145deg, rgba(20, 28, 44, 0.9) 0%, rgba(11, 16, 26, 0.94) 100%);
+            border: 1.5px solid rgba(255, 255, 255, 0.12);
+            border-top: 3px solid #ff6b00;
+            border-radius:22px; padding:18px 22px; display:flex; flex-direction:column;
+            justify-content:space-between; position:relative; overflow:hidden;
+            box-shadow: 0 18px 40px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,107,0,0.04);
+            transition: all 0.35s ease;
+        }
+        .cinema-card:hover { transform:translateY(-6px); border-color:#ff6b00; box-shadow:0 22px 50px rgba(255,107,0,0.25); }
+
+        /* Metallic Glint Sweep */
+        .cinema-card::after {
+            content:''; position:absolute; top:-50%; left:-100%; width:60%; height:200%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+            transform: rotate(30deg); pointer-events:none;
+            animation: cardGlint 8s ease-in-out infinite;
+        }
+        @keyframes cardGlint { 0%,70%{left:-100%;} 100%{left:200%;} }
+
+        .card-header-row { display:flex; justify-content:space-between; align-items:flex-start; z-index:2; }
+        .card-title-group .card-prefix { font-size:11px; font-weight:900; color:#f59e0b; letter-spacing:1.5px; }
+        .card-title-group .card-title { font-family:'Bebas Neue', sans-serif; font-size:32px; color:#fff; line-height:1; margin-top:2px; }
+
+        .cinema-price-badge {
+            background: #0f172a; border:1px solid #ff6b00; border-radius:14px;
+            padding:6px 14px; text-align:center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.8), 0 0 15px rgba(255,107,0,0.3);
+        }
+        .price-sand-num { font-family:'Bebas Neue', sans-serif; font-size:32px; font-weight:900; color:#ff6b00; line-height:1; }
+        .price-sand-num .curr { font-size:14px; margin-left:1px; color:#fff; }
+        .price-drk-num { font-size:10px; font-weight:900; color:#94a3b8; margin-top:1px; }
+
+        /* Card Food Area */
+        .card-food-showcase {
+            position:relative; height:205px; display:flex; align-items:center; justify-content:center;
+            margin:4px 0; z-index:2;
+        }
+        .card-shadow {
+            position:absolute; bottom:8px; width:85%; height:16px;
+            background: radial-gradient(ellipse at center, rgba(0,0,0,0.85) 0%, transparent 70%);
+            border-radius:50%; z-index:1;
+        }
+        .card-sandwich-img {
+            position:relative; z-index:2; max-width:96%; max-height:165px; object-fit:contain;
+            filter: drop-shadow(0 14px 20px rgba(0,0,0,0.9));
+            will-change:transform; transform:translateZ(0);
+            animation: cardFloat 5.5s ease-in-out infinite alternate;
+        }
+        .card-fries-img {
+            position:absolute; right:8px; bottom:14px; z-index:3; width:95px; height:auto;
+            filter: drop-shadow(0 10px 14px rgba(0,0,0,0.9));
+        }
+        @keyframes cardFloat { 0%{transform:translateY(0);} 100%{transform:translateY(-5px);} }
+
+        .card-footer-desc {
+            font-size:11px; font-weight:800; color:#94a3b8; text-transform:uppercase;
+            border-top:1px solid rgba(255,255,255,0.08); padding-top:8px;
+            display:flex; align-items:center; justify-content:space-between; z-index:2;
+        }
+        .card-tag {
+            background: rgba(255,107,0,0.15); color:#ff6b00; border:1px solid #ff6b00;
+            padding:2px 8px; border-radius:5px; font-size:10px; font-weight:900;
+        }
+
+        /* Bottom Cinema Marquee Ticker */
+        .marquee-bar {
+            position:absolute; bottom:0; left:0; width:100%; height:65px;
+            background: #07090e; border-top:2px solid #ff6b00;
+            display:flex; align-items:center; overflow:hidden; z-index:15;
+            box-shadow: 0 -5px 25px rgba(0,0,0,0.8);
+        }
+        .marquee-badge {
+            background: linear-gradient(90deg, #ff6b00, #ea580c);
+            color:#fff; font-family:'Bebas Neue', sans-serif; font-size:20px; letter-spacing:2px;
+            height:100%; padding:0 28px; display:flex; align-items:center; shrink:0; z-index:2;
+            box-shadow: 10px 0 20px rgba(0,0,0,0.6);
+        }
+        .marquee-track {
+            display:flex; white-space:nowrap; animation: marqueeScroll 30s linear infinite;
+        }
+        .marquee-item { font-size:16px; font-weight:800; color:#cbd5e1; letter-spacing:1px; padding-right:80px; }
+        .marquee-item span { color:#f59e0b; }
+        @keyframes marqueeScroll { 0%{transform:translateX(0);} 100%{transform:translateX(-50%);} }
+
+        .menu-screen { display:none; }
+        .menu-screen.active { display:grid; }
+
+        .ui-controls { position:fixed; bottom:75px; right:20px; z-index:999999; display:flex; gap:10px; }
+        .btn-ctl {
+            background:#0f172a; color:#fff; border:1px solid #ff6b00; padding:8px 16px;
+            border-radius:10px; font-weight:800; font-size:12px; cursor:pointer;
+        }
+        .btn-ctl.active { background:#ff6b00; color:#fff; }
+        body.tv-display-mode .ui-controls { display:none !important; }
+    </style>
+</head>
+<body>
+    <div class="ui-controls" id="tv-controls">
+        <button id="btn-auto" class="btn-ctl active" onclick="setScreenMode('auto')">Auto (15s)</button>
+        <button id="btn-s1" class="btn-ctl" onclick="setScreenMode('screen-1')">TV 1: Bocadillos</button>
+        <button id="btn-s2" class="btn-ctl" onclick="setScreenMode('screen-2')">TV 2: Chauds</button>
+        <button id="btn-fs" class="btn-ctl" onclick="toggleFullScreen()">⛶ Plein Écran</button>
+    </div>
+
+    <div id="menu-stage">
+        <!-- 4K Video Background -->
+        <video class="bg-video" autoplay loop muted playsinline>
+            <source src="28c80ca1_124823-732633111.mp4" type="video/mp4">
+        </video>
+        <div class="bg-overlay"></div>
+
+        <!-- Rising Embers -->
+        <div class="ember-particle ember-1"></div>
+        <div class="ember-particle ember-2"></div>
+        <div class="ember-particle ember-3"></div>
+        <div class="ember-particle ember-4"></div>
+        <div class="ember-particle ember-5"></div>
+
+        <!-- Header -->
+        <header class="stage-header">
+            <div class="brand-container">
+                <div class="brand-crest">♛</div>
+                <div class="brand-text">
+                    <div class="brand-title">MON BOCADILLO <span>TANGER</span></div>
+                    <div class="brand-sub">HAUTE GASTRONOMIE CHAMALI</div>
+                </div>
+            </div>
+
+            <div id="cat-title-1" class="cat-title-badge">✦ CARTE BOCADILLOS CHAMALI ✦</div>
+            <div id="cat-title-2" class="cat-title-badge" style="display:none;">✦ CARTE SANDWICHES CHAUDS ✦</div>
+
+            <div class="header-widgets">
+                <div class="live-tag"><div class="dot"></div> EN DIRECT</div>
+                <div id="live-clock" class="clock-widget">12:00:00</div>
+            </div>
+        </header>
+
+        <!-- SCREEN 1: BOCADILLOS CHAMALI -->
+        <div id="screen-1" class="cinema-body menu-screen active">
+            <!-- Left Hero: Le Complet -->
+            <div class="hero-stage" data-item-id="complet">
+                <div class="hero-top-ribbon">
+                    <div class="hero-best-seller">★ BEST-SELLER N°1 TANGER ★</div>
+                    <div class="hero-fries-included">🍟 GRANDE FRITE COMPRISE</div>
+                </div>
+                <div class="hero-title-area">
+                    <span class="hero-prefix">SIGNATURE MAISON</span>
+                    <h2 class="hero-main-title">LE COMPLET CHAMALI</h2>
+                </div>
+                <div class="hero-showcase">
+                    <div class="hero-spotlight-disc"></div>
+                    <img src="cutouts_cinema/hero_bocadillo_complet.png" class="hero-sandwich-img" alt="Le Complet">
+                    <img src="cutouts_cinema/hero_french_fries.png" class="hero-fries-img" alt="Frites">
+                </div>
+                <div class="hero-price-row">
+                    <div class="hero-price-tag">
+                        <div class="p-label">PRIX SANDWICH + FRITES</div>
+                        <div class="p-val price-sand-num">30<span class="curr">DH</span></div>
+                    </div>
+                    <div class="hero-combo-tag">
+                        <div class="c-label">+ BOISSON FRAÎCHE</div>
+                        <div class="c-val price-drk-num">+7 DH</div>
+                    </div>
+                </div>
+                <div class="hero-specs">
+                    <span class="hero-pill">✦ Thon 1er Choix</span>
+                    <span class="hero-pill">✦ Tortilla Maison</span>
+                    <span class="hero-pill">✦ Double Cheddar Fondu</span>
+                    <span class="hero-pill">✦ Charcuterie Halal</span>
+                </div>
+            </div>
+
+            <!-- Right 4 Cards -->
+            <div class="cards-grid">
+                <!-- Card 1: Tortilla Royale -->
+                <div class="cinema-card" data-item-id="tortilla_royale">
+                    <div class="card-header-row">
+                        <div class="card-title-group">
+                            <span class="card-prefix">SPÉCIALITÉ ROYALE</span>
+                            <h3 class="card-title">TORTILLA ROYALE</h3>
+                        </div>
+                        <div class="cinema-price-badge">
+                            <div class="price-sand-num">34<span class="curr">DH</span></div>
+                            <div class="price-drk-num">+SODA 7DH</div>
+                        </div>
+                    </div>
+                    <div class="card-food-showcase">
+                        <div class="card-shadow"></div>
+                        <img src="cutouts_cinema/hero_tortilla_royale.png" class="card-sandwich-img" alt="Tortilla Royale">
+                        <img src="cutouts_cinema/hero_french_fries.png" class="card-fries-img" alt="Frites">
+                    </div>
+                    <div class="card-footer-desc">
+                        <span>Tortilla Espagnole Garnie • Fromage Fondu</span>
+                        <span class="card-tag">CHAMALI</span>
+                    </div>
+                </div>
+
+                <!-- Card 2: Le Thon -->
+                <div class="cinema-card" data-item-id="thon">
+                    <div class="card-header-row">
+                        <div class="card-title-group">
+                            <span class="card-prefix">FRAIS DU JOUR</span>
+                            <h3 class="card-title">LE THON FRAIS</h3>
+                        </div>
+                        <div class="cinema-price-badge">
+                            <div class="price-sand-num">22<span class="curr">DH</span></div>
+                            <div class="price-drk-num">+SODA 7DH</div>
+                        </div>
+                    </div>
+                    <div class="card-food-showcase">
+                        <div class="card-shadow"></div>
+                        <img src="cutouts_hd/bocadillo thon 22 dh.png" class="card-sandwich-img" alt="Le Thon">
+                        <img src="cutouts_cinema/hero_french_fries.png" class="card-fries-img" alt="Frites">
+                    </div>
+                    <div class="card-footer-desc">
+                        <span>Thon Émietté • Crudités • Oeuf Dur • Olives</span>
+                        <span class="card-tag">LÉGER</span>
+                    </div>
+                </div>
+
+                <!-- Card 3: Double Cheese -->
+                <div class="cinema-card" data-item-id="cheese">
+                    <div class="card-header-row">
+                        <div class="card-title-group">
+                            <span class="card-prefix">EXTRA FROMAGE</span>
+                            <h3 class="card-title">DOUBLE CHEESE</h3>
+                        </div>
+                        <div class="cinema-price-badge">
+                            <div class="price-sand-num">24<span class="curr">DH</span></div>
+                            <div class="price-drk-num">+SODA 7DH</div>
+                        </div>
+                    </div>
+                    <div class="card-food-showcase">
+                        <div class="card-shadow"></div>
+                        <img src="cutouts_hd/bocadillo cheese 24 dh.png" class="card-sandwich-img" alt="Double Cheese">
+                        <img src="cutouts_cinema/hero_french_fries.png" class="card-fries-img" alt="Frites">
+                    </div>
+                    <div class="card-footer-desc">
+                        <span>Thon Gourmand • Double Cheddar • Sauce Cheese</span>
+                        <span class="card-tag">GOURMAND</span>
+                    </div>
+                </div>
+
+                <!-- Card 4: Le Tangérois -->
+                <div class="cinema-card" data-item-id="tangerois">
+                    <div class="card-header-row">
+                        <div class="card-title-group">
+                            <span class="card-prefix">RECETTE 1980</span>
+                            <h3 class="card-title">LE TANGÉROIS</h3>
+                        </div>
+                        <div class="cinema-price-badge">
+                            <div class="price-sand-num">24<span class="curr">DH</span></div>
+                            <div class="price-drk-num">+SODA 7DH</div>
+                        </div>
+                    </div>
+                    <div class="card-food-showcase">
+                        <div class="card-shadow"></div>
+                        <img src="cutouts_hd/bocadillo tangerois 24 dh.png" class="card-sandwich-img" alt="Le Tangérois">
+                        <img src="cutouts_cinema/hero_french_fries.png" class="card-fries-img" alt="Frites">
+                    </div>
+                    <div class="card-footer-desc">
+                        <span>Recette Historique de Tanger • Épices Chamali</span>
+                        <span class="card-tag">AUTHENTIQUE</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 2: SANDWICHES CHAUDS -->
+        <div id="screen-2" class="cinema-body menu-screen">
+            <!-- Left Hero: Le Américain -->
+            <div class="hero-stage" data-item-id="americain">
+                <div class="hero-top-ribbon">
+                    <div class="hero-best-seller">★ ROI DU GRILL ★</div>
+                    <div class="hero-fries-included">🍟 GRANDE FRITE COMPRISE</div>
+                </div>
+                <div class="hero-title-area">
+                    <span class="hero-prefix">PUR STEAK HACHÉ</span>
+                    <h2 class="hero-main-title">L'AMÉRICAIN ROYAL</h2>
+                </div>
+                <div class="hero-showcase">
+                    <div class="hero-spotlight-disc"></div>
+                    <img src="cutouts_cinema/hero_sandwich_americain.png" class="hero-sandwich-img" alt="L'Américain">
+                    <img src="cutouts_cinema/hero_french_fries.png" class="hero-fries-img" alt="Frites">
+                </div>
+                <div class="hero-price-row">
+                    <div class="hero-price-tag">
+                        <div class="p-label">PRIX SANDWICH + FRITES</div>
+                        <div class="p-val price-sand-num">35<span class="curr">DH</span></div>
+                    </div>
+                    <div class="hero-combo-tag">
+                        <div class="c-label">+ BOISSON FRAÎCHE</div>
+                        <div class="c-val price-drk-num">+7 DH</div>
+                    </div>
+                </div>
+                <div class="hero-specs">
+                    <span class="hero-pill">✦ Pur Boeuf Saisi Minute</span>
+                    <span class="hero-pill">✦ Oeuf à Cheval Coulant</span>
+                    <span class="hero-pill">✦ Double Cheddar Affiné</span>
+                    <span class="hero-pill">✦ Sauce Smoky Burger</span>
+                </div>
+            </div>
+
+            <!-- Right 4 Cards -->
+            <div class="cards-grid">
+                <!-- Card 1: Viande Hachée Kefta -->
+                <div class="cinema-card" data-item-id="viande_hachee">
+                    <div class="card-header-row">
+                        <div class="card-title-group">
+                            <span class="card-prefix">100% PUR BOEUF</span>
+                            <h3 class="card-title">VIANDE HACHÉE</h3>
+                        </div>
+                        <div class="cinema-price-badge">
+                            <div class="price-sand-num">30<span class="curr">DH</span></div>
+                            <div class="price-drk-num">+SODA 7DH</div>
+                        </div>
+                    </div>
+                    <div class="card-food-showcase">
+                        <div class="card-shadow"></div>
+                        <img src="cutouts_cinema/hero_sandwich_kefta.png" class="card-sandwich-img" alt="Viande Hachée">
+                        <img src="cutouts_cinema/hero_french_fries.png" class="card-fries-img" alt="Frites">
+                    </div>
+                    <div class="card-footer-desc">
+                        <span>Boeuf Assaisonné Minute • Oignons Caramélisés</span>
+                        <span class="card-tag">GRILLÉ</span>
+                    </div>
+                </div>
+
+                <!-- Card 2: Poulet Mariné -->
+                <div class="cinema-card" data-item-id="poulet">
+                    <div class="card-header-row">
+                        <div class="card-title-group">
+                            <span class="card-prefix">POULET FERMIER</span>
+                            <h3 class="card-title">LE POULET MARINÉ</h3>
+                        </div>
+                        <div class="cinema-price-badge">
+                            <div class="price-sand-num">30<span class="curr">DH</span></div>
+                            <div class="price-drk-num">+SODA 7DH</div>
+                        </div>
+                    </div>
+                    <div class="card-food-showcase">
+                        <div class="card-shadow"></div>
+                        <img src="cutouts_cinema/hero_sandwich_poulet.png" class="card-sandwich-img" alt="Poulet Mariné">
+                        <img src="cutouts_cinema/hero_french_fries.png" class="card-fries-img" alt="Frites">
+                    </div>
+                    <div class="card-footer-desc">
+                        <span>Blanc Poulet Grillé • Sauce Blanche Ail</span>
+                        <span class="card-tag">MARINÉ</span>
+                    </div>
+                </div>
+
+                <!-- Card 3: Le Mixte -->
+                <div class="cinema-card" data-item-id="mixte">
+                    <div class="card-header-row">
+                        <div class="card-title-group">
+                            <span class="card-prefix">DUO GOURMAND</span>
+                            <h3 class="card-title">LE MIXTE ROYAL</h3>
+                        </div>
+                        <div class="cinema-price-badge">
+                            <div class="price-sand-num">35<span class="curr">DH</span></div>
+                            <div class="price-drk-num">+SODA 7DH</div>
+                        </div>
+                    </div>
+                    <div class="card-food-showcase">
+                        <div class="card-shadow"></div>
+                        <img src="cutouts_hd/sandwiche mixte 35 dh.png" class="card-sandwich-img" alt="Le Mixte">
+                        <img src="cutouts_cinema/hero_french_fries.png" class="card-fries-img" alt="Frites">
+                    </div>
+                    <div class="card-footer-desc">
+                        <span>Duo Poulet & Boeuf Haché • Double Fromage</span>
+                        <span class="card-tag">LARGE</span>
+                    </div>
+                </div>
+
+                <!-- Card 4: Saucisse Plancha -->
+                <div class="cinema-card" data-item-id="saucisse">
+                    <div class="card-header-row">
+                        <div class="card-title-group">
+                            <span class="card-prefix">PLANCHA GRILL</span>
+                            <h3 class="card-title">LA SAUCISSE FUMÉE</h3>
+                        </div>
+                        <div class="cinema-price-badge">
+                            <div class="price-sand-num">30<span class="curr">DH</span></div>
+                            <div class="price-drk-num">+SODA 7DH</div>
+                        </div>
+                    </div>
+                    <div class="card-food-showcase">
+                        <div class="card-shadow"></div>
+                        <img src="cutouts_hd/sandwiche saussice 30.png" class="card-sandwich-img" alt="Saucisse">
+                        <img src="cutouts_cinema/hero_french_fries.png" class="card-fries-img" alt="Frites">
+                    </div>
+                    <div class="card-footer-desc">
+                        <span>Saucisses Fumées Dorées • Oignons Caramélisés</span>
+                        <span class="card-tag">FUMÉ</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Marquee Ticker -->
+        <footer class="marquee-bar">
+            <div class="marquee-badge">⚡ DERNIÈRE MINUTE</div>
+            <div class="marquee-track">
+                <div class="marquee-item">✦ TOUS NOS PAINS ET FRITES SONT PRÉPARÉS FRAÎCHEMENT À LA COMMANDE ✦ BOISSON FRAÎCHE SEULEMENT +7 DH ✦ FORMULE COMBO FRITES MAISON INCLUSES ✦ BIENVENUE CHEZ MON BOCADILLO TANGER ✦ </div>
+                <div class="marquee-item">✦ TOUS NOS PAINS ET FRITES SONT PRÉPARÉS FRAÎCHEMENT À LA COMMANDE ✦ BOISSON FRAÎCHE SEULEMENT +7 DH ✦ FORMULE COMBO FRITES MAISON INCLUSES ✦ BIENVENUE CHEZ MON BOCADILLO TANGER ✦ </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+    
+        function updateClock() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            const el = document.getElementById('live-clock');
+            if (el) el.innerText = `${h}:${m}:${s}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+    
+    
+        function scaleStage() {
+            const stage = document.getElementById('menu-stage');
+            if (!stage) return;
+            const targetWidth = 1920;
+            const targetHeight = 1080;
+            const scale = Math.min(window.innerWidth / targetWidth, window.innerHeight / targetHeight);
+            stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        }
+        window.addEventListener('resize', scaleStage);
+        window.addEventListener('load', scaleStage);
+        setTimeout(scaleStage, 50);
+
+        let currentScreen = 1;
+        let autoLoopTimer = null;
+        const SCREEN_DURATION = 15000;
+
+        function showScreen(num) {
+            document.querySelectorAll('.menu-screen').forEach(s => s.classList.remove('active'));
+            const s = document.getElementById(`screen-${num}`);
+            if (s) {
+                s.classList.add('active');
+                currentScreen = num;
+                const cat1 = document.getElementById('cat-title-1');
+                const cat2 = document.getElementById('cat-title-2');
+                if (cat1 && cat2) {
+                    if (num === 1) { cat1.style.display = 'block'; cat2.style.display = 'none'; }
+                    else { cat1.style.display = 'none'; cat2.style.display = 'block'; }
+                }
+            }
+        }
+
+        function cycleNext() {
+            const next = currentScreen === 1 ? 2 : 1;
+            showScreen(next);
+            if (autoLoopTimer) clearTimeout(autoLoopTimer);
+            autoLoopTimer = setTimeout(cycleNext, SCREEN_DURATION);
+        }
+
+        function setScreenMode(mode) {
+            document.querySelectorAll('.ui-controls .btn-ctl').forEach(b => b.classList.remove('active'));
+            if (autoLoopTimer) { clearTimeout(autoLoopTimer); autoLoopTimer = null; }
+
+            if (mode === 'auto') {
+                const btn = document.getElementById('btn-auto');
+                if (btn) btn.classList.add('active');
+                autoLoopTimer = setTimeout(cycleNext, SCREEN_DURATION);
+            } else if (mode === 'screen-1') {
+                const btn = document.getElementById('btn-s1');
+                if (btn) btn.classList.add('active');
+                showScreen(1);
+            } else if (mode === 'screen-2') {
+                const btn = document.getElementById('btn-s2');
+                if (btn) btn.classList.add('active');
+                showScreen(2);
+            }
+        }
+
+        autoLoopTimer = setTimeout(cycleNext, SCREEN_DURATION);
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(e => {});
+            else if (document.exitFullscreen) document.exitFullscreen();
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('mode') === 'tv') {
+            document.body.classList.add('tv-display-mode');
+        }
+        const reqScreen = params.get('screen');
+        if (reqScreen) {
+            if (typeof setScreenMode === 'function') {
+                setScreenMode('screen-' + reqScreen);
+            } else if (typeof showScreen === 'function') {
+                showScreen(parseInt(reqScreen));
+            }
+            if (typeof autoLoopTimer !== 'undefined' && autoLoopTimer) {
+                clearTimeout(autoLoopTimer);
+                autoLoopTimer = null;
+            }
+        }
+
+        // Live Price Sync Engine
+        (function() {
+            const CACHE_KEY = 'MENU_ITEMS_CACHE';
+
+            function applyLivePrices(data) {
+                if (!data || !data.items || !Array.isArray(data.items)) return;
+
+                data.items.forEach(item => {
+                    const card = document.querySelector(`[data-item-id="${item.id}"]`);
+                    if (!card) return;
+
+                    const pSand = card.querySelector('.price-sand-num, .p-sand-val, .p-sand');
+                    if (pSand && item.price_sandwich !== undefined) {
+                        const currSpan = pSand.querySelector('span');
+                        const currClass = currSpan && currSpan.className ? currSpan.className : 'curr';
+                        pSand.innerHTML = `${item.price_sandwich}<span class="${currClass}">DH</span>`;
+                    }
+
+                    const pDrk = card.querySelector('.price-drk-num, .p-drk-val, .p-drk');
+                    if (pDrk && item.price_drink !== undefined) {
+                        const currSpan = pDrk.querySelector('span');
+                        const currClass = currSpan && currSpan.className ? currSpan.className : 'curr';
+                        const dVal = item.price_drink.toString().startsWith('+') ? item.price_drink : ('+' + item.price_drink);
+                        pDrk.innerHTML = `${dVal}<span class="${currClass}">DH</span>`;
+                    }
+                });
+            }
+
+            const cached = localStorage.getItem(CACHE_KEY);
+            if (cached) {
+                try { applyLivePrices(JSON.parse(cached)); } catch(e) {}
+            }
+
+            if (window.BroadcastChannel) {
+                const bc = new BroadcastChannel('MENU_TV_CHANNEL');
+                bc.onmessage = (event) => {
+                    if (event.data && event.data.type === 'PRICES_UPDATED' && event.data.data) {
+                        applyLivePrices(event.data.data);
+                    }
+                };
+            }
+
+            let lastDataHash = "";
+            async function syncPrices() {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 4000);
+                try {
+                    let res = await fetch('/api/menu_items?t=' + Date.now(), { signal: controller.signal });
+                    if (!res.ok) res = await fetch('menu_items.json?t=' + Date.now(), { signal: controller.signal });
+                    clearTimeout(timeoutId);
+                    if (res.ok) {
+                        const text = await res.text();
+                        if (text !== lastDataHash) {
+                            lastDataHash = text;
+                            localStorage.setItem(CACHE_KEY, text);
+                            applyLivePrices(JSON.parse(text));
+                        }
+                    }
+                } catch(e) {
+                    clearTimeout(timeoutId);
+                }
+            }
+            syncPrices();
+            setInterval(syncPrices, 15000);
+        })();
+    
+    </script>
+</body>
+</html>
