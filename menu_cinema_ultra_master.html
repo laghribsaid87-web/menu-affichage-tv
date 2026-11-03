@@ -141,10 +141,10 @@
             border-radius:50%; z-index:1;
         }
         .hero-sandwich-img {
-            position:relative; z-index:3; max-width:96%; max-height:330px; object-fit:contain;
-            filter: drop-shadow(0 25px 35px rgba(0,0,0,0.95)) drop-shadow(0 0 25px rgba(255,107,0,0.25));
+            position:relative; z-index:3; max-width:88%; max-height:310px; object-fit:contain;
+            margin-bottom:20px;
+            filter: drop-shadow(0 22px 32px rgba(0,0,0,0.95)) drop-shadow(0 0 25px rgba(255,107,0,0.25)) contrast(1.1) brightness(1.05);
             will-change:transform; transform:translateZ(0);
-            animation: cinemaFloat 6s ease-in-out infinite alternate;
         }
         .hero-fries-img {
             position:absolute; right:15px; bottom:25px; z-index:4; width:160px; height:auto;
@@ -236,10 +236,10 @@
             border-radius:50%; z-index:1;
         }
         .card-sandwich-img {
-            position:relative; z-index:2; max-width:96%; max-height:165px; object-fit:contain;
-            filter: drop-shadow(0 14px 20px rgba(0,0,0,0.9));
+            position:relative; z-index:3; max-width:88%; max-height:155px; object-fit:contain;
+            margin-bottom:8px;
+            filter: drop-shadow(0 12px 18px rgba(0,0,0,0.95)) contrast(1.08) brightness(1.04);
             will-change:transform; transform:translateZ(0);
-            animation: cardFloat 5.5s ease-in-out infinite alternate;
         }
         .card-fries-img {
             position:absolute; right:8px; bottom:14px; z-index:3; width:95px; height:auto;
@@ -346,6 +346,25 @@
             100% { opacity: 0; transform: translateY(-90px) scale(1.7) skewX(-12deg); }
         }
 
+        
+        /* Mockup Luxury Slate Plating & Cutlery */
+        .card-slate-plate {
+            position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+            width: 88%; height: auto; z-index: 1;
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.95));
+            pointer-events: none;
+        }
+        .hero-slate-tray {
+            position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%);
+            width: 90%; height: auto; z-index: 1;
+            filter: drop-shadow(0 20px 35px rgba(0,0,0,0.95));
+            pointer-events: none;
+        }
+        .card-cutlery {
+            position: absolute; bottom: 12px; right: 14px; z-index: 4;
+            opacity: 0.35;
+        }
+
         /* Sauce Ramekin Styling */
         .hero-sauces-img {
             position: absolute; right: 12px; bottom: 18px; z-index: 5;
@@ -375,13 +394,22 @@
         }
 
         .hero-sandwich-img {
-            animation: cinemaFloat3D 6s ease-in-out infinite alternate !important;
+            position:relative; z-index:3; max-width:88%; max-height:310px; object-fit:contain;
+            margin-bottom:20px;
+            filter: drop-shadow(0 22px 32px rgba(0,0,0,0.95)) drop-shadow(0 0 25px rgba(255,107,0,0.25)) contrast(1.1) brightness(1.05);
+            will-change:transform; transform:translateZ(0);
         }
         .cinema-card:nth-child(odd) .card-sandwich-img {
-            animation: cardFloat3D_Left 5.5s ease-in-out infinite alternate !important;
+            position:relative; z-index:3; max-width:88%; max-height:155px; object-fit:contain;
+            margin-bottom:8px;
+            filter: drop-shadow(0 12px 18px rgba(0,0,0,0.95)) contrast(1.08) brightness(1.04);
+            will-change:transform; transform:translateZ(0);
         }
         .cinema-card:nth-child(even) .card-sandwich-img {
-            animation: cardFloat3D_Right 5.5s ease-in-out infinite alternate !important;
+            position:relative; z-index:3; max-width:88%; max-height:155px; object-fit:contain;
+            margin-bottom:8px;
+            filter: drop-shadow(0 12px 18px rgba(0,0,0,0.95)) contrast(1.08) brightness(1.04);
+            will-change:transform; transform:translateZ(0);
         }
 
     </style>
@@ -441,6 +469,7 @@
                 </div>
                                 <div class="hero-showcase">
                     <div class="hero-spotlight-disc"></div>
+                    <img src="cutouts_hd/slate_hero_tray.png" class="hero-slate-tray" alt="Plateau de service">
                     <div class="steam-container">
                         <div class="steam-wisp steam-1"></div>
                         <div class="steam-wisp steam-2"></div>
@@ -484,15 +513,13 @@
                     </div>
                     <div class="card-food-showcase">
                         <div class="card-shadow"></div>
-                        <div class="steam-container" style="left:20%; top:5px; height:120px;">
+                        <img src="cutouts_hd/slate_serving_board.png" class="card-slate-plate" alt="Ardoise de présentation">
+                        <div class="steam-container" style="left:25%; top:5px; height:120px;">
                             <div class="steam-wisp steam-1" style="height:60px;"></div>
                             <div class="steam-wisp steam-2" style="height:75px;"></div>
                         </div>
-                        
-                        <img src="cutouts_cinema/hero_tortilla_royale.png" class="card-sandwich-img" alt="Tortilla Royale">
-                        
-                        <img src="cutouts_cinema/hero_french_fries.png" class="card-fries-img" alt="Frites">
-                        <img src="cutouts_hd/sauces_trio_ramekins.png" class="card-sauces-img" alt="Sauces">
+                        <img src="cutouts_hd/bocadillo tortillia royale 30 dh.png" class="card-sandwich-img" alt="Tortilla Royale">
+                        <div class="card-cutlery"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"><path d="M18 2v20M21 2v6a3 3 0 0 1-3 3M15 2v6a3 3 0 0 0 3 3M6 2v7a3 3 0 0 0 3 3v10M6 22V12a3 3 0 0 0-3-3V2"/></svg></div>
                     </div>
                     <div class="card-footer-desc">
                         <span>Tortilla Espagnole Garnie • Fromage Fondu</span>
@@ -514,15 +541,13 @@
                     </div>
                     <div class="card-food-showcase">
                         <div class="card-shadow"></div>
-                        <div class="steam-container" style="left:20%; top:5px; height:120px;">
+                        <img src="cutouts_hd/slate_serving_board.png" class="card-slate-plate" alt="Ardoise de présentation">
+                        <div class="steam-container" style="left:25%; top:5px; height:120px;">
                             <div class="steam-wisp steam-1" style="height:60px;"></div>
                             <div class="steam-wisp steam-2" style="height:75px;"></div>
                         </div>
-                        
                         <img src="cutouts_hd/bocadillo thon 22 dh.png" class="card-sandwich-img" alt="Le Thon">
-                        
-                        <img src="cutouts_cinema/hero_french_fries.png" class="card-fries-img" alt="Frites">
-                        <img src="cutouts_hd/sauces_trio_ramekins.png" class="card-sauces-img" alt="Sauces">
+                        <div class="card-cutlery"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"><path d="M18 2v20M21 2v6a3 3 0 0 1-3 3M15 2v6a3 3 0 0 0 3 3M6 2v7a3 3 0 0 0 3 3v10M6 22V12a3 3 0 0 0-3-3V2"/></svg></div>
                     </div>
                     <div class="card-footer-desc">
                         <span>Thon Émietté • Crudités • Oeuf Dur • Olives</span>
@@ -544,15 +569,13 @@
                     </div>
                     <div class="card-food-showcase">
                         <div class="card-shadow"></div>
-                        <div class="steam-container" style="left:20%; top:5px; height:120px;">
+                        <img src="cutouts_hd/slate_serving_board.png" class="card-slate-plate" alt="Ardoise de présentation">
+                        <div class="steam-container" style="left:25%; top:5px; height:120px;">
                             <div class="steam-wisp steam-1" style="height:60px;"></div>
                             <div class="steam-wisp steam-2" style="height:75px;"></div>
                         </div>
-                        
                         <img src="cutouts_hd/bocadillo cheese 24 dh.png" class="card-sandwich-img" alt="Double Cheese">
-                        
-                        <img src="cutouts_cinema/hero_french_fries.png" class="card-fries-img" alt="Frites">
-                        <img src="cutouts_hd/sauces_trio_ramekins.png" class="card-sauces-img" alt="Sauces">
+                        <div class="card-cutlery"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"><path d="M18 2v20M21 2v6a3 3 0 0 1-3 3M15 2v6a3 3 0 0 0 3 3M6 2v7a3 3 0 0 0 3 3v10M6 22V12a3 3 0 0 0-3-3V2"/></svg></div>
                     </div>
                     <div class="card-footer-desc">
                         <span>Thon Gourmand • Double Cheddar • Sauce Cheese</span>
@@ -574,15 +597,13 @@
                     </div>
                     <div class="card-food-showcase">
                         <div class="card-shadow"></div>
-                        <div class="steam-container" style="left:20%; top:5px; height:120px;">
+                        <img src="cutouts_hd/slate_serving_board.png" class="card-slate-plate" alt="Ardoise de présentation">
+                        <div class="steam-container" style="left:25%; top:5px; height:120px;">
                             <div class="steam-wisp steam-1" style="height:60px;"></div>
                             <div class="steam-wisp steam-2" style="height:75px;"></div>
                         </div>
-                        
                         <img src="cutouts_hd/bocadillo tangerois 24 dh.png" class="card-sandwich-img" alt="Le Tangérois">
-                        
-                        <img src="cutouts_cinema/hero_french_fries.png" class="card-fries-img" alt="Frites">
-                        <img src="cutouts_hd/sauces_trio_ramekins.png" class="card-sauces-img" alt="Sauces">
+                        <div class="card-cutlery"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"><path d="M18 2v20M21 2v6a3 3 0 0 1-3 3M15 2v6a3 3 0 0 0 3 3M6 2v7a3 3 0 0 0 3 3v10M6 22V12a3 3 0 0 0-3-3V2"/></svg></div>
                     </div>
                     <div class="card-footer-desc">
                         <span>Recette Historique de Tanger • Épices Chamali</span>
@@ -606,6 +627,7 @@
                 </div>
                                 <div class="hero-showcase">
                     <div class="hero-spotlight-disc"></div>
+                    <img src="cutouts_hd/slate_hero_tray.png" class="hero-slate-tray" alt="Plateau de service">
                     <div class="steam-container">
                         <div class="steam-wisp steam-1"></div>
                         <div class="steam-wisp steam-2"></div>
@@ -649,15 +671,13 @@
                     </div>
                     <div class="card-food-showcase">
                         <div class="card-shadow"></div>
-                        <div class="steam-container" style="left:20%; top:5px; height:120px;">
+                        <img src="cutouts_hd/slate_serving_board.png" class="card-slate-plate" alt="Ardoise de présentation">
+                        <div class="steam-container" style="left:25%; top:5px; height:120px;">
                             <div class="steam-wisp steam-1" style="height:60px;"></div>
                             <div class="steam-wisp steam-2" style="height:75px;"></div>
                         </div>
-                        
-                        <img src="cutouts_cinema/hero_sandwich_kefta.png" class="card-sandwich-img" alt="Viande Hachée">
-                        
-                        <img src="cutouts_cinema/hero_french_fries.png" class="card-fries-img" alt="Frites">
-                        <img src="cutouts_hd/sauces_trio_ramekins.png" class="card-sauces-img" alt="Sauces">
+                        <img src="cutouts_hd/sandwich viande hache 30 dh.png" class="card-sandwich-img" alt="Viande Hachée">
+                        <div class="card-cutlery"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"><path d="M18 2v20M21 2v6a3 3 0 0 1-3 3M15 2v6a3 3 0 0 0 3 3M6 2v7a3 3 0 0 0 3 3v10M6 22V12a3 3 0 0 0-3-3V2"/></svg></div>
                     </div>
                     <div class="card-footer-desc">
                         <span>Boeuf Assaisonné Minute • Oignons Caramélisés</span>
@@ -679,15 +699,13 @@
                     </div>
                     <div class="card-food-showcase">
                         <div class="card-shadow"></div>
-                        <div class="steam-container" style="left:20%; top:5px; height:120px;">
+                        <img src="cutouts_hd/slate_serving_board.png" class="card-slate-plate" alt="Ardoise de présentation">
+                        <div class="steam-container" style="left:25%; top:5px; height:120px;">
                             <div class="steam-wisp steam-1" style="height:60px;"></div>
                             <div class="steam-wisp steam-2" style="height:75px;"></div>
                         </div>
-                        
-                        <img src="cutouts_cinema/hero_sandwich_poulet.png" class="card-sandwich-img" alt="Poulet Mariné">
-                        
-                        <img src="cutouts_cinema/hero_french_fries.png" class="card-fries-img" alt="Frites">
-                        <img src="cutouts_hd/sauces_trio_ramekins.png" class="card-sauces-img" alt="Sauces">
+                        <img src="cutouts_hd/sandwiche poulet 30 dh.png" class="card-sandwich-img" alt="Poulet Mariné">
+                        <div class="card-cutlery"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"><path d="M18 2v20M21 2v6a3 3 0 0 1-3 3M15 2v6a3 3 0 0 0 3 3M6 2v7a3 3 0 0 0 3 3v10M6 22V12a3 3 0 0 0-3-3V2"/></svg></div>
                     </div>
                     <div class="card-footer-desc">
                         <span>Blanc Poulet Grillé • Sauce Blanche Ail</span>
@@ -709,15 +727,13 @@
                     </div>
                     <div class="card-food-showcase">
                         <div class="card-shadow"></div>
-                        <div class="steam-container" style="left:20%; top:5px; height:120px;">
+                        <img src="cutouts_hd/slate_serving_board.png" class="card-slate-plate" alt="Ardoise de présentation">
+                        <div class="steam-container" style="left:25%; top:5px; height:120px;">
                             <div class="steam-wisp steam-1" style="height:60px;"></div>
                             <div class="steam-wisp steam-2" style="height:75px;"></div>
                         </div>
-                        
                         <img src="cutouts_hd/sandwiche mixte 35 dh.png" class="card-sandwich-img" alt="Le Mixte">
-                        
-                        <img src="cutouts_cinema/hero_french_fries.png" class="card-fries-img" alt="Frites">
-                        <img src="cutouts_hd/sauces_trio_ramekins.png" class="card-sauces-img" alt="Sauces">
+                        <div class="card-cutlery"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"><path d="M18 2v20M21 2v6a3 3 0 0 1-3 3M15 2v6a3 3 0 0 0 3 3M6 2v7a3 3 0 0 0 3 3v10M6 22V12a3 3 0 0 0-3-3V2"/></svg></div>
                     </div>
                     <div class="card-footer-desc">
                         <span>Duo Poulet & Boeuf Haché • Double Fromage</span>
@@ -739,15 +755,13 @@
                     </div>
                     <div class="card-food-showcase">
                         <div class="card-shadow"></div>
-                        <div class="steam-container" style="left:20%; top:5px; height:120px;">
+                        <img src="cutouts_hd/slate_serving_board.png" class="card-slate-plate" alt="Ardoise de présentation">
+                        <div class="steam-container" style="left:25%; top:5px; height:120px;">
                             <div class="steam-wisp steam-1" style="height:60px;"></div>
                             <div class="steam-wisp steam-2" style="height:75px;"></div>
                         </div>
-                        
                         <img src="cutouts_hd/sandwiche saussice 30.png" class="card-sandwich-img" alt="Saucisse">
-                        
-                        <img src="cutouts_cinema/hero_french_fries.png" class="card-fries-img" alt="Frites">
-                        <img src="cutouts_hd/sauces_trio_ramekins.png" class="card-sauces-img" alt="Sauces">
+                        <div class="card-cutlery"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"><path d="M18 2v20M21 2v6a3 3 0 0 1-3 3M15 2v6a3 3 0 0 0 3 3M6 2v7a3 3 0 0 0 3 3v10M6 22V12a3 3 0 0 0-3-3V2"/></svg></div>
                     </div>
                     <div class="card-footer-desc">
                         <span>Saucisses Fumées Dorées • Oignons Caramélisés</span>
