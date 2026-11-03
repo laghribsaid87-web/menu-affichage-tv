@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Showroom Interactif — Les 19 Menus TV Mon Bocadillo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=Bebas+Neue&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #07090e; color: #fff; margin:0; padding:0; overflow:hidden; }
+        .tab-menu-btn {
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .tab-menu-btn.active {
+            background: linear-gradient(135deg, #ff6b00 0%, #ea580c 100%) !important;
+            color: #fff !important;
+            border-color: #ff6b00 !important;
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.4);
+            transform: scale(1.02);
+        }
+        iframe {
+            width: 100%;
+            height: calc(100vh - 105px);
+            border: none;
+            display: block;
+            background: #000;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col">
+
+    <!-- TOP HEADER -->
+    <header class="h-[105px] bg-[#0b0f19] border-b border-white/10 px-4 md:px-6 flex flex-col justify-center shrink-0 shadow-2xl z-50">
+        <div class="flex items-center justify-between pb-2 border-b border-white/5">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-orange-500 to-red-600 flex items-center justify-center text-white text-sm shadow-md">
+                    <i class="fa-solid fa-tv"></i>
+                </div>
+                <div>
+                    <h1 class="text-sm md:text-base font-black text-white flex items-center gap-1.5 leading-tight">
+                        CATALOGUE COMPLET : <span class="text-orange-500">19 MENUS TV DISPONIBLES</span>
+                    </h1>
+                </div>
+                <span id="current-menu-badge" class="hidden md:inline-block px-2.5 py-0.5 rounded-full text-[11px] font-black bg-orange-500/20 text-orange-300 border border-orange-500/30">
+                    Menu Actuel : ⭐ Ultra Cinéma 4K
+                </span>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <a id="btn-fullscreen-link" href="menu_cinema_ultra_master.html" target="_blank" class="px-3 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-black text-xs flex items-center gap-1.5 shadow-md transition cursor-pointer">
+                    <i class="fa-solid fa-expand"></i>
+                    <span>Ouvrir Plein Écran</span>
+                </a>
+                <a href="dashboard_pro.html" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 text-gray-300 font-bold text-xs flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span>Tableau de Bord</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- HORIZONTAL SCROLLABLE TABS -->
+        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-2 pb-1">
+            <button onclick="switchMenu('menu_cinema_ultra_master.html', this, '⭐ Ultra Cinéma 4K', 'Vidéo 4K Braises, Hero 3D géant et bandeau live Tanger')" class="tab-menu-btn active px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+        <span>⭐ Ultra Cinéma 4K</span>
+    </button>
+<button onclick="switchMenu('menu_concept1_wood_atelier.html', this, '🪵 1. Bois Rustique', 'Chêne sombre, vapeur chaude qui fume et étiquettes kraft')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+        <span>🪵 1. Bois Rustique</span>
+    </button>
+<button onclick="switchMenu('menu_concept2_sky_terrace.html', this, '☁️ 2. Ciel & Nuages', 'Ciel azur animé avec nuages qui défilent et rayons de soleil 360°')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+        <span>☁️ 2. Ciel & Nuages</span>
+    </button>
+<button onclick="switchMenu('menu_concept3_hero_spotlight.html', this, '🎯 3. Hero Spotlight 3D', 'Sandwich star qui glisse depuis la gauche avec projecteur de lumière')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+        <span>🎯 3. Hero Spotlight 3D</span>
+    </button>
+<button onclick="switchMenu('menu_concept4_chalkboard_bistro.html', this, '🖍️ 4. Ardoise Bistro', 'Véritable tableau noir restaurant, pointillés craie et prix fluo')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+        <span>🖍️ 4. Ardoise Bistro</span>
+    </button>
+<button onclick="switchMenu('menu_concept5_fire_grill.html', this, '🔥 5. Grill & Braises', 'Flammes de charbon avec étincelles et braises volantes en continu')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+        <span>🔥 5. Grill & Braises</span>
+    </button>
+<button onclick="switchMenu('menu_concept6_conveyor_bento.html', this, '🍱 6. Bento Rail', 'Rails de convoyeur modernes ardoise et lévitation fluide')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+        <span>🍱 6. Bento Rail</span>
+    </button>
+<button onclick="switchMenu('menu_concept7_gold_luxury.html', this, '👑 7. Royal Gold', 'Marbre onyx noir et reflets d'or 24K qui traversent les cartes')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+        <span>👑 7. Royal Gold</span>
+    </button>
+<button onclick="switchMenu('menu_concept8_neon_arcade.html', this, '🕹️ 8. Cyber Arcade', 'Grille perspective 3D animée et néons cyan/rose vibrants')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+        <span>🕹️ 8. Cyber Arcade</span>
+    </button>
+<button onclick="switchMenu('menu_concept9_food_truck.html', this, '🚚 9. Food Truck', 'Tôle container et planchettes kraft suspendues qui se balancent')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+        <span>🚚 9. Food Truck</span>
+    </button>
+<button onclick="switchMenu('menu_concept10_broadcast_ticker.html', this, '📺 10. Studio TV Direct', 'Horloge live Tanger et bandeau d'actualités défilant en continu')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+        <span>📺 10. Studio TV Direct</span>
+    </button>
+<button onclick="switchMenu('menu_model1_emirates.html', this, '🏆 M1. Émirates Sombre', 'Texture ardoise & or brossé haute gastronomie chamali')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+        <span>🏆 M1. Émirates Sombre</span>
+    </button>
+<button onclick="switchMenu('menu_model2_urban.html', this, '🍔 M2. Modern Urban', 'Ambiance street food artisanale orange & bois kraft')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+        <span>🍔 M2. Modern Urban</span>
+    </button>
+<button onclick="switchMenu('menu_model3_vibrant.html', this, '⚡ M3. Pop Vibrant', 'Design vitaminé jeune et moderne blanc & orange Tanger')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+        <span>⚡ M3. Pop Vibrant</span>
+    </button>
+<button onclick="switchMenu('menu_model4_shakeshack.html', this, '🌿 M4. Shake Shack', 'Vert forêt profond et laiton champagne ultra frais')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+        <span>🌿 M4. Shake Shack</span>
+    </button>
+<button onclick="switchMenu('menu_model5_fiveguys.html', this, '🇺🇸 M5. Five Guys Diner', 'Diner américain rouge vif & damier rétro 1950')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+        <span>🇺🇸 M5. Five Guys Diner</span>
+    </button>
+<button onclick="switchMenu('menu_model6_chipotle.html', this, '🌋 M6. Chipotle Slate', 'Pierre volcanique brute & terracotta authentique')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+        <span>🌋 M6. Chipotle Slate</span>
+    </button>
+<button onclick="switchMenu('menu_model7_gold_steakhouse.html', this, '💎 M7. Gold Steakhouse', 'Marbre noir impérial et or fondu 3D')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+        <span>💎 M7. Gold Steakhouse</span>
+    </button>
+<button onclick="switchMenu('menu_model8_cyber_neon.html', this, '🌃 M8. Cyber Tokyo', 'Obsidienne et néons cyan/magenta électrisants')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+        <span>🌃 M8. Cyber Tokyo</span>
+    </button>
+        </div>
+    </header>
+
+    <!-- LIVE VIEWPORT -->
+    <main class="flex-1 relative bg-black">
+        <iframe id="showroom-frame" src="menu_cinema_ultra_master.html"></iframe>
+    </main>
+
+    <script>
+        function switchMenu(url, btnEl, title, desc) {
+            document.querySelectorAll('.tab-menu-btn').forEach(b => {
+                b.className = "tab-menu-btn px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer";
+            });
+            btnEl.className = "tab-menu-btn active px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 text-gray-200 border border-white/10 flex items-center gap-1.5 cursor-pointer";
+            
+            const frame = document.getElementById('showroom-frame');
+            frame.src = url;
+            
+            const fsBtn = document.getElementById('btn-fullscreen-link');
+            fsBtn.href = url;
+
+            const badge = document.getElementById('current-menu-badge');
+            if (badge) badge.innerText = "Menu Actuel : " + title;
+        }
+    </script>
+</body>
+</html>
