@@ -807,6 +807,31 @@
             </button>
         </div>
     </div>
+
+    <!-- Card Concept 11: Ciel & Soleil -->
+    <div class="glass-card rounded-2xl overflow-hidden border border-white/10 hover:border-amber-500/50 transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between">
+        <div>
+            <div class="relative h-44 overflow-hidden bg-black/40">
+                <img src="khalfyat_hd/thumb_concept11_ciel_soleil.png" alt="Ciel & Soleil" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                <div class="absolute top-3 left-3 bg-amber-600/90 backdrop-blur-md px-2.5 py-1 rounded-lg text-[10px] font-black text-white tracking-wider uppercase flex items-center gap-1.5 shadow-lg border border-amber-400/30">
+                    <i class="fa-solid fa-sun text-yellow-300"></i> CONCEPT 11
+                </div>
+            </div>
+            <div class="p-4">
+                <h4 class="text-sm font-black text-white group-hover:text-amber-400 transition-colors leading-tight mb-1">Ciel & Soleil — 3 Colonnes</h4>
+                <p class="text-[11px] text-gray-400 leading-snug line-clamp-2">Design Art Déco 3 colonnes avec capsules colorées, ardoises et formule frites incluses</p>
+            </div>
+        </div>
+        <div class="p-4 pt-0 grid grid-cols-2 gap-2 mt-2">
+            <a href="menu_concept11_ciel_soleil.html?mode=tv" target="_blank" class="py-2 px-2 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white border border-white/10 text-[11px] font-bold text-center flex items-center justify-center gap-1 transition">
+                <i class="fa-solid fa-tv text-amber-400"></i> Mode TV
+            </a>
+            <button onclick="openViewerModal('menu_concept11_ciel_soleil.html', '☀️ Ciel & Soleil — 3 Colonnes')" class="py-2 px-2 rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 text-white font-black text-[11px] text-center flex items-center justify-center gap-1 shadow-lg shadow-amber-900/40 hover:brightness-110 transition">
+                <i class="fa-solid fa-eye"></i> Aperçu
+            </button>
+        </div>
+    </div>
     
 
     <div class="gallery-card bg-[#111827] border border-white/10 hover:border-orange-500/80 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between" data-cat="brand">
@@ -1225,7 +1250,12 @@
                 img: 'thumbnails/thumb_concept9_truck.jpg',
                 badge: 'FOOD TRUCK'
             },
-            'concept10_ticker': {
+                        'concept11_ciel_soleil': {
+                url: 'menu_concept11_ciel_soleil.html?mode=tv',
+                title: 'Ciel & Soleil — 3 Colonnes',
+                badge: '☀️ CIEL & SOLEIL'
+            },
+'concept10_ticker': {
                 url: 'menu_concept10_broadcast_ticker.html?mode=tv&screen=1',
                 title: 'Studio TV Direct & Bandeau Marquee',
                 sub: 'Horloge Tanger en direct, cartes studio et bandeau défilant d'actualités',

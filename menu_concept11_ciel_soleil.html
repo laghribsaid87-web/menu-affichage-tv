@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Bocadillo — Style Ciel & Soleil</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Bebas+Neue&family=Outfit:wght@600;700;800;900&display=swap');
+        
+        * { margin:0; padding:0; box-sizing:border-box; user-select:none; }
+        body {
+            width:100vw; height:100vh; overflow:hidden;
+            background:#0b0f14; font-family:'Plus Jakarta Sans', sans-serif;
+            color:#fff;
+        }
+
+        #menu-stage {
+            width:1920px; height:1080px; position:absolute; top:50%; left:50%;
+            transform-origin:center center;
+            background: radial-gradient(circle at 50% 15%, #18202a 0%, #0a0e13 100%);
+            overflow:hidden;
+            display:flex; flex-direction:column; justify-content:space-between;
+            padding:30px 45px 25px 45px;
+        }
+
+        /* Subtle Geometric Art-Deco Lines */
+        .deco-lines-top {
+            position:absolute; top:0; left:50%; transform:translateX(-50%);
+            width:420px; height:45px; pointer-events:none; opacity:0.4;
+        }
+        .deco-corner-bl {
+            position:absolute; bottom:15px; left:20px; width:130px; height:130px;
+            pointer-events:none; opacity:0.3;
+        }
+        .deco-corner-br {
+            position:absolute; bottom:15px; right:20px; width:130px; height:130px;
+            pointer-events:none; opacity:0.3;
+        }
+
+        /* HEADER */
+        .stage-header {
+            display:flex; justify-content:space-between; align-items:center;
+            padding-bottom:12px; position:relative; z-index:5;
+        }
+        .brand-logo-area { display:flex; align-items:baseline; gap:12px; }
+        .brand-title {
+            font-family:'Outfit', 'Plus Jakarta Sans', sans-serif;
+            font-size:48px; font-weight:900; letter-spacing:1px; line-height:1;
+            color:#f59e0b;
+        }
+        .brand-title span.amp { color:#ea580c; font-weight:700; margin:0 4px; }
+        .brand-title span.city { color:#ffffff; }
+        .brand-sub {
+            font-size:13px; font-weight:800; color:#94a3b8; letter-spacing:3px;
+            text-transform:uppercase; margin-left:12px;
+        }
+
+        .promo-tag-banner {
+            font-size:24px; font-weight:800; color:#f59e0b;
+            letter-spacing:1px; display:flex; align-items:center; gap:10px;
+            text-shadow: 0 2px 12px rgba(245, 158, 11, 0.3);
+            margin-right:20px;
+        }
+
+        /* MAIN 3 COLUMNS GRID */
+        .columns-container {
+            display:grid; grid-template-columns:repeat(3, 1fr); gap:30px;
+            height:895px; position:relative; z-index:5;
+        }
+
+        .menu-column-panel {
+            background: linear-gradient(180deg, rgba(30, 38, 50, 0.96) 0%, rgba(18, 24, 32, 0.98) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius:26px; padding:22px 20px 20px 20px;
+            display:flex; flex-direction:column;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.7), inset 0 1px 2px rgba(255,255,255,0.06);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Category Header Capsule Pill */
+        .col-header-pill {
+            padding:11px 24px; border-radius:40px; text-align:center;
+            font-family:'Outfit', sans-serif; font-size:22px; font-weight:900;
+            letter-spacing:1.5px; text-transform:uppercase; margin-bottom:16px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+            display:flex; align-items:center; justify-content:center; gap:10px;
+        }
+        .pill-classiques { background:#c2410c; color:#fff; }
+        .pill-specialites { background:#f59e0b; color:#0f172a; }
+        .pill-boissons { background:#166534; color:#fff; }
+
+        /* Items List */
+        .col-items-list {
+            display:flex; flex-direction:column; justify-content:space-between;
+            flex:1;
+        }
+
+        /* Single Menu Item Row */
+        .menu-item-row {
+            display:flex; align-items:center; gap:16px;
+            padding:6px 0; position:relative;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            transition: transform 0.25s ease;
+        }
+        .menu-item-row:last-child { border-bottom:none; }
+        .menu-item-row:hover { transform: translateX(4px); }
+
+        /* Thumbnail Card */
+        .thumb-card {
+            width:190px; height:135px; border-radius:16px;
+            background: radial-gradient(circle at 50% 30%, rgba(45, 55, 75, 0.9) 0%, rgba(12, 16, 24, 0.98) 100%),
+                        url('khalfyat_hd/black_slate_counter.jpg') center/cover;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.75), inset 0 1px 2px rgba(255,255,255,0.08);
+            display:flex; align-items:center; justify-content:center;
+            position:relative; overflow:hidden; flex-shrink:0;
+        }
+        .thumb-card.wide-side {
+            background-size: cover; background-position: center;
+        }
+        .thumb-slate-plate {
+            position:absolute; bottom:6px; left:50%; transform:translateX(-50%);
+            width:92%; height:auto; opacity:0.95; z-index:1;
+            filter: drop-shadow(0 8px 14px rgba(0,0,0,0.9));
+            pointer-events:none;
+        }
+        .thumb-sandwich-img {
+            position:relative; z-index:2;
+            max-width:98%; max-height:86%; object-fit:contain;
+            margin-bottom:6px;
+            filter: drop-shadow(0 10px 16px rgba(0,0,0,0.95)) contrast(1.1) brightness(1.05);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .menu-item-row:hover .thumb-sandwich-img {
+            transform: scale(1.12) translateY(-3px);
+        }
+
+        /* Item Text Information */
+        .item-text-info {
+            flex:1; display:flex; flex-direction:column; justify-content:center;
+            padding-right:4px;
+        }
+        .item-title {
+            font-family:'Outfit', 'Plus Jakarta Sans', sans-serif;
+            font-size:23px; font-weight:900; color:#ffffff;
+            letter-spacing:0.5px; line-height:1.15; text-transform:uppercase;
+            margin-bottom:5px;
+        }
+        .item-desc {
+            font-size:13.5px; font-weight:600; color:#94a3b8;
+            line-height:1.35;
+        }
+
+        /* Circular Golden Price Badge */
+        .price-circle-badge {
+            width:68px; height:68px; border-radius:50%;
+            background: radial-gradient(circle at 35% 35%, #fde047 0%, #f59e0b 60%, #d97706 100%);
+            display:flex; align-items:center; justify-content:center;
+            box-shadow: 0 8px 22px rgba(245, 158, 11, 0.45), 0 0 12px rgba(245, 158, 11, 0.25);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            flex-shrink:0;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .menu-item-row:hover .price-circle-badge {
+            transform: scale(1.12) rotate(6deg);
+        }
+        .price-sand-num {
+            font-family:'Bebas Neue', sans-serif;
+            font-size:34px; font-weight:900; color:#0f172a;
+            line-height:1; letter-spacing:0.5px;
+            display:flex; align-items:baseline;
+        }
+        .price-sand-num .curr {
+            font-family:'Plus Jakarta Sans', sans-serif;
+            font-size:14px; font-weight:900; color:#0f172a;
+            margin-left:2px; text-transform:lowercase;
+        }
+
+        /* Accompagnements Column Specifics */
+        .thumb-side-img {
+            width:100%; height:100%; object-fit:cover;
+            transition: transform 0.3s ease;
+        }
+        .menu-item-row:hover .thumb-side-img {
+            transform: scale(1.08);
+        }
+        .col-items-list.sides-list .menu-item-row {
+            padding:22px 0;
+        }
+        .col-items-list.sides-list .thumb-card {
+            width:195px; height:165px;
+        }
+
+        /* FOOTER BAR */
+        .stage-footer {
+            display:flex; justify-content:space-between; align-items:center;
+            padding-top:12px; position:relative; z-index:5;
+        }
+        .footer-insta {
+            display:flex; align-items:center; gap:10px;
+            font-size:16px; font-weight:800; color:#cbd5e1;
+            letter-spacing:1px;
+        }
+        .footer-insta svg { width:22px; height:22px; fill:#f59e0b; }
+        
+        .footer-center-badge {
+            font-size:14px; font-weight:800; color:#f59e0b; letter-spacing:3px;
+            text-transform:uppercase; background:rgba(245,158,11,0.1);
+            border:1px solid rgba(245,158,11,0.3); padding:6px 24px; border-radius:20px;
+        }
+
+        .footer-hours {
+            font-size:16px; font-weight:800; color:#cbd5e1;
+            letter-spacing:1px; display:flex; align-items:center; gap:8px;
+        }
+        .footer-hours .dot { width:8px; height:8px; border-radius:50%; background:#22c55e; box-shadow:0 0 10px #22c55e; }
+
+        /* UI CONTROLS */
+        .ui-controls {
+            position:fixed; top:12px; right:20px; z-index:999999; display:flex; gap:8px;
+            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px);
+            padding: 5px 8px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .btn-ctl {
+            background:#1e293b; color:#fff; border:1px solid #f59e0b; padding:6px 14px;
+            border-radius:8px; font-weight:800; font-size:11px; cursor:pointer;
+        }
+        .btn-ctl:hover { background:#f59e0b; color:#0f172a; }
+        body.tv-display-mode .ui-controls { display:none !important; }
+    </style>
+</head>
+<body>
+    <div class="ui-controls">
+        <button class="btn-ctl" onclick="toggleFullScreen()">⛶ Plein Écran</button>
+        <button class="btn-ctl" onclick="window.location.href='showroom_all_menus.html'">🏠 Showroom</button>
+        <button class="btn-ctl" onclick="window.location.href='dashboard_pro.html'">⚙️ Dashboard</button>
+    </div>
+
+    <div id="menu-stage">
+        <!-- SVG Deco Geometry in Background -->
+        <svg class="deco-lines-top" viewBox="0 0 340 45" fill="none">
+            <path d="M10 5 H330 M30 15 H310 M70 28 H270 M130 40 H210" stroke="#f59e0b" stroke-width="1.2" opacity="0.6"/>
+            <polygon points="170,10 180,25 160,25" fill="#f59e0b" opacity="0.4"/>
+        </svg>
+
+        <svg class="deco-corner-bl" viewBox="0 0 120 120" fill="none">
+            <path d="M10 110 V30 H40 V60 H70 V90 H100 V110" stroke="#f59e0b" stroke-width="1.2"/>
+            <rect x="5" y="105" width="10" height="10" fill="#f59e0b"/>
+        </svg>
+
+        <svg class="deco-corner-br" viewBox="0 0 120 120" fill="none">
+            <path d="M110 110 V30 H80 V60 H50 V90 H20 V110" stroke="#f59e0b" stroke-width="1.2"/>
+            <rect x="105" y="105" width="10" height="10" fill="#f59e0b"/>
+        </svg>
+
+        <!-- HEADER -->
+        <header class="stage-header">
+            <div class="brand-logo-area">
+                <h1 class="brand-title">MON BOCADILLO <span class="amp">&</span> <span class="city">TANGER</span></h1>
+                <span class="brand-sub">HAUTE GASTRONOMIE CHAMALI</span>
+            </div>
+            <div class="promo-tag-banner">
+                <span>🍟</span> FRITES MAISON INCLUSES AVEC TOUT LE MENU
+            </div>
+        </header>
+
+        <!-- 3 MAIN COLUMNS -->
+        <main class="columns-container">
+            <!-- COLUMN 1: NOS CLASSIQUES -->
+            <section class="menu-column-panel">
+                <div class="col-header-pill pill-classiques">
+                    <span>✦</span> NOS CLASSIQUES <span>✦</span>
+                </div>
+                <div class="col-items-list">
+                    <!-- Item 1: Complet -->
+                    <div class="menu-item-row" data-item-id="complet">
+                        <div class="thumb-card">
+                            <img src="cutouts_hd/slate_serving_board.png" class="thumb-slate-plate" alt="Slate">
+                            <img src="cutouts_hd/bocadillo complet 29 dh.png" class="thumb-sandwich-img" alt="Complet">
+                        </div>
+                        <div class="item-text-info">
+                            <h3 class="item-title">COMPLET</h3>
+                            <p class="item-desc">Le classique complet — Thon 1er choix, Oeuf dur, Fromage fondu & Frites</p>
+                        </div>
+                        <div class="price-circle-badge">
+                            <div class="price-sand-num">30<span class="curr">dh</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Item 2: Royale -->
+                    <div class="menu-item-row" data-item-id="tortilla_royale">
+                        <div class="thumb-card">
+                            <img src="cutouts_hd/slate_serving_board.png" class="thumb-slate-plate" alt="Slate">
+                            <img src="cutouts_hd/bocadillo tortillia royale 30 dh.png" class="thumb-sandwich-img" alt="Royale">
+                        </div>
+                        <div class="item-text-info">
+                            <h3 class="item-title">ROYALE</h3>
+                            <p class="item-desc">La royale — Tortilla espagnole maison, Fromage fondu, Crudités & Frites</p>
+                        </div>
+                        <div class="price-circle-badge">
+                            <div class="price-sand-num">34<span class="curr">dh</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Item 3: Tangérois -->
+                    <div class="menu-item-row" data-item-id="tangerois">
+                        <div class="thumb-card">
+                            <img src="cutouts_hd/slate_serving_board.png" class="thumb-slate-plate" alt="Slate">
+                            <img src="cutouts_hd/bocadillo tangerois 24 dh.png" class="thumb-sandwich-img" alt="Tangérois">
+                        </div>
+                        <div class="item-text-info">
+                            <h3 class="item-title">TANGÉROIS</h3>
+                            <p class="item-desc">Recette historique de Tanger — Thon mariné, Épices Chamali & Oignons</p>
+                        </div>
+                        <div class="price-circle-badge">
+                            <div class="price-sand-num">24<span class="curr">dh</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Item 4: Thon -->
+                    <div class="menu-item-row" data-item-id="thon">
+                        <div class="thumb-card">
+                            <img src="cutouts_hd/slate_serving_board.png" class="thumb-slate-plate" alt="Slate">
+                            <img src="cutouts_hd/bocadillo thon 22 dh.png" class="thumb-sandwich-img" alt="Thon">
+                        </div>
+                        <div class="item-text-info">
+                            <h3 class="item-title">THON</h3>
+                            <p class="item-desc">Thon émietté de qualité supérieure, Mayonnaise maison & Olives</p>
+                        </div>
+                        <div class="price-circle-badge">
+                            <div class="price-sand-num">22<span class="curr">dh</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- COLUMN 2: SPÉCIALITÉS & CHAUDS -->
+            <section class="menu-column-panel">
+                <div class="col-header-pill pill-specialites">
+                    <span>🔥</span> SPÉCIALITÉS & CHAUDS <span>🔥</span>
+                </div>
+                <div class="col-items-list">
+                    <!-- Item 1: Américain Royal -->
+                    <div class="menu-item-row" data-item-id="americain">
+                        <div class="thumb-card">
+                            <img src="cutouts_hd/slate_serving_board.png" class="thumb-slate-plate" alt="Slate">
+                            <img src="cutouts_hd/sandwich americain 35 dh.png" class="thumb-sandwich-img" alt="Américain">
+                        </div>
+                        <div class="item-text-info">
+                            <h3 class="item-title">L'AMÉRICAIN ROYAL</h3>
+                            <p class="item-desc">Pur steak haché grillé minute, Oeuf à cheval, Double cheddar & Frites</p>
+                        </div>
+                        <div class="price-circle-badge">
+                            <div class="price-sand-num">35<span class="curr">dh</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Item 2: Viande Hachée -->
+                    <div class="menu-item-row" data-item-id="viande_hachee">
+                        <div class="thumb-card">
+                            <img src="cutouts_hd/slate_serving_board.png" class="thumb-slate-plate" alt="Slate">
+                            <img src="cutouts_hd/sandwich viande hache 30 dh.png" class="thumb-sandwich-img" alt="Viande Hachée">
+                        </div>
+                        <div class="item-text-info">
+                            <h3 class="item-title">VIANDE HACHÉE</h3>
+                            <p class="item-desc">Boeuf assaisonné aux épices maison, Oignons caramélisés & Fromage</p>
+                        </div>
+                        <div class="price-circle-badge">
+                            <div class="price-sand-num">30<span class="curr">dh</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Item 3: Poulet Mariné -->
+                    <div class="menu-item-row" data-item-id="poulet">
+                        <div class="thumb-card">
+                            <img src="cutouts_hd/slate_serving_board.png" class="thumb-slate-plate" alt="Slate">
+                            <img src="cutouts_hd/sandwiche poulet 30 dh.png" class="thumb-sandwich-img" alt="Poulet">
+                        </div>
+                        <div class="item-text-info">
+                            <h3 class="item-title">POULET MARINÉ</h3>
+                            <p class="item-desc">Blanc de poulet mariné aux fines herbes, Crudités & Sauce blanche ail</p>
+                        </div>
+                        <div class="price-circle-badge">
+                            <div class="price-sand-num">30<span class="curr">dh</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Item 4: Le Mixte Royal -->
+                    <div class="menu-item-row" data-item-id="mixte">
+                        <div class="thumb-card">
+                            <img src="cutouts_hd/slate_serving_board.png" class="thumb-slate-plate" alt="Slate">
+                            <img src="cutouts_hd/sandwiche mixte 35 dh.png" class="thumb-sandwich-img" alt="Mixte">
+                        </div>
+                        <div class="item-text-info">
+                            <h3 class="item-title">LE MIXTE ROYAL</h3>
+                            <p class="item-desc">Duo viandes poulet fermier & boeuf haché, Double fromage coulant</p>
+                        </div>
+                        <div class="price-circle-badge">
+                            <div class="price-sand-num">35<span class="curr">dh</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- COLUMN 3: ACCOMPAGNEMENTS & BOISSONS -->
+            <section class="menu-column-panel">
+                <div class="col-header-pill pill-boissons">
+                    <span>🍟</span> ACCOMPAGNEMENTS & BOISSONS <span>🥤</span>
+                </div>
+                <div class="col-items-list sides-list">
+                    <!-- Item 1: Frites Maison -->
+                    <div class="menu-item-row" data-item-id="grande_frite">
+                        <div class="thumb-card wide-side">
+                            <img src="khalfyat_hd/sides_frites_board.png" class="thumb-side-img" alt="Frites Maison">
+                        </div>
+                        <div class="item-text-info">
+                            <h3 class="item-title">FRITES MAISON</h3>
+                            <p class="item-desc">Grand plateau de frites fraîches maison croustillantes & sauces au choix</p>
+                        </div>
+                        <div class="price-circle-badge">
+                            <div class="price-sand-num">15<span class="curr">dh</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Item 2: Boissons 33cl -->
+                    <div class="menu-item-row" data-item-id="soda_canette">
+                        <div class="thumb-card wide-side">
+                            <img src="khalfyat_hd/sides_boissons_soda.png" class="thumb-side-img" alt="Boissons">
+                        </div>
+                        <div class="item-text-info">
+                            <h3 class="item-title">BOISSONS 33CL</h3>
+                            <p class="item-desc">Coca-Cola, Fanta Orange, Sprite, Hawai Tropical, Pom's bien fraîches</p>
+                        </div>
+                        <div class="price-circle-badge">
+                            <div class="price-sand-num">10<span class="curr">dh</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Item 3: Eau Minérale -->
+                    <div class="menu-item-row" data-item-id="eau_minerale">
+                        <div class="thumb-card wide-side">
+                            <img src="khalfyat_hd/sides_eau_minerale.png" class="thumb-side-img" alt="Eau Minérale">
+                        </div>
+                        <div class="item-text-info">
+                            <h3 class="item-title">EAU MINÉRALE</h3>
+                            <p class="item-desc">Bouteille 50cl eau minérale plate ou gazeuse servie très fraîche</p>
+                        </div>
+                        <div class="price-circle-badge">
+                            <div class="price-sand-num">7<span class="curr">dh</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- FOOTER BAR -->
+        <footer class="stage-footer">
+            <div class="footer-insta">
+                <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                <span>@monbocadillo.ma</span>
+            </div>
+
+            <div class="footer-center-badge">
+                ✦ 100% FRAIS & PRÉPARÉ À LA COMMANDE ✦
+            </div>
+
+            <div class="footer-hours">
+                <span class="dot"></span>
+                <span>Lun-Dim : 11h00 — 02h00 • Tanger Centre</span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Automatic stage scaling to fit any display ratio
+        function scaleStage() {
+            const stage = document.getElementById('menu-stage');
+            if (!stage) return;
+            const targetWidth = 1920;
+            const targetHeight = 1080;
+            const scale = Math.min(window.innerWidth / targetWidth, window.innerHeight / targetHeight);
+            stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        }
+        window.addEventListener('resize', scaleStage);
+        window.addEventListener('load', scaleStage);
+        setTimeout(scaleStage, 50);
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(e => {});
+            else if (document.exitFullscreen) document.exitFullscreen();
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('mode') === 'tv') {
+            document.body.classList.add('tv-display-mode');
+        }
+
+        // Live Price Sync Engine
+        (function() {
+            const CACHE_KEY = 'MENU_ITEMS_CACHE';
+
+            function applyLivePrices(data) {
+                if (!data || !data.items || !Array.isArray(data.items)) return;
+
+                data.items.forEach(item => {
+                    const card = document.querySelector(`[data-item-id="${item.id}"]`);
+                    if (!card) return;
+
+                    const pSand = card.querySelector('.price-sand-num');
+                    if (pSand && item.price_sandwich !== undefined) {
+                        pSand.innerHTML = `${item.price_sandwich}<span class="curr">dh</span>`;
+                    }
+                });
+            }
+
+            const cached = localStorage.getItem(CACHE_KEY);
+            if (cached) {
+                try { applyLivePrices(JSON.parse(cached)); } catch(e) {}
+            }
+
+            if (window.BroadcastChannel) {
+                const bc = new BroadcastChannel('MENU_TV_CHANNEL');
+                bc.onmessage = (event) => {
+                    if (event && event.data && event.data.type === 'MENU_UPDATED' && event.data.data) {
+                        applyLivePrices(event.data.data);
+                    }
+                };
+            }
+
+            // Fallback poll
+            setInterval(() => {
+                fetch('/api/menu_items')
+                    .then(r => r.json())
+                    .then(data => { applyLivePrices(data); })
+                    .catch(() => {});
+            }, 30000);
+        })();
+    </script>
+</body>
+</html>
