@@ -1,10 +1,11 @@
 /**
- * STUDIO EDITOR UNIVERSAL V4.0 - TOTAL CONTROL & TEXT EDITING SUITE
- * 1. Double-clic sur N'IMPORTE QUEL texte pour le modifier directement (Inline Editing)
- * 2. Glisser-déposer (Drag & Drop) de tous les textes, sandwichs, prix et cartes
- * 3. Molette de la souris pour agrandir / rétrécir n'importe quel élément (Wheel Zoom)
- * 4. Boutons Déplacer, Pivoter, Devant/Derrière, Dupliquer, Réinitialiser
- * 5. Sauvegarde permanente sur le serveur (/api/save_custom_layout)
+ * STUDIO EDITOR UNIVERSAL V4.5 - TOTAL CONTROL & UNIVERSAL PRICE/TAG SUITE
+ * 1. Double-clic sur N'IMPORTE QUEL texte ou étiquette de prix (kraft-tag, price-sand-num, etc.) pour le modifier
+ * 2. Bouton dédié [💰 Modifier Prix] pour changer le prix en 1 seconde par popup
+ * 3. Glisser-déposer (Drag & Drop) de tous les tags de prix, textes, sandwichs, et cartes
+ * 4. Molette de la souris pour agrandir / rétrécir n'importe quelle étiquette ou produit
+ * 5. Boutons Déplacer, Pivoter, Devant/Derrière, Dupliquer, Réinitialiser
+ * 6. Sauvegarde permanente sur le serveur (/api/save_custom_layout)
  * Works across ALL 22 Mon Bocadillo Tanger Menus.
  */
 (function() {
@@ -39,7 +40,7 @@
             }
             .text-editing-active {
                 outline: 3px solid #00f0ff !important;
-                background: rgba(0, 240, 255, 0.18) !important;
+                background: rgba(0, 240, 255, 0.22) !important;
                 border-radius: 6px;
                 cursor: text !important;
                 user-select: text !important;
@@ -111,6 +112,16 @@
                 font-size: 12px !important;
                 gap: 5px;
             }
+            .studio-btn-price {
+                background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+                color: #000 !important;
+                border-color: #fbbf24 !important;
+                font-weight: 900 !important;
+            }
+            .studio-btn-price:hover {
+                background: #fbbf24 !important;
+                transform: scale(1.08) !important;
+            }
             .studio-btn-save {
                 background: linear-gradient(135deg, #10b981 0%, #059669 100%);
                 color: #ffffff;
@@ -152,6 +163,8 @@
         bar.innerHTML = `
             <span class="studio-tag" id="sbar-tag">ÉLÉMENT</span>
             <div class="studio-divider"></div>
+            <!-- Quick Price Edit Button -->
+            <button class="studio-btn studio-btn-wide studio-btn-price" id="sbar-edit-price" title="Modifier le prix de cet article">💰 Prix</button>
             <!-- Edit Text Button -->
             <button class="studio-btn studio-btn-wide" id="sbar-edit-text" title="Modifier le texte (ou double-clic)">✏️ Texte</button>
             <div class="studio-divider"></div>
@@ -214,6 +227,11 @@
         return src.includes('frite') || src.includes('fries') || src.includes('cornet');
     }
 
+    function isPriceOrTag(el) {
+        const cls = (el.className || '').toString().toLowerCase();
+        return cls.includes('price') || cls.includes('tag') || cls.includes('kraft') || cls.includes('badge') || cls.includes('sand-num') || cls.includes('drk-num') || el.dataset.priceRole;
+    }
+
     function getElementId(el) {
         if (el.dataset.editorId) return el.dataset.editorId;
 
@@ -224,16 +242,17 @@
         let type = 'elem';
         if (isSandwich(el)) type = 'sandwich';
         else if (isFries(el)) type = 'frites';
+        else if (isPriceOrTag(el)) type = 'price_tag';
         else if (el.tagName.match(/^H[1-6]$/) || el.classList.contains('title') || el.classList.contains('brand-title')) type = 'title';
         else if (el.classList.contains('desc') || el.classList.contains('item-desc') || el.tagName === 'P') type = 'desc';
-        else if (el.classList.contains('price') || el.classList.contains('price-num') || el.dataset.priceRole) type = 'price';
         else if (el.classList.contains('badge') || el.classList.contains('pill') || el.classList.contains('tag')) type = 'badge';
 
         let id = '';
         if (el.id) {
             id = el.id;
         } else if (itemId) {
-            id = `${screenId}_${itemId}_${type}`;
+            const subType = el.className.split(/\s+/)[0] || 'part';
+            id = `${screenId}_${itemId}_${subType}`;
         } else {
             const tag = el.tagName.toLowerCase();
             const cleanClass = (el.className || '').replace(/editable-item|item-selected|text-editing-active/g, '').trim().split(/\s+/)[0] || 'node';
@@ -331,8 +350,8 @@
     function getFriendlyName(el) {
         if (isSandwich(el)) return '🥪 Sandwich';
         if (isFries(el)) return '🍟 Frites';
+        if (isPriceOrTag(el)) return '🏷️ Prix / Tag';
         if (el.tagName.match(/^H[1-6]$/)) return '📝 Titre';
-        if (el.classList.contains('price') || el.classList.contains('price-num')) return '💰 Prix';
         if (el.classList.contains('desc') || el.tagName === 'P') return '📄 Description';
         if (el.tagName === 'SPAN') return '🏷️ Texte/Badge';
         return '📦 Élément';
@@ -343,7 +362,7 @@
     function positionBar(el) {
         if (!bar || isTvMode) return;
         const rect = el.getBoundingClientRect();
-        let top = rect.top - 58;
+        let top = rect.top - 62;
         if (top < 12) top = rect.bottom + 14;
         let left = rect.left + (rect.width / 2) - (bar.offsetWidth / 2);
         left = Math.max(16, Math.min(window.innerWidth - bar.offsetWidth - 16, left));
@@ -361,6 +380,13 @@
 
         const tag = document.getElementById('sbar-tag');
         if (tag) tag.textContent = getFriendlyName(el);
+
+        // Highlight price edit button if it's a price/tag
+        const priceBtn = document.getElementById('sbar-edit-price');
+        if (priceBtn) {
+            priceBtn.style.display = isPriceOrTag(el) || el.querySelector('.price-sand-num, .price-num, .price-val') ? 'inline-flex' : 'none';
+        }
+
         positionBar(el);
     }
 
@@ -372,7 +398,6 @@
         el.classList.add('text-editing-active');
         el.focus();
 
-        // Select all contents
         const range = document.createRange();
         range.selectNodeContents(el);
         const sel = window.getSelection();
@@ -387,7 +412,7 @@
 
             el.dataset.hasCustomText = 'true';
             saveElementState(el);
-            showToast("✏️ Texte modifié et enregistré !");
+            showToast("✏️ Modifié et enregistré !");
             positionBar(el);
         }
 
@@ -411,7 +436,6 @@
         el.classList.add('editable-item');
         getElementId(el);
 
-        // Store original text
         if (!el.dataset.origHtml && el.tagName !== 'IMG') {
             el.dataset.origHtml = el.innerHTML;
         }
@@ -422,7 +446,6 @@
             selectElement(el);
         });
 
-        // Double click for immediate text editing
         el.addEventListener('dblclick', (e) => {
             if (el.tagName !== 'IMG') {
                 e.stopPropagation();
@@ -431,7 +454,6 @@
             }
         });
 
-        // Mouse wheel scaling
         el.addEventListener('wheel', (e) => {
             if (isTvMode || el.isContentEditable) return;
             e.preventDefault();
@@ -491,7 +513,6 @@
         dragEl = null;
     });
 
-    // Deselect when clicking outside
     document.addEventListener('click', (e) => {
         if (!e.target.closest('#studio-floating-bar') && !e.target.closest('.editable-item') && !e.target.closest('.ui-controls') && !e.target.closest('.dock-controls')) {
             document.querySelectorAll('.editable-item').forEach(i => i.classList.remove('item-selected'));
@@ -501,6 +522,28 @@
     });
 
     // 8. TOOLBAR BUTTON LISTENERS
+    // Quick Price Changer
+    document.getElementById('sbar-edit-price')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!activeEl) return;
+
+        // Target the specific price element inside or activeEl itself
+        const priceTarget = activeEl.querySelector('.price-sand-num, .price-val, .price-num, .c-val, [data-price-role="price"], .curr, .price-drk-num') || activeEl;
+        const currentText = (priceTarget.innerText || '').trim();
+
+        const newPrice = prompt("💰 Entrez le nouveau prix (ex: 35 DH ou 30 DH / +7DH) :", currentText);
+        if (newPrice !== null && newPrice.trim() !== '') {
+            priceTarget.innerText = newPrice.trim();
+            priceTarget.dataset.hasCustomText = 'true';
+            activeEl.dataset.hasCustomText = 'true';
+            saveElementState(priceTarget);
+            saveElementState(activeEl);
+            window.saveLayoutToServer();
+            showToast(`💰 Prix modifié : ${newPrice.trim()} !`);
+            positionBar(activeEl);
+        }
+    });
+
     document.getElementById('sbar-edit-text')?.addEventListener('click', (e) => {
         e.stopPropagation();
         if (!activeEl) return;
@@ -650,32 +693,57 @@
 
     // 10. INITIALIZE ALL ELEMENTS
     function initEditor() {
-        const selector = [
+        // Explicit Selectors covering ALL designs & price tags
+        const explicitSelectors = [
             // Food items
             '.food-sandwich', '.food-fries', '.food-fries-side', '.food-fries-corner',
             '.hero-sandwich-img', '.hero-side-fries', '.hero-side-sauces', '.hero-slate-base', '.hero-platter-group',
-            // Titles & Subtitles
-            '.brand-title', '.brand-sub', '.canva-hero-title', '.canva-hero-sub',
-            '.comic-hero-title', '.comic-hero-sub', '.card-category-title', '.card-category-tag',
-            '.title-block', '.sandwich-name', '.pop-title', '.section-title',
-            // Descriptions & Text
-            '.item-title', '.item-desc', '.item-meta', '.item-badge-pill',
-            '.banner-text', '.banner-highlight', '.card-footer-banner',
-            // Prices & Badges
+
+            // All Price Tags, Kraft Tags, & Badges (User Specific Request!)
+            '.kraft-tag', '.price-sand-num', '.price-drk-num', '.price-capsule', '.price-circle-badge',
+            '.price-box', '.price-container', '.price-row', '.price-val', '.price-value',
+            '.price-sticker', '.price-badge-box', '.price-badge-alone', '.price-badge-menu',
+            '.hero-price-panel', '.hero-price-row', '.hero-price-tag', '.hero-price-val',
+            '.cinema-price-badge', '.bento-price', '.fire-price', '.gold-price-box',
+            '.neon-price-box', '.news-price-box', '.spec-price-tag', '.stamp-price', '.chalk-price',
+            '.c-val', '.card-tag', '.fries-included-tag', '.promo-tag-banner',
             '.price-num', '.price-cur', '.price-chalkboard', '.urban-price-box', '.price-duo',
             '.price-pill', '.price-badge', '.price-tag', '.canva-badge-price', '.chalk-badge-price',
             '.canva-callout-badge', '.chalk-callout-1', '.chalk-badge',
-            // Cards & Headers
+
+            // Titles & Subtitles
+            '.brand-title', '.brand-sub', '.canva-hero-title', '.canva-hero-sub',
+            '.comic-hero-title', '.comic-hero-sub', '.card-category-title', '.card-category-tag',
+            '.title-block', '.sandwich-name', '.pop-title', '.section-title', '.main-title', '.prefix',
+
+            // Descriptions & Text
+            '.item-title', '.item-desc', '.item-meta', '.item-badge-pill',
+            '.banner-text', '.banner-highlight', '.card-footer-banner',
+
+            // Cards & Containers
             '.ribbon-banner', '.card-footer', '.card-ribbon',
             '.menu-card', '.glass-acrylic-card', '.slate-card', '.dish-card', '.col-card', '.item-card', '.sandwich-card',
             '.menu-item-row',
-            // All headings and editable text nodes
+
+            // Headings & Text
             'h1', 'h2', 'h3', 'h4', '.editable-text',
+
             // Images
             'img[src*="cutouts"]', 'img[src*="processed_images"]'
         ].join(', ');
 
-        document.querySelectorAll(selector).forEach(bindEditableElement);
+        document.querySelectorAll(explicitSelectors).forEach(bindEditableElement);
+
+        // Dynamic scanner: find ANY element having price/tag/badge/kraft in class name
+        document.querySelectorAll('*').forEach(el => {
+            const cls = (el.className || '').toString().toLowerCase();
+            if (cls.includes('price') || cls.includes('tag') || cls.includes('kraft') || cls.includes('badge')) {
+                if (el.offsetWidth > 10 && el.offsetHeight > 10 && el.offsetWidth < 800 && el.offsetHeight < 600 && el.tagName !== 'BODY' && el.id !== 'stage') {
+                    bindEditableElement(el);
+                }
+            }
+        });
+
         loadLayout();
     }
 
