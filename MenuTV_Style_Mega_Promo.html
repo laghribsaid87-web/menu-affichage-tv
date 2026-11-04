@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Bocadillo Tanger — Modèle Mega Hero Promo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@700;800;900&family=Oswald:wght@700;900&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #030407;
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            user-select: none;
+        }
+
+        #menu-stage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 1920px;
+            height: 1080px;
+            transform: translate(-50%, -50%);
+            transform-origin: center center;
+            background: radial-gradient(circle at 50% 35%, #240c03 0%, #130501 45%, #050201 100%);
+            overflow: hidden;
+            box-shadow: 0 0 100px rgba(0,0,0,0.95);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Ambient Glow & Fire Title */
+        .mega-top-header {
+            height: 170px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 80px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .mega-badge-brand {
+            background: #ffffff;
+            color: #000;
+            padding: 8px 24px;
+            border-radius: 8px;
+            font-family: 'Bebas Neue', cursive;
+            font-size: 34px;
+            letter-spacing: 2px;
+            box-shadow: 0 8px 25px rgba(255,255,255,0.25);
+            transform: rotate(-1deg);
+        }
+
+        .mega-center-callout {
+            text-align: center;
+        }
+
+        .mega-center-callout h1 {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 88px;
+            letter-spacing: 6px;
+            line-height: 0.9;
+            color: #ffffff;
+            text-shadow: 0 0 25px #ff4500, 0 0 50px #ff2200;
+        }
+
+        .mega-center-callout p {
+            font-size: 14px;
+            font-weight: 900;
+            color: #fbbf24;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        .mega-side-deal {
+            background: rgba(239, 68, 68, 0.2);
+            border: 2px solid #ef4444;
+            border-radius: 16px;
+            padding: 10px 22px;
+            text-align: center;
+        }
+        .mega-side-deal div:first-child { font-size: 11px; font-weight: 900; color: #fca5a5; letter-spacing: 1.5px; }
+        .mega-side-deal div:last-child { font-family: 'Oswald', sans-serif; font-size: 26px; font-weight: 900; color: #fff; }
+
+        /* CENTERSTAGE: MASSIVE HERO BOCADILLO (Inspired by ref_model_4 Top Left MEGA) */
+        .mega-center-stage {
+            height: 520px;
+            width: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+        }
+
+        .center-shadow-pedestal {
+            position: absolute;
+            bottom: 40px;
+            width: 1100px;
+            height: 180px;
+            background: radial-gradient(ellipse at center, rgba(255,85,0,0.3) 0%, rgba(0,0,0,0.95) 50%, transparent 75%);
+            border-radius: 50%;
+            filter: blur(12px);
+            z-index: 1;
+        }
+
+        .mega-giant-sandwich {
+            position: relative;
+            width: 960px;
+            max-width: 95%;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 30px 45px rgba(0,0,0,0.98)) drop-shadow(0 0 35px rgba(255,107,0,0.4));
+            z-index: 5;
+            animation: heroFloat 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroFloat {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(-10px) scale(1.015); }
+        }
+
+        .mega-decor-fries-left {
+            position: absolute;
+            left: 140px;
+            top: 60px;
+            width: 250px;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.9));
+            z-index: 3;
+        }
+
+        .mega-decor-sauces-right {
+            position: absolute;
+            right: 150px;
+            bottom: 60px;
+            width: 220px;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 15px 20px rgba(0,0,0,0.95));
+            z-index: 6;
+        }
+
+        /* Floating Highlight Badges around the giant sandwich */
+        .feature-badge-floating {
+            position: absolute;
+            background: rgba(15, 23, 42, 0.95);
+            border: 2px solid #ff6b00;
+            border-radius: 14px;
+            padding: 8px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.8), 0 0 15px rgba(255,107,0,0.4);
+            z-index: 8;
+        }
+        .feat-1 { left: 240px; bottom: 80px; }
+        .feat-2 { right: 260px; top: 70px; }
+
+        .fb-icon { font-size: 22px; color: #ff6b00; }
+        .fb-text h4 { font-size: 13px; font-weight: 900; color: #ffffff; text-transform: uppercase; }
+        .fb-text p { font-size: 11px; font-weight: 700; color: #cbd5e1; }
+
+        /* BOTTOM 3 BEST-SELLER CARDS */
+        .bottom-trio-cards {
+            flex: 1;
+            padding: 0 80px 35px 80px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 35px;
+            z-index: 10;
+        }
+
+        .trio-card {
+            background: #111827;
+            border: 2px solid #374151;
+            border-radius: 18px;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            transition: all 0.2s;
+        }
+
+        .trio-card:hover {
+            border-color: #ff6b00;
+            transform: translateY(-4px);
+        }
+
+        .tc-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .tc-thumb {
+            width: 90px;
+            height: 65px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.8));
+        }
+
+        .tc-name {
+            font-family: 'Oswald', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            color: #ffffff;
+            text-transform: uppercase;
+        }
+
+        .tc-desc {
+            font-size: 11px;
+            font-weight: 700;
+            color: #9ca3af;
+            max-width: 200px;
+        }
+
+        .tc-price-box {
+            background: linear-gradient(135deg, #ff6b00 0%, #dc2626 100%);
+            border-radius: 12px;
+            padding: 8px 18px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(255,107,0,0.4);
+        }
+
+        .tcp-lbl { font-size: 10px; font-weight: 900; color: #fef08a; letter-spacing: 1px; }
+        .tcp-amount { font-family: 'Oswald', sans-serif; font-size: 28px; font-weight: 900; color: #fff; line-height: 1; }
+
+        /* Floating TV Controls */
+        .ui-controls {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+            background: rgba(10, 15, 26, 0.95);
+            padding: 8px 18px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        .ui-controls.visible { opacity: 1; pointer-events: auto; }
+
+        .btn-ctl {
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-ctl:hover { transform: scale(1.05); }
+
+        #studio-toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(120px);
+            background: #10b981;
+            color: #fff;
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.85);
+            z-index: 999999999;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+        #studio-toast.visible { transform: translateX(-50%) translateY(0); }
+    </style>
+    <link rel="stylesheet" href="studio_engine_universal.css">
+</head>
+<body>
+
+    <div id="menu-stage">
+
+        <!-- MEGA TOP HEADER -->
+        <header class="mega-top-header">
+            <div class="mega-badge-brand">MON BOCADILLO</div>
+            <div class="mega-center-callout">
+                <h1>LE MEGA SUPRÊME</h1>
+                <p>✦ UN MAX DE PLAISIR • CUIT MINUTE ✦</p>
+            </div>
+            <div class="mega-side-deal">
+                <div>MENU DUO COMPRIS</div>
+                <div>59 DH</div>
+            </div>
+        </header>
+
+        <!-- CENTERSTAGE: MASSIVE HERO BOCADILLO -->
+        <section class="mega-center-stage">
+            <div class="center-shadow-pedestal"></div>
+            <img src="cutouts_hd/decor_flying_fries.png" class="mega-decor-fries-left" alt="Frites">
+            <img src="cutouts_hd/norm_poulet.png" class="mega-giant-sandwich" alt="Mega Sandwich">
+            <img src="cutouts_hd/sauces_trio_ramekins.png" class="mega-decor-sauces-right" alt="Sauces">
+
+            <div class="feature-badge-floating feat-1">
+                <span class="fb-icon">🧀</span>
+                <div class="fb-text">
+                    <h4>CHEDDAR COULANT</h4>
+                    <p>Double dose fondue minute</p>
+                </div>
+            </div>
+
+            <div class="feature-badge-floating feat-2">
+                <span class="fb-icon">🔥</span>
+                <div class="fb-text">
+                    <h4>GRILLÉ AUX BRAISES</h4>
+                    <p>Poulet mariné & assaisonné</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- BOTTOM 3 BEST-SELLER CARDS -->
+        <footer class="bottom-trio-cards">
+
+            <div class="trio-card">
+                <div class="tc-left">
+                    <img src="cutouts_hd/norm_complet.png" class="tc-thumb" alt="Complet">
+                    <div>
+                        <div class="tc-name">LE COMPLET TANGER</div>
+                        <div class="tc-desc">Thon, œuf, pommes, olives & mayo</div>
+                    </div>
+                </div>
+                <div class="tc-price-box">
+                    <div class="tcp-lbl">MENU</div>
+                    <div class="tcp-amount">39 DH</div>
+                </div>
+            </div>
+
+            <div class="trio-card">
+                <div class="tc-left">
+                    <img src="cutouts_hd/norm_mixte.png" class="tc-thumb" alt="Mixte">
+                    <div>
+                        <div class="tc-name">LE MIXTE ROYAL</div>
+                        <div class="tc-desc">Viande hachée + poulet & double fromage</div>
+                    </div>
+                </div>
+                <div class="tc-price-box">
+                    <div class="tcp-lbl">MENU</div>
+                    <div class="tcp-amount">45 DH</div>
+                </div>
+            </div>
+
+            <div class="trio-card">
+                <div class="tc-left">
+                    <img src="cutouts_hd/norm_americain.png" class="tc-thumb" alt="Américain">
+                    <div>
+                        <div class="tc-name">L'AMÉRICAIN SMASH</div>
+                        <div class="tc-desc">Double steak smash, œuf & cheddar</div>
+                    </div>
+                </div>
+                <div class="tc-price-box">
+                    <div class="tcp-lbl">MENU</div>
+                    <div class="tcp-amount">45 DH</div>
+                </div>
+            </div>
+
+        </footer>
+
+    </div>
+
+    <!-- Floating TV Controls -->
+    <div class="ui-controls">
+        <button class="btn-ctl" onclick="toggleFullScreen()">⛶ Plein Écran</button>
+        <button class="btn-ctl" style="background:#2563eb;" onclick="copyDirectLink()">🔗 Copier Lien</button>
+        <a href="MenuTV_Style_Mega_Promo.html" download="MenuTV_Style_Mega_Promo.html" class="btn-ctl" style="background:#059669;">📥 Télécharger Menu</a>
+    </div>
+
+    <div id="studio-toast">✓ Action effectuée avec succès !</div>
+
+    <script>
+        function scaleStage() {
+            const stage = document.getElementById('menu-stage');
+            if (!stage) return;
+            const targetWidth = 1920;
+            const targetHeight = 1080;
+            const winWidth = window.innerWidth;
+            const winHeight = window.innerHeight;
+
+            const scaleX = winWidth / targetWidth;
+            const scaleY = winHeight / targetHeight;
+            const scale = Math.min(scaleX, scaleY);
+
+            stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        }
+
+        window.addEventListener('resize', scaleStage);
+        window.addEventListener('load', scaleStage);
+        window.addEventListener('DOMContentLoaded', scaleStage);
+        setTimeout(scaleStage, 50);
+        setTimeout(scaleStage, 250);
+
+        // Auto-hiding controls
+        const controls = document.querySelector('.ui-controls');
+        let hideTimeout = null;
+        function showControls() {
+            if (!controls) return;
+            controls.classList.add('visible');
+            if (hideTimeout) clearTimeout(hideTimeout);
+            hideTimeout = setTimeout(() => {
+                controls.classList.remove('visible');
+            }, 4000);
+        }
+        window.addEventListener('mousemove', showControls);
+        window.addEventListener('touchstart', showControls);
+        showControls();
+
+        function showToast(msg) {
+            const t = document.getElementById('studio-toast');
+            if (!t) return;
+            t.textContent = msg;
+            t.classList.add('visible');
+            clearTimeout(t._timer);
+            t._timer = setTimeout(() => t.classList.remove('visible'), 2800);
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+
+        function copyDirectLink() {
+            const url = window.location.href;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(() => {
+                    showToast('✓ Lien copié : ' + url);
+                }).catch(() => {
+                    prompt('Lien direct de ce menu :', url);
+                });
+            } else {
+                prompt('Lien direct de ce menu :', url);
+            }
+        }
+    </script>
+    <script src="studio_engine_universal.js"></script>
+</body>
+</html>

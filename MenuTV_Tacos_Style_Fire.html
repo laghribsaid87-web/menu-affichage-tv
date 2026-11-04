@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Bocadillo Tanger — Menu TV Style Tacos & Braises</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@700;800;900&family=Oswald:wght@700;900&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #060403;
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            user-select: none;
+        }
+
+        #menu-stage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 1920px;
+            height: 1080px;
+            transform: translate(-50%, -50%);
+            transform-origin: center center;
+            background: radial-gradient(circle at 50% 35%, #2a1107 0%, #170904 45%, #080302 100%);
+            overflow: hidden;
+            box-shadow: 0 0 100px rgba(0,0,0,0.95);
+        }
+
+        /* Ambient Smoky Backdrop */
+        .stage-backdrop {
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 75, 0, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 75, 0, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 50% 20%, rgba(255, 120, 0, 0.18) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Bottom Rustic Wooden Platter Table */
+        .wood-table-plank {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 380px;
+            background: linear-gradient(to bottom, #1f120a 0%, #150a05 40%, #0c0502 100%);
+            border-top: 4px solid #3d2112;
+            box-shadow: 0 -25px 60px rgba(0,0,0,0.95), inset 0 2px 10px rgba(255,255,255,0.06);
+            z-index: 2;
+        }
+        .wood-table-plank::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 12px;
+            background: linear-gradient(to bottom, rgba(255, 107, 0, 0.25), transparent);
+        }
+
+        /* Floating Sparks Canvas */
+        #embers-canvas {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 25;
+        }
+
+        /* Glowing Center Neon / Fire Title */
+        .header-title-box {
+            position: absolute;
+            top: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 10;
+        }
+        .neon-fire-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 155px;
+            letter-spacing: 8px;
+            line-height: 0.9;
+            color: #ffffff;
+            text-transform: uppercase;
+            text-shadow: 
+                0 0 10px #ff3700,
+                0 0 25px #ff5500,
+                0 0 50px #ff3700,
+                0 0 90px #ff2200;
+            animation: neonPulse 3.5s ease-in-out infinite alternate;
+        }
+        @keyframes neonPulse {
+            0% { text-shadow: 0 0 10px #ff3700, 0 0 25px #ff5500, 0 0 50px #ff3700, 0 0 80px #ff2200; }
+            50% { text-shadow: 0 0 14px #ff5500, 0 0 35px #ff7700, 0 0 70px #ff4400, 0 0 110px #ff3700; transform: scale(1.015); }
+            100% { text-shadow: 0 0 10px #ff3700, 0 0 25px #ff5500, 0 0 50px #ff3700, 0 0 80px #ff2200; }
+        }
+        .header-subtitle {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            color: #fbbf24;
+            text-transform: uppercase;
+            margin-top: 5px;
+            opacity: 0.95;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.9);
+        }
+
+        /* Menu Screens Container */
+        .menu-screen {
+            position: absolute;
+            inset: 0;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            z-index: 5;
+        }
+        .menu-screen.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* 3-Column Layout */
+        .columns-container {
+            position: absolute;
+            top: 220px;
+            left: 80px;
+            right: 80px;
+            bottom: 30px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            z-index: 6;
+        }
+
+        .food-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Top Torn Paper / Brush Banner Badge */
+        .brush-badge {
+            background: #ffffff;
+            color: #111111;
+            padding: 8px 30px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Bebas Neue', cursive;
+            font-size: 44px;
+            letter-spacing: 1.5px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.8), 0 0 15px rgba(255,255,255,0.25);
+            transform: rotate(-1.5deg);
+            position: relative;
+            z-index: 10;
+        }
+        .food-column:nth-child(2) .brush-badge { transform: rotate(1deg); }
+        .food-column:nth-child(3) .brush-badge { transform: rotate(-0.5deg); }
+
+        .badge-title { color: #111111; font-weight: 900; }
+        .badge-accent { color: #dc2626; font-weight: 900; }
+
+        /* Item Ingredients Description */
+        .item-description {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #e2e8f0;
+            text-transform: uppercase;
+            text-align: center;
+            margin-top: 14px;
+            min-height: 38px;
+            max-width: 440px;
+            line-height: 1.35;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+            z-index: 10;
+        }
+
+        /* Food Staging Area — PURE HORIZONTAL DISPLAY (أفقي) */
+        .food-stage-box {
+            position: relative;
+            width: 100%;
+            height: 380px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2px;
+            z-index: 12;
+        }
+
+        /* Crispy Golden Fries Behind — Sits higher up as a backdrop */
+        .stage-fries-bg {
+            position: absolute;
+            top: 0px;
+            width: 320px;
+            height: auto;
+            max-height: 170px;
+            object-fit: contain;
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.85));
+            opacity: 0.92;
+            z-index: 1;
+            pointer-events: auto;
+        }
+
+        /* Main Hero Sandwich Cutout — 100% HORIZONTAL ORIENTATION (أفقي ممدد) */
+        .stage-hero-sandwich {
+            position: relative;
+            width: 100%;
+            max-width: 520px;
+            height: auto;
+            max-height: 220px;
+            object-fit: contain;
+            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.98)) drop-shadow(0 4px 14px rgba(255, 107, 0, 0.22));
+            z-index: 5;
+            cursor: grab;
+            transition: transform 0.2s ease;
+            pointer-events: auto;
+            transform: translateY(10px);
+        }
+
+        /* Elliptical Contact Shadow under horizontal sandwich */
+        .stage-sandwich-shadow {
+            position: absolute;
+            bottom: 35px;
+            width: 82%;
+            height: 24px;
+            background: radial-gradient(ellipse at center, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 45%, transparent 75%);
+            border-radius: 50%;
+            filter: blur(5px);
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        /* Foreground Sauce Dipping Ramekin — Positioned at bottom so it DOES NOT hide the sandwich */
+        .stage-sauce-cup {
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 135px;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.95));
+            z-index: 8;
+            pointer-events: auto;
+        }
+
+        /* Bottom Price Chalkboard Box */
+        .price-slate-box {
+            background: rgba(15, 23, 42, 0.85);
+            border: 2px solid #ff6b00;
+            border-radius: 12px;
+            padding: 8px 30px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.9), 0 0 20px rgba(255, 107, 0, 0.3);
+            margin-top: 10px;
+            z-index: 15;
+            font-family: 'Oswald', sans-serif;
+            backdrop-filter: blur(8px);
+            cursor: pointer;
+        }
+        .price-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .price-lbl {
+            font-size: 13px;
+            font-weight: 800;
+            color: #cbd5e1;
+            letter-spacing: 1.5px;
+        }
+        .price-amount {
+            font-size: 34px;
+            font-weight: 900;
+            color: #ffffff;
+            line-height: 1;
+            margin-top: 2px;
+        }
+        .curr-sign {
+            font-size: 18px;
+            color: #ff6b00;
+            font-weight: 900;
+            margin-left: 2px;
+        }
+        .price-vert-divider {
+            width: 2px;
+            height: 38px;
+            background: #dc2626;
+            border-radius: 2px;
+            box-shadow: 0 0 8px #dc2626;
+        }
+
+        /* ================= STUDIO VISUAL RESIZER & EDITOR ENGINE ================= */
+        .editable-item {
+            cursor: grab !important;
+            user-select: none !important;
+            -webkit-user-select: none !important;
+            transition: outline 0.15s ease, box-shadow 0.15s ease !important;
+        }
+        .editable-item:hover {
+            outline: 2px dashed #ff6b00 !important;
+            outline-offset: 4px;
+        }
+        .editable-item.item-selected {
+            outline: 3px solid #10b981 !important;
+            outline-offset: 6px;
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.8) !important;
+        }
+
+        /* Floating Studio Toolbar */
+        #studio-floating-bar {
+            position: fixed;
+            display: none;
+            z-index: 99999999;
+            background: rgba(15, 23, 42, 0.98);
+            border: 2px solid #10b981;
+            border-radius: 40px;
+            padding: 7px 16px;
+            gap: 8px;
+            align-items: center;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.95), 0 0 25px rgba(16, 185, 129, 0.5);
+            backdrop-filter: blur(16px);
+            font-family: 'Montserrat', system-ui, sans-serif;
+            animation: barPop 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 96vw;
+            user-select: none;
+        }
+        @keyframes barPop {
+            from { transform: scale(0.85); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .sbar-tag {
+            font-size: 11px;
+            font-weight: 800;
+            color: #fcd535;
+            background: rgba(245, 158, 11, 0.15);
+            padding: 4px 10px;
+            border-radius: 12px;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            white-space: nowrap;
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .sbar-btn {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            user-select: none;
+            flex-shrink: 0;
+        }
+        .sbar-btn:hover {
+            background: #10b981;
+            color: #000;
+            border-color: #10b981;
+            transform: scale(1.15);
+        }
+        .sbar-btn-wide {
+            width: auto !important;
+            padding: 0 12px !important;
+            border-radius: 20px !important;
+            font-size: 12px !important;
+            gap: 5px;
+        }
+        .sbar-btn-price {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+            color: #000 !important;
+            border-color: #fbbf24 !important;
+            font-weight: 900 !important;
+        }
+        .sbar-btn-price:hover {
+            background: #fbbf24 !important;
+            transform: scale(1.08) !important;
+        }
+        .sbar-btn-reset {
+            background: rgba(239, 68, 68, 0.2) !important;
+            border: 1px solid #ef4444 !important;
+            color: #fca5a5 !important;
+            padding: 4px 10px !important;
+            border-radius: 20px !important;
+            font-size: 11px !important;
+            font-weight: 800 !important;
+            cursor: pointer;
+        }
+        .sbar-btn-reset:hover {
+            background: #ef4444 !important;
+            color: #fff !important;
+            transform: scale(1.08) !important;
+        }
+        .sbar-size-display {
+            font-family: 'Oswald', sans-serif;
+            font-size: 16px;
+            font-weight: 900;
+            color: #fcd535;
+            letter-spacing: 0.5px;
+            min-width: 58px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .sbar-divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 2px;
+            flex-shrink: 0;
+        }
+
+        /* Floating TV Controls Bottom Bar */
+        .ui-controls {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 100;
+            background: rgba(10, 15, 26, 0.9);
+            padding: 8px 18px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        .ui-controls.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .btn-ctl {
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-ctl:hover {
+            background: #1d4ed8;
+            transform: scale(1.05);
+        }
+        .btn-ctl.active {
+            background: #dc2626;
+        }
+
+        /* Toast notification */
+        #studio-toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(120px);
+            background: #10b981;
+            color: #fff;
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-family: 'Montserrat', system-ui, sans-serif;
+            font-weight: 800;
+            font-size: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.85);
+            z-index: 999999999;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        #studio-toast.visible {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Edit Modal Dialog */
+        #edit-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.88);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+        }
+        .modal-box {
+            background: #1e293b;
+            color: #fff;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 960px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main 1920x1080 Stage -->
+    <div id="menu-stage">
+        <div class="stage-backdrop"></div>
+        <div class="wood-table-plank"></div>
+        <canvas id="embers-canvas" width="1920" height="1080"></canvas>
+
+        <!-- Top Glowing Center Title -->
+        <div class="header-title-box">
+            <h1 class="neon-fire-title" id="main-fire-title">TACOS</h1>
+            <p class="header-subtitle">✦ RECETTES DE TANGER CUITES MINUTE ✦</p>
+        </div>
+
+        <!-- ================= SCREEN 1: LES 3 GRANDS BOCADILLOS ================= -->
+        <div id="screen-1" class="menu-screen active">
+            <div class="columns-container">
+
+                <!-- ITEM 1: BOCADILLO COMPLET -->
+                <div class="food-column" id="col-s1-1">
+                    <div class="brush-badge editable-item" id="badge-s1-1">
+                        <span class="badge-title">TACOS</span>
+                        <span class="badge-accent">CLASSIC</span>
+                    </div>
+                    <p class="item-description editable-item" id="desc-s1-1">VIANDE HACHÉE, FRITES CROUSTILLANTES, SAUCE FROMAGÈRE</p>
+                    <div class="food-stage-box">
+                        <img src="cutouts_cropped/decor_flying_fries.png" class="stage-fries-bg editable-item" alt="Frites">
+                        <img src="cutouts_cropped/norm_complet.png" class="stage-hero-sandwich editable-item" id="hero-s1-1" alt="Tacos Classic">
+                        <div class="stage-sandwich-shadow"></div>
+                        <img src="cutouts_cropped/sauces_trio_ramekins.png" class="stage-sauce-cup editable-item" alt="Sauces">
+                    </div>
+                    <div class="price-slate-box editable-item" id="price-s1-1">
+                        <div class="price-col">
+                            <span class="price-lbl">SEUL</span>
+                            <span class="price-amount" id="val-s1-1-seul">29<span class="curr-sign">DH</span></span>
+                        </div>
+                        <div class="price-vert-divider"></div>
+                        <div class="price-col">
+                            <span class="price-lbl">MENU</span>
+                            <span class="price-amount" id="val-s1-1-menu">39<span class="curr-sign">DH</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ITEM 2: TORTILLA ROYALE -->
+                <div class="food-column" id="col-s1-2">
+                    <div class="brush-badge editable-item" id="badge-s1-2">
+                        <span class="badge-title">TACOS</span>
+                        <span class="badge-accent">CHICKEN</span>
+                    </div>
+                    <p class="item-description editable-item" id="desc-s1-2">ESCALOPE DE POULET, FRITES, SAUCE ALGÉRIENNE & FROMAGE</p>
+                    <div class="food-stage-box">
+                        <img src="cutouts_cropped/decor_flying_fries.png" class="stage-fries-bg editable-item" alt="Frites">
+                        <img src="cutouts_cropped/norm_poulet.png" class="stage-hero-sandwich editable-item" id="hero-s1-2" alt="Tacos Chicken">
+                        <div class="stage-sandwich-shadow"></div>
+                        <img src="cutouts_cropped/sauces_trio_ramekins.png" class="stage-sauce-cup editable-item" alt="Sauces">
+                    </div>
+                    <div class="price-slate-box editable-item" id="price-s1-2">
+                        <div class="price-col">
+                            <span class="price-lbl">SEUL</span>
+                            <span class="price-amount" id="val-s1-2-seul">30<span class="curr-sign">DH</span></span>
+                        </div>
+                        <div class="price-vert-divider"></div>
+                        <div class="price-col">
+                            <span class="price-lbl">MENU</span>
+                            <span class="price-amount" id="val-s1-2-menu">40<span class="curr-sign">DH</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ITEM 3: TACOS MIXTE / DOUBLE CHEESE -->
+                <div class="food-column" id="col-s1-3">
+                    <div class="brush-badge editable-item" id="badge-s1-3">
+                        <span class="badge-title">TACOS</span>
+                        <span class="badge-accent">MIXTE</span>
+                    </div>
+                    <p class="item-description editable-item" id="desc-s1-3">VIANDE HACHÉE, ESCALOPE DE POULET, FRITES & DOUBLE FROMAGE</p>
+                    <div class="food-stage-box">
+                        <img src="cutouts_cropped/decor_flying_fries.png" class="stage-fries-bg editable-item" alt="Frites">
+                        <img src="cutouts_cropped/norm_mixte.png" class="stage-hero-sandwich editable-item" id="hero-s1-3" alt="Tacos Mixte">
+                        <div class="stage-sandwich-shadow"></div>
+                        <img src="cutouts_cropped/sauces_trio_ramekins.png" class="stage-sauce-cup editable-item" alt="Sauces">
+                    </div>
+                    <div class="price-slate-box editable-item" id="price-s1-3">
+                        <div class="price-col">
+                            <span class="price-lbl">SEUL</span>
+                            <span class="price-amount" id="val-s1-3-seul">35<span class="curr-sign">DH</span></span>
+                        </div>
+                        <div class="price-vert-divider"></div>
+                        <div class="price-col">
+                            <span class="price-lbl">MENU</span>
+                            <span class="price-amount" id="val-s1-3-menu">45<span class="curr-sign">DH</span></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ================= SCREEN 2: SANDWICHES CHAUDS ================= -->
+        <div id="screen-2" class="menu-screen">
+            <div class="columns-container">
+
+                <!-- ITEM 1: AMÉRICAIN -->
+                <div class="food-column" id="col-s2-1">
+                    <div class="brush-badge editable-item" id="badge-s2-1">
+                        <span class="badge-title">SANDWICH</span>
+                        <span class="badge-accent">AMÉRICAIN</span>
+                    </div>
+                    <p class="item-description editable-item" id="desc-s2-1">DOUBLE STEAK SMASH, DOUBLE CHEDDAR, OEUF & FRITES</p>
+                    <div class="food-stage-box">
+                        <img src="cutouts_cropped/decor_flying_fries.png" class="stage-fries-bg editable-item" alt="Frites">
+                        <img src="cutouts_cropped/norm_americain.png" class="stage-hero-sandwich editable-item" id="hero-s2-1" alt="Sandwich Américain">
+                        <div class="stage-sandwich-shadow"></div>
+                        <img src="cutouts_cropped/sauces_trio_ramekins.png" class="stage-sauce-cup editable-item" alt="Sauces">
+                    </div>
+                    <div class="price-slate-box editable-item" id="price-s2-1">
+                        <div class="price-col">
+                            <span class="price-lbl">SEUL</span>
+                            <span class="price-amount" id="val-s2-1-seul">35<span class="curr-sign">DH</span></span>
+                        </div>
+                        <div class="price-vert-divider"></div>
+                        <div class="price-col">
+                            <span class="price-lbl">MENU</span>
+                            <span class="price-amount" id="val-s2-1-menu">45<span class="curr-sign">DH</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ITEM 2: TORTILLA ROYALE -->
+                <div class="food-column" id="col-s2-2">
+                    <div class="brush-badge editable-item" id="badge-s2-2">
+                        <span class="badge-title">TORTILLA</span>
+                        <span class="badge-accent">ROYALE</span>
+                    </div>
+                    <p class="item-description editable-item" id="desc-s2-2">TORTILLA MAISON MINUTE, DOUBLE CHEDDAR & CHARCUTERIE</p>
+                    <div class="food-stage-box">
+                        <img src="cutouts_cropped/decor_flying_fries.png" class="stage-fries-bg editable-item" alt="Frites">
+                        <img src="cutouts_cropped/norm_tortilla.png" class="stage-hero-sandwich editable-item" id="hero-s2-2" alt="Tortilla Royale">
+                        <div class="stage-sandwich-shadow"></div>
+                        <img src="cutouts_cropped/sauces_trio_ramekins.png" class="stage-sauce-cup editable-item" alt="Sauces">
+                    </div>
+                    <div class="price-slate-box editable-item" id="price-s2-2">
+                        <div class="price-col">
+                            <span class="price-lbl">SEUL</span>
+                            <span class="price-amount" id="val-s2-2-seul">30<span class="curr-sign">DH</span></span>
+                        </div>
+                        <div class="price-vert-divider"></div>
+                        <div class="price-col">
+                            <span class="price-lbl">MENU</span>
+                            <span class="price-amount" id="val-s2-2-menu">40<span class="curr-sign">DH</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ITEM 3: KEFTA VIANDE HACHÉE -->
+                <div class="food-column" id="col-s2-3">
+                    <div class="brush-badge editable-item" id="badge-s2-3">
+                        <span class="badge-title">KEFTA</span>
+                        <span class="badge-accent">PUR BŒUF</span>
+                    </div>
+                    <p class="item-description editable-item" id="desc-s2-3">VIANDE HACHÉE MAISON ASSAISONNÉE, OIGNONS & SAUCE BBQ</p>
+                    <div class="food-stage-box">
+                        <img src="cutouts_cropped/decor_flying_fries.png" class="stage-fries-bg editable-item" alt="Frites">
+                        <img src="cutouts_cropped/norm_kefta.png" class="stage-hero-sandwich editable-item" id="hero-s2-3" alt="Sandwich Kefta">
+                        <div class="stage-sandwich-shadow"></div>
+                        <img src="cutouts_cropped/sauces_trio_ramekins.png" class="stage-sauce-cup editable-item" alt="Sauces">
+                    </div>
+                    <div class="price-slate-box editable-item" id="price-s2-3">
+                        <div class="price-col">
+                            <span class="price-lbl">SEUL</span>
+                            <span class="price-amount" id="val-s2-3-seul">30<span class="curr-sign">DH</span></span>
+                        </div>
+                        <div class="price-vert-divider"></div>
+                        <div class="price-col">
+                            <span class="price-lbl">MENU</span>
+                            <span class="price-amount" id="val-s2-3-menu">40<span class="curr-sign">DH</span></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating TV Controls -->
+    <div class="ui-controls">
+        <button id="btn-auto" class="btn-ctl active" onclick="setMode('auto')">Auto-Boucle (15s)</button>
+        <button id="btn-s1" class="btn-ctl" onclick="setMode('screen-1')">Écran 1</button>
+        <button id="btn-s2" class="btn-ctl" onclick="setMode('screen-2')">Écran 2</button>
+        <button id="btn-toggle-title" class="btn-ctl" style="background:#ea580c;" onclick="toggleTitle()">🔄 Titre: TACOS / BOCADILLO</button>
+        <button id="btn-fs" class="btn-ctl" onclick="toggleFullScreen()">⛶ Plein Écran</button>
+        <button id="btn-edit" class="btn-ctl" style="background: #10b981;" onclick="openEditModal()">⚙️ Modifier Prix & Textes</button>
+        <button id="btn-editor-mode" class="btn-ctl" style="background: #f59e0b; color: #000; font-weight: 800;" onclick="toggleEditorMode()">🎨 Mode Studio : ACTIF</button>
+        <button id="btn-reset-all" class="btn-ctl" style="background: #ef4444;" onclick="resetAllVisualLayout()">↺ Réinitialiser Tailles</button>
+        <button class="btn-ctl" style="background:#2563eb;" onclick="copyDirectLink()" title="Copier le lien direct de ce menu">🔗 Copier Lien</button>
+        <a href="MenuTV_Tacos_Style_Fire.html" download="MenuTV_Tacos_Style_Fire.html" class="btn-ctl" style="background:#059669; text-decoration:none; display:inline-flex; align-items:center;" title="Télécharger ce menu en fichier HTML">📥 Télécharger</a>
+    </div>
+
+    <!-- Floating Studio Toolbar -->
+    <div id="studio-floating-bar">
+        <span class="sbar-tag" id="sbar-tag">🥪 SANDWICH</span>
+        <div class="sbar-divider"></div>
+        <button class="sbar-btn sbar-btn-wide sbar-btn-price" id="sbar-btn-price" title="Modifier le prix">💰 Prix</button>
+        <button class="sbar-btn sbar-btn-wide" id="sbar-btn-text" title="Modifier le nom ou texte">✏️ Texte</button>
+        <div class="sbar-divider"></div>
+        <button class="sbar-btn" id="sbar-btn-minus" title="Rétrécir (Nsaghar)">−</button>
+        <span class="sbar-size-display" id="sbar-size-text">100%</span>
+        <button class="sbar-btn" id="sbar-btn-plus" title="Agrandir (Nkabar)">+</button>
+        <div class="sbar-divider"></div>
+        <button class="sbar-btn" id="sbar-btn-layer-up" title="Mettre Devant (Calque +)">⬆</button>
+        <button class="sbar-btn" id="sbar-btn-layer-down" title="Mettre Derrière (Calque -)">⬇</button>
+        <button class="sbar-btn" id="sbar-btn-flip" title="Miroir Horizontal">⇦⇨</button>
+        <div class="sbar-divider"></div>
+        <button class="sbar-btn-reset" id="sbar-btn-reset" title="Réinitialiser à 100%">↺ 100%</button>
+        <button class="sbar-btn sbar-btn-wide" id="sbar-btn-save" style="background:#10b981; color:#000; font-weight:900;" title="Enregistrer la disposition">💾 Sauvegarder</button>
+        <span style="color:#94a3b8; cursor:pointer; font-size:18px; margin-left:4px;" id="sbar-btn-close" title="Fermer">✕</span>
+    </div>
+
+    <!-- Floating Toast Notification -->
+    <div id="studio-toast">✓ Disposition enregistrée avec succès !</div>
+
+    <!-- Edit Modal Dialog -->
+    <div id="edit-modal">
+        <div class="modal-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; padding-bottom:12px; margin-bottom:18px;">
+                <h2 style="font-size:22px; font-weight:800; color:#fbbf24;">⚙️ Modifier les Prix, Noms & Tailles</h2>
+                <button onclick="closeEditModal()" style="background:#ef4444; border:none; color:#fff; font-size:16px; font-weight:bold; border-radius:50%; width:32px; height:32px; cursor:pointer;">✕</button>
+            </div>
+            
+            <div id="edit-items-container" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;"></div>
+
+            <div style="margin-top:24px; padding-top:16px; border-top:1px solid #334155; display:flex; gap:12px; justify-content:flex-end;">
+                <button onclick="closeEditModal()" style="background:#64748b; color:#fff; border:none; padding:10px 18px; border-radius:8px; font-weight:700; cursor:pointer;">Annuler</button>
+                <button onclick="saveAndApplyModal()" style="background:#10b981; color:#fff; border:none; padding:10px 22px; border-radius:8px; font-weight:800; font-size:15px; cursor:pointer;">✓ Enregistrer & Appliquer</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function scaleStage() {
+            const stage = document.getElementById('menu-stage');
+            if (!stage) return;
+            const targetWidth = 1920;
+            const targetHeight = 1080;
+            const winWidth = window.innerWidth;
+            const winHeight = window.innerHeight;
+
+            const scaleX = winWidth / targetWidth;
+            const scaleY = winHeight / targetHeight;
+            const scale = Math.min(scaleX, scaleY);
+
+            stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        }
+
+        function getStageScale() {
+            const stage = document.getElementById('menu-stage');
+            if (!stage) return 1;
+            const rect = stage.getBoundingClientRect();
+            return (rect.width / 1920) || 1;
+        }
+
+        window.addEventListener('resize', scaleStage);
+        window.addEventListener('load', scaleStage);
+        setTimeout(scaleStage, 100);
+
+        let currentScreen = 1;
+        let autoCycle = true;
+        let cycleTimer = null;
+        const CYCLE_DURATION = 15000;
+
+        function showScreen(num) {
+            document.querySelectorAll('.menu-screen').forEach(s => s.classList.remove('active'));
+            const target = document.getElementById(`screen-${num}`);
+            if (target) {
+                target.classList.add('active');
+                currentScreen = num;
+            }
+        }
+
+        function cycleNext() {
+            if (!autoCycle) return;
+            const next = currentScreen === 1 ? 2 : 1;
+            showScreen(next);
+            cycleTimer = setTimeout(cycleNext, CYCLE_DURATION);
+        }
+
+        function setMode(mode) {
+            document.querySelectorAll('.ui-controls .btn-ctl').forEach(b => b.classList.remove('active'));
+            if (cycleTimer) clearTimeout(cycleTimer);
+
+            if (mode === 'auto') {
+                autoCycle = true;
+                document.getElementById('btn-auto')?.classList.add('active');
+                cycleTimer = setTimeout(cycleNext, CYCLE_DURATION);
+            } else if (mode === 'screen-1') {
+                autoCycle = false;
+                document.getElementById('btn-s1')?.classList.add('active');
+                showScreen(1);
+            } else if (mode === 'screen-2') {
+                autoCycle = false;
+                document.getElementById('btn-s2')?.classList.add('active');
+                showScreen(2);
+            }
+        }
+
+        cycleTimer = setTimeout(cycleNext, CYCLE_DURATION);
+
+        // Auto-hiding TV controls on inactivity
+        const controls = document.querySelector('.ui-controls');
+        let hideTimeout = null;
+        function showControls() {
+            if (!controls) return;
+            controls.classList.add('visible');
+            if (hideTimeout) clearTimeout(hideTimeout);
+            hideTimeout = setTimeout(() => {
+                const bar = document.getElementById('studio-floating-bar');
+                const modal = document.getElementById('edit-modal');
+                if ((bar && bar.style.display === 'flex') || (modal && modal.style.display === 'flex')) return;
+                controls.classList.remove('visible');
+            }, 4000);
+        }
+        window.addEventListener('mousemove', showControls);
+        window.addEventListener('touchstart', showControls);
+        showControls();
+
+        function showToast(msg) {
+            const t = document.getElementById('studio-toast');
+            if (!t) return;
+            t.textContent = msg;
+            t.classList.add('visible');
+            clearTimeout(t._timer);
+            t._timer = setTimeout(() => t.classList.remove('visible'), 2800);
+        }
+
+        function toggleTitle() {
+            const title = document.getElementById('main-fire-title');
+            if (!title) return;
+            if (title.textContent === 'TACOS') {
+                title.textContent = 'BOCADILLOS';
+                showToast('🔄 Titre changé: BOCADILLOS');
+            } else {
+                title.textContent = 'TACOS';
+                showToast('🔄 Titre changé: TACOS');
+            }
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => console.error(err));
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        }
+
+        // ================= UNIVERSAL STUDIO RESIZER & DRAG ENGINE =================
+        const LAYOUT_KEY = 'tacos_fire_layout_v1';
+        let layoutState = {};
+        try { layoutState = JSON.parse(localStorage.getItem(LAYOUT_KEY) || '{}'); } catch(e) {}
+
+        let activeEl = null;
+        let isStudioModeActive = true;
+        const floatingBar = document.getElementById('studio-floating-bar');
+        const sbarTag = document.getElementById('sbar-tag');
+        const sbarSizeText = document.getElementById('sbar-size-text');
+
+        function getElementId(el) {
+            if (el.dataset.editorId) return el.dataset.editorId;
+            if (el.id) {
+                el.dataset.editorId = el.id;
+                return el.id;
+            }
+            const col = el.closest('.food-column');
+            const colId = col ? col.id : 'col_gen';
+            let type = 'item';
+            if (el.classList.contains('stage-hero-sandwich')) type = 'sandwich';
+            else if (el.classList.contains('stage-fries-bg')) type = 'fries';
+            else if (el.classList.contains('stage-sauce-cup')) type = 'sauce';
+            else if (el.classList.contains('brush-badge')) type = 'badge';
+            else if (el.classList.contains('price-slate-box')) type = 'price';
+            else if (el.classList.contains('item-description')) type = 'desc';
+
+            const id = `${colId}_${type}`;
+            el.dataset.editorId = id;
+            return id;
+        }
+
+        function getFriendlyName(el) {
+            const col = el.closest('.food-column');
+            const title = col?.querySelector('.brush-badge')?.innerText.replace(/\n/g, ' ').trim() || '';
+            if (el.classList.contains('stage-hero-sandwich')) return '🥪 ' + (title || 'Sandwich');
+            if (el.classList.contains('stage-fries-bg')) return '🍟 Frites Croustillantes';
+            if (el.classList.contains('stage-sauce-cup')) return '🥣 Sauces Ramequin';
+            if (el.classList.contains('brush-badge')) return '🏷️ Badge: ' + title;
+            if (el.classList.contains('price-slate-box')) return '💰 Prix (' + title + ')';
+            if (el.classList.contains('item-description')) return '📜 Description';
+            return '✨ Élément';
+        }
+
+        function applyTransform(el) {
+            if (!el) return;
+            const tx = parseFloat(el.dataset.tx || 0);
+            const ty = parseFloat(el.dataset.ty || 0);
+            const s = parseFloat(el.dataset.scale || 1);
+            const flipH = parseFloat(el.dataset.flipH || 1);
+            const z = el.dataset.zIndex || '';
+
+            const transformStr = `translate(${tx}px, ${ty}px) scale(${s * flipH}, ${s})`;
+            el.style.setProperty('transform', transformStr, 'important');
+            if (z) el.style.setProperty('z-index', z, 'important');
+        }
+
+        function saveElementState(el) {
+            if (!el) return;
+            const id = getElementId(el);
+            if (!layoutState[id]) layoutState[id] = {};
+            layoutState[id].x = parseFloat(el.dataset.tx || 0);
+            layoutState[id].y = parseFloat(el.dataset.ty || 0);
+            layoutState[id].scale = parseFloat(el.dataset.scale || 1);
+            layoutState[id].flipH = parseFloat(el.dataset.flipH || 1);
+            layoutState[id].zIndex = el.dataset.zIndex || '';
+            try { localStorage.setItem(LAYOUT_KEY, JSON.stringify(layoutState)); } catch(e) {}
+        }
+
+        function positionToolbar(el) {
+            if (!el || !floatingBar || !isStudioModeActive) return;
+            const rect = el.getBoundingClientRect();
+            let top = rect.top - 62;
+            if (top < 15) top = rect.bottom + 15;
+            let left = rect.left + (rect.width / 2) - 170;
+            left = Math.max(15, Math.min(window.innerWidth - 360, left));
+
+            floatingBar.style.top = `${top}px`;
+            floatingBar.style.left = `${left}px`;
+            floatingBar.style.display = 'flex';
+
+            const s = parseFloat(el.dataset.scale || 1);
+            if (sbarSizeText) sbarSizeText.textContent = Math.round(s * 100) + '%';
+            if (sbarTag) sbarTag.textContent = getFriendlyName(el);
+        }
+
+        function selectElement(el) {
+            if (!isStudioModeActive) return;
+            document.querySelectorAll('.editable-item').forEach(i => i.classList.remove('item-selected'));
+
+            if (!el) {
+                activeEl = null;
+                if (floatingBar) floatingBar.style.display = 'none';
+                return;
+            }
+
+            activeEl = el;
+            el.classList.add('item-selected');
+            positionToolbar(el);
+        }
+
+        function quickEditElement(el) {
+            if (el.classList.contains('price-slate-box')) {
+                const sEl = el.querySelector('#val-' + el.id.replace('price-', '') + '-seul') || el.querySelectorAll('.price-amount')[0];
+                const mEl = el.querySelector('#val-' + el.id.replace('price-', '') + '-menu') || el.querySelectorAll('.price-amount')[1];
+
+                const currS = sEl?.innerText.replace(/[^0-9+]/g, '') || '29';
+                const currM = mEl?.innerText.replace(/[^0-9+]/g, '') || '39';
+
+                const newS = prompt('💰 Nouveau Prix SEUL (DH):', currS);
+                if (newS !== null && newS.trim() !== '') {
+                    if (sEl) sEl.innerHTML = `${newS.trim()}<span class="curr-sign">DH</span>`;
+                    const newM = prompt('💰 Nouveau Prix MENU (DH):', currM);
+                    if (newM !== null && newM.trim() !== '' && mEl) {
+                        mEl.innerHTML = `${newM.trim()}<span class="curr-sign">DH</span>`;
+                    }
+                    showToast('💰 Prix mis à jour avec succès !');
+                }
+            } else if (el.classList.contains('brush-badge')) {
+                const bTitle = el.querySelector('.badge-title');
+                const bAccent = el.querySelector('.badge-accent');
+                const newT = prompt('🏷️ Titre (ex: TACOS أو BOCADILLO):', bTitle?.innerText.trim());
+                if (newT !== null) {
+                    if (bTitle) bTitle.innerText = newT.trim();
+                    const newA = prompt('🏷️ Sous-Titre Accent (ex: CLASSIC, CHICKEN, ROYALE):', bAccent?.innerText.trim());
+                    if (newA !== null && bAccent) bAccent.innerText = newA.trim();
+                    showToast('🏷️ Nom du produit mis à jour !');
+                }
+            } else if (el.classList.contains('item-description')) {
+                const newDesc = prompt('📜 Description / Ingrédients:', el.innerText.trim());
+                if (newDesc !== null && newDesc.trim() !== '') {
+                    el.innerText = newDesc.trim();
+                    showToast('📜 Description mise à jour !');
+                }
+            }
+        }
+
+        function initVisualEditor() {
+            const targets = document.querySelectorAll('.editable-item');
+            targets.forEach(el => {
+                const id = getElementId(el);
+
+                if (layoutState[id]) {
+                    el.dataset.tx = layoutState[id].x ?? 0;
+                    el.dataset.ty = layoutState[id].y ?? 0;
+                    el.dataset.scale = layoutState[id].scale ?? 1;
+                    el.dataset.flipH = layoutState[id].flipH ?? 1;
+                    el.dataset.zIndex = layoutState[id].zIndex ?? '';
+                    applyTransform(el);
+                }
+
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    selectElement(el);
+                });
+
+                el.addEventListener('dblclick', (e) => {
+                    e.stopPropagation();
+                    selectElement(el);
+                    quickEditElement(el);
+                });
+
+                el.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    selectElement(el);
+
+                    let s = parseFloat(el.dataset.scale || 1);
+                    if (e.deltaY < 0) s = Math.min(2.8, s + 0.05); // Zoom In (Nkabar)
+                    else s = Math.max(0.3, s - 0.05); // Zoom Out (Nsaghar)
+
+                    el.dataset.scale = s.toFixed(2);
+                    applyTransform(el);
+                    saveElementState(el);
+                    positionToolbar(el);
+                    showToast(`🔍 Taille: ${Math.round(s * 100)}%`);
+                }, { passive: false });
+            });
+
+            // Toolbar Button Events
+            document.getElementById('sbar-btn-plus')?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!activeEl) return;
+                let s = parseFloat(activeEl.dataset.scale || 1);
+                s = Math.min(2.8, s + 0.08);
+                activeEl.dataset.scale = s.toFixed(2);
+                applyTransform(activeEl);
+                saveElementState(activeEl);
+                positionToolbar(activeEl);
+                showToast(`🔍 Agrandir : ${Math.round(s * 100)}%`);
+            });
+
+            document.getElementById('sbar-btn-minus')?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!activeEl) return;
+                let s = parseFloat(activeEl.dataset.scale || 1);
+                s = Math.max(0.3, s - 0.08);
+                activeEl.dataset.scale = s.toFixed(2);
+                applyTransform(activeEl);
+                saveElementState(activeEl);
+                positionToolbar(activeEl);
+                showToast(`🔍 Rétrécir : ${Math.round(s * 100)}%`);
+            });
+
+            document.getElementById('sbar-btn-price')?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (activeEl) quickEditElement(activeEl.classList.contains('price-slate-box') ? activeEl : (activeEl.closest('.food-column')?.querySelector('.price-slate-box') || activeEl));
+            });
+
+            document.getElementById('sbar-btn-text')?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (activeEl) quickEditElement(activeEl);
+            });
+
+            document.getElementById('sbar-btn-layer-up')?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!activeEl) return;
+                let z = parseInt(activeEl.dataset.zIndex || window.getComputedStyle(activeEl).zIndex || 10, 10);
+                if (isNaN(z)) z = 10;
+                z += 5;
+                activeEl.dataset.zIndex = z;
+                applyTransform(activeEl);
+                saveElementState(activeEl);
+                showToast(`⬆ Calque Devant (z: ${z})`);
+            });
+
+            document.getElementById('sbar-btn-layer-down')?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!activeEl) return;
+                let z = parseInt(activeEl.dataset.zIndex || window.getComputedStyle(activeEl).zIndex || 10, 10);
+                if (isNaN(z)) z = 10;
+                z = Math.max(1, z - 5);
+                activeEl.dataset.zIndex = z;
+                applyTransform(activeEl);
+                saveElementState(activeEl);
+                showToast(`⬇ Calque Derrière (z: ${z})`);
+            });
+
+            document.getElementById('sbar-btn-flip')?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!activeEl) return;
+                let flip = parseFloat(activeEl.dataset.flipH || 1) * -1;
+                activeEl.dataset.flipH = flip;
+                applyTransform(activeEl);
+                saveElementState(activeEl);
+                showToast(flip < 0 ? '⇦⇨ Miroir activé' : '⇦⇨ Miroir normal');
+            });
+
+            document.getElementById('sbar-btn-reset')?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!activeEl) return;
+                activeEl.dataset.scale = 1;
+                activeEl.dataset.tx = 0;
+                activeEl.dataset.ty = 0;
+                activeEl.dataset.flipH = 1;
+                activeEl.dataset.zIndex = '';
+                applyTransform(activeEl);
+                saveElementState(activeEl);
+                positionToolbar(activeEl);
+                showToast('↺ Réinitialisé à 100%');
+            });
+
+            document.getElementById('sbar-btn-save')?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                localStorage.setItem(LAYOUT_KEY, JSON.stringify(layoutState));
+                showToast('💾 Disposition sauvegardée définitivement !');
+            });
+
+            document.getElementById('sbar-btn-close')?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                selectElement(null);
+            });
+
+            // Drag and drop engine
+            let isDragging = false;
+            let dragTarget = null;
+            let startX = 0, startY = 0;
+            let initTx = 0, initTy = 0;
+
+            document.addEventListener('mousedown', (e) => {
+                if (!isStudioModeActive) return;
+                const el = e.target.closest('.editable-item');
+                if (!el || e.target.closest('#studio-floating-bar') || e.target.closest('.ui-controls') || e.target.closest('#edit-modal')) return;
+
+                isDragging = true;
+                dragTarget = el;
+                startX = e.clientX;
+                startY = e.clientY;
+                initTx = parseFloat(dragTarget.dataset.tx || 0);
+                initTy = parseFloat(dragTarget.dataset.ty || 0);
+                selectElement(dragTarget);
+                dragTarget.style.cursor = 'grabbing';
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging || !dragTarget) return;
+                const stageScale = getStageScale();
+                const dx = (e.clientX - startX) / stageScale;
+                const dy = (e.clientY - startY) / stageScale;
+
+                dragTarget.dataset.tx = (initTx + dx).toFixed(1);
+                dragTarget.dataset.ty = (initTy + dy).toFixed(1);
+                applyTransform(dragTarget);
+                positionToolbar(dragTarget);
+            });
+
+            document.addEventListener('mouseup', () => {
+                if (isDragging && dragTarget) {
+                    saveElementState(dragTarget);
+                    dragTarget.style.cursor = 'grab';
+                }
+                isDragging = false;
+                dragTarget = null;
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('#studio-floating-bar') && !e.target.closest('.editable-item') && !e.target.closest('.ui-controls')) {
+                    selectElement(null);
+                }
+            });
+        }
+
+        window.toggleEditorMode = function() {
+            isStudioModeActive = !isStudioModeActive;
+            const btn = document.getElementById('btn-editor-mode');
+            if (isStudioModeActive) {
+                if (btn) {
+                    btn.textContent = '🎨 Mode Studio : ACTIF';
+                    btn.style.background = '#f59e0b';
+                    btn.style.color = '#000';
+                }
+                showToast("🎨 Mode Studio ACTIF : Cliquez sur un élément pour l'agrandir ou le déplacer !");
+            } else {
+                if (btn) {
+                    btn.textContent = '🎨 Mode Studio : OFF';
+                    btn.style.background = '#475569';
+                    btn.style.color = '#fff';
+                }
+                selectElement(null);
+                showToast('📺 Mode Affichage TV pur');
+            }
+        };
+
+        window.resetAllVisualLayout = function() {
+            if (confirm('Réinitialiser toutes les tailles et positions par défaut ?')) {
+                localStorage.removeItem(LAYOUT_KEY);
+                layoutState = {};
+                document.querySelectorAll('.editable-item').forEach(el => {
+                    el.dataset.scale = 1;
+                    el.dataset.tx = 0;
+                    el.dataset.ty = 0;
+                    el.dataset.flipH = 1;
+                    el.dataset.zIndex = '';
+                    applyTransform(el);
+                });
+                selectElement(null);
+                showToast('↺ Toutes les tailles et positions ont été réinitialisées !');
+            }
+        };
+
+        // Edit Modal
+        function openEditModal() {
+            const container = document.getElementById('edit-items-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const cols = [
+                { id: 'col-s1-1', title: 'Tacos Classic', sId: 'val-s1-1-seul', mId: 'val-s1-1-menu', descId: 'desc-s1-1', hId: 'hero-s1-1' },
+                { id: 'col-s1-2', title: 'Tacos Chicken', sId: 'val-s1-2-seul', mId: 'val-s1-2-menu', descId: 'desc-s1-2', hId: 'hero-s1-2' },
+                { id: 'col-s1-3', title: 'Tacos Mixte', sId: 'val-s1-3-seul', mId: 'val-s1-3-menu', descId: 'desc-s1-3', hId: 'hero-s1-3' },
+                { id: 'col-s2-1', title: 'Sandwich Américain', sId: 'val-s2-1-seul', mId: 'val-s2-1-menu', descId: 'desc-s2-1', hId: 'hero-s2-1' },
+                { id: 'col-s2-2', title: 'Tortilla Royale', sId: 'val-s2-2-seul', mId: 'val-s2-2-menu', descId: 'desc-s2-2', hId: 'hero-s2-2' },
+                { id: 'col-s2-3', title: 'Kefta Pur Bœuf', sId: 'val-s2-3-seul', mId: 'val-s2-3-menu', descId: 'desc-s2-3', hId: 'hero-s2-3' }
+            ];
+
+            cols.forEach(c => {
+                const sVal = document.getElementById(c.sId)?.innerText.replace(/[^0-9+]/g, '') || '29';
+                const mVal = document.getElementById(c.mId)?.innerText.replace(/[^0-9+]/g, '') || '39';
+                const descVal = document.getElementById(c.descId)?.innerText || '';
+                const heroEl = document.getElementById(c.hId);
+                const curScale = Math.round((parseFloat(heroEl?.dataset.scale || 1)) * 100);
+
+                const card = document.createElement('div');
+                card.style.background = '#0f172a';
+                card.style.padding = '14px';
+                card.style.borderRadius = '10px';
+                card.style.border = '1px solid #334155';
+
+                const curImgSrc = heroEl ? heroEl.getAttribute('src') : '';
+                const imgOptions = [
+                    { val: 'cutouts_cropped/norm_complet.png', label: '🥖 Bocadillo Complet (Tanger)' },
+                    { val: 'cutouts_cropped/norm_poulet.png', label: '🍗 Tacos Escalope Poulet' },
+                    { val: 'cutouts_cropped/norm_mixte.png', label: '🥩 Tacos Mixte Royal' },
+                    { val: 'cutouts_cropped/norm_americain.png', label: '🍔 Sandwich Américain Smash' },
+                    { val: 'cutouts_cropped/norm_tortilla.png', label: '🍳 Tortilla Royale Minute' },
+                    { val: 'cutouts_cropped/norm_kefta.png', label: '🥩 Kefta Pur Bœuf Maison' },
+                    { val: 'cutouts_cropped/norm_hero_tuna.png', label: '🐟 Thon Marocain (Photo Uploadée)' }
+                ];
+                let optsHtml = imgOptions.map(opt => `<option value="${opt.val}" ${curImgSrc === opt.val ? 'selected' : ''}>${opt.label}</option>`).join('');
+
+                card.innerHTML = `
+                    <div style="font-weight:bold; color:#fcd535; font-size:15px; margin-bottom:8px;">${c.title}</div>
+                    <div style="display:flex; gap:8px; margin-bottom:8px;">
+                        <div style="flex:1;">
+                            <label style="font-size:11px; color:#cbd5e1; display:block;">Prix Seul (DH)</label>
+                            <input type="text" id="modal_${c.sId}" value="${sVal}" style="width:100%; background:#1e293b; border:1px solid #475569; color:#fff; padding:6px; border-radius:6px; font-weight:bold;">
+                        </div>
+                        <div style="flex:1;">
+                            <label style="font-size:11px; color:#cbd5e1; display:block;">Prix Menu (DH)</label>
+                            <input type="text" id="modal_${c.mId}" value="${mVal}" style="width:100%; background:#1e293b; border:1px solid #475569; color:#fff; padding:6px; border-radius:6px; font-weight:bold;">
+                        </div>
+                    </div>
+                    <div style="margin-bottom:8px;">
+                        <label style="font-size:11px; color:#cbd5e1; display:block;">Description</label>
+                        <input type="text" id="modal_${c.descId}" value="${descVal}" style="width:100%; background:#1e293b; border:1px solid #475569; color:#fff; padding:6px; border-radius:6px; font-size:12px;">
+                    </div>
+                    <div style="margin-bottom:8px;">
+                        <label style="font-size:11px; color:#cbd5e1; display:block;">Photo Sandwich (100% Horizontal)</label>
+                        <select id="modal_img_${c.hId}" style="width:100%; background:#1e293b; border:1px solid #475569; color:#fcd535; padding:6px; border-radius:6px; font-size:12px; font-weight:bold;">
+                            ${optsHtml}
+                        </select>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; background:#1e293b; padding:6px 10px; border-radius:8px;">
+                        <span style="font-size:12px; color:#cbd5e1;">Taille Sandwich: <b id="lbl-scale-${c.hId}" style="color:#fcd535;">${curScale}%</b></span>
+                        <div style="display:flex; gap:6px;">
+                            <button type="button" onclick="adjustScaleDirect('${c.hId}', -0.05)" style="background:#334155; color:#fff; border:none; width:26px; height:26px; border-radius:50%; font-weight:bold; cursor:pointer;">−</button>
+                            <button type="button" onclick="adjustScaleDirect('${c.hId}', 0.05)" style="background:#10b981; color:#000; border:none; width:26px; height:26px; border-radius:50%; font-weight:bold; cursor:pointer;">+</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            document.getElementById('edit-modal').style.display = 'flex';
+        }
+
+        window.adjustScaleDirect = function(elId, delta) {
+            const el = document.getElementById(elId);
+            if (!el) return;
+            let s = parseFloat(el.dataset.scale || 1);
+            s = Math.min(2.8, Math.max(0.3, s + delta));
+            el.dataset.scale = s.toFixed(2);
+            applyTransform(el);
+            saveElementState(el);
+            const lbl = document.getElementById(`lbl-scale-${elId}`);
+            if (lbl) lbl.textContent = Math.round(s * 100) + '%';
+            showToast(`🔍 Taille: ${Math.round(s * 100)}%`);
+        };
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').style.display = 'none';
+        }
+
+        function saveAndApplyModal() {
+            const cols = [
+                { sId: 'val-s1-1-seul', mId: 'val-s1-1-menu', descId: 'desc-s1-1', hId: 'hero-s1-1' },
+                { sId: 'val-s1-2-seul', mId: 'val-s1-2-menu', descId: 'desc-s1-2', hId: 'hero-s1-2' },
+                { sId: 'val-s1-3-seul', mId: 'val-s1-3-menu', descId: 'desc-s1-3', hId: 'hero-s1-3' },
+                { sId: 'val-s2-1-seul', mId: 'val-s2-1-menu', descId: 'desc-s2-1', hId: 'hero-s2-1' },
+                { sId: 'val-s2-2-seul', mId: 'val-s2-2-menu', descId: 'desc-s2-2', hId: 'hero-s2-2' },
+                { sId: 'val-s2-3-seul', mId: 'val-s2-3-menu', descId: 'desc-s2-3', hId: 'hero-s2-3' }
+            ];
+
+            cols.forEach(c => {
+                const sInp = document.getElementById('modal_' + c.sId);
+                const mInp = document.getElementById('modal_' + c.mId);
+                const descInp = document.getElementById('modal_' + c.descId);
+
+                const sEl = document.getElementById(c.sId);
+                const mEl = document.getElementById(c.mId);
+                const descEl = document.getElementById(c.descId);
+
+                if (sInp && sEl) sEl.innerHTML = `${sInp.value.trim()}<span class="curr-sign">DH</span>`;
+                if (mInp && mEl) mEl.innerHTML = `${mInp.value.trim()}<span class="curr-sign">DH</span>`;
+                if (descInp && descEl) descEl.innerText = descInp.value.trim();
+
+                const imgSelect = document.getElementById('modal_img_' + c.hId);
+                const heroEl = document.getElementById(c.hId);
+                if (imgSelect && heroEl && imgSelect.value) {
+                    heroEl.src = imgSelect.value;
+                }
+            });
+
+            closeEditModal();
+            showToast('✓ Modifications enregistrées avec succès !');
+        }
+
+        window.addEventListener('DOMContentLoaded', initVisualEditor);
+
+        // ================= REALISTIC FLYING EMBERS CANVAS =================
+        const canvas = document.getElementById('embers-canvas');
+        const ctx = canvas.getContext('2d');
+
+        class EmberParticle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * 1920;
+                this.y = 1080 + Math.random() * 50;
+                this.vx = (Math.random() - 0.5) * 1.5;
+                this.vy = -(Math.random() * 2.2 + 1.2);
+                this.radius = Math.random() * 2.8 + 1.2;
+                this.alpha = Math.random() * 0.8 + 0.3;
+                this.life = 0;
+                this.maxLife = Math.random() * 120 + 80;
+                this.color = Math.random() > 0.4 ? '#ff5500' : '#ffaa00';
+            }
+            update() {
+                this.life++;
+                this.x += this.vx + Math.sin(this.life * 0.05) * 0.8;
+                this.y += this.vy;
+                const progress = this.life / this.maxLife;
+                this.alpha = progress > 0.7 ? (1 - progress) / 0.3 : 1;
+                if (this.life >= this.maxLife || this.y < -20) this.reset();
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = Math.max(0, this.alpha);
+                ctx.fillStyle = this.color;
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = 10;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        const embers = Array.from({ length: 45 }, () => new EmberParticle());
+        function animateEmbers() {
+            ctx.clearRect(0, 0, 1920, 1080);
+            embers.forEach(e => { e.update(); e.draw(); });
+            requestAnimationFrame(animateEmbers);
+        }
+        requestAnimationFrame(animateEmbers);
+    
+        window.copyDirectLink = function() {
+            const url = window.location.href;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(() => {
+                    showToast('✓ Lien copié : ' + url);
+                }).catch(() => {
+                    prompt('Lien direct de ce menu :', url);
+                });
+            } else {
+                prompt('Lien direct de ce menu :', url);
+            }
+        };
+    
+</script>
+</body>
+</html>
+

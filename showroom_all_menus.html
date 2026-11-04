@@ -3,154 +3,329 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Showroom Interactif — Les 19 Menus TV Mon Bocadillo</title>
+    <title>Mon Bocadillo Tanger — Hub Central de Tous les Menus TV</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=Bebas+Neue&family=Oswald:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #07090e; color: #fff; margin:0; padding:0; overflow:hidden; }
         .tab-menu-btn {
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             white-space: nowrap;
             flex-shrink: 0;
         }
         .tab-menu-btn.active {
-            background: linear-gradient(135deg, #ff6b00 0%, #ea580c 100%) !important;
+            background: linear-gradient(135deg, #ff6b00 0%, #dc2626 100%) !important;
             color: #fff !important;
             border-color: #ff6b00 !important;
-            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.4);
-            transform: scale(1.02);
+            box-shadow: 0 4px 18px rgba(255, 107, 0, 0.5);
+            transform: scale(1.03);
         }
         iframe {
             width: 100%;
-            height: calc(100vh - 105px);
+            height: calc(100vh - 120px);
             border: none;
             display: block;
             background: #000;
+        }
+        /* Custom scrollbar for tabs */
+        .no-scrollbar::-webkit-scrollbar {
+            height: 4px;
+        }
+        .no-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.03);
+        }
+        .no-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255,107,0,0.4);
+            border-radius: 4px;
         }
     </style>
 </head>
 <body class="h-screen w-screen flex flex-col">
 
-    <!-- TOP HEADER -->
-    <header class="h-[105px] bg-[#0b0f19] border-b border-white/10 px-4 md:px-6 flex flex-col justify-center shrink-0 shadow-2xl z-50">
+    <!-- TOP MASTER HEADER -->
+    <header class="h-[120px] bg-[#0b0f19] border-b border-white/10 px-4 md:px-6 flex flex-col justify-center shrink-0 shadow-2xl z-50">
         <div class="flex items-center justify-between pb-2 border-b border-white/5">
             <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-orange-500 to-red-600 flex items-center justify-center text-white text-sm shadow-md">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-orange-500 via-red-600 to-amber-500 flex items-center justify-center text-white text-base shadow-lg shadow-orange-500/30">
                     <i class="fa-solid fa-tv"></i>
                 </div>
                 <div>
-                    <h1 class="text-sm md:text-base font-black text-white flex items-center gap-1.5 leading-tight">
-                        CATALOGUE COMPLET : <span class="text-orange-500">19 MENUS TV DISPONIBLES</span>
+                    <h1 class="text-sm md:text-lg font-black text-white flex items-center gap-2 leading-tight">
+                        MON BOCADILLO TANGER : <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-300 to-red-500">TOUS VOS MENUS TV EN 1 SEUL ENDROIT</span>
                     </h1>
                 </div>
-                <span id="current-menu-badge" class="hidden md:inline-block px-2.5 py-0.5 rounded-full text-[11px] font-black bg-orange-500/20 text-orange-300 border border-orange-500/30">
-                    Menu Actuel : ⭐ Ultra Cinéma 4K
+                <span id="current-menu-badge" class="hidden lg:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-orange-500/20 text-orange-300 border border-orange-500/30">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Menu Actuel : ⚡ 12. Canva Motion (Pop-In)
                 </span>
             </div>
 
             <div class="flex items-center gap-2">
-                <a id="btn-fullscreen-link" href="menu_cinema_ultra_master.html" target="_blank" class="px-3 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-black text-xs flex items-center gap-1.5 shadow-md transition cursor-pointer">
+                <!-- 1. COPIER LE LIEN DIRECT -->
+                <button onclick="copyCurrentMenuLink()" class="px-3 py-1.5 rounded-xl bg-blue-600/20 hover:bg-blue-600/40 text-blue-300 border border-blue-500/30 font-bold text-xs flex items-center gap-1.5 transition cursor-pointer shadow-md" title="Copier l'adresse URL directe de ce menu">
+                    <i class="fa-solid fa-link text-blue-400"></i>
+                    <span class="hidden sm:inline">Copier Lien</span>
+                </button>
+
+                <!-- 2. SCAN QR CODE -->
+                <button onclick="openQRModal()" class="px-3 py-1.5 rounded-xl bg-purple-600/20 hover:bg-purple-600/40 text-purple-300 border border-purple-500/30 font-bold text-xs flex items-center gap-1.5 transition cursor-pointer shadow-md" title="Afficher le QR Code pour ouvrir ce menu sur smartphone">
+                    <i class="fa-solid fa-qrcode text-purple-400"></i>
+                    <span class="hidden sm:inline">QR Code</span>
+                </button>
+
+                <!-- 3. TÉLÉCHARGER CE MENU HTML -->
+                <a id="btn-download-menu" href="menu_concept12_street_pop.html" download="menu_concept12_street_pop.html" class="px-3 py-1.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-300 border border-emerald-500/30 font-bold text-xs flex items-center gap-1.5 transition cursor-pointer shadow-md" title="Télécharger le fichier HTML de ce menu">
+                    <i class="fa-solid fa-download text-emerald-400"></i>
+                    <span class="hidden sm:inline">Télécharger</span>
+                </a>
+
+                <!-- 4. TÉLÉCHARGER PACK USB ZIP -->
+                <a href="Pack_TV_USB_Mon_Bocadillo.zip" download="Pack_TV_USB_Mon_Bocadillo.zip" class="px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/40 text-amber-300 border border-amber-500/30 font-bold text-xs flex items-center gap-1.5 transition cursor-pointer shadow-md" title="Télécharger le Pack Complet Hors-Ligne (ZIP) pour Clé USB">
+                    <i class="fa-solid fa-box-archive text-amber-400"></i>
+                    <span class="hidden md:inline">Pack USB (.ZIP)</span>
+                </a>
+
+                <!-- 5. PLEIN ÉCRAN F11 -->
+                <a id="btn-fullscreen-link" href="menu_concept12_street_pop.html" target="_blank" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-black text-xs flex items-center gap-1.5 shadow-lg shadow-orange-500/30 transition cursor-pointer">
                     <i class="fa-solid fa-expand"></i>
-                    <span>Ouvrir Plein Écran</span>
+                    <span>Plein Écran</span>
                 </a>
-                <a href="dashboard_pro.html" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 text-gray-300 font-bold text-xs flex items-center gap-1.5 transition">
-                    <i class="fa-solid fa-sliders"></i>
-                    <span>Tableau de Bord</span>
-                </a>
+
+                <button onclick="reloadFrame()" class="px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 text-gray-200 font-bold text-xs flex items-center gap-1.5 transition" title="Actualiser le menu">
+                    <i class="fa-solid fa-rotate-right"></i>
+                </button>
             </div>
         </div>
 
-        <!-- HORIZONTAL SCROLLABLE TABS -->
-        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-2 pb-1">
-            <button onclick="switchMenu('menu_cinema_ultra_master.html', this, '⭐ Ultra Cinéma 4K', 'Vidéo 4K Braises, Hero 3D géant et bandeau live Tanger')" class="tab-menu-btn active px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
-        <span>⭐ Ultra Cinéma 4K</span>
-    </button>
-<button onclick="switchMenu('menu_concept1_wood_atelier.html', this, '🪵 1. Bois Rustique', 'Chêne sombre, vapeur chaude qui fume et étiquettes kraft')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
-        <span>🪵 1. Bois Rustique</span>
-    </button>
-<button onclick="switchMenu('menu_concept2_sky_terrace.html', this, '☁️ 2. Ciel & Nuages', 'Ciel azur animé avec nuages qui défilent et rayons de soleil 360°')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
-        <span>☁️ 2. Ciel & Nuages</span>
-    </button>
-<button onclick="switchMenu('menu_concept3_hero_spotlight.html', this, '🎯 3. Hero Spotlight 3D', 'Sandwich star qui glisse depuis la gauche avec projecteur de lumière')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
-        <span>🎯 3. Hero Spotlight 3D</span>
-    </button>
-<button onclick="switchMenu('menu_concept4_chalkboard_bistro.html', this, '🖍️ 4. Ardoise Bistro', 'Véritable tableau noir restaurant, pointillés craie et prix fluo')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
-        <span>🖍️ 4. Ardoise Bistro</span>
-    </button>
-<button onclick="switchMenu('menu_concept5_fire_grill.html', this, '🔥 5. Grill & Braises', 'Flammes de charbon avec étincelles et braises volantes en continu')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
-        <span>🔥 5. Grill & Braises</span>
-    </button>
-<button onclick="switchMenu('menu_concept6_conveyor_bento.html', this, '🍱 6. Bento Rail', 'Rails de convoyeur modernes ardoise et lévitation fluide')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
-        <span>🍱 6. Bento Rail</span>
-    </button>
-<button onclick="switchMenu('menu_concept7_gold_luxury.html', this, '👑 7. Royal Gold', 'Marbre onyx noir et reflets d'or 24K qui traversent les cartes')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
-        <span>👑 7. Royal Gold</span>
-    </button>
-<button onclick="switchMenu('menu_concept8_neon_arcade.html', this, '🕹️ 8. Cyber Arcade', 'Grille perspective 3D animée et néons cyan/rose vibrants')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
-        <span>🕹️ 8. Cyber Arcade</span>
-    </button>
-<button onclick="switchMenu('menu_concept9_food_truck.html', this, '🚚 9. Food Truck', 'Tôle container et planchettes kraft suspendues qui se balancent')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
-        <span>🚚 9. Food Truck</span>
-    </button>
-<button onclick="switchMenu('menu_concept10_broadcast_ticker.html', this, '📺 10. Studio TV Direct', 'Horloge live Tanger et bandeau d'actualités défilant en continu')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
-        <span>📺 10. Studio TV Direct</span>
-    </button>
-<button onclick="switchMenu('menu_concept11_ciel_soleil.html', this, '☀️ 11. Ciel & Soleil 3 Colonnes', 'Design moderne 3 colonnes avec capsules colorées, ardoises et frites incluses')" class="tab-menu-btn px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
-    <span>☀️ 11. Ciel & Soleil</span>
-</button>
-<button onclick="switchMenu('menu_concept12_street_pop.html', this, '⚡ 12. Street Pop & Neon Action', 'Motion TV style commercial vidéo avec bordure néon, comic starburst et 3 scènes dynamiques')" class="tab-menu-btn px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
-        <span>⚡ 12. Street Pop & Neon</span>
-    </button>
+                                                <!-- HORIZONTAL SCROLLABLE TABS -->
+        <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pt-2.5 pb-1">
 
-<button onclick="switchMenu('menu_model1_emirates.html', this, '🏆 M1. Émirates Sombre', 'Texture ardoise & or brossé haute gastronomie chamali')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
-        <span>🏆 M1. Émirates Sombre</span>
-    </button>
-<button onclick="switchMenu('menu_model2_urban.html', this, '🍔 M2. Modern Urban', 'Ambiance street food artisanale orange & bois kraft')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
-        <span>🍔 M2. Modern Urban</span>
-    </button>
-<button onclick="switchMenu('menu_model3_vibrant.html', this, '⚡ M3. Pop Vibrant', 'Design vitaminé jeune et moderne blanc & orange Tanger')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
-        <span>⚡ M3. Pop Vibrant</span>
-    </button>
-<button onclick="switchMenu('menu_model4_shakeshack.html', this, '🌿 M4. Shake Shack', 'Vert forêt profond et laiton champagne ultra frais')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
-        <span>🌿 M4. Shake Shack</span>
-    </button>
-<button onclick="switchMenu('menu_model5_fiveguys.html', this, '🇺🇸 M5. Five Guys Diner', 'Diner américain rouge vif & damier rétro 1950')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
-        <span>🇺🇸 M5. Five Guys Diner</span>
-    </button>
-<button onclick="switchMenu('menu_model6_chipotle.html', this, '🌋 M6. Chipotle Slate', 'Pierre volcanique brute & terracotta authentique')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
-        <span>🌋 M6. Chipotle Slate</span>
-    </button>
-<button onclick="switchMenu('menu_model7_gold_steakhouse.html', this, '💎 M7. Gold Steakhouse', 'Marbre noir impérial et or fondu 3D')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
-        <span>💎 M7. Gold Steakhouse</span>
-    </button>
-<button onclick="switchMenu('menu_model8_cyber_neon.html', this, '🌃 M8. Cyber Tokyo', 'Obsidienne et néons cyan/magenta électrisants')" class="tab-menu-btn  px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
-        <span>🌃 M8. Cyber Tokyo</span>
-    </button>
+            <!-- 🔥 SECTION 1 : LES DERNIÈRES CRÉATIONS (AUJOURD'HUI) -->
+            <button onclick="switchMenu('menu_concept12_street_pop.html', this, '⚡ Concept 12 : Canva Motion 2026 (Animation Séquentielle)')" class="tab-menu-btn active px-4 py-1.5 rounded-xl text-xs font-black bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 text-black border border-yellow-300 flex items-center gap-1.5 cursor-pointer shadow-lg shadow-orange-500/40">
+                <span>⚡ 12. Canva Motion (Pop-In)</span>
+            </button>
+
+            <button onclick="switchMenu('menu_concept11_ciel_soleil.html', this, '☀️ Concept 11 : Ciel & Soleil (3 Colonnes Ardoise)')" class="tab-menu-btn px-3.5 py-1.5 rounded-xl text-xs font-black bg-white/10 hover:bg-white/20 text-yellow-300 border border-yellow-400/40 flex items-center gap-1.5 cursor-pointer">
+                <span>☀️ 11. Ciel & Soleil</span>
+            </button>
+
+            <button onclick="switchMenu('menu_cinema_ultra_master.html', this, '🎬 Ultra Cinéma 4K (Planches Ardoise & Fumée)')" class="tab-menu-btn px-3.5 py-1.5 rounded-xl text-xs font-black bg-white/10 hover:bg-white/20 text-orange-300 border border-orange-400/40 flex items-center gap-1.5 cursor-pointer">
+                <span>🎬 Ultra Cinéma 4K</span>
+            </button>
+
+            <button onclick="switchMenu('menu_concept1_wood_atelier.html', this, '🪵 Concept 1 : Atelier du Bois (Tags Kraft)')" class="tab-menu-btn px-3.5 py-1.5 rounded-xl text-xs font-black bg-white/10 hover:bg-white/20 text-amber-200 border border-amber-400/40 flex items-center gap-1.5 cursor-pointer">
+                <span>🪵 1. Bois & Kraft</span>
+            </button>
+
+            <button onclick="switchMenu('MenuTV_Tacos_Style_Fire.html', this, '🌮 Concept 13 : Tacos Fire Grill 3D')" class="tab-menu-btn px-3.5 py-1.5 rounded-xl text-xs font-black bg-white/10 hover:bg-white/20 text-red-300 border border-red-400/40 flex items-center gap-1.5 cursor-pointer">
+                <span>🌮 13. Tacos Fire</span>
+            </button>
+
+            <span class="text-orange-500 font-black text-xs px-1">|</span>
+
+            <!-- 🎨 SECTION 2 : LES CONCEPTS CRÉATIFS 2 À 10 -->
+            <button onclick="switchMenu('menu_concept2_sky_terrace.html', this, '☁️ Concept 2 : Terrasse Ciel & Mer')" class="tab-menu-btn px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+                <span>☁️ 2. Terrasse Ciel</span>
+            </button>
+            <button onclick="switchMenu('menu_concept3_hero_spotlight.html', this, '🎯 Concept 3 : Hero Spotlight 3D')" class="tab-menu-btn px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+                <span>🎯 3. Hero Spotlight</span>
+            </button>
+            <button onclick="switchMenu('menu_concept4_chalkboard_bistro.html', this, '🖍️ Concept 4 : Ardoise Bistro Craie')" class="tab-menu-btn px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+                <span>🖍️ 4. Ardoise Bistro</span>
+            </button>
+            <button onclick="switchMenu('menu_concept5_fire_grill.html', this, '🔥 Concept 5 : Fire Grill Flammes')" class="tab-menu-btn px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+                <span>🔥 5. Fire Grill</span>
+            </button>
+            <button onclick="switchMenu('menu_concept6_conveyor_bento.html', this, '🍱 Concept 6 : Bento Rail Moderne')" class="tab-menu-btn px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+                <span>🍱 6. Bento Rail</span>
+            </button>
+            <button onclick="switchMenu('menu_concept7_gold_luxury.html', this, '👑 Concept 7 : Royal Gold & Marbre')" class="tab-menu-btn px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+                <span>👑 7. Royal Gold</span>
+            </button>
+            <button onclick="switchMenu('menu_concept8_neon_arcade.html', this, '🕹️ Concept 8 : Cyber Arcade Tokyo')" class="tab-menu-btn px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+                <span>🕹️ 8. Cyber Arcade</span>
+            </button>
+            <button onclick="switchMenu('menu_concept9_food_truck.html', this, '🚚 Concept 9 : Food Truck Planches')" class="tab-menu-btn px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+                <span>🚚 9. Food Truck</span>
+            </button>
+            <button onclick="switchMenu('menu_concept10_broadcast_ticker.html', this, '📺 Concept 10 : Studio TV Direct')" class="tab-menu-btn px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+                <span>📺 10. TV Direct</span>
+            </button>
+
+            <span class="text-gray-500 font-bold text-xs px-1">|</span>
+
+            <!-- 🌍 SECTION 3 : FRANCHISES INTERNATIONALES 1 À 8 -->
+            <button onclick="switchMenu('menu_model1_emirates.html', this, '🏆 M1 : Émirates Sombre Royal')" class="tab-menu-btn px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+                <span>🏆 M1. Émirates</span>
+            </button>
+            <button onclick="switchMenu('menu_model2_urban.html', this, '🍔 M2 : Modern Urban Street Food')" class="tab-menu-btn px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+                <span>🍔 M2. Urban</span>
+            </button>
+            <button onclick="switchMenu('menu_model3_vibrant.html', this, '⚡ M3 : Pop Tanger Vibrant')" class="tab-menu-btn px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+                <span>⚡ M3. Pop Vibrant</span>
+            </button>
+            <button onclick="switchMenu('menu_model4_shakeshack.html', this, '🌿 M4 : Shake Shack Style')" class="tab-menu-btn px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+                <span>🌿 M4. Shake Shack</span>
+            </button>
+            <button onclick="switchMenu('menu_model5_fiveguys.html', this, '🇺🇸 M5 : Five Guys American Diner')" class="tab-menu-btn px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+                <span>🇺🇸 M5. Five Guys</span>
+            </button>
+            <button onclick="switchMenu('menu_model6_chipotle.html', this, '🌋 M6 : Chipotle Slate Pierre')" class="tab-menu-btn px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+                <span>🌋 M6. Chipotle</span>
+            </button>
+            <button onclick="switchMenu('menu_model7_gold_steakhouse.html', this, '💎 M7 : Gold Steakhouse')" class="tab-menu-btn px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+                <span>💎 M7. Steakhouse</span>
+            </button>
+            <button onclick="switchMenu('menu_model8_cyber_neon.html', this, '🌃 M8 : Cyber Tokyo Neon')" class="tab-menu-btn px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+                <span>🌃 M8. Cyber Tokyo</span>
+            </button>
+
+            <span class="text-gray-500 font-bold text-xs px-1">|</span>
+
+            <!-- ⭐ SECTION 4 : PROMOS & AFFICHES SPÉCIALES -->
+            <button onclick="switchMenu('MenuTV_Chef_Artiste_Tanger.html', this, '👑 Chef Artiste & Duo Royal 59 DH')" class="tab-menu-btn px-3.5 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+                <span>👑 Chef Artiste</span>
+            </button>
+            <button onclick="switchMenu('MenuTV_Style_Mega_Promo.html', this, '🌟 Mega Hero Suprême Promo')" class="tab-menu-btn px-3.5 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+                <span>🌟 Mega Hero</span>
+            </button>
+            <button onclick="switchMenu('MenuTV_Style_FastFood_Split.html', this, '🌟 Fast-Food Split Promo')" class="tab-menu-btn px-3.5 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+                <span>🌟 Split Promo</span>
+            </button>
+            <button onclick="switchMenu('MenuTV_Style_Gourmet_Totem.html', this, '🌟 Gourmet Totem Catégories')" class="tab-menu-btn px-3.5 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+                <span>🌟 Gourmet Totem</span>
+            </button>
+            <button onclick="switchMenu('MenuTV_Style_Bright_Modern.html', this, '🌟 Bright Fast-Food Moderne')" class="tab-menu-btn px-3.5 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+                <span>🌟 Bright Moderne</span>
+            </button>
+            <button onclick="switchMenu('MenuTV_Affiche_FastFood_Infographie.html', this, '🔥 Affiche Billboard Agence')" class="tab-menu-btn px-3.5 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer">
+                <span>🔥 Affiche Billboard</span>
+            </button>
+
         </div>
     </header>
 
-    <!-- LIVE VIEWPORT -->
-    <main class="flex-1 relative bg-black">
-        <iframe id="showroom-frame" src="menu_cinema_ultra_master.html"></iframe>
+    <!-- LIVE VIEWPORT IFRAME -->
+    <main class="flex-1 relative bg-black flex items-center justify-center">
+        <iframe id="main-menu-frame" src="menu_concept12_street_pop.html"></iframe>
     </main>
 
     <script>
-        function switchMenu(url, btnEl, title, desc) {
+        let currentMenuUrl = 'menu_concept12_street_pop.html';
+        let currentMenuTitle = '⚡ Concept 12 : Canva Motion 2026 (Animation Séquentielle)';
+
+        function switchMenu(url, btnEl, title) {
+            currentMenuUrl = url;
+            currentMenuTitle = title;
+
             document.querySelectorAll('.tab-menu-btn').forEach(b => {
-                b.className = "tab-menu-btn px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer";
+                b.className = "tab-menu-btn px-3.5 py-1.5 rounded-xl text-xs font-black bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 flex items-center gap-1.5 cursor-pointer";
             });
-            btnEl.className = "tab-menu-btn active px-3 py-1.5 rounded-xl text-xs font-black bg-white/5 text-gray-200 border border-white/10 flex items-center gap-1.5 cursor-pointer";
-            
-            const frame = document.getElementById('showroom-frame');
+            btnEl.className = "tab-menu-btn active px-3.5 py-1.5 rounded-xl text-xs font-black bg-white/5 text-gray-200 border border-white/10 flex items-center gap-1.5 cursor-pointer";
+
+            const frame = document.getElementById('main-menu-frame');
             frame.src = url;
-            
+
             const fsBtn = document.getElementById('btn-fullscreen-link');
-            fsBtn.href = url;
+            if (fsBtn) fsBtn.href = url;
+
+            const dlBtn = document.getElementById('btn-download-menu');
+            if (dlBtn) {
+                dlBtn.href = url;
+                dlBtn.setAttribute('download', url);
+            }
 
             const badge = document.getElementById('current-menu-badge');
-            if (badge) badge.innerText = "Menu Actuel : " + title;
+            if (badge) {
+                badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Menu Actuel : ${title}`;
+            }
+        }
+
+        function reloadFrame() {
+            const frame = document.getElementById('main-menu-frame');
+            if (frame) frame.src = frame.src;
+        }
+
+        function getFullCurrentUrl() {
+            return window.location.origin + '/' + currentMenuUrl;
+        }
+
+        function copyCurrentMenuLink() {
+            const fullUrl = getFullCurrentUrl();
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(fullUrl).then(() => {
+                    showShowroomToast('✓ Lien copié : ' + fullUrl);
+                }).catch(() => {
+                    prompt('Copiez le lien direct de ce menu :', fullUrl);
+                });
+            } else {
+                prompt('Copiez le lien direct de ce menu :', fullUrl);
+            }
+        }
+
+        function openQRModal() {
+            const fullUrl = getFullCurrentUrl();
+            const qrImg = document.getElementById('qr-img');
+            const qrInput = document.getElementById('qr-url-input');
+            const qrTitle = document.getElementById('qr-menu-title');
+            const qrModal = document.getElementById('qr-modal');
+
+            if (qrTitle) qrTitle.textContent = currentMenuTitle;
+            if (qrInput) qrInput.value = fullUrl;
+            if (qrImg) qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(fullUrl)}`;
+            if (qrModal) qrModal.style.display = 'flex';
+        }
+
+        function closeQRModal() {
+            const qrModal = document.getElementById('qr-modal');
+            if (qrModal) qrModal.style.display = 'none';
+        }
+
+        function copyQRUrl() {
+            const fullUrl = getFullCurrentUrl();
+            navigator.clipboard.writeText(fullUrl);
+            showShowroomToast('✓ Lien copié dans le presse-papier !');
+        }
+
+        function showShowroomToast(msg) {
+            const toast = document.getElementById('showroom-toast');
+            const toastMsg = document.getElementById('showroom-toast-msg');
+            if (!toast) return;
+            if (toastMsg) toastMsg.textContent = msg;
+            toast.classList.remove('opacity-0', 'pointer-events-none', '-translate-y-8');
+            toast.classList.add('opacity-100', 'translate-y-0');
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => {
+                toast.classList.add('opacity-0', 'pointer-events-none', '-translate-y-8');
+                toast.classList.remove('opacity-100', 'translate-y-0');
+            }, 3000);
         }
     </script>
+
+    <!-- Showroom Toast Notification -->
+    <div id="showroom-toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 -translate-y-8 opacity-0 pointer-events-none bg-emerald-500 text-white font-bold text-xs md:text-sm px-6 py-2.5 rounded-full shadow-2xl transition-all duration-300 z-50 flex items-center gap-2">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="showroom-toast-msg">Lien copié avec succès !</span>
+    </div>
+
+    <!-- QR Code Modal -->
+    <div id="qr-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-[#0f172a] border border-white/20 rounded-2xl p-6 max-w-sm w-full text-center shadow-2xl relative">
+            <button onclick="closeQRModal()" class="absolute top-3 right-4 text-gray-400 hover:text-white text-lg font-bold">✕</button>
+            <h3 class="text-white font-black text-base mb-1" id="qr-menu-title">Menu TV Mon Bocadillo</h3>
+            <p class="text-gray-400 text-xs mb-4">Scannez pour ouvrir directement sur smartphone ou tablette</p>
+            <div class="bg-white p-3 rounded-xl inline-block shadow-inner mb-4">
+                <img id="qr-img" src="" alt="QR Code" class="w-48 h-48 block">
+            </div>
+            <div class="flex items-center gap-2 bg-white/5 border border-white/10 p-2 rounded-xl mb-4">
+                <input id="qr-url-input" type="text" readonly class="bg-transparent text-xs text-orange-300 font-mono flex-1 outline-none px-2 select-all">
+                <button onclick="copyQRUrl()" class="px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold rounded-lg transition">Copier</button>
+            </div>
+            <button onclick="closeQRModal()" class="w-full py-2 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-xl transition">Fermer</button>
+        </div>
+    </div>
+
 </body>
 </html>
+
