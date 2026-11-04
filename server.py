@@ -223,6 +223,44 @@ def open_folder():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/api/update_item_price', methods=['POST'])
+def update_item_price():
+    try:
+        import datetime
+        req = request.json or {}
+        item_id = req.get('id')
+        sand_price = req.get('price_sandwich')
+        drk_price = req.get('price_drink')
+
+        if not os.path.exists(MENU_ITEMS_FILE):
+            return jsonify({"error": "menu_items.json not found"}), 404
+
+        with open(MENU_ITEMS_FILE, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+
+        updated = False
+        for item in data.get('items', []):
+            if item.get('id') == item_id or (item_id and item.get('title', '').strip().lower() == str(item_id).strip().lower()):
+                if sand_price is not None:
+                    item['price_sandwich'] = str(sand_price).replace('DH', '').replace('dh', '').strip()
+                if drk_price is not None:
+                    cleaned_drk = str(drk_price).replace('DH', '').replace('dh', '').replace('+', '').strip()
+                    item['price_drink'] = f"+{cleaned_drk}" if cleaned_drk else "+7"
+                updated = True
+                break
+
+        if updated:
+            if "global_settings" not in data:
+                data["global_settings"] = {}
+            data["global_settings"]["updated_at"] = datetime.datetime.now().isoformat()
+            with open(MENU_ITEMS_FILE, 'w', encoding='utf-8') as f:
+                json.dump(data, f, indent=2, ensure_ascii=False)
+            return jsonify({"success": True, "updated_at": data["global_settings"]["updated_at"], "data": data})
+        else:
+            return jsonify({"error": f"Item '{item_id}' non trouvé"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @app.route('/api/save_custom_layout', methods=['POST'])
 def save_custom_layout():
     try:

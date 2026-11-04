@@ -1,11 +1,12 @@
 /**
- * STUDIO EDITOR UNIVERSAL V4.5 - TOTAL CONTROL & UNIVERSAL PRICE/TAG SUITE
- * 1. Double-clic sur N'IMPORTE QUEL texte ou étiquette de prix (kraft-tag, price-sand-num, etc.) pour le modifier
- * 2. Bouton dédié [💰 Modifier Prix] pour changer le prix en 1 seconde par popup
- * 3. Glisser-déposer (Drag & Drop) de tous les tags de prix, textes, sandwichs, et cartes
- * 4. Molette de la souris pour agrandir / rétrécir n'importe quelle étiquette ou produit
- * 5. Boutons Déplacer, Pivoter, Devant/Derrière, Dupliquer, Réinitialiser
- * 6. Sauvegarde permanente sur le serveur (/api/save_custom_layout)
+ * STUDIO EDITOR UNIVERSAL V5.0 - TOTAL CONTROL & ONE-CLICK PRICE CHANGER SUITE
+ * 1. 1-CLIC ou Double-clic sur N'IMPORTE QUELLE étiquette de prix (kraft-tag, price-sand-num, etc.) pour ouvrir le Modal de Prix
+ * 2. Synchronisation automatique et PERMANENTE avec menu_items.json (/api/update_item_price)
+ * 3. Diffusion en direct sur toutes les TV (BroadcastChannel MENU_TV_CHANNEL)
+ * 4. Déplacement (Drag & Drop) de l'étiquette complète sans détacher les chiffres du fond kraft
+ * 5. Molette de la souris pour agrandir / rétrécir n'importe quelle étiquette ou produit
+ * 6. Double-clic sur n'importe quel texte pour modifier directement au clavier
+ * 7. Sauvegarde permanente sur le serveur (/api/save_custom_layout)
  * Works across ALL 22 Mon Bocadillo Tanger Menus.
  */
 (function() {
@@ -47,6 +48,11 @@
                 -webkit-user-select: text !important;
             }
 
+            /* Price tag hover indicator */
+            .kraft-tag, .price-sand-num, .price-drk-num, .canva-badge-price, .ciel-price-tag, .spec-price-tag, .price-capsule {
+                cursor: pointer !important;
+            }
+
             /* Floating Studio Toolbar */
             #studio-floating-bar {
                 position: fixed;
@@ -60,7 +66,7 @@
                 align-items: center;
                 box-shadow: 0 15px 40px rgba(0, 0, 0, 0.95), 0 0 25px rgba(16, 185, 129, 0.4);
                 backdrop-filter: blur(16px);
-                font-family: 'Montserrat', sans-serif;
+                font-family: 'Montserrat', system-ui, sans-serif;
                 animation: barPop 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
                 max-width: 96vw;
                 flex-wrap: nowrap;
@@ -117,6 +123,7 @@
                 color: #000 !important;
                 border-color: #fbbf24 !important;
                 font-weight: 900 !important;
+                box-shadow: 0 0 12px rgba(245, 158, 11, 0.5) !important;
             }
             .studio-btn-price:hover {
                 background: #fbbf24 !important;
@@ -149,7 +156,9 @@
                 box-shadow: none !important;
             }
             body.tv-mode #studio-floating-bar,
-            body.tv-display-mode #studio-floating-bar {
+            body.tv-display-mode #studio-floating-bar,
+            body.tv-mode #studio-price-modal,
+            body.tv-display-mode #studio-price-modal {
                 display: none !important;
             }
         `;
@@ -164,7 +173,7 @@
             <span class="studio-tag" id="sbar-tag">ÉLÉMENT</span>
             <div class="studio-divider"></div>
             <!-- Quick Price Edit Button -->
-            <button class="studio-btn studio-btn-wide studio-btn-price" id="sbar-edit-price" title="Modifier le prix de cet article">💰 Prix</button>
+            <button class="studio-btn studio-btn-wide studio-btn-price" id="sbar-edit-price" title="Modifier le prix de cet article (ou clic direct sur le prix)">💰 Modifier Prix</button>
             <!-- Edit Text Button -->
             <button class="studio-btn studio-btn-wide" id="sbar-edit-text" title="Modifier le texte (ou double-clic)">✏️ Texte</button>
             <div class="studio-divider"></div>
@@ -207,10 +216,70 @@
         t.style.transform = 'translateX(-50%) translateY(0)';
         setTimeout(() => {
             t.style.transform = 'translateX(-50%) translateY(120px)';
-        }, 2500);
+        }, 3000);
     }
 
-    // 4. Utility Functions
+    // 4. Inject Fast Price Modal HTML
+    if (!document.getElementById('studio-price-modal')) {
+        const modal = document.createElement('div');
+        modal.id = 'studio-price-modal';
+        modal.style.cssText = `
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999999999;
+            background: rgba(10, 15, 26, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', system-ui, sans-serif;
+        `;
+        modal.innerHTML = `
+            <div style="background:#111827; border:2px solid #f59e0b; border-radius:24px; padding:28px 32px; width:92%; max-width:440px; box-shadow:0 25px 60px rgba(0,0,0,0.95), 0 0 40px rgba(245,158,11,0.25); color:#fff; position:relative; box-sizing:border-box;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:14px;">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <div style="width:42px; height:42px; border-radius:14px; background:rgba(245,158,11,0.18); border:1px solid #f59e0b; display:flex; align-items:center; justify-content:center; font-size:22px;">💰</div>
+                        <div>
+                            <h3 id="modal-item-name" style="margin:0; font-size:18px; font-weight:900; color:#fbbf24; text-transform:uppercase; letter-spacing:0.5px;">MODIFIER LE PRIX</h3>
+                            <div id="modal-item-category" style="font-size:12px; font-weight:700; color:#9ca3af; margin-top:2px;">Mon Bocadillo Tanger</div>
+                        </div>
+                    </div>
+                    <button id="modal-close-btn" type="button" style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.15); color:#9ca3af; width:34px; height:34px; border-radius:50%; font-size:18px; cursor:pointer; font-weight:bold; display:flex; align-items:center; justify-content:center; transition:all 0.15s;">&times;</button>
+                </div>
+
+                <form id="studio-price-form" onsubmit="return false;" style="display:flex; flex-direction:column; gap:18px; margin:0;">
+                    <div>
+                        <label style="display:block; font-size:12px; font-weight:800; color:#e5e7eb; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">
+                            🥪 Prix Sandwich / Plat (DH) :
+                        </label>
+                        <div style="position:relative; display:flex; align-items:center;">
+                            <input id="modal-sand-price" type="number" step="0.5" min="0" required style="width:100%; box-sizing:border-box; background:#1f2937; border:2px solid #374151; border-radius:14px; padding:12px 60px 12px 18px; font-size:24px; font-weight:900; color:#10b981; outline:none; transition:border-color 0.2s;" placeholder="ex: 30">
+                            <span style="position:absolute; right:18px; font-size:15px; font-weight:900; color:#9ca3af; pointer-events:none;">DH</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label style="display:block; font-size:12px; font-weight:800; color:#e5e7eb; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">
+                            🥤 Option Boisson Fraîche (DH) :
+                        </label>
+                        <div style="position:relative; display:flex; align-items:center;">
+                            <input id="modal-drk-price" type="number" step="0.5" min="0" required style="width:100%; box-sizing:border-box; background:#1f2937; border:2px solid #374151; border-radius:14px; padding:12px 60px 12px 18px; font-size:24px; font-weight:900; color:#f59e0b; outline:none; transition:border-color 0.2s;" placeholder="ex: 7">
+                            <span style="position:absolute; right:18px; font-size:15px; font-weight:900; color:#9ca3af; pointer-events:none;">DH</span>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; gap:12px; margin-top:8px;">
+                        <button id="modal-cancel-btn" type="button" style="flex:1; padding:14px; border-radius:14px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:#e5e7eb; font-weight:800; font-size:13px; cursor:pointer; transition:all 0.15s;">Annuler</button>
+                        <button id="modal-save-btn" type="submit" style="flex:2; padding:14px; border-radius:14px; background:linear-gradient(135deg, #10b981 0%, #059669 100%); border:none; color:#ffffff; font-weight:900; font-size:14px; cursor:pointer; box-shadow:0 6px 20px rgba(16,185,129,0.4); transition:all 0.15s;">💾 Enregistrer Partout</button>
+                    </div>
+                </form>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+
+    // 5. Utility Functions
     function getStageScale() {
         const stageEl = document.getElementById('stage') || document.querySelector('.stage') || document.getElementById('screen-stage') || document.body;
         const rect = stageEl.getBoundingClientRect();
@@ -229,23 +298,181 @@
 
     function isPriceOrTag(el) {
         const cls = (el.className || '').toString().toLowerCase();
-        return cls.includes('price') || cls.includes('tag') || cls.includes('kraft') || cls.includes('badge') || cls.includes('sand-num') || cls.includes('drk-num') || el.dataset.priceRole;
+        return cls.includes('price') || cls.includes('tag') || cls.includes('kraft') || cls.includes('badge') || cls.includes('sand-num') || cls.includes('drk-num') || el.dataset?.priceRole;
     }
 
+    function getItemDataFromElement(el) {
+        const card = el.closest('[data-item-id], .menu-card, .glass-acrylic-card, .slate-card, .dish-card, .col-card, .item-card, .sandwich-card, .menu-item-row') || el;
+        
+        let itemId = card.dataset?.itemId || el.dataset?.itemId || '';
+        
+        let title = '';
+        const titleEl = card.querySelector?.('.main-title, .brand-title, .canva-hero-title, .item-title, .sandwich-name, h1, h2, h3, h4');
+        if (titleEl) {
+            title = (titleEl.innerText || '').trim();
+        }
+        
+        if (!itemId && title) {
+            itemId = title.toLowerCase().replace(/[^a-z0-9]/g, '_');
+        }
+        if (!itemId) itemId = 'complet';
+
+        let sandPrice = '30';
+        const sandPriceEl = card.querySelector?.('.price-sand-num, .canva-price-val, .ciel-price-num, .price-val, .price-num, .p-sand-val, .p-sand') || el.closest?.('.price-sand-num, .canva-price-val, .ciel-price-num, .price-val, .price-num') || el;
+        if (sandPriceEl) {
+            const raw = sandPriceEl.innerText || '';
+            const m = raw.match(/(\d+(?:[.,]\d+)?)/);
+            if (m) sandPrice = m[1];
+        }
+
+        let drkPrice = '7';
+        const drkPriceEl = card.querySelector?.('.price-drk-num, .p-drk-val, .p-drk') || el.closest?.('.price-drk-num');
+        if (drkPriceEl) {
+            const raw = drkPriceEl.innerText || '';
+            const m = raw.match(/(\d+(?:[.,]\d+)?)/);
+            if (m) drkPrice = m[1];
+        }
+
+        return { card, itemId, title: title || itemId.toUpperCase(), sandPrice, drkPrice, sandPriceEl, drkPriceEl };
+    }
+
+    // Modal Control Functions
+    let currentModalTarget = null;
+
+    function openPriceModal(targetEl) {
+        if (isTvMode) return;
+        const modal = document.getElementById('studio-price-modal');
+        if (!modal) return;
+
+        currentModalTarget = getItemDataFromElement(targetEl);
+
+        document.getElementById('modal-item-name').textContent = currentModalTarget.title;
+        document.getElementById('modal-item-category').textContent = `Article: ${currentModalTarget.itemId.toUpperCase()} • Mon Bocadillo Tanger`;
+        
+        const sandInput = document.getElementById('modal-sand-price');
+        const drkInput = document.getElementById('modal-drk-price');
+        
+        sandInput.value = currentModalTarget.sandPrice;
+        drkInput.value = currentModalTarget.drkPrice;
+
+        modal.style.display = 'flex';
+        setTimeout(() => {
+            sandInput.focus();
+            sandInput.select();
+        }, 50);
+    }
+
+    function closePriceModal() {
+        const modal = document.getElementById('studio-price-modal');
+        if (modal) modal.style.display = 'none';
+        currentModalTarget = null;
+    }
+
+    async function saveItemPrice(itemId, newSandPrice, newDrkPrice, itemData) {
+        newSandPrice = (newSandPrice || '').toString().trim();
+        newDrkPrice = (newDrkPrice || '').toString().trim().replace(/^\+/, '');
+
+        // 1. Update DOM Elements
+        if (itemData && itemData.card) {
+            const card = itemData.card;
+            
+            const pSand = card.querySelector('.price-sand-num, .p-sand-val, .p-sand, .canva-price-val, .ciel-price-num, .price-val, .price-num');
+            if (pSand) {
+                const currSpan = pSand.querySelector('span');
+                const currClass = currSpan && currSpan.className ? currSpan.className : 'curr';
+                pSand.innerHTML = `${newSandPrice}<span class="${currClass}">DH</span>`;
+                pSand.dataset.hasCustomText = 'true';
+            }
+
+            const pDrk = card.querySelector('.price-drk-num, .p-drk-val, .p-drk');
+            if (pDrk) {
+                const currSpan = pDrk.querySelector('span');
+                const currClass = currSpan && currSpan.className ? currSpan.className : 'curr';
+                const hasPrefix = pDrk.innerText.toLowerCase().includes('boisson') ? '+BOISSON ' : (pDrk.innerText.toLowerCase().includes('soda') ? '+SODA ' : '');
+                pDrk.innerHTML = `${hasPrefix}+${newDrkPrice}<span class="${currClass}">DH</span>`;
+                pDrk.dataset.hasCustomText = 'true';
+            }
+
+            const tag = card.querySelector('.kraft-tag, .ciel-price-tag, .canva-callout-badge, .price-box');
+            if (tag) tag.dataset.hasCustomText = 'true';
+        }
+
+        // 2. Send to Backend API
+        try {
+            const res = await fetch('/api/update_item_price', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: itemId,
+                    price_sandwich: newSandPrice,
+                    price_drink: `+${newDrkPrice}`
+                })
+            });
+
+            if (res.ok) {
+                const json = await res.json();
+                
+                // 3. Update localStorage cache
+                if (json.data) {
+                    try {
+                        localStorage.setItem('MENU_ITEMS_CACHE', JSON.stringify(json.data));
+                    } catch(e) {}
+
+                    // 4. Broadcast to TV Channel
+                    if (window.BroadcastChannel) {
+                        try {
+                            const bc = new BroadcastChannel('MENU_TV_CHANNEL');
+                            bc.postMessage({ type: 'PRICES_UPDATED', data: json.data });
+                        } catch(e) {}
+                    }
+                }
+            }
+        } catch(e) {
+            console.warn("Server price sync failed:", e);
+        }
+
+        // 5. Save Custom Layout
+        if (window.saveLayoutToServer) {
+            window.saveLayoutToServer();
+        }
+
+        // 6. Show Toast
+        showToast(`💰 Prix enregistré : ${newSandPrice} DH (+${newDrkPrice} DH Boisson) !`);
+    }
+
+    // Bind Modal Events
+    document.getElementById('studio-price-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!currentModalTarget) return;
+
+        const sandVal = document.getElementById('modal-sand-price').value;
+        const drkVal = document.getElementById('modal-drk-price').value;
+
+        await saveItemPrice(currentModalTarget.itemId, sandVal, drkVal, currentModalTarget);
+        closePriceModal();
+    });
+
+    document.getElementById('modal-close-btn')?.addEventListener('click', closePriceModal);
+    document.getElementById('modal-cancel-btn')?.addEventListener('click', closePriceModal);
+    
+    document.getElementById('studio-price-modal')?.addEventListener('click', (e) => {
+        if (e.target.id === 'studio-price-modal') closePriceModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const modal = document.getElementById('studio-price-modal');
+            if (modal && modal.style.display === 'flex') closePriceModal();
+        }
+    });
+
+    // 6. Get Unique Element ID for State
     function getElementId(el) {
         if (el.dataset.editorId) return el.dataset.editorId;
 
         const screen = el.closest('.menu-screen, .scene-view, [id^="screen"], [id^="scene"]');
         const screenId = screen ? screen.id : 's1';
         const itemId = el.dataset.itemId || el.closest('[data-item-id]')?.dataset.itemId;
-
-        let type = 'elem';
-        if (isSandwich(el)) type = 'sandwich';
-        else if (isFries(el)) type = 'frites';
-        else if (isPriceOrTag(el)) type = 'price_tag';
-        else if (el.tagName.match(/^H[1-6]$/) || el.classList.contains('title') || el.classList.contains('brand-title')) type = 'title';
-        else if (el.classList.contains('desc') || el.classList.contains('item-desc') || el.tagName === 'P') type = 'desc';
-        else if (el.classList.contains('badge') || el.classList.contains('pill') || el.classList.contains('tag')) type = 'badge';
 
         let id = '';
         if (el.id) {
@@ -274,11 +501,15 @@
         const z = el.dataset.zIndex || '';
 
         const baseShift = el.classList.contains('food-fries-corner') ? 40 : 0;
-        el.style.transform = `translateX(${baseShift + tx}px) translateY(${ty}px) scale(${s * flipH}, ${s}) rotate(${r * flipH}deg)`;
-        if (z) el.style.zIndex = z;
+        const transformStr = `translateX(${baseShift + tx}px) translateY(${ty}px) scale(${s * flipH}, ${s}) rotate(${r * flipH}deg)`;
+        el.style.setProperty('transform', transformStr, 'important');
+        if (z) el.style.setProperty('z-index', z, 'important');
 
         if (window.getComputedStyle(el).display === 'inline') {
-            el.style.display = 'inline-block';
+            el.style.setProperty('display', 'inline-block', 'important');
+        }
+        if (s !== 1 || tx !== 0 || ty !== 0) {
+            el.style.setProperty('animation', 'none', 'important');
         }
     }
 
@@ -292,7 +523,6 @@
         layoutState[id].flipH = parseFloat(el.dataset.flipH || 1);
         layoutState[id].zIndex = el.dataset.zIndex || '';
 
-        // Save custom text if modified
         if (el.dataset.hasCustomText === 'true') {
             layoutState[id].customHtml = el.innerHTML;
         }
@@ -315,7 +545,6 @@
                 if (data.flipH !== undefined) el.dataset.flipH = data.flipH;
                 if (data.zIndex !== undefined) el.dataset.zIndex = data.zIndex;
 
-                // Restore custom text!
                 if (data.customHtml !== undefined) {
                     el.innerHTML = data.customHtml;
                     el.dataset.hasCustomText = 'true';
@@ -381,16 +610,15 @@
         const tag = document.getElementById('sbar-tag');
         if (tag) tag.textContent = getFriendlyName(el);
 
-        // Highlight price edit button if it's a price/tag
         const priceBtn = document.getElementById('sbar-edit-price');
         if (priceBtn) {
-            priceBtn.style.display = isPriceOrTag(el) || el.querySelector('.price-sand-num, .price-num, .price-val') ? 'inline-flex' : 'none';
+            priceBtn.style.display = isPriceOrTag(el) || el.closest('[data-item-id]') || el.querySelector('.price-sand-num, .price-num, .price-val') ? 'inline-flex' : 'none';
         }
 
         positionBar(el);
     }
 
-    // 5. INLINE TEXT EDITING ENGINE
+    // 7. INLINE TEXT EDITING ENGINE
     function startTextEditing(el) {
         if (isTvMode || el.tagName === 'IMG') return;
 
@@ -430,8 +658,21 @@
         el.addEventListener('keydown', onKeyDown);
     }
 
-    // 6. BIND EDITABLE ELEMENT
+    // 8. BIND EDITABLE ELEMENT
     function bindEditableElement(el) {
+        // Tag Child Interceptor: If this element is inside a parent price container (like .kraft-tag),
+        // let the parent handle dragging & scaling so the numbers don't break off the kraft tag,
+        // but let clicking on the number open the price modal!
+        const parentTag = el.parentElement?.closest?.('.kraft-tag, .ciel-price-tag, .canva-badge-card, .canva-callout-badge, .gold-price-box, .neon-price-box, .fire-price, .bento-price, .spec-price-tag, .price-capsule, .price-circle-badge, .price-box, .urban-price-box');
+        if (parentTag && parentTag !== el) {
+            el.addEventListener('click', (e) => {
+                if (isTvMode) return;
+                e.stopPropagation();
+                openPriceModal(el);
+            });
+            return;
+        }
+
         if (el.classList.contains('editable-item')) return;
         el.classList.add('editable-item');
         getElementId(el);
@@ -450,7 +691,11 @@
             if (el.tagName !== 'IMG') {
                 e.stopPropagation();
                 selectElement(el);
-                startTextEditing(el);
+                if (isPriceOrTag(el)) {
+                    openPriceModal(el);
+                } else {
+                    startTextEditing(el);
+                }
             }
         });
 
@@ -471,19 +716,21 @@
         }, { passive: false });
     }
 
-    // 7. DRAG & DROP ENGINE
+    // 9. DRAG & DROP ENGINE + CLICK DETECTION
     let isDragging = false;
     let dragEl = null;
     let startX = 0, startY = 0;
     let initTx = 0, initTy = 0;
+    let hasMovedMouse = false;
 
     document.addEventListener('mousedown', (e) => {
         if (isTvMode) return;
         const el = e.target.closest('.editable-item');
-        if (!el || el.isContentEditable || e.target.closest('#studio-floating-bar') || e.target.closest('.ui-controls') || e.target.closest('.dock-controls')) return;
+        if (!el || el.isContentEditable || e.target.closest('#studio-floating-bar') || e.target.closest('#studio-price-modal') || e.target.closest('.ui-controls') || e.target.closest('.dock-controls')) return;
 
         isDragging = true;
         dragEl = el;
+        hasMovedMouse = false;
         startX = e.clientX;
         startY = e.clientY;
         initTx = parseFloat(el.dataset.tx || 0);
@@ -494,6 +741,9 @@
 
     document.addEventListener('mousemove', (e) => {
         if (!isDragging || !dragEl) return;
+        if (Math.abs(e.clientX - startX) > 4 || Math.abs(e.clientY - startY) > 4) {
+            hasMovedMouse = true;
+        }
         const stageScale = getStageScale();
         const dx = (e.clientX - startX) / stageScale;
         const dy = (e.clientY - startY) / stageScale;
@@ -504,44 +754,34 @@
         positionBar(dragEl);
     });
 
-    document.addEventListener('mouseup', () => {
+    document.addEventListener('mouseup', (e) => {
         if (isDragging && dragEl) {
             saveElementState(dragEl);
             dragEl.style.cursor = 'grab';
+
+            // 1-CLIC PRICE DETECTION:
+            // If the user clicked on a price tag (without dragging), immediately open the Price Modal!
+            if (!hasMovedMouse && isPriceOrTag(dragEl)) {
+                openPriceModal(dragEl);
+            }
         }
         isDragging = false;
         dragEl = null;
     });
 
     document.addEventListener('click', (e) => {
-        if (!e.target.closest('#studio-floating-bar') && !e.target.closest('.editable-item') && !e.target.closest('.ui-controls') && !e.target.closest('.dock-controls')) {
+        if (!e.target.closest('#studio-floating-bar') && !e.target.closest('#studio-price-modal') && !e.target.closest('.editable-item') && !e.target.closest('.ui-controls') && !e.target.closest('.dock-controls')) {
             document.querySelectorAll('.editable-item').forEach(i => i.classList.remove('item-selected'));
             activeEl = null;
             if (bar) bar.style.display = 'none';
         }
     });
 
-    // 8. TOOLBAR BUTTON LISTENERS
-    // Quick Price Changer
+    // 10. TOOLBAR BUTTON LISTENERS
     document.getElementById('sbar-edit-price')?.addEventListener('click', (e) => {
         e.stopPropagation();
         if (!activeEl) return;
-
-        // Target the specific price element inside or activeEl itself
-        const priceTarget = activeEl.querySelector('.price-sand-num, .price-val, .price-num, .c-val, [data-price-role="price"], .curr, .price-drk-num') || activeEl;
-        const currentText = (priceTarget.innerText || '').trim();
-
-        const newPrice = prompt("💰 Entrez le nouveau prix (ex: 35 DH ou 30 DH / +7DH) :", currentText);
-        if (newPrice !== null && newPrice.trim() !== '') {
-            priceTarget.innerText = newPrice.trim();
-            priceTarget.dataset.hasCustomText = 'true';
-            activeEl.dataset.hasCustomText = 'true';
-            saveElementState(priceTarget);
-            saveElementState(activeEl);
-            window.saveLayoutToServer();
-            showToast(`💰 Prix modifié : ${newPrice.trim()} !`);
-            positionBar(activeEl);
-        }
+        openPriceModal(activeEl);
     });
 
     document.getElementById('sbar-edit-text')?.addEventListener('click', (e) => {
@@ -665,7 +905,7 @@
         showToast("↺ Réinitialisé par défaut !");
     });
 
-    // 9. PERSISTENT SAVE TO SERVER
+    // 11. PERSISTENT SAVE TO SERVER
     window.saveLayoutToServer = async function() {
         try {
             const res = await fetch('/api/save_custom_layout', {
@@ -691,25 +931,23 @@
         window.saveLayoutToServer();
     });
 
-    // 10. INITIALIZE ALL ELEMENTS
+    // 12. INITIALIZE ALL ELEMENTS
     function initEditor() {
-        // Explicit Selectors covering ALL designs & price tags
         const explicitSelectors = [
             // Food items
             '.food-sandwich', '.food-fries', '.food-fries-side', '.food-fries-corner',
             '.hero-sandwich-img', '.hero-side-fries', '.hero-side-sauces', '.hero-slate-base', '.hero-platter-group',
 
-            // All Price Tags, Kraft Tags, & Badges (User Specific Request!)
-            '.kraft-tag', '.price-sand-num', '.price-drk-num', '.price-capsule', '.price-circle-badge',
-            '.price-box', '.price-container', '.price-row', '.price-val', '.price-value',
+            // All Price Tag Containers
+            '.kraft-tag', '.ciel-price-tag', '.canva-badge-card', '.canva-callout-badge', '.cinema-price-badge',
+            '.gold-price-box', '.neon-price-box', '.fire-price', '.bento-price', '.spec-price-tag',
+            '.price-capsule', '.price-circle-badge', '.price-box', '.price-container', '.price-row',
             '.price-sticker', '.price-badge-box', '.price-badge-alone', '.price-badge-menu',
-            '.hero-price-panel', '.hero-price-row', '.hero-price-tag', '.hero-price-val',
-            '.cinema-price-badge', '.bento-price', '.fire-price', '.gold-price-box',
-            '.neon-price-box', '.news-price-box', '.spec-price-tag', '.stamp-price', '.chalk-price',
+            '.hero-price-panel', '.hero-price-row', '.hero-price-tag',
             '.c-val', '.card-tag', '.fries-included-tag', '.promo-tag-banner',
             '.price-num', '.price-cur', '.price-chalkboard', '.urban-price-box', '.price-duo',
             '.price-pill', '.price-badge', '.price-tag', '.canva-badge-price', '.chalk-badge-price',
-            '.canva-callout-badge', '.chalk-callout-1', '.chalk-badge',
+            '.chalk-price',
 
             // Titles & Subtitles
             '.brand-title', '.brand-sub', '.canva-hero-title', '.canva-hero-sub',
@@ -734,11 +972,14 @@
 
         document.querySelectorAll(explicitSelectors).forEach(bindEditableElement);
 
+        // Bind inner price numbers if not already bound
+        document.querySelectorAll('.price-sand-num, .price-drk-num, .curr').forEach(bindEditableElement);
+
         // Dynamic scanner: find ANY element having price/tag/badge/kraft in class name
         document.querySelectorAll('*').forEach(el => {
             const cls = (el.className || '').toString().toLowerCase();
             if (cls.includes('price') || cls.includes('tag') || cls.includes('kraft') || cls.includes('badge')) {
-                if (el.offsetWidth > 10 && el.offsetHeight > 10 && el.offsetWidth < 800 && el.offsetHeight < 600 && el.tagName !== 'BODY' && el.id !== 'stage') {
+                if (el.offsetWidth > 10 && el.offsetHeight > 10 && el.offsetWidth < 800 && el.offsetHeight < 600 && el.tagName !== 'BODY' && el.id !== 'stage' && el.id !== 'studio-price-modal') {
                     bindEditableElement(el);
                 }
             }
