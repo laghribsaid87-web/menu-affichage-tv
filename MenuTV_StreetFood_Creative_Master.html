@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Bocadillo Tanger — Menu TV Officiel StreetFood Creative</title>
+    <!-- Google Fonts for Stencil Headlines and Fluid Cursive Script -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Black+Ops+One&family=Caveat:wght@700&family=Montserrat:ital,wght@0,600;0,800;0,900;1,800&family=Pacifico&family=Yellowtail&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="studio_engine_universal.css">
+
+    <style>
+        :root {
+            --fire-amber: #ff5714;
+            --fire-gold: #f8b400;
+            --teal-cyan: #00d2ff;
+            --emerald-green: #25d366;
+            --lime-bright: #69ff47;
+            --dark-charcoal: #0c0604;
+            --dark-teal: #03141c;
+            --dark-emerald: #03170a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            background-color: #000;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            font-family: 'Montserrat', sans-serif;
+            color: #fff;
+        }
+
+        /* 1920x1080 Stage with Absolute Center Auto-Scaling */
+        #menu-stage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 1920px;
+            height: 1080px;
+            transform: translate(-50%, -50%) scale(1);
+            transform-origin: center center;
+            overflow: hidden;
+            display: flex;
+            box-shadow: 0 0 70px rgba(0,0,0,0.95);
+        }
+
+        /* Ambient Embers Canvas on Left Zone */
+        #sparks-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 960px;
+            height: 1040px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* =========================================================
+           ZONE 1: LEFT 50% — LES CHAUDS & GRILLADES (Nar w Ember)
+        ========================================================= */
+        .zone-chauds {
+            position: relative;
+            width: 960px;
+            height: 1040px;
+            background: radial-gradient(circle at 50% 12%, rgba(255, 87, 20, 0.35) 0%, rgba(130, 25, 0, 0.22) 42%, rgba(12, 6, 4, 0.98) 78%), #0c0604;
+            border-right: 2px solid rgba(255, 90, 0, 0.25);
+            box-shadow: 10px 0 35px rgba(0, 0, 0, 0.8);
+            padding: 16px 24px 10px 24px;
+            display: flex;
+            flex-direction: column;
+            z-index: 3;
+            overflow: hidden;
+        }
+
+        /* Stencil Header: LES CHAUDS & GRILLADES */
+        .chauds-header {
+            text-align: center;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .chauds-title {
+            font-family: 'Bebas Neue', 'Anton', sans-serif;
+            font-size: 82px;
+            letter-spacing: 5px;
+            line-height: 0.88;
+            color: #ffffff;
+            text-transform: uppercase;
+            text-shadow: 
+                0 4px 0 #cc3a00,
+                0 8px 0 #771e00,
+                0 14px 28px rgba(255, 87, 20, 0.75);
+            display: inline-block;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.8));
+        }
+
+        .chauds-subtitle {
+            font-family: 'Yellowtail', 'Pacifico', cursive;
+            font-size: 30px;
+            color: #ffffff;
+            margin-top: 1px;
+            text-shadow: 0 3px 12px rgba(0,0,0,0.9);
+            letter-spacing: 1px;
+        }
+
+        /* Top Hero Card for Chauds: LE MIXTE ROYAL */
+        .chauds-hero-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1.5px solid rgba(255, 110, 0, 0.3);
+            border-radius: 18px;
+            padding: 10px 16px 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6), inset 0 0 20px rgba(255, 87, 20, 0.1);
+            z-index: 5;
+        }
+
+        .hero-left-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .hero-badge-tag {
+            background: linear-gradient(90deg, #ff5714 0%, #ff8c00 100%);
+            color: #fff;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 15px;
+            letter-spacing: 1.5px;
+            padding: 2px 10px;
+            border-radius: 6px;
+            margin-bottom: 4px;
+            box-shadow: 0 2px 8px rgba(255, 87, 20, 0.5);
+        }
+
+        .hero-item-title {
+            font-family: 'Yellowtail', 'Pacifico', cursive;
+            font-size: 38px;
+            color: #ffc933;
+            text-shadow: 0 3px 12px rgba(0, 0, 0, 0.95);
+            line-height: 1.1;
+            margin-bottom: 4px;
+        }
+
+        .hero-visual-wrap {
+            width: 480px;
+            height: 165px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-img {
+            max-width: 100%;
+            max-height: 165px;
+            object-fit: contain;
+            filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.9));
+        }
+
+        /* 2x2 Grid of 4 Other Hot Sandwiches */
+        .chauds-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 12px 16px;
+            flex: 1;
+            position: relative;
+            z-index: 5;
+        }
+
+        .chaud-card {
+            position: relative;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 8px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+        }
+
+        .chaud-card:hover {
+            border-color: rgba(255, 87, 20, 0.4);
+        }
+
+        .item-title-script {
+            font-family: 'Yellowtail', 'Pacifico', cursive;
+            font-size: 32px;
+            color: #ffffff;
+            text-shadow: 0 3px 12px rgba(0, 0, 0, 0.9);
+            line-height: 1.1;
+            text-align: center;
+            z-index: 6;
+            margin-bottom: 2px;
+        }
+
+        /* Dual Price Capsule Badge */
+        .price-capsule {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 999px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7), 0 0 10px rgba(248, 180, 0, 0.25);
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
+            z-index: 6;
+            margin-bottom: 4px;
+        }
+
+        .capsule-seul {
+            background: linear-gradient(180deg, #ffc933 0%, #f7b400 100%);
+            color: #1a0f00;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            padding: 3px 12px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            letter-spacing: 0.5px;
+        }
+
+        .capsule-menu {
+            background: #251204;
+            color: #ffc933;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            padding: 3px 12px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            letter-spacing: 0.5px;
+        }
+
+        .capsule-val {
+            font-size: 15px;
+            font-weight: 900;
+        }
+
+        /* Product Image Wrapper */
+        .item-visual-wrap {
+            position: relative;
+            width: 100%;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: -2px 0 2px 0;
+        }
+
+        .item-img {
+            max-width: 98%;
+            max-height: 145px;
+            object-fit: contain;
+            filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.85));
+            transition: transform 0.2s ease;
+        }
+
+        .ingredients-subline {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 11.5px;
+            color: rgba(255, 255, 255, 0.95);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            text-align: center;
+            line-height: 1.25;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95);
+            max-width: 95%;
+            z-index: 6;
+        }
+
+        .ingredients-subline span.plus {
+            color: #ffc933;
+            margin: 0 2px;
+            font-weight: 900;
+        }
+
+        /* =========================================================
+           RIGHT SIDE: 50% SPLIT (TORTILLAS TOP & BOCADILLOS BOTTOM)
+        ========================================================= */
+        .right-column {
+            width: 960px;
+            height: 1040px;
+            display: flex;
+            flex-direction: column;
+            z-index: 3;
+        }
+
+        /* ---------------------------------------------------------
+           ZONE 2: TOP RIGHT — LES TORTILLAS (Teal / Cyan Glow)
+        --------------------------------------------------------- */
+        .zone-tortillas {
+            position: relative;
+            width: 100%;
+            height: 495px;
+            background: radial-gradient(circle at 60% 25%, rgba(0, 210, 255, 0.28) 0%, rgba(0, 95, 130, 0.18) 45%, rgba(3, 20, 28, 0.98) 78%), #03141c;
+            border-bottom: 2px solid rgba(0, 210, 255, 0.2);
+            padding: 12px 24px 10px 24px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .tortillas-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 6px;
+            padding: 0;
+            z-index: 5;
+            position: relative;
+        }
+
+        .tortillas-title {
+            font-family: 'Bebas Neue', 'Anton', sans-serif;
+            font-size: 78px;
+            letter-spacing: 5px;
+            line-height: 0.88;
+            color: #ffffff;
+            text-transform: uppercase;
+            text-shadow: 
+                0 4px 0 #005a77,
+                0 8px 0 #002f3d,
+                0 12px 28px rgba(0, 210, 255, 0.7);
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.8));
+            margin-bottom: 2px;
+        }
+
+        .tortillas-subtitle {
+            font-family: 'Yellowtail', 'Pacifico', cursive;
+            font-size: 26px;
+            color: #00d2ff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .tortillas-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            flex: 1;
+            z-index: 5;
+        }
+
+        .tortilla-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(0, 210, 255, 0.15);
+            border-radius: 14px;
+            padding: 8px 12px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+        }
+
+        .tortilla-item-title {
+            font-family: 'Yellowtail', 'Pacifico', cursive;
+            font-size: 34px;
+            color: #ffffff;
+            text-shadow: 0 0 14px rgba(0, 210, 255, 0.9), 0 3px 8px rgba(0,0,0,0.9);
+            margin-bottom: 4px;
+            text-align: center;
+        }
+
+        .tortilla-visual-wrap {
+            width: 100%;
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: -4px 0 4px 0;
+        }
+
+        .tortilla-img {
+            max-width: 98%;
+            max-height: 215px;
+            object-fit: contain;
+            filter: drop-shadow(0 14px 20px rgba(0, 0, 0, 0.85));
+        }
+
+        /* ---------------------------------------------------------
+           ZONE 3: BOTTOM RIGHT — BOCADILLOS DE TANGER (Emerald Green)
+        --------------------------------------------------------- */
+        .zone-bocadillos {
+            position: relative;
+            width: 100%;
+            height: 545px;
+            background: radial-gradient(circle at 65% 30%, rgba(37, 211, 102, 0.32) 0%, rgba(14, 110, 48, 0.2) 48%, rgba(3, 23, 10, 0.98) 80%), #03170a;
+            padding: 10px 24px 12px 24px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .bocadillos-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 6px;
+            padding: 0;
+            z-index: 5;
+            position: relative;
+        }
+
+        .bocadillos-title {
+            font-family: 'Bebas Neue', 'Anton', sans-serif;
+            font-size: 82px;
+            letter-spacing: 6px;
+            line-height: 0.88;
+            color: #ffffff;
+            text-transform: uppercase;
+            text-shadow: 
+                0 4px 0 #076d29,
+                0 8px 0 #023814,
+                0 12px 28px rgba(37, 211, 102, 0.7);
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.8));
+            margin-bottom: 2px;
+        }
+
+        .bocadillos-subtitle {
+            font-family: 'Yellowtail', 'Pacifico', cursive;
+            font-size: 26px;
+            color: #69ff47;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .bocadillos-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            flex: 1;
+            z-index: 5;
+        }
+
+        .bocadillo-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(37, 211, 102, 0.2);
+            border-radius: 14px;
+            padding: 8px 12px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+        }
+
+        .bocadillo-item-title {
+            font-family: 'Yellowtail', 'Pacifico', cursive;
+            font-size: 34px;
+            color: #69ff47;
+            text-shadow: 0 3px 14px rgba(0, 0, 0, 0.95);
+            margin-bottom: 4px;
+            text-align: center;
+        }
+
+        .bocadillo-visual-wrap {
+            width: 100%;
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: -4px 0 4px 0;
+        }
+
+        .bocadillo-img {
+            max-width: 98%;
+            max-height: 215px;
+            object-fit: contain;
+            filter: drop-shadow(0 14px 20px rgba(0, 0, 0, 0.85));
+        }
+
+        /* Extra Mini Pills Row for Secondary Sandwiches (Cheese 24 DH & Tangérois 24 DH) */
+        .extra-sandwiches-strip {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 6px;
+            z-index: 5;
+        }
+
+        .mini-sandwich-pill {
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 999px;
+            padding: 4px 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 800;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .mini-sandwich-pill .price-tag {
+            background: #ffc933;
+            color: #1a0f00;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-weight: 900;
+        }
+
+        /* =========================================================
+           FLOATING COLORFUL ORGANIC DROPS / ACCENTS (Video Motion)
+        ========================================================= */
+        .decor-petal {
+            position: absolute;
+            pointer-events: none;
+            z-index: 4;
+            animation: floatPetal 6s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatPetal {
+            0% { transform: translateY(0px) rotate(0deg) scale(1); }
+            50% { transform: translateY(-12px) rotate(8deg) scale(1.05); }
+            100% { transform: translateY(-24px) rotate(-6deg) scale(0.98); }
+        }
+
+        /* =========================================================
+           BOTTOM BROADCAST TICKER (40px)
+        ========================================================= */
+        #bottom-ticker-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 1920px;
+            height: 40px;
+            background: linear-gradient(90deg, #180902 0%, #1a0f05 35%, #05161f 65%, #051a0d 100%);
+            border-top: 1.5px solid rgba(255, 180, 0, 0.4);
+            display: flex;
+            align-items: center;
+            z-index: 20;
+            overflow: hidden;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.8);
+        }
+
+        .ticker-badge {
+            background: #ff5714;
+            color: #fff;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 22px;
+            letter-spacing: 2px;
+            padding: 0 18px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.5);
+            z-index: 2;
+        }
+
+        .ticker-track {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .ticker-content {
+            display: inline-block;
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            animation: scrollTicker 38s linear infinite;
+            color: #f7b400;
+        }
+
+        .ticker-content span.highlight {
+            color: #ffffff;
+            margin: 0 10px;
+        }
+
+        .ticker-content span.dot {
+            color: #ff5714;
+            margin: 0 14px;
+        }
+
+        @keyframes scrollTicker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* =========================================================
+           TOP CONTROL BAR (Hover / Toggle)
+        ========================================================= */
+        #topbar-trigger-zone {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 45px;
+            z-index: 999998;
+        }
+
+        #studio-topbar {
+            position: fixed;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(15, 15, 20, 0.95);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 999px;
+            padding: 6px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 999999;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.9);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        #topbar-trigger-zone:hover ~ #studio-topbar,
+        #studio-topbar:hover {
+            top: 10px;
+            opacity: 1;
+        }
+
+        .topbar-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .topbar-btn:hover {
+            background: #ff5714;
+            border-color: #ff5714;
+            transform: translateY(-1px);
+        }
+
+        .topbar-btn.btn-save {
+            background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+            border-color: #25d366;
+        }
+
+        .topbar-btn.btn-fullscreen {
+            background: linear-gradient(135deg, #00d2ff 0%, #0072ff 100%);
+            border-color: #00d2ff;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="topbar-trigger-zone"></div>
+
+    <!-- TOP FLOATING STUDIO BAR (Hover to Reveal) -->
+    <div id="studio-topbar">
+        <span style="font-weight:900; color:#ff5714; font-size:13px; margin-right:4px;">🎬 MON BOCADILLO TANGER STUDIO</span>
+        <button class="topbar-btn btn-save" onclick="window.StudioResizer?.saveLayout?.(); alert('✅ Positions et prix sauvegardés avec succès !');">💾 Sauvegarder</button>
+        <button class="topbar-btn" onclick="window.StudioResizer?.resetLayout?.();">🔄 Réinitialiser</button>
+        <button class="topbar-btn" onclick="toggleCurrency();">🔀 DH ⮀ €</button>
+        <button class="topbar-btn btn-fullscreen" onclick="toggleFullScreen();">⛶ Plein Écran (F11)</button>
+        <a href="index.html" class="topbar-btn" style="text-decoration:none;">🏠 Hub Menus</a>
+    </div>
+
+    <!-- 1920x1080 MENU STAGE WITH AUTO-FIT -->
+    <div id="menu-stage">
+
+            <!-- =========================================================
+                 ZONE 1 (LEFT 50%): LES CHAUDS & GRILLADES (Nar w Ember)
+            ========================================================= -->
+            <section class="zone-chauds">
+                <canvas id="sparks-canvas"></canvas>
+
+                <!-- Floating Petal / Splash Accents -->
+                <svg class="decor-petal" style="top: 130px; right: 35px; width: 44px; height: 44px;" viewBox="0 0 100 100">
+                    <path d="M50 0 C70 30, 90 60, 50 100 C10 60, 30 30, 50 0 Z" fill="#ff7a00" opacity="0.85"/>
+                </svg>
+                <svg class="decor-petal" style="top: 520px; left: 25px; width: 36px; height: 36px; animation-delay: -2s;" viewBox="0 0 100 100">
+                    <path d="M50 0 C70 30, 90 60, 50 100 C10 60, 30 30, 50 0 Z" fill="#f8b400" opacity="0.85"/>
+                </svg>
+
+                <!-- Category Header -->
+                <div class="chauds-header" id="header-chauds">
+                    <h1 class="chauds-title" contenteditable="true">LES CHAUDS & GRILLADES</h1>
+                    <div class="chauds-subtitle" contenteditable="true">Recettes de Tanger • Cuisinées Minute sur Plancha !</div>
+                </div>
+
+                <!-- TOP HERO FEATURED: LE MIXTE ROYAL -->
+                <div class="chauds-hero-card" id="card-hero-mixte">
+                    <div class="hero-left-info">
+                        <span class="hero-badge-tag">👑 BEST-SELLER CHAUD</span>
+                        <h2 class="hero-item-title" contenteditable="true">Le Mixte Royal</h2>
+                        <div class="price-capsule">
+                            <div class="capsule-seul">
+                                <span>SEUL</span>
+                                <span class="capsule-val price-val" contenteditable="true">35 DH</span>
+                            </div>
+                            <div class="capsule-menu">
+                                <span>MENU</span>
+                                <span class="capsule-val price-val" contenteditable="true">45 DH</span>
+                            </div>
+                        </div>
+                        <div class="ingredients-subline" style="text-align:left; max-width:100%; font-size:12px;" contenteditable="true">
+                            POULET MARINÉ <span class="plus">+</span> VIANDE HACHÉE <span class="plus">+</span> DOUBLE FROMAGE <span class="plus">+</span> FRITES
+                        </div>
+                    </div>
+                    <div class="hero-visual-wrap">
+                        <img src="assets_menu_tanger_creative/combo_mixte.png" class="hero-img" alt="Le Mixte Royal" id="img-hero-mixte">
+                    </div>
+                </div>
+
+                <!-- 2x2 Grid of 4 Other Hot Sandwiches -->
+                <div class="chauds-grid">
+
+                    <!-- ITEM 1: POULET MARINÉ -->
+                    <div class="chaud-card" id="card-chaud-poulet">
+                        <h3 class="item-title-script" contenteditable="true">Poulet Mariné</h3>
+                        <div class="price-capsule">
+                            <div class="capsule-seul">
+                                <span>SEUL</span>
+                                <span class="capsule-val price-val" contenteditable="true">30 DH</span>
+                            </div>
+                            <div class="capsule-menu">
+                                <span>MENU</span>
+                                <span class="capsule-val price-val" contenteditable="true">40 DH</span>
+                            </div>
+                        </div>
+                        <div class="item-visual-wrap">
+                            <img src="assets_menu_tanger_creative/combo_poulet.png" class="item-img" alt="Poulet Mariné" id="img-chaud-poulet">
+                        </div>
+                        <div class="ingredients-subline" contenteditable="true">
+                            ESCALOPE MARINÉE <span class="plus">+</span> SALADE <span class="plus">+</span> SAUCE FROMAGÈRE
+                        </div>
+                    </div>
+
+                    <!-- ITEM 2: KEFTA PUR BŒUF -->
+                    <div class="chaud-card" id="card-chaud-kefta">
+                        <h3 class="item-title-script" contenteditable="true">Kefta Pur Bœuf</h3>
+                        <div class="price-capsule">
+                            <div class="capsule-seul">
+                                <span>SEUL</span>
+                                <span class="capsule-val price-val" contenteditable="true">30 DH</span>
+                            </div>
+                            <div class="capsule-menu">
+                                <span>MENU</span>
+                                <span class="capsule-val price-val" contenteditable="true">40 DH</span>
+                            </div>
+                        </div>
+                        <div class="item-visual-wrap">
+                            <img src="assets_menu_tanger_creative/combo_kefta.png" class="item-img" alt="Kefta Pur Bœuf" id="img-chaud-kefta">
+                        </div>
+                        <div class="ingredients-subline" contenteditable="true">
+                            VIANDE HACHÉE ÉPICÉE <span class="plus">+</span> OIGNONS <span class="plus">+</span> SAUCE BARBECUE
+                        </div>
+                    </div>
+
+                    <!-- ITEM 3: L'AMÉRICAIN SMASH -->
+                    <div class="chaud-card" id="card-chaud-americain">
+                        <h3 class="item-title-script" contenteditable="true">L'Américain Smash</h3>
+                        <div class="price-capsule">
+                            <div class="capsule-seul">
+                                <span>SEUL</span>
+                                <span class="capsule-val price-val" contenteditable="true">35 DH</span>
+                            </div>
+                            <div class="capsule-menu">
+                                <span>MENU</span>
+                                <span class="capsule-val price-val" contenteditable="true">45 DH</span>
+                            </div>
+                        </div>
+                        <div class="item-visual-wrap">
+                            <img src="assets_menu_tanger_creative/combo_americain.png" class="item-img" alt="Américain Steak" id="img-chaud-americain">
+                        </div>
+                        <div class="ingredients-subline" contenteditable="true">
+                            STEAK PUR BŒUF <span class="plus">+</span> CHEDDAR <span class="plus">+</span> OEUF <span class="plus">+</span> FRITES
+                        </div>
+                    </div>
+
+                    <!-- ITEM 4: SANDWICH SAUCISSE -->
+                    <div class="chaud-card" id="card-chaud-saucisse">
+                        <h3 class="item-title-script" contenteditable="true">Sandwich Saucisse</h3>
+                        <div class="price-capsule">
+                            <div class="capsule-seul">
+                                <span>SEUL</span>
+                                <span class="capsule-val price-val" contenteditable="true">30 DH</span>
+                            </div>
+                            <div class="capsule-menu">
+                                <span>MENU</span>
+                                <span class="capsule-val price-val" contenteditable="true">40 DH</span>
+                            </div>
+                        </div>
+                        <div class="item-visual-wrap">
+                            <img src="assets_menu_tanger_creative/combo_saucisse.png" class="item-img" alt="Sandwich Saucisse" id="img-chaud-saucisse">
+                        </div>
+                        <div class="ingredients-subline" contenteditable="true">
+                            SAUCISSES GRILLÉES <span class="plus">+</span> ÉPICES <span class="plus">+</span> FRITES & SAUCE
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- =========================================================
+                 RIGHT COLUMN: 50% (TORTILLAS TOP & BOCADILLOS BOTTOM)
+            ========================================================= -->
+            <div class="right-column">
+
+                <!-- -----------------------------------------------------
+                     ZONE 2 (TOP RIGHT): LES TORTILLAS (Teal / Cyan Glow)
+                ----------------------------------------------------- -->
+                <section class="zone-tortillas">
+                    <!-- Floating Cyan Droplets -->
+                    <svg class="decor-petal" style="top: 25px; right: 260px; width: 38px; height: 38px;" viewBox="0 0 100 100">
+                        <path d="M50 0 C70 30, 90 60, 50 100 C10 60, 30 30, 50 0 Z" fill="#00d2ff" opacity="0.8"/>
+                    </svg>
+
+                    <!-- Header -->
+                    <div class="tortillas-header" id="header-tortillas">
+                        <h1 class="tortillas-title" contenteditable="true">LES TORTILLAS DE TANGER</h1>
+                        <div class="tortillas-subtitle" contenteditable="true">Tortillas Dorées Maison • Recette Chamalia Cuite Minute</div>
+                    </div>
+
+                    <!-- 2 Tortillas Side-by-Side -->
+                    <div class="tortillas-grid">
+
+                        <!-- TORTILLA 1: TORTILLA ROYALE -->
+                        <div class="tortilla-card" id="card-tortilla-royale">
+                            <h2 class="tortilla-item-title" contenteditable="true">Tortilla Royale</h2>
+                            <div class="price-capsule">
+                                <div class="capsule-seul">
+                                    <span>SEUL</span>
+                                    <span class="capsule-val price-val" contenteditable="true">30 DH</span>
+                                </div>
+                                <div class="capsule-menu">
+                                    <span>MENU</span>
+                                    <span class="capsule-val price-val" contenteditable="true">40 DH</span>
+                                </div>
+                            </div>
+                            <div class="tortilla-visual-wrap">
+                                <img src="assets_menu_tanger_creative/combo_tortilla_royale.png" class="tortilla-img" alt="Tortilla Royale" id="img-tortilla-royale">
+                            </div>
+                            <div class="ingredients-subline" contenteditable="true">
+                                TORTILLA MAISON <span class="plus">+</span> POULET OU KEFTA <span class="plus">+</span> CHEDDAR FONDU
+                            </div>
+                        </div>
+
+                        <!-- TORTILLA 2: TORTILLA TRADITIONNELLE -->
+                        <div class="tortilla-card" id="card-tortilla-tradi">
+                            <h2 class="tortilla-item-title" contenteditable="true">Tortilla Traditionnelle</h2>
+                            <div class="price-capsule">
+                                <div class="capsule-seul">
+                                    <span>SEUL</span>
+                                    <span class="capsule-val price-val" contenteditable="true">22 DH</span>
+                                </div>
+                                <div class="capsule-menu">
+                                    <span>MENU</span>
+                                    <span class="capsule-val price-val" contenteditable="true">32 DH</span>
+                                </div>
+                            </div>
+                            <div class="tortilla-visual-wrap">
+                                <img src="assets_menu_tanger_creative/combo_tortilla_tradi.png" class="tortilla-img" alt="Tortilla Traditionnelle" id="img-tortilla-tradi">
+                            </div>
+                            <div class="ingredients-subline" contenteditable="true">
+                                POMMES DE TERRE DORÉES <span class="plus">+</span> OEUFS FRAIS <span class="plus">+</span> OIGNONS CARAMÉLISÉS
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- -----------------------------------------------------
+                     ZONE 3 (BOTTOM RIGHT): BOCADILLOS (Emerald Green)
+                ----------------------------------------------------- -->
+                <section class="zone-bocadillos">
+                    <!-- Floating Green Droplets -->
+                    <svg class="decor-petal" style="top: 25px; right: 260px; width: 40px; height: 40px; animation-delay: -1.5s;" viewBox="0 0 100 100">
+                        <path d="M50 0 C70 30, 90 60, 50 100 C10 60, 30 30, 50 0 Z" fill="#69ff47" opacity="0.85"/>
+                    </svg>
+
+                    <!-- Header -->
+                    <div class="bocadillos-header" id="header-bocadillos">
+                        <h1 class="bocadillos-title" contenteditable="true">LES BOCADILLOS DE TANGER</h1>
+                        <div class="bocadillos-subtitle" contenteditable="true">Le Véritable Goût de Tanger • Ingrédients Frais & Baguette Croustillante</div>
+                    </div>
+
+                    <!-- 2 Featured Bocadillos Side-by-Side -->
+                    <div class="bocadillos-grid">
+
+                        <!-- BOCADILLO 1: LE COMPLET TANGÉROIS (BEST SELLER) -->
+                        <div class="bocadillo-card" id="card-bocadillo-complet">
+                            <span style="background:#ff5714; color:#fff; font-size:11px; font-weight:900; padding:1px 8px; border-radius:4px; margin-bottom:2px;">★ BEST-SELLER N°1 TANGER</span>
+                            <h2 class="bocadillo-item-title" contenteditable="true">Le Complet Tangérois</h2>
+                            <div class="price-capsule">
+                                <div class="capsule-seul">
+                                    <span>SEUL</span>
+                                    <span class="capsule-val price-val" contenteditable="true">29 DH</span>
+                                </div>
+                                <div class="capsule-menu">
+                                    <span>MENU</span>
+                                    <span class="capsule-val price-val" contenteditable="true">39 DH</span>
+                                </div>
+                            </div>
+                            <div class="bocadillo-visual-wrap">
+                                <img src="assets_menu_tanger_creative/combo_complet.png" class="bocadillo-img" alt="Le Complet Tangérois" id="img-bocadillo-complet">
+                            </div>
+                            <div class="ingredients-subline" contenteditable="true">
+                                THON 1ER CHOIX <span class="plus">+</span> OEUF <span class="plus">+</span> CRUDITÉS <span class="plus">+</span> POMMES DE TERRE <span class="plus">+</span> MORTADELLE
+                            </div>
+                        </div>
+
+                        <!-- BOCADILLO 2: BOCADILLO THON FRAIS -->
+                        <div class="bocadillo-card" id="card-bocadillo-thon">
+                            <span style="background:#076d29; color:#fff; font-size:11px; font-weight:900; padding:1px 8px; border-radius:4px; margin-bottom:2px;">FRAIS DU JOUR</span>
+                            <h2 class="bocadillo-item-title" contenteditable="true">Bocadillo Thon Frais</h2>
+                            <div class="price-capsule">
+                                <div class="capsule-seul">
+                                    <span>SEUL</span>
+                                    <span class="capsule-val price-val" contenteditable="true">22 DH</span>
+                                </div>
+                                <div class="capsule-menu">
+                                    <span>MENU</span>
+                                    <span class="capsule-val price-val" contenteditable="true">32 DH</span>
+                                </div>
+                            </div>
+                            <div class="bocadillo-visual-wrap">
+                                <img src="assets_menu_tanger_creative/combo_thon.png" class="bocadillo-img" alt="Bocadillo Thon Frais" id="img-bocadillo-thon">
+                            </div>
+                            <div class="ingredients-subline" contenteditable="true">
+                                THON ÉMIETTÉ <span class="plus">+</span> SALADE FRAÎCHE <span class="plus">+</span> OEUF DUR <span class="plus">+</span> OLIVES <span class="plus">+</span> MAYO
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Extra Mini Pills for Remaining Authentic Menu Items -->
+                    <div class="extra-sandwiches-strip">
+                        <div class="mini-sandwich-pill">
+                            <span>🧀 Bocadillo Cheese Fondant :</span>
+                            <span class="price-tag price-val" contenteditable="true">24 DH</span>
+                            <span style="color:#aaa; font-size:11px;">(Menu 34 DH)</span>
+                        </div>
+                        <div class="mini-sandwich-pill">
+                            <span>👑 Tangérois Authentique :</span>
+                            <span class="price-tag price-val" contenteditable="true">24 DH</span>
+                            <span style="color:#aaa; font-size:11px;">(Menu 34 DH)</span>
+                        </div>
+                        <div class="mini-sandwich-pill">
+                            <span>🥔 Tortilla Cheese Fondant :</span>
+                            <span class="price-tag price-val" contenteditable="true">24 DH</span>
+                            <span style="color:#aaa; font-size:11px;">(Menu 34 DH)</span>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- =========================================================
+                 BOTTOM BROADCAST TICKER
+            ========================================================= -->
+            <div id="bottom-ticker-bar">
+                <div class="ticker-badge">🔴 EN DIRECT</div>
+                <div class="ticker-track">
+                    <div class="ticker-content">
+                        <span>MON BOCADILLO TANGER</span>
+                        <span class="dot">✦</span>
+                        <span>VIANDES FRAÎCHES CUISINÉES À LA COMMANDE</span>
+                        <span class="dot">✦</span>
+                        <span class="highlight">FORMULES COMBOS (+10 DH) : GRANDES FRITES CROUSTILLANTES + BOISSON FRAÎCHE INCLUSES</span>
+                        <span class="dot">✦</span>
+                        <span>SAUCES ARTISANALES : FROMAGÈRE MAISON, ALGÉRIENNE, SAMOURAI, BIGGY</span>
+                        <span class="dot">✦</span>
+                        <span>TOUS NOS SANDWICHS SONT PRÉPARÉS AVEC DES PRODUITS FRAIS DU JOUR</span>
+                        <span class="dot">✦</span>
+                        <span>COMMANDEZ AU COMPTOIR OU AU 06.12.34.56.78</span>
+                        <span class="dot">✦</span>
+                        <span>MON BOCADILLO TANGER</span>
+                        <span class="dot">✦</span>
+                        <span>VIANDES FRAÎCHES CUISINÉES À LA COMMANDE</span>
+                        <span class="dot">✦</span>
+                        <span class="highlight">FORMULES COMBOS (+10 DH) : GRANDES FRITES CROUSTILLANTES + BOISSON FRAÎCHE INCLUSES</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    <!-- SCRIPT FOR PARTICLES & AUTO-FIT & CURRENCY -->
+    <script>
+        // Auto-scale stage to perfectly fit ANY screen (Laptop 1366, Full HD 1080p, 4K)
+        function scaleStage() {
+            const stage = document.getElementById('menu-stage');
+            if (!stage) return;
+            const targetW = 1920;
+            const targetH = 1080;
+            const winW = window.innerWidth;
+            const winH = window.innerHeight;
+            const scale = Math.min(winW / targetW, winH / targetH);
+            stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        }
+        window.addEventListener('resize', scaleStage);
+        window.addEventListener('DOMContentLoaded', scaleStage);
+        scaleStage();
+
+        // Canvas Sparks / Embers Particle Engine
+        const canvas = document.getElementById('sparks-canvas');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            canvas.width = 960;
+            canvas.height = 1040;
+
+            const particles = [];
+            const particleCount = 28;
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2.8 + 0.8,
+                    speedY: Math.random() * 1.2 + 0.4,
+                    speedX: (Math.random() - 0.5) * 0.6,
+                    opacity: Math.random() * 0.7 + 0.2,
+                    color: Math.random() > 0.4 ? '#ff5714' : '#f8b400'
+                });
+            }
+
+            function animateSparks() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let p of particles) {
+                    p.y -= p.speedY;
+                    p.x += p.speedX;
+                    if (p.y < 0) {
+                        p.y = canvas.height + 10;
+                        p.x = Math.random() * canvas.width;
+                    }
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.globalAlpha = p.opacity;
+                    ctx.shadowBlur = 8;
+                    ctx.shadowColor = p.color;
+                    ctx.fill();
+                }
+                requestAnimationFrame(animateSparks);
+            }
+            animateSparks();
+        }
+
+        // Fullscreen Toggle
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {});
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        // Currency Switcher (DH <-> €)
+        let isEuro = false;
+        function toggleCurrency() {
+            isEuro = !isEuro;
+            const prices = document.querySelectorAll('.price-val');
+            prices.forEach(el => {
+                let txt = el.innerText.trim();
+                let num = parseFloat(txt.replace(/[^0-9.]/g, ''));
+                if (!isNaN(num)) {
+                    if (isEuro) {
+                        let euroVal = (num / 10).toFixed(2) + '€';
+                        el.innerText = euroVal;
+                    } else {
+                        let dhVal = Math.round(num * 10) + ' DH';
+                        el.innerText = dhVal;
+                    }
+                }
+            });
+        }
+    </script>
+
+    <!-- INJECT UNIVERSAL STUDIO ENGINE FOR DRAG, RESIZE, EDIT, PERSIST -->
+    <script src="studio_engine_universal.js"></script>
+
+  <script src="studio_editor_universal.js"></script>
+</body>
+</html>
